@@ -1,5 +1,9 @@
 <?php
 
+	// some subtype defines
+	define("NEWSLETTER_CONTENT_SUBTYPE", "newsletter_content");
+	define("NEWSLETTER_TEMPLATE", "newsletter_template");
+
 	// load library files
 	require_once(dirname(__FILE__) . "/lib/functions.php");
 	require_once(dirname(__FILE__) . "/lib/hooks.php");
