@@ -8,4 +8,8 @@
 			
 			$this->attributes["subtype"] = self::SUBTYPE;
 		}
+		
+		public function getURL() {
+			return "newsletter/view/" . $this->getGUID();
+		}
 	}
