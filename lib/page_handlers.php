@@ -8,7 +8,24 @@
 				if (isset($page[1]) && is_numeric($page[1])) {
 					set_input("guid", $page[1]);
 					
-					$include_file = dirname(dirname(__FILE__)) . "/pages/edit.php";
+					$subpage = elgg_extract("2", $page);
+					switch ($subpage) {
+						case "content":
+							$include_file = dirname(dirname(__FILE__)) . "/pages/edit/content.php";
+							break;
+						case "recipients":
+							$include_file = dirname(dirname(__FILE__)) . "/pages/edit/recipients.php";
+							break;
+						case "schedule":
+							$include_file = dirname(dirname(__FILE__)) . "/pages/edit/schedule.php";
+							break;
+						case "styling":
+							$include_file = dirname(dirname(__FILE__)) . "/pages/edit/styling.php";
+							break;
+						default:
+							$include_file = dirname(dirname(__FILE__)) . "/pages/edit/newsletter.php";
+							break;
+					}
 				}
 				break;
 			case "add":

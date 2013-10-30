@@ -23,6 +23,10 @@
 		
 		// register plugin hooks
 		elgg_register_plugin_hook_handler("cron", "hourly", "newsletter_cron_handler");
+		elgg_register_plugin_hook_handler("access:collections:write", "user", "newsletter_write_access_handler");
+		
+		// register actions
+		elgg_register_action("newsletter/edit", dirname(__FILE__) . "/actions/edit.php");
 	}
 	
 	function newsletter_pagesetup() {
