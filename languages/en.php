@@ -1,9 +1,18 @@
 <?php
 
 	$english = array(
+		// general
+		'newsletter:add' => "New newsletter",
 		
 		// menu's
 		'newsletter:menu:site' => "Newsletters",
+		'' => "",
+		
+		'newsletter:breadcrumb:site' => "Newsletters",
+		'' => "",
+		
+		// pages
+		'newsletter:site:title' => "All site newsletters",
 		'' => "",
 		
 		// plugin settings
