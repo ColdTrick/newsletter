@@ -6,6 +6,8 @@
 	 * @uses elgg_get_page_owner_entity() the container in which to create the newsletter
 	 */
 
+	gatekeeper();
+
 	$page_owner = elgg_get_page_owner_entity();
 	
 	// check if we have access
