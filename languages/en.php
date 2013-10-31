@@ -35,6 +35,10 @@
 		'newsletter:action:edit:error:title' => "Please provide a title for the newsletter",
 		'newsletter:action:edit:error:save' => "An unknown error occured while saving the newsletter, please try again",
 		'newsletter:action:edit:success' => "The newsletter was saved",
+		
+		// delete
+		'newsletter:action:delete:error:delete' => "An unknown error occured while deleting the newsletter, please try again",
+		'newsletter:action:delete:success' => "The newsletter was deleted",
 		'' => "",
 	);
 	
