@@ -10,14 +10,12 @@
 		echo elgg_view("input/hidden", array("name" => "guid", "value" => $entity->getGUID()));
 		
 		$container_guid = $entity->container_guid;
-		$submit_text = elgg_echo("edit");
 	} else {
 		$title = elgg_get_sticky_value("newsletter_edit", "title");
 		$description = elgg_get_sticky_value("newsletter_edit", "description");
 		$access_id = (int) elgg_get_sticky_value("newsletter_edit", "access_id", get_default_access());
 		
 		$container_guid = (int) elgg_extract("container_guid", $vars);
-		$submit_text = elgg_echo("save");
 	}
 	
 	elgg_clear_sticky_form("newsletter_edit");
@@ -39,5 +37,5 @@
 	
 	echo "<div class='elgg-foot'>";
 	echo elgg_view("input/hidden", array("name" => "container_guid", "value" => $container_guid));
-	echo elgg_view("input/submit", array("value" => $submit_text));
+	echo elgg_view("input/submit", array("value" => elgg_echo("save")));
 	echo "</div>";
