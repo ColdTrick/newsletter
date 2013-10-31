@@ -15,6 +15,7 @@
 		// pages
 		'newsletter:site:title' => "All site newsletters",
 		'newsletter:add:title' => "Create a newsletter",
+		'newsletter:edit:title' => "Edit newsletter: %s",
 		
 		// edit tabs
 		'newsletter:edit:tabs:entity' => "Basic",
