@@ -28,6 +28,7 @@
 		// register actions
 		elgg_register_action("newsletter/edit", dirname(__FILE__) . "/actions/edit.php");
 		elgg_register_action("newsletter/delete", dirname(__FILE__) . "/actions/delete.php");
+		elgg_register_action("newsletter/edit/schedule", dirname(__FILE__) . "/actions/edit/schedule.php");
 	}
 	
 	function newsletter_pagesetup() {

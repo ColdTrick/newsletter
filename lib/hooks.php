@@ -13,7 +13,7 @@
 	}
 	
 	/**
-	 * remove some options from the write access array if it's a newsletter
+	 * Remove some options from the write access array if it's a newsletter
 	 *
 	 * @param string $hook
 	 * @param string $type
@@ -48,3 +48,4 @@
 		
 		return $result;
 	}
+	
