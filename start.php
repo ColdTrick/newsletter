@@ -21,6 +21,10 @@
 		// register page handler
 		elgg_register_page_handler("newsletter", "newsletter_page_handler");
 		
+		// views
+		elgg_extend_view("css/elgg", "css/newsletter/site");
+		elgg_extend_view("js/elgg", "js/newsletter/site");
+		
 		// register plugin hooks
 		elgg_register_plugin_hook_handler("cron", "hourly", "newsletter_cron_handler");
 		elgg_register_plugin_hook_handler("access:collections:write", "user", "newsletter_write_access_handler");

@@ -24,6 +24,9 @@
 		'newsletter:edit:tabs:recipients' => "Recipients",
 		'newsletter:edit:tabs:schedule' => "Schedule",
 		
+		// content
+		'newsletter:edit:content:description' => "Add the content to your newsletter here. Add sections of free text or import an existing blog as content into your newsletter. You can always reorder the content of this newsletter.",
+	
 		// plugin settings
 		'newsletter:settings:allow_groups' => "Allow group admins to send newsletters",
 		'newsletter:settings:allow_groups:description' => "Group administrators can create a newsletter for their group members.",
