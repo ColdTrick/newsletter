@@ -24,9 +24,20 @@
 			$excerpt = elgg_get_excerpt($entity->description);
 		}
 		
+		$subitle = "";
+		if ($entity->scheduled) {
+			if ($entity->scheduled > time()) {
+				$subitle .= "<strong>" . elgg_echo("newsletter:entity:scheduled") . ":</strong> ";
+			} else {
+				$subitle .= "<strong>" . elgg_echo("newsletter:entity:sent") . ":</strong> ";
+			}
+			$subitle .= date(elgg_echo('friendlytime:date_format'), $entity->scheduled);
+		}
+		
 		$params = array(
 			"entity" => $entity,
 			"metadata" => $entity_menu,
+			"subtitle" => $subitle,
 			"content" => $excerpt
 		);
 		
