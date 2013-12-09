@@ -5,10 +5,13 @@
 elgg.provide("elgg.newsletter");
 
 elgg.newsletter.init = function() {
-	// init
-	$('#newsletter-section-add').click(elgg.newsletter.section_add);
+	$("#newsletter-section-add").click(elgg.newsletter.section_add);
+	
+	$(".newsletter-section-actions .elgg-icon-delete-alt").live("click", function() {
+		elgg.newsletter.section_remove(this);
+	});
 
-	$('#newsletter-section-list').sortable({
+	$("#newsletter-section-list").sortable({
 		containment: "parent",
 		handle: ".elgg-icon-cursor-drag-arrow"
 	});
@@ -16,6 +19,10 @@ elgg.newsletter.init = function() {
 
 elgg.newsletter.section_add = function() {
 	$('#newsletter-section-add').next().clone().insertBefore($('#newsletter-section-add')).removeClass("hidden");
+}
+
+elgg.newsletter.section_remove = function(elem) {
+	$(elem).parents(".newsletter-section").remove();
 }
 
 //register init hook

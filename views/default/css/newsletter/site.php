@@ -14,6 +14,6 @@
 	padding: 5px;
 }
 
-.newsletter-section-actions .elgg-icon-cursor-drag-arrow {
+.newsletter-section-actions .elgg-icon {
 	cursor: pointer;
 }
