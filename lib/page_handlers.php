@@ -66,6 +66,9 @@
 					$include_file = dirname(dirname(__FILE__)) . "/pages/unsubscribe.php";
 				}
 				break;
+			case "recipients":
+				$include_file = dirname(dirname(__FILE__)) . "/procedures/recipients.php";
+				break;
 			default:
 				forward("newsletter/site");
 				break;

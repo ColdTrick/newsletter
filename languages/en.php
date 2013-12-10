@@ -33,6 +33,18 @@
 		'newsletter:schedule:date' => "Scheduled date",
 		'newsletter:schedule:time' => "Scheduled time",
 
+		// recipients
+		'newsletter:recipients:title' => "Select recipients",
+		'newsletter:recipients:description' => "Below you can configure who you want to receive the newsletter.",
+		'newsletter:recipients:recipient' => "Search a recipient",
+		'newsletter:recipients:recipient:description' => "You can search on name, email and username. Please select one from the dropdown to add the reciepient.",
+		'newsletter:recipients' => "Recipients",
+		'newsletter:recipients:subscribers' => "To all subscribers",
+		'newsletter:recipients:members' => "To all members",
+		'newsletter:recipients:members:site' => "site members",
+		'newsletter:recipients:members:group' => "group members",
+		'newsletter:recipients:email' => "E-mail address",
+		
 		// plugin settings
 		'newsletter:settings:allow_groups' => "Allow group admins to send newsletters",
 		'newsletter:settings:allow_groups:description' => "Group administrators can create a newsletter for their group members.",
@@ -55,6 +67,9 @@
 		
 		// schedule
 		'newsletter:action:schedule:success' => "Schedule saved",
+		
+		// recipients
+		'newsletter:action:recipients:success' => "Recipients saved",
 		'' => "",
 	);
 	
