@@ -26,10 +26,13 @@
 		$content = elgg_view("output/longtext", array("value" => elgg_echo("notfound")));
 	}
 	
+	$sidebar = elgg_view("newsletter/sidebar/subscribe", array("entity" => elgg_get_site_entity()));
+	
 	// build page
 	$page_data = elgg_view_layout("content", array(
 		"title" => $title_text,
 		"content" => $content,
+		"sidebar" => $sidebar,
 		"filter" => ""
 	));
 	

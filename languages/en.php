@@ -4,6 +4,8 @@
 		// general
 		'item:object:newsletter' => "Newsletter",
 		'newsletter:add' => "New newsletter",
+		'newsletter:subscribe' => "Subscribe",
+		'newsletter:unsubscribe' => "Unsubscribe",
 		
 		// menu's
 		'newsletter:menu:site' => "Newsletters",
@@ -55,6 +57,12 @@
 		'newsletter:entity:scheduled' => "Scheduled",
 		'newsletter:entity:sent' => "Sent",
 		
+		// sidebar - subscribe
+		'newsletter:sidebar:subscribe:title' => "Newsletter subscription",
+		'newsletter:subscribe:email:description' => "Subscribe to the %s newsletter",
+		'newsletter:subscribe:user:description:subscribe' => "Subscribe to the %s newsletter",
+		'newsletter:subscribe:user:description:unsubscribe' => "Unsubscribe from the %s newsletter",
+		
 		// actions
 		// edit
 		'newsletter:action:edit:error:title' => "Please provide a title for the newsletter",
@@ -70,6 +78,13 @@
 		
 		// recipients
 		'newsletter:action:recipients:success' => "Recipients saved",
+		
+		// subscribe
+		'newsletter:action:subscribe:error:subscribe' => "An error occured while subscribing, please try again",
+		'newsletter:action:subscribe:error:unsubscribe' => "An error occured while unsubscribing, please try again",
+		'newsletter:action:subscribe:success' => "You've successfully subscribed to the newsletter",
+		'newsletter:action:subscribe:success:unsubscribe' => "You've successfully been unsubscribed from the newsletter",
+		
 		'' => "",
 	);
 	
