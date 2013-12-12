@@ -196,7 +196,7 @@
 	 *
 	 * @param 	ElggEntity 	$container	Which container
 	 * @param 	bool		$count		Return just a count, not the actual subscribers
-	 * @return 	array | int	On success, of false on failure
+	 * @return 	array | int				On success or false on failure
 	 */
 	function newsletter_get_subscribers(ElggEntity $container, $count = false) {
 		$result = false;
@@ -204,9 +204,73 @@
 		if (!empty($container) && (elgg_instanceof($container, "site") || elgg_instanceof($container, "group"))) {
 			// get the subscribers
 			if (!$count) {
+				$result = array(
+					"users" => array(),
+					"emails" => array()
+				);
 				
+				// get all subscribed community members
+				$options = array(
+					"type" => "user",
+					"selects" => array("ue.email"),
+					"site_guids" => false,
+					"limit" => false,
+					"relationship" => NEWSLETTER_USER_SUBSCRIPTION,
+					"relationship_guid" => $container->getGUID(),
+					"inverse_relationship" => true,
+					"joins" => array("JOIN " . elgg_get_config("dbprefix") . "users_entity ue ON e.guid = ue.guid"),
+					"callback" => "newsletter_row_to_subscriber_info"
+				);
+				
+				// @todo make this easier????
+				$tmp_users = elgg_get_entities_from_relationship($options);
+				if (!empty($tmp_users)) {
+					foreach ($tmp_users as $tmp_user) {
+						$result["users"][$tmp_user["guid"]] = $tmp_user["email"];
+					}
+				}
+				
+				// check the email subscriptions
+				$fh = new ElggFile();
+				$fh->owner_guid = $container->getGUID();
+				$fh->setFilename("newsletter/subscibers.json");
+				
+				if ($fh->exists()) {
+					$subscribers = $fh->grabFile();
+						
+					if (!empty($subscribers)) {
+						$subscribers = json_decode($subscribers, true);
+				
+						$result["emails"] = $subscribers;
+					}
+				}
 			} else {
-				$result = 0;
+				// get all subscribed community members
+				$options = array(
+					"type" => "user",
+					"site_guids" => false,
+					"count" => true,
+					"relationship" => NEWSLETTER_USER_SUBSCRIPTION,
+					"relationship_guid" => $container->getGUID(),
+					"inverse_relationship" => true
+				);
+				
+				$result = elgg_get_entities_from_relationship($options);
+				
+				// check the email subscriptions
+				$fh = new ElggFile();
+				$fh->owner_guid = $container->getGUID();
+				$fh->setFilename("newsletter/subscibers.json");
+				
+				if ($fh->exists()) {
+					$subscribers = $fh->grabFile();
+					
+					if (!empty($subscribers)) {
+						$subscribers = json_decode($subscribers, true);
+						
+						$result += count($subscribers);
+					}
+				}
 			}
 		}
 		
@@ -461,5 +525,20 @@
 		}
 		
 		return $result;
+	}
+	
+	/**
+	 * Custom callback for elgg_get_* function to return a subset of information
+	 *
+	 * @param stdObj	$row	A database row
+	 * @return	array			contains [guid] => email
+	 *
+	 * @see elgg_get_entities()
+	 */
+	function newsletter_row_to_subscriber_info($row) {
+		return array(
+			"guid" => (int) $row->guid,
+			"email" => $row->email
+		);
 	}
 	
