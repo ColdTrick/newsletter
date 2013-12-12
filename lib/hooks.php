@@ -86,3 +86,43 @@
 		return $result;
 	}
 	
+	/**
+	 * Add a menu item in the sidebar to go to the newsletter subsciptions
+	 *
+	 * @param 	string	$hook
+	 * @param 	string 	$type
+	 * @param 	array 	$returnvalue	Default menu items
+	 * @param 	array 	$params
+	 * @return 	array					Menu items
+	 */
+	function newsletter_register_page_menu_handler($hook, $type, $returnvalue, $params) {
+		$result = $returnvalue;
+		
+		$user = elgg_get_logged_in_user_entity();
+		
+		if (!empty($user) && elgg_in_context("newsletter")) {
+			// link to your subscriptions
+			$result[] = ElggMenuItem::factory(array(
+				"name" => "newsletter_suscriptions",
+				"href" => "newsletter/subscriptions/" . $user->getGUID(),
+				"text" => elgg_echo("newsletter:menu:page:subscriptions"),
+				"is_trusted" => true
+			));
+		}
+		
+		// settings pages
+		$page_owner = elgg_get_page_owner_entity();
+		if (elgg_in_context("settings") && !empty($user) && !empty($page_owner)) {
+			if (elgg_instanceof($page_owner, "user") && $page_owner->canEdit()) {
+				$result[] = ElggMenuItem::factory(array(
+					"name" => "newsletter_suscriptions",
+					"href" => "newsletter/subscriptions/" . $page_owner->getGUID(),
+					"text" => elgg_echo("newsletter:menu:page:settings"),
+					"is_trusted" => true
+				));
+			}
+		}
+		
+		return $result;
+	}
+	

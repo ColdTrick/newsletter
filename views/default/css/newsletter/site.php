@@ -54,3 +54,8 @@
 	padding-left: 5px;
 	border-left: 1px solid #CCCCCC;
 }
+
+#newsletter-settings-form .newsletter-settings-small {
+	width: 25px;
+	text-align: center;
+}

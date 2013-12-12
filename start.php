@@ -38,6 +38,7 @@
 		// register plugin hooks
 		elgg_register_plugin_hook_handler("cron", "hourly", "newsletter_cron_handler");
 		elgg_register_plugin_hook_handler("access:collections:write", "user", "newsletter_write_access_handler");
+		elgg_register_plugin_hook_handler("register", "menu:page", "newsletter_register_page_menu_handler");
 		
 		// register actions
 		elgg_register_action("newsletter/edit", dirname(__FILE__) . "/actions/edit.php");
@@ -46,6 +47,7 @@
 		
 		elgg_register_action("newsletter/delete", dirname(__FILE__) . "/actions/delete.php");
 		elgg_register_action("newsletter/subscribe", dirname(__FILE__) . "/actions/subscribe.php", "public");
+		elgg_register_action("newsletter/subscriptions", dirname(__FILE__) . "/actions/subscriptions.php");
 		
 	}
 	

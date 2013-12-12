@@ -9,10 +9,12 @@
 		
 		// menu's
 		'newsletter:menu:site' => "Newsletters",
+		
+		'newsletter:menu:page:subscriptions' => "My subscriptions",
+		'newsletter:menu:page:settings' => "Newsletter subscriptions",
 		'' => "",
 		
 		'newsletter:breadcrumb:site' => "Newsletters",
-		'' => "",
 		
 		// pages
 		'newsletter:site:title' => "All site newsletters",
@@ -57,6 +59,15 @@
 		'newsletter:entity:scheduled' => "Scheduled",
 		'newsletter:entity:sent' => "Sent",
 		
+		// my subscriptions
+		'newsletter:subscriptions:description' => "Below you can manage all your newsletter subscriptions as once.",
+		'newsletter:subscriptions:site:title' => "Site newsletter",
+		'newsletter:subscriptions:site:description' => "Do you wish to receive a newsletter from the communty.",
+		'newsletter:subscriptions:groups:title' => "My group newsletters",
+		'newsletter:subscriptions:groups:description' => "All the groups you're a member of are listed, so you can easily change your newsletter subscription.",
+		'newsletter:subscriptions:other:title' => "Other subscription",
+		'newsletter:subscriptions:other:description' => "Did you want to receive a newsletter from a group your not a member of, they are listed here.",
+		
 		// sidebar - subscribe
 		'newsletter:sidebar:subscribe:title' => "Newsletter subscription",
 		'newsletter:subscribe:email:description' => "Subscribe to the %s newsletter",
@@ -84,6 +95,10 @@
 		'newsletter:action:subscribe:error:unsubscribe' => "An error occured while unsubscribing, please try again",
 		'newsletter:action:subscribe:success' => "You've successfully subscribed to the newsletter",
 		'newsletter:action:subscribe:success:unsubscribe' => "You've successfully been unsubscribed from the newsletter",
+		
+		// subscriptions
+		'newsletter:action:subscriptions:error' => "An unknown error occured while saving your subscription settings, please try again",
+		'newsletter:action:subscriptions:success' => "Your subscription settings were saved",
 		
 		'' => "",
 	);

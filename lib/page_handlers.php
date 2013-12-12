@@ -69,6 +69,13 @@
 			case "recipients":
 				$include_file = dirname(dirname(__FILE__)) . "/procedures/recipients.php";
 				break;
+			case "subscriptions":
+				if (isset($page[1]) && is_numeric($page[1])) {
+					elgg_set_page_owner_guid($page[1]);
+						
+					$include_file = dirname(dirname(__FILE__)) . "/pages/subscriptions.php";
+				}
+				break;
 			default:
 				forward("newsletter/site");
 				break;
