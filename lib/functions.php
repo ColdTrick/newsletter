@@ -120,8 +120,6 @@
 	function newsletter_format_recipient($recipient) {
 		$result = false;
 		
-		$regexpr = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/";
-		
 		if (!empty($recipient)) {
 			if (elgg_instanceof($recipient, "user")) {
 				$icon = elgg_view_entity_icon($recipient, "tiny", array(
@@ -171,7 +169,7 @@
 					"label" => $label,
 					"content" => $content
 				);
-			} elseif (preg_match($regexpr, $recipient)) {
+			} elseif (newsletter_is_email_address($recipient)) {
 				$name = "<span>" . elgg_echo("newsletter:recipients:email") . ": </span>" . $recipient;
 				$label = elgg_view_image_block("", $name, array("class" => "elgg-autocomplete-item newsletter-recipient-autocomplete-email"));
 					
@@ -356,7 +354,7 @@
 		$result = false;
 		
 		if (!empty($email) && !empty($entity)) {
-			if (is_email_address($email) && (elgg_instanceof($entity, "site") || elgg_instanceof($entity, "group"))) {
+			if (newsletter_is_email_address($email) && (elgg_instanceof($entity, "site") || elgg_instanceof($entity, "group"))) {
 				// get subscriber list and blacklist
 				$fh = new ElggFile();
 				$fh->owner_guid = $entity->getGUID();
@@ -472,7 +470,7 @@
 		$result = false;
 		
 		if (!empty($email) && !empty($entity)) {
-			if (is_email_address($email) && (elgg_instanceof($entity, "site") || elgg_instanceof($entity, "group"))) {
+			if (newsletter_is_email_address($email) && (elgg_instanceof($entity, "site") || elgg_instanceof($entity, "group"))) {
 				// get subscriber list and blacklist
 				$fh = new ElggFile();
 				$fh->owner_guid = $entity->getGUID();
@@ -540,5 +538,27 @@
 			"guid" => (int) $row->guid,
 			"email" => $row->email
 		);
+	}
+	
+	/**
+	 * A different interpretation of is_email_address()
+	 * because PHP doesn't always correctly verify email addresses
+	 *
+	 * @param 	string 	$address	The email address to check
+	 * @return 	bool				true if email, false otherwise
+	 *
+	 * @see is_email_address()
+	 * @see filter_var()
+	 */
+	function newsletter_is_email_address($address) {
+		$result = false;
+		
+		if (!empty($address)) {
+			$regexpr = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/";
+			
+			$result = (bool) preg_match($regexpr, $address);
+		}
+		
+		return $result;
 	}
 	

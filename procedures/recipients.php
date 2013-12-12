@@ -76,8 +76,7 @@
 		}
 		
 		// email input
-		$regexpr = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/";
-		if (preg_match($regexpr, $query)) {
+		if (newsletter_is_email_address($query)) {
 			if ($users = get_user_by_email($query)) {
 				// found a user with this email address
 				$user_guids = string_to_tag_array($user_guids);

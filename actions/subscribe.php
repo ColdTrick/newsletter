@@ -33,7 +33,7 @@
 					register_error(elgg_echo("user:resetpassword:unknown_user"));
 				}
 			} else {
-				if (is_email_address($email)) {
+				if (newsletter_is_email_address($email)) {
 					// add the email address to the subscriber list
 					if (newsletter_subscribe_email($email, $entity)) {
 						system_message(elgg_echo("newsletter:action:subscribe:success"));
