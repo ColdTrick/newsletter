@@ -20,5 +20,10 @@
 		<name>html_email_handler</name>
 	</requires>
 	
+	<requires>
+		<type>php_extension</type>
+		<name>json</name>
+	</requires>
+	
 	<category>ColdTrick</category>
 </plugin_manifest>

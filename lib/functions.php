@@ -107,3 +107,458 @@
 		}
 	}
 	
+	/**
+	 * Format a recipient to be listed in the recipient autocomplete or listing
+	 *
+	 * @param 	mixed	$recipient	Can be an ElggUser, ElggGroup or email address
+	 * @return 	array	Contains, of false on failure
+	 * 						- type : user, group or email
+	 * 						- label: used in the autocomplete dropdown
+	 * 						- content: used in the listing view
+	 * 						- value: eighter a guid of email address
+	 */
+	function newsletter_format_recipient($recipient) {
+		$result = false;
+		
+		if (!empty($recipient)) {
+			if (elgg_instanceof($recipient, "user")) {
+				$icon = elgg_view_entity_icon($recipient, "tiny", array(
+					"use_hover" => false,
+					"use_link" => false
+				));
+				
+				// label for autoselect listing
+				$label = elgg_view_image_block($icon, $recipient->name, array("class" => "elgg-autocomplete-item"));
+				
+				// content for if selected
+				$content = "<div class='newsletter-recipient-result phs'>";
+				$content .= elgg_view("input/hidden", array("name" => "user_guids[]", "value" => $recipient->getGUID()));
+				$content .= elgg_view_image_block($icon, $recipient->name, array("image_alt" => elgg_view_icon("delete-alt")));
+				$content .= "</div>";
+				
+				$result = array(
+					"type" => "user",
+					"value" => $recipient->getGUID(),
+					"label" => $label,
+					"content" => $content
+				);
+			} elseif (elgg_instanceof($recipient, "group")) {
+				$icon = elgg_view_entity_icon($recipient, "tiny", array(
+					"use_hover" => false,
+					"href" => false
+				));
+				
+				// label for autoselect listing
+				$name = "<span>" . elgg_echo("groups:group") . ": </span>" . $recipient->name;
+				$name .= "<span class='elgg-quiet'> (" . $recipient->getMembers(0, 0, true) . " " . elgg_echo("groups:member") . ")</span>";
+				
+				$label = elgg_view_image_block($icon, $name, array("class" => "elgg-autocomplete-item newsletter-recipient-autocomplete-group"));
+				
+				// content for if selected
+				$name = $recipient->name;
+				$name .= "<span class='elgg-quiet'> (" . $recipient->getMembers(0, 0, true) . " " . elgg_echo("groups:member") . ")</span>";
+				
+				$content = "<div class='newsletter-recipient-result phs'>";
+				$content .= elgg_view("input/hidden", array("name" => "group_guids[]", "value" => $recipient->getGUID()));
+				$content .= elgg_view_image_block($icon, $name, array("image_alt" => elgg_view_icon("delete-alt")));
+				$content .= "</div>";
+				
+				$result = array(
+					"type" => "group",
+					"value" => $recipient->getGUID(),
+					"label" => $label,
+					"content" => $content
+				);
+			} elseif (newsletter_is_email_address($recipient)) {
+				$name = "<span>" . elgg_echo("newsletter:recipients:email") . ": </span>" . $recipient;
+				$label = elgg_view_image_block("", $name, array("class" => "elgg-autocomplete-item newsletter-recipient-autocomplete-email"));
+					
+				$content = "<div class='newsletter-recipient-result phs'>";
+				$content .= elgg_view("input/hidden", array("name" => "emails[]", "value" => $recipient));
+				$content .= elgg_view_image_block("", $recipient, array("image_alt" => elgg_view_icon("delete-alt")));
+				$content .= "</div>";
+					
+				$result = array(
+					"type" => "email",
+					"label" => $label,
+					"content" => $content
+				);
+			}
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * Get all the people that subscribed to the newsletter of this container
+	 *
+	 * @param 	ElggEntity 	$container	Which container
+	 * @param 	bool		$count		Return just a count, not the actual subscribers
+	 * @return 	array | int				On success or false on failure
+	 */
+	function newsletter_get_subscribers(ElggEntity $container, $count = false) {
+		$result = false;
+		
+		if (!empty($container) && (elgg_instanceof($container, "site") || elgg_instanceof($container, "group"))) {
+			// get the subscribers
+			if (!$count) {
+				$result = array(
+					"users" => array(),
+					"emails" => array()
+				);
+				
+				// get all subscribed community members
+				$options = array(
+					"type" => "user",
+					"selects" => array("ue.email"),
+					"site_guids" => false,
+					"limit" => false,
+					"relationship" => NEWSLETTER_USER_SUBSCRIPTION,
+					"relationship_guid" => $container->getGUID(),
+					"inverse_relationship" => true,
+					"joins" => array("JOIN " . elgg_get_config("dbprefix") . "users_entity ue ON e.guid = ue.guid"),
+					"callback" => "newsletter_row_to_subscriber_info"
+				);
+				
+				// @todo make this easier????
+				$tmp_users = elgg_get_entities_from_relationship($options);
+				if (!empty($tmp_users)) {
+					foreach ($tmp_users as $tmp_user) {
+						$result["users"][$tmp_user["guid"]] = $tmp_user["email"];
+					}
+				}
+				
+				// check the email subscriptions
+				$fh = new ElggFile();
+				$fh->owner_guid = $container->getGUID();
+				$fh->setFilename("newsletter/subscibers.json");
+				
+				if ($fh->exists()) {
+					$subscribers = $fh->grabFile();
+						
+					if (!empty($subscribers)) {
+						$subscribers = json_decode($subscribers, true);
+				
+						$result["emails"] = $subscribers;
+					}
+				}
+			} else {
+				// get all subscribed community members
+				$options = array(
+					"type" => "user",
+					"site_guids" => false,
+					"count" => true,
+					"relationship" => NEWSLETTER_USER_SUBSCRIPTION,
+					"relationship_guid" => $container->getGUID(),
+					"inverse_relationship" => true
+				);
+				
+				$result = elgg_get_entities_from_relationship($options);
+				
+				// check the email subscriptions
+				$fh = new ElggFile();
+				$fh->owner_guid = $container->getGUID();
+				$fh->setFilename("newsletter/subscibers.json");
+				
+				if ($fh->exists()) {
+					$subscribers = $fh->grabFile();
+					
+					if (!empty($subscribers)) {
+						$subscribers = json_decode($subscribers, true);
+						
+						$result += count($subscribers);
+					}
+				}
+			}
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * Check if a user is subscribed to a container entity
+	 *
+	 * @param 	ElggUser 	$user	The user to check
+	 * @param 	ElggEntity 	$entity	The container entity to check against
+	 * @return 	boolean				True => the user has a subscription, false => no subscription or error
+	 */
+	function newsletter_check_user_subscription(ElggUser $user, ElggEntity $entity) {
+		$result = false;
+		
+		if (!empty($user) && !empty($entity)) {
+			if (elgg_instanceof($user, "user") && (elgg_instanceof($entity, "site") || elgg_instanceof($entity, "group"))) {
+				$result = (bool) check_entity_relationship($user->getGUID(), NEWSLETTER_USER_SUBSCRIPTION, $entity->getGUID());
+			}
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * Add a subscription for an user to a container
+	 *
+	 * @param 	ElggUser 	$user	The user to subscribe
+	 * @param 	ElggEntity 	$entity	The container entity to subscribe to
+	 * @return 	boolean				true on success else false
+	 */
+	function newsletter_subscribe_user(ElggUser $user, ElggEntity $entity) {
+		$result = false;
+		
+		if (!empty($user) && !empty($entity)) {
+			if (elgg_instanceof($user, "user") && (elgg_instanceof($entity, "site") || elgg_instanceof($entity, "group"))) {
+				// check if subscribed
+				if (!check_entity_relationship($user->getGUID(), NEWSLETTER_USER_SUBSCRIPTION, $entity->getGUID())) {
+					// not yet, so add
+					$result = add_entity_relationship($user->getGUID(), NEWSLETTER_USER_SUBSCRIPTION, $entity->getGUID());
+				} else {
+					$result = true;
+				}
+				
+				// check if blocked
+				if (check_entity_relationship($user->getGUID(), NEWSLETTER_USER_BLACKLIST, $entity->getGUID())) {
+					remove_entity_relationship($user->getGUID(), NEWSLETTER_USER_BLACKLIST, $entity->getGUID());
+				}
+				
+				// check if on email blacklist
+				$fh = new ElggFile();
+				$fh->owner_guid = $entity->getGUID();
+				$fh->setFilename("newsletter/blacklist.json");
+				if ($fh->exists()) {
+					$blacklist = $fh->grabFile();
+					$blacklist = json_decode($blacklist, true);
+					
+					if (in_array($user->email, $blacklist)) {
+						$key = array_search($user->email, $blacklist);
+						unset($blacklist[$key]);
+						
+						// save new blacklist
+						$fh->open("write");
+						$fh->write(json_encode($blacklist));
+						$fh->close();
+					}
+				}
+			}
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * Add a subscription for an email address to a container
+	 *
+	 * @param 	string 		$email	The email address to add to the subscriptions
+	 * @param 	ElggEntity 	$entity	The container entity to subscribe to
+	 * @return 	boolean				true on success else false
+	 */
+	function newsletter_subscribe_email($email, ElggEntity $entity) {
+		$result = false;
+		
+		if (!empty($email) && !empty($entity)) {
+			if (newsletter_is_email_address($email) && (elgg_instanceof($entity, "site") || elgg_instanceof($entity, "group"))) {
+				// get subscriber list and blacklist
+				$fh = new ElggFile();
+				$fh->owner_guid = $entity->getGUID();
+				
+				// subscribers
+				$fh->setFilename("newsletter/subscibers.json");
+				if ($fh->exists()) {
+					$subscribers = $fh->grabFile();
+					$subscribers = json_decode($subscribers, true);
+				} else {
+					$subscribers = array();
+				}
+				
+				// blacklist
+				$fh->setFilename("newsletter/blacklist.json");
+				if ($fh->exists()) {
+					$blacklist = $fh->grabFile();
+					$blacklist = json_decode($blacklist, true);
+				} else {
+					$blacklist = array();
+				}
+				
+				// add to subscriber
+				if (!in_array($email, $subscribers)) {
+					$subscribers[] = $email;
+				}
+				
+				// remove from blacklist
+				if (in_array($email, $blacklist)) {
+					$key = array_search($email, $blacklist);
+					unset($blacklist[$key]);
+				}
+				
+				// save new content
+				// subscribers
+				$fh->setFilename("newsletter/subscibers.json");
+				$fh->open("write");
+				$fh->write(json_encode($subscribers));
+				$fh->close();
+				
+				// blacklist
+				$fh->setFilename("newsletter/blacklist.json");
+				$fh->open("write");
+				$fh->write(json_encode($blacklist));
+				$fh->close();
+				
+				// done
+				$result = true;
+			}
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * Remove a subscription for an user to a container
+	 *
+	 * @param 	ElggUser 	$user	The user to unsubscribe
+	 * @param 	ElggEntity 	$entity	The container entity to unsubscribe from
+	 * @return 	boolean				true on success else false
+	 */
+	function newsletter_unsubscribe_user(ElggUser $user, ElggEntity $entity) {
+		$result = false;
+		
+		if (!empty($user) && !empty($entity)) {
+			if (elgg_instanceof($user, "user") && (elgg_instanceof($entity, "site") || elgg_instanceof($entity, "group"))) {
+				// check if subscribed
+				if (check_entity_relationship($user->getGUID(), NEWSLETTER_USER_SUBSCRIPTION, $entity->getGUID())) {
+					// yes, so remove
+					remove_entity_relationship($user->getGUID(), NEWSLETTER_USER_SUBSCRIPTION, $entity->getGUID());
+				}
+				
+				// check if on email subscriptionlist
+				$fh = new ElggFile();
+				$fh->owner_guid = $entity->getGUID();
+				$fh->setFilename("newsletter/subscibers.json");
+				if ($fh->exists()) {
+					$subscribers = $fh->grabFile();
+					$subscribers = json_decode($subscribers, true);
+						
+					if (in_array($user->email, $subscribers)) {
+						$key = array_search($user->email, $subscribers);
+						unset($subscribers[$key]);
+				
+						// save new blacklist
+						$fh->open("write");
+						$fh->write(json_encode($subscribers));
+						$fh->close();
+					}
+				}
+		
+				// check if blocked
+				if (!check_entity_relationship($user->getGUID(), NEWSLETTER_USER_BLACKLIST, $entity->getGUID())) {
+					// not yet, so add
+					$result = add_entity_relationship($user->getGUID(), NEWSLETTER_USER_BLACKLIST, $entity->getGUID());
+				} else {
+					$result = true;
+				}
+			}
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * Remove a subscription for an email address to a container
+	 *
+	 * @param 	string		$email	The email address to remove from the subscriptions
+	 * @param 	ElggEntity 	$entity	The container entity to unsubscribe from
+	 * @return 	boolean				true on success else false
+	 */
+	function newsletter_unsubscribe_email($email, ElggEntity $entity) {
+		$result = false;
+		
+		if (!empty($email) && !empty($entity)) {
+			if (newsletter_is_email_address($email) && (elgg_instanceof($entity, "site") || elgg_instanceof($entity, "group"))) {
+				// get subscriber list and blacklist
+				$fh = new ElggFile();
+				$fh->owner_guid = $entity->getGUID();
+		
+				// subscribers
+				$fh->setFilename("newsletter/subscibers.json");
+				if ($fh->exists()) {
+					$subscribers = $fh->grabFile();
+					$subscribers = json_decode($subscribers, true);
+				} else {
+					$subscribers = array();
+				}
+		
+				// blacklist
+				$fh->setFilename("newsletter/blacklist.json");
+				if ($fh->exists()) {
+					$blacklist = $fh->grabFile();
+					$blacklist = json_decode($blacklist, true);
+				} else {
+					$blacklist = array();
+				}
+		
+				// remove subscriber
+				if (in_array($email, $subscribers)) {
+					$key = array_search($email, $subscribers);
+					unset($subscribers[$key]);
+				}
+		
+				// remove from blacklist
+				if (!in_array($email, $blacklist)) {
+					$blacklist[] = $email;
+				}
+		
+				// save new content
+				// subscribers
+				$fh->setFilename("newsletter/subscibers.json");
+				$fh->open("write");
+				$fh->write(json_encode($subscribers));
+				$fh->close();
+		
+				// blacklist
+				$fh->setFilename("newsletter/blacklist.json");
+				$fh->open("write");
+				$fh->write(json_encode($blacklist));
+				$fh->close();
+		
+				// done
+				$result = true;
+			}
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * Custom callback for elgg_get_* function to return a subset of information
+	 *
+	 * @param stdObj	$row	A database row
+	 * @return	array			contains [guid] => email
+	 *
+	 * @see elgg_get_entities()
+	 */
+	function newsletter_row_to_subscriber_info($row) {
+		return array(
+			"guid" => (int) $row->guid,
+			"email" => $row->email
+		);
+	}
+	
+	/**
+	 * A different interpretation of is_email_address()
+	 * because PHP doesn't always correctly verify email addresses
+	 *
+	 * @param 	string 	$address	The email address to check
+	 * @return 	bool				true if email, false otherwise
+	 *
+	 * @see is_email_address()
+	 * @see filter_var()
+	 */
+	function newsletter_is_email_address($address) {
+		$result = false;
+		
+		if (!empty($address)) {
+			$regexpr = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/";
+			
+			$result = (bool) preg_match($regexpr, $address);
+		}
+		
+		return $result;
+	}
+	
