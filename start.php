@@ -33,6 +33,8 @@
 		elgg_register_action("newsletter/edit", dirname(__FILE__) . "/actions/edit.php");
 		elgg_register_action("newsletter/delete", dirname(__FILE__) . "/actions/delete.php");
 		elgg_register_action("newsletter/edit/schedule", dirname(__FILE__) . "/actions/edit/schedule.php");
+
+		elgg_register_action("newsletter/edit/content", dirname(__FILE__) . "/actions/edit/content.php");
 	}
 	
 	function newsletter_pagesetup() {

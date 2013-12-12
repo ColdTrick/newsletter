@@ -1,7 +1,7 @@
 <?php
 ?>
 .newsletter-section .elgg-input-plaintext {
-	height: 100px;
+	height: 70px;
 }
 
 .newsletter-section > table {

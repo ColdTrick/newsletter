@@ -56,7 +56,7 @@
 	
 	$tabs = elgg_view("newsletter/edit/tabs", array("entity" => $entity, "subpage" => "content"));
 	
-	$content = elgg_view("newsletter/edit/content");
+	$content = elgg_view("newsletter/edit/content", array("entity" => $entity));
 	
 	// build page
 	$page_data = elgg_view_layout("content", array(

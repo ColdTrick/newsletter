@@ -13,7 +13,14 @@ elgg.newsletter.init = function() {
 
 	$("#newsletter-section-list").sortable({
 		containment: "parent",
-		handle: ".elgg-icon-cursor-drag-arrow"
+		handle: ".elgg-icon-cursor-drag-arrow",
+		update: function(event, ui) {
+				elgg.newsletter.content_save();
+			}
+	});
+
+	$("#newsletter-section-list").find(".elgg-input-text, .elgg-input-plaintext").live("blur", function() {
+		elgg.newsletter.content_save();
 	});
 }
 
@@ -23,6 +30,26 @@ elgg.newsletter.section_add = function() {
 
 elgg.newsletter.section_remove = function(elem) {
 	$(elem).parents(".newsletter-section").remove();
+	elgg.newsletter.content_save();
+}
+
+elgg.newsletter.content_save = function() {
+
+	var data = {};
+
+	$("#newsletter-section-list > .newsletter-section").each(function(index) {
+		data[index] = {
+			    title: $(this).find("[name='title']").val(),
+			    description: $(this).find("[name='description']").val()
+			};
+	});
+	
+	elgg.action("newsletter/edit/content", {
+		data: {
+			"sections": data,
+			"guid": $("#newsletter-section-list input[name='guid']").val()
+		}
+	});
 }
 
 //register init hook
