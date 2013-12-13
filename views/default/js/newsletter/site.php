@@ -29,7 +29,7 @@ elgg.newsletter.init = function() {
 		connectWith: "#newsletter-section-list, #newsletter-section-list .newsletter-sub-section"
 	});
 	
-	$("#newsletter-section-list").find(".elgg-input-text, .elgg-input-plaintext").live("blur", function() {
+	$("#newsletter-section-list").delegate(".elgg-input-text, .elgg-input-plaintext", "blur", function(event) {
 		elgg.newsletter.content_save();
 	});
 }
