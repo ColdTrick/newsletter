@@ -13,12 +13,22 @@ elgg.newsletter.init = function() {
 
 	$("#newsletter-section-list").sortable({
 		containment: "parent",
-		handle: ".elgg-icon-cursor-drag-arrow",
+		handle: ".elgg-icon-cursor-drag-arrow:first",
 		update: function(event, ui) {
 				elgg.newsletter.content_save();
-			}
+			},
+		connectWith: "#newsletter-section-list .newsletter-sub-section"
 	});
 
+	$("#newsletter-section-list .newsletter-sub-section").sortable({
+		containment: "#newsletter-section-list",
+		handle: ".elgg-icon-cursor-drag-arrow:first",
+		update: function(event, ui) {
+				elgg.newsletter.content_save();
+			},
+		connectWith: "#newsletter-section-list, #newsletter-section-list .newsletter-sub-section"
+	});
+	
 	$("#newsletter-section-list").find(".elgg-input-text, .elgg-input-plaintext").live("blur", function() {
 		elgg.newsletter.content_save();
 	});
@@ -35,14 +45,7 @@ elgg.newsletter.section_remove = function(elem) {
 
 elgg.newsletter.content_save = function() {
 
-	var data = {};
-
-	$("#newsletter-section-list > .newsletter-section").each(function(index) {
-		data[index] = {
-			    title: $(this).find("[name='title']").val(),
-			    description: $(this).find("[name='description']").val()
-			};
-	});
+	var data = elgg.newsletter.generate_section($("#newsletter-section-list"));
 	
 	elgg.action("newsletter/edit/content", {
 		data: {
@@ -50,6 +53,19 @@ elgg.newsletter.content_save = function() {
 			"guid": $("#newsletter-section-list input[name='guid']").val()
 		}
 	});
+}
+
+elgg.newsletter.generate_section = function(elem) {
+	var data = {};
+	
+	$(elem).find("> .newsletter-section").each(function(index) {
+		data[index] = {
+			    title: $(this).find("[name='title']").val(),
+			    description: $(this).find("[name='description']").val()
+			};
+	});
+
+	return data;
 }
 
 //register init hook

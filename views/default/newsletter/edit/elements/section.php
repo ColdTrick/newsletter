@@ -19,4 +19,11 @@ echo "</td><td class='newsletter-section-actions'>";
 echo elgg_view_icon("cursor-drag-arrow") . "<br />" . elgg_view_icon("delete-alt");
 
 echo "</td></tr></table>";
+
+if (empty($vars["child"])) {
+	echo "<div class='newsletter-sub-section'>";
+	echo elgg_view("newsletter/edit/elements/section", array("child" => true));
+	echo elgg_view("newsletter/edit/elements/section", array("child" => true));
+	echo "</div>";
+}
 echo "</div>";

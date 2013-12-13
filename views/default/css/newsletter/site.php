@@ -1,11 +1,15 @@
 <?php
 ?>
 .newsletter-section .elgg-input-plaintext {
-	height: 70px;
+	height: 30px;
 }
 
 .newsletter-section > table {
 	width: 100%;
+}
+
+.newsletter-sub-section {
+	margin-left: 20px;
 }
 
 .newsletter-section-actions {
