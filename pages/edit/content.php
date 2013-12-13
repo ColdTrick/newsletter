@@ -29,8 +29,8 @@
 	
 	elgg_register_menu_item("title", ElggMenuItem::factory(array(
 				"name" => "preview",
-				"text" => elgg_echo("Preview"),
-				"href" => "#",
+				"text" => elgg_echo("preview"),
+				"href" => "newsletter/edit/" . $guid . "/preview",
 				"link_class" => "elgg-button elgg-button-action",
 				"target" => "_blank"
 			)));
