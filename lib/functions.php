@@ -311,10 +311,12 @@
 					$result = true;
 				}
 				
-				// check if blocked
-				if (check_entity_relationship($user->getGUID(), NewsletterSubscription::BLACKLIST, $entity->getGUID())) {
-					remove_entity_relationship($user->getGUID(), NewsletterSubscription::BLACKLIST, $entity->getGUID());
-				}
+				// remove blocklist relation
+				remove_entity_relationship($user->getGUID(), NewsletterSubscription::BLACKLIST, $entity->getGUID());
+				
+				// remove general blocklist
+				$site = elgg_get_site_entity();
+				remove_entity_relationship($user->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID());
 				
 				// check if on email blacklist
 				$subscription = newsletter_get_subscription($user->email);
@@ -358,7 +360,15 @@
 						}
 					}
 					
+					// subscribe
 					$result = (bool) $subscription->addRelationship($entity->getGUID(), NewsletterSubscription::SUBSCRIPTION);
+					
+					// remove blocklist relation
+					remove_entity_relationship($subscription->getGUID(), NewsletterSubscription::BLACKLIST, $entity->getGUID());
+					
+					// remove general blocklist
+					$site = elgg_get_site_entity();
+					remove_entity_relationship($user->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID());
 				}
 			}
 		}
@@ -378,11 +388,8 @@
 		
 		if (!empty($user) && !empty($entity)) {
 			if (elgg_instanceof($user, "user") && (elgg_instanceof($entity, "site") || elgg_instanceof($entity, "group"))) {
-				// check if subscribed
-				if (check_entity_relationship($user->getGUID(), NewsletterSubscription::SUBSCRIPTION, $entity->getGUID())) {
-					// yes, so remove
-					remove_entity_relationship($user->getGUID(), NewsletterSubscription::SUBSCRIPTION, $entity->getGUID());
-				}
+				// remove subscription
+				remove_entity_relationship($user->getGUID(), NewsletterSubscription::SUBSCRIPTION, $entity->getGUID());
 				
 				// check if on email subscriptionlist
 				$subscription = newsletter_get_subscription($user->email);
@@ -433,13 +440,13 @@
 						if (!$subscription->save()) {
 							return false;
 						}
-						
-						// remove existing subscription (if any)
-						$subscription->removeRelationship($entity->getGUID(), NewsletterSubscription::SUBSCRIPTION);
-						
-						// add to blocked list
-						$result = $subscription->addRelationship($entity->getGUID(), NewsletterSubscription::BLACKLIST);
 					}
+					
+					// remove existing subscription (if any)
+					$subscription->removeRelationship($entity->getGUID(), NewsletterSubscription::SUBSCRIPTION);
+					
+					// add to blocked list
+					$result = $subscription->addRelationship($entity->getGUID(), NewsletterSubscription::BLACKLIST);
 				}
 			}
 		}
