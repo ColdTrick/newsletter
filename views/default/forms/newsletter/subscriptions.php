@@ -93,7 +93,7 @@
 	// other group subscriptions
 	$options = array(
 		"types" => array("site", "group"),
-		"relationship" => NEWSLETTER_USER_SUBSCRIPTION,
+		"relationship" => NewsletterSubscription::SUBSCRIPTION,
 		"relationship_guid" => $entity->getGUID(),
 		"limit" => false,
 		"wheres" => array("(e.guid NOT IN (" . implode(",", $processed_subscriptions) . "))")

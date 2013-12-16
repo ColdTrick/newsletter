@@ -68,6 +68,17 @@
 		'newsletter:subscriptions:other:title' => "Other subscription",
 		'newsletter:subscriptions:other:description' => "Did you want to receive a newsletter from a group your not a member of, they are listed here.",
 		
+		// unsubscribe
+		'newsletter:unsubscribe:error:input' => "Incorrect input, please check the link in your email",
+		'newsletter:unsubscribe:error:code' => "Invalid unsubscribe code, please check the link in your email",
+		'newsletter:unsubscribe:title' => "Unsubscribe from the newsletter",
+		'newsletter:unsubscribe:user' => "Hi %s,
+
+Check the two settings below and click unsubscribe in order to complete the proccess.",
+		'newsletter:unsubscribe:email' => "Your email address %s will be unsubscribed if you click the button below.",
+		'newsletter:unsubscribe:entity' => "I no longer wish to receive the '%s' newsletter",
+		'newsletter:unsubscribe:all' => "I don't want to receive any newsletters from the %s community",
+		
 		// sidebar - subscribe
 		'newsletter:sidebar:subscribe:title' => "Newsletter subscription",
 		'newsletter:subscribe:email:description' => "Subscribe to the %s newsletter",

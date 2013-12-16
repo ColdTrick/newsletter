@@ -3,9 +3,7 @@
 	// some subtype defines
 	define("NEWSLETTER_CONTENT_SUBTYPE", "newsletter_content");
 	define("NEWSLETTER_TEMPLATE", "newsletter_template");
-	define("NEWSLETTER_USER_SUBSCRIPTION", "subscribed");
-	define("NEWSLETTER_USER_BLACKLIST", "blocked");
-
+	
 	// load library files
 	require_once(dirname(__FILE__) . "/lib/functions.php");
 	require_once(dirname(__FILE__) . "/lib/hooks.php");
@@ -47,6 +45,7 @@
 		
 		elgg_register_action("newsletter/delete", dirname(__FILE__) . "/actions/delete.php");
 		elgg_register_action("newsletter/subscribe", dirname(__FILE__) . "/actions/subscribe.php", "public");
+		elgg_register_action("newsletter/unsubscribe", dirname(__FILE__) . "/actions/unsubscribe.php", "public");
 		elgg_register_action("newsletter/subscriptions", dirname(__FILE__) . "/actions/subscriptions.php");
 		
 	}
