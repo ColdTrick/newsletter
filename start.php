@@ -38,9 +38,11 @@
 		elgg_register_plugin_hook_handler("cron", "hourly", "newsletter_cron_handler");
 		elgg_register_plugin_hook_handler("access:collections:write", "user", "newsletter_write_access_handler");
 		elgg_register_plugin_hook_handler("register", "menu:page", "newsletter_register_page_menu_handler");
+		elgg_register_plugin_hook_handler("usersettings:save", "user", "newsletter_usersettings_save_handler");
 		
 		// register event handlers
 		elgg_register_event_handler("upgrade", "system", "newsletter_upgrade_event_handler");
+		elgg_register_event_handler("create", "member_of_site", "newsletter_join_site_event_handler");
 		
 		// register actions
 		elgg_register_action("newsletter/edit", dirname(__FILE__) . "/actions/edit.php");

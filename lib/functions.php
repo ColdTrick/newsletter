@@ -702,3 +702,46 @@
 		return $result;
 	}
 	
+	/**
+	 * Convert an email subscription on the newsletters to a user setting
+	 *
+	 * @param 	NewsletterSubscription 	$subscription	The found email subscription
+	 * @param 	ElggUser 				$user			The user to save the new settings to
+	 * @return 	bool									true on success or false on failure
+	 */
+	function newsletter_convert_subscription_to_user_setting(NewsletterSubscription $subscription, ElggUser $user) {
+		$result = false;
+		
+		if (!empty($subscription) && elgg_instanceof($subscription, "object", NewsletterSubscription::SUBTYPE) && !empty($user) && elgg_instanceof($user, "user")) {
+			// check global block list
+			$site = elgg_get_site_entity();
+			if (check_entity_relationship($subscription->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID())) {
+				// copy the block all
+				$result = (bool) add_entity_relationship($user->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID());
+			} else {
+				// check for subscriptions
+				$subscriptions = $subscription->getEntitiesFromRelationship(NewsletterSubscription::SUBSCRIPTION, false, false);
+					
+				if (!empty($subscriptions)) {
+					foreach ($subscriptions as $entity) {
+						newsletter_subscribe_user($user, $entity);
+					}
+				}
+					
+				// check for blocks
+				$blocked = $subscription->getEntitiesFromRelationship(NewsletterSubscription::BLACKLIST, false, false);
+					
+				if (!empty ($blocked)) {
+					foreach ($blocked as $entity) {
+						newsletter_unsubscribe_user($user, $entity);
+					}
+				}
+			}
+			
+			// remove email subscription
+			$result = (bool) $subscription->delete();
+		}
+		
+		return $result;
+	}
+	

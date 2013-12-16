@@ -126,3 +126,26 @@
 		return $result;
 	}
 	
+	/**
+	 * Check if there is a email subscription for the user's email address
+	 * If so, convert the settings to the user and remove the email subscription
+	 *
+	 * @param 	string	$hook			Which hook was triggered
+	 * @param 	string 	$type			What was the type of hook
+	 * @param 	array 	$returnvalue	null
+	 * @param 	array 	$params			null
+	 * @return 	void
+	 */
+	function newsletter_usersettings_save_handler($hook, $type, $returnvalue, $params) {
+		$user_guid = (int) get_input("guid");
+		
+		$user = get_user($user_guid);
+		if (!empty($user)) {
+			$subscription = newsletter_get_subscription($user->email);
+			
+			if (!empty($subscription)) {
+				newsletter_convert_subscription_to_user_setting($subscription, $user);
+			}
+		}
+	}
+	
