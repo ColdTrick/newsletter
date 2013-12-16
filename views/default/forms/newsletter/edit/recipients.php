@@ -77,6 +77,8 @@
 	// add specific users
 	$users_content = "";
 	$class = "hidden";
+	$counter = "";
+	
 	if (!empty($user_guids)) {
 		$counter = 0;
 		

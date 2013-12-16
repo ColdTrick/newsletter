@@ -31,6 +31,9 @@
 
 		// content
 		'newsletter:edit:content:description' => "Add the content to your newsletter here. Add sections of free text or import an existing blog as content into your newsletter. You can always reorder the content of this newsletter.",
+
+		// styling
+		'newsletter:edit:styling:description' => "Here you can control the newsletter layout by changing the html and control the styling by changing the css. Do not forget to preview you newsletter to see if it looks as expected.",
 	
 		// schedule
 		'newsletter:schedule:description' => "Here you can configure when the newsletter will be delivered to the selected recipients.",
@@ -100,6 +103,9 @@ Check the two settings below and click unsubscribe in order to complete the proc
 		
 		// recipients
 		'newsletter:action:recipients:success' => "Recipients saved",
+		
+		// styling
+		'newsletter:action:styling:success' => "Styling saved",
 		
 		// subscribe
 		'newsletter:action:subscribe:error:subscribe' => "An error occured while subscribing, please try again",

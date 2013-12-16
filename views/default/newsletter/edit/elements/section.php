@@ -1,5 +1,7 @@
 <?php
 
+$section = elgg_extract("section", $vars, array("title" => "", "description" => ""));
+
 $class = elgg_extract("class", $vars);
 
 if (!empty($class)) {
@@ -9,12 +11,19 @@ $class .= "newsletter-section";
 
 echo "<div class='" . $class ."'>";
 echo "<table><tr><td>";
-echo elgg_view("input/text", array("name" => "section_title", "placeholder" => elgg_echo("title")));
+echo elgg_view("input/text", array("name" => "title", "value" => $section["title"], "placeholder" => elgg_echo("title")));
 
-echo elgg_view("input/plaintext", array("name" => "section_description", "placeholder" => elgg_echo("description")));
+echo elgg_view("input/plaintext", array("name" => "description", "value" => $section["description"], "placeholder" => elgg_echo("description")));
 echo "</td><td class='newsletter-section-actions'>";
 
 echo elgg_view_icon("cursor-drag-arrow") . "<br />" . elgg_view_icon("delete-alt");
 
 echo "</td></tr></table>";
+
+if (empty($vars["child"])) {
+	echo "<div class='newsletter-sub-section'>";
+	echo elgg_view("newsletter/edit/elements/section", array("child" => true));
+	echo elgg_view("newsletter/edit/elements/section", array("child" => true));
+	echo "</div>";
+}
 echo "</div>";

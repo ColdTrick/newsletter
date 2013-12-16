@@ -41,13 +41,14 @@
 		// register actions
 		elgg_register_action("newsletter/edit", dirname(__FILE__) . "/actions/edit.php");
 		elgg_register_action("newsletter/edit/schedule", dirname(__FILE__) . "/actions/edit/schedule.php");
+		elgg_register_action("newsletter/edit/content", dirname(__FILE__) . "/actions/edit/content.php");
+		elgg_register_action("newsletter/edit/styling", dirname(__FILE__) . "/actions/edit/styling.php");
 		elgg_register_action("newsletter/edit/recipients", dirname(__FILE__) . "/actions/edit/recipients.php");
 		
 		elgg_register_action("newsletter/delete", dirname(__FILE__) . "/actions/delete.php");
 		elgg_register_action("newsletter/subscribe", dirname(__FILE__) . "/actions/subscribe.php", "public");
 		elgg_register_action("newsletter/unsubscribe", dirname(__FILE__) . "/actions/unsubscribe.php", "public");
 		elgg_register_action("newsletter/subscriptions", dirname(__FILE__) . "/actions/subscriptions.php");
-		
 	}
 	
 	function newsletter_pagesetup() {

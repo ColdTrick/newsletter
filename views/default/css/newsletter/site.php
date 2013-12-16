@@ -1,11 +1,15 @@
 <?php
 ?>
 .newsletter-section .elgg-input-plaintext {
-	height: 100px;
+	height: 30px;
 }
 
 .newsletter-section > table {
 	width: 100%;
+}
+
+.newsletter-sub-section {
+	margin-left: 20px;
 }
 
 .newsletter-section-actions {
@@ -14,7 +18,7 @@
 	padding: 5px;
 }
 
-.newsletter-section-actions .elgg-icon-cursor-drag-arrow {
+.newsletter-section-actions .elgg-icon {
 	cursor: pointer;
 }
 

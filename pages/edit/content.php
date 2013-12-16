@@ -29,8 +29,8 @@
 	
 	elgg_register_menu_item("title", ElggMenuItem::factory(array(
 				"name" => "preview",
-				"text" => elgg_echo("Preview"),
-				"href" => "#",
+				"text" => elgg_echo("preview"),
+				"href" => "newsletter/edit/" . $guid . "/preview",
 				"link_class" => "elgg-button elgg-button-action",
 				"target" => "_blank"
 			)));
@@ -56,7 +56,7 @@
 	
 	$tabs = elgg_view("newsletter/edit/tabs", array("entity" => $entity, "subpage" => "content"));
 	
-	$content = elgg_view("newsletter/edit/content");
+	$content = elgg_view("newsletter/edit/content", array("entity" => $entity));
 	
 	// build page
 	$page_data = elgg_view_layout("content", array(
