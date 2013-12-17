@@ -368,6 +368,17 @@
 				// set newsletter status to done
 				// =============================
 				$entity->status = "sent";
+				
+				// ========================
+				// send status notification
+				// ========================
+				if (!empty($entity->status_notification) && newsletter_is_email_address($entity->status_notification)) {
+					$from = html_email_handler_make_rfc822_address($site);
+					$subject = elgg_echo("newsletter:status_notification:subject");
+					$message = elgg_echo("newsletter:status_notification:message", array($entity->title, $entity->getURL()));
+					
+					elgg_send_email($from, $entity->status_notification, $subject, $message);
+				}
 			}
 			
 			// restore access

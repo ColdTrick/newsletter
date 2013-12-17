@@ -12,6 +12,7 @@
 	
 	$date = elgg_get_sticky_value("newsletter_schedule", "date", $entity_date);
 	$hour = elgg_get_sticky_value("newsletter_schedule", "hour", $entity_hour);
+	$status_notification = elgg_get_sticky_value("newsletter_schedule", "status_notification", $entity->status_notification);
 	
 	elgg_clear_sticky_form("newsletter_schedule");
 	
@@ -28,6 +29,12 @@
 	echo "<label for='newsletter-schedule-hour'>" . elgg_echo("newsletter:schedule:time") . "</label>";
 	echo elgg_view("input/dropdown", array("name" => "hour", "value" => $hour, "options" => range(0, 23), "class" => "mls", "id" => "newsletter-schedule-hour"));
 	echo ":00";
+	echo "</div>";
+	
+	echo "<div>";
+	echo "<label for='newsletter-status-notification'>" . elgg_echo("newsletter:schedule:status_notification") . "</label>";
+	echo elgg_view("input/email", array("name" => "status_notification", "value" => $status_notification, "id" => "newsletter-status-notification"));
+	echo "<div class='elgg-subtext'>" . elgg_echo("newsletter:schedule:status_notification:description") . "</div>";
 	echo "</div>";
 	
 	echo "<div class='elgg-foot'>";

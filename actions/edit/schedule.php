@@ -5,6 +5,7 @@
 	$guid = (int) get_input("guid");
 	$date = (int) get_input("date");
 	$hour = (int) get_input("hour");
+	$status_notification = get_input("status_notification");
 	
 	$forward_url = REFERER;
 	
@@ -19,6 +20,13 @@
 				$date = mktime($hour, 0, 0, date("n", $date), date("j", $date), date("Y", $date));
 				
 				$entity->scheduled = $date;
+				
+				// status notification email address
+				if (!empty($status_notification)) {
+					$entity->status_notification = $status_notification;
+				} else {
+					unset($entity->status_notification);
+				}
 				
 				// some cleanup
 				system_message(elgg_echo("newsletter:action:schedule:success"));
