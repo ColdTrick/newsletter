@@ -105,6 +105,13 @@ Check the two settings below and click unsubscribe in order to complete the proc
 		// registration
 		'newsletter:registration' => "I want to receive site newsletters",
 		
+		// email content
+		'newsletter:subject' => "%s newsletter: %s",
+		'newsletter:plain_message' => "In order to correctly view the newsletter your e-mail client needs to support HTML mails.
+
+To view the newsletter online click here:
+%s",
+		
 		// actions
 		// edit
 		'newsletter:action:edit:error:title' => "Please provide a title for the newsletter",

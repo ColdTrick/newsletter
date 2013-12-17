@@ -295,8 +295,12 @@
 				// ======================
 				// get newsletter content
 				// ======================
-				$message_subject = elgg_echo("newsletter:subject", array($container->name));
-				$message_plaintext_content = elgg_echo("newsletter:plain_message", array(elgg_get_site_url() . "newsletter/view/" . $entity->getGUID() . "/online"));
+				if ($entity->subject) {
+					$message_subject = $entity->subject;
+				} else {
+					$message_subject = elgg_echo("newsletter:subject", array($container->name, $entity->title));
+				}
+				$message_plaintext_content = elgg_echo("newsletter:plain_message", array($entity->getOnlineURL()));
 				
 				$message_html_content = elgg_view_layout("newsletter", array("entity" => $entity));
 				// convert to inline CSS for email clients
