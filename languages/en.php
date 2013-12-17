@@ -22,6 +22,9 @@
 		'newsletter:edit:title' => "Edit newsletter: %s",
 		'newsletter:schedule:title' => "%s: Schedule",
 		
+		// edit
+		'newsletter:edit:subject' => "Custom e-mail subject (optional)",
+		
 		// steps menu
 		'newsletter:menu:steps:entity' => "Basic",
 		'newsletter:menu:steps:content' => "Content",

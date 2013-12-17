@@ -5,6 +5,7 @@
 	$guid = (int) get_input("guid");
 	$container_guid = (int) get_input("container_guid");
 	$title = get_input("title");
+	$subject = get_input("subject");
 	$description = get_input("description");
 	$access_id = (int) get_input("access_id");
 	
@@ -38,6 +39,12 @@
 			$entity->title = $title;
 			$entity->description = $description;
 			$entity->access_id = $access_id;
+			
+			if (!empty($subject)) {
+				$entity->subject = $subject;
+			} else {
+				unset($entity->subject);
+			}
 			
 			if ($entity->save()) {
 				elgg_clear_sticky_form("newsletter_edit");
