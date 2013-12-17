@@ -76,6 +76,9 @@
 		'newsletter:subscriptions:other:title' => "Other subscription",
 		'newsletter:subscriptions:other:description' => "Did you want to receive a newsletter from a group your not a member of, they are listed here.",
 		
+		// sidebar - steps
+		'newsletter:sidebar:steps' => "Steps",
+			
 		// sidebar - subscribe
 		'newsletter:sidebar:subscribe:title' => "Newsletter subscription",
 		'newsletter:subscribe:email:description' => "Subscribe to the %s newsletter",

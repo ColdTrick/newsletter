@@ -46,15 +46,14 @@
 	// build page elements
 	$title_text = elgg_echo("newsletter:schedule:title", array($entity->title));
 	
-	$tabs = elgg_view("newsletter/edit/tabs", array("entity" => $entity, "subpage" => "schedule"));
-	
 	$form = elgg_view_form("newsletter/edit/schedule", array(), array("entity" => $entity));
 	
 	// build page
 	$page_data = elgg_view_layout("content", array(
 		"title" => $title_text,
 		"content" => $form,
-		"filter" => $tabs
+		"sidebar" => elgg_view("newsletter/sidebar/steps", array("entity" => $entity)),
+		"filter" => ""
 	));
 	
 	// draw page

@@ -39,8 +39,6 @@
 	// build page elements
 	$title_text = elgg_echo("newsletter:add:title");
 	
-	$tabs = elgg_view("newsletter/edit/tabs");
-	
 	$body_vars = array(
 		"container_guid" => $container_guid
 	);
@@ -50,7 +48,8 @@
 	$page_data = elgg_view_layout("content", array(
 		"title" => $title_text,
 		"content" => $form,
-		"filter" => $tabs
+		"sidebar" => elgg_view("newsletter/sidebar/steps", array("entity" => $entity)),
+		"filter" => ""
 	));
 	
 	// draw page
