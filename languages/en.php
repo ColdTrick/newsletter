@@ -30,10 +30,20 @@
 		'newsletter:edit:tabs:schedule' => "Schedule",
 
 		// content
+		'newsletter:edit:content:add_section' => "Add section",
 		'newsletter:edit:content:description' => "Add the content to your newsletter here. Add sections of free text or import an existing blog as content into your newsletter. You can always reorder the content of this newsletter.",
+		'newsletter:edit:content:section:collapse' => "Collapse",
+		'newsletter:edit:content:section:expand' => "Expand",
+		'newsletter:edit:content:section:collapse_all' => "Collapse all",
+		'newsletter:edit:content:section:expand_all' => "Expand all",
 
-		// styling
-		'newsletter:edit:styling:description' => "Here you can control the newsletter layout by changing the html and control the styling by changing the css. Do not forget to preview you newsletter to see if it looks as expected.",
+		// template
+		'newsletter:edit:template:description' => "Here you can control the newsletter layout by changing the html and control the styling by changing the css. Do not forget to preview you newsletter to see if it looks as expected.",
+		'newsletter:edit:template:select' => "Select a template",
+		'newsletter:edit:template:select:default' => "Default template",
+		'newsletter:edit:template:select:custom' => "Custom template",
+		'newsletter:edit:template:html' => "HTML",
+		'newsletter:edit:template:css' => "CSS",
 	
 		// schedule
 		'newsletter:schedule:description' => "Here you can configure when the newsletter will be delivered to the selected recipients.",
@@ -71,6 +81,9 @@
 		'newsletter:subscriptions:other:title' => "Other subscription",
 		'newsletter:subscriptions:other:description' => "Did you want to receive a newsletter from a group your not a member of, they are listed here.",
 		
+		// sidebar - steps
+		'newsletter:sidebar:steps' => "Steps",
+
 		// unsubscribe
 		'newsletter:unsubscribe:error:input' => "Incorrect input, please check the link in your email",
 		'newsletter:unsubscribe:error:code' => "Invalid unsubscribe code, please check the link in your email",

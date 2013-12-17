@@ -39,6 +39,7 @@
 		elgg_register_plugin_hook_handler("cron", "hourly", "newsletter_cron_handler");
 		elgg_register_plugin_hook_handler("access:collections:write", "user", "newsletter_write_access_handler");
 		elgg_register_plugin_hook_handler("register", "menu:page", "newsletter_register_page_menu_handler");
+		elgg_register_plugin_hook_handler("register", "menu:newsletter_steps", "newsletter_register_newsletter_steps_menu_handler");
 		elgg_register_plugin_hook_handler("usersettings:save", "user", "newsletter_usersettings_save_handler");
 		elgg_register_plugin_hook_handler("register", "user", "newsletter_register_user_handler");
 		
@@ -50,9 +51,8 @@
 		elgg_register_action("newsletter/edit", dirname(__FILE__) . "/actions/edit.php");
 		elgg_register_action("newsletter/edit/schedule", dirname(__FILE__) . "/actions/edit/schedule.php");
 		elgg_register_action("newsletter/edit/content", dirname(__FILE__) . "/actions/edit/content.php");
-		elgg_register_action("newsletter/edit/styling", dirname(__FILE__) . "/actions/edit/styling.php");
+		elgg_register_action("newsletter/edit/template", dirname(__FILE__) . "/actions/edit/template.php");
 		elgg_register_action("newsletter/edit/recipients", dirname(__FILE__) . "/actions/edit/recipients.php");
-		
 		elgg_register_action("newsletter/delete", dirname(__FILE__) . "/actions/delete.php");
 		elgg_register_action("newsletter/subscribe", dirname(__FILE__) . "/actions/subscribe.php", "public");
 		elgg_register_action("newsletter/unsubscribe", dirname(__FILE__) . "/actions/unsubscribe.php", "public");

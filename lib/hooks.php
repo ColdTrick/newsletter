@@ -115,7 +115,7 @@
 		if (elgg_in_context("settings") && !empty($user) && !empty($page_owner)) {
 			if (elgg_instanceof($page_owner, "user") && $page_owner->canEdit()) {
 				$result[] = ElggMenuItem::factory(array(
-					"name" => "newsletter_suscriptions",
+					"name" => "edit",
 					"href" => "newsletter/subscriptions/" . $page_owner->getGUID(),
 					"text" => elgg_echo("newsletter:menu:page:settings"),
 					"is_trusted" => true
@@ -127,6 +127,51 @@
 	}
 	
 	/**
+	 * Add a menu item in the sidebar for the steps of creating a newsletter
+	 *
+	 * @param 	string	$hook
+	 * @param 	string 	$type
+	 * @param 	array 	$returnvalue	Default menu items
+	 * @param 	array 	$params
+	 * @return 	array					Menu items
+	 */
+	function newsletter_register_newsletter_steps_menu_handler($hook, $type, $returnvalue, $params) {
+		$result = $returnvalue;
+		
+		$entity = $params["entity"];
+		
+		if ($entity) {
+			$result[] = ElggMenuItem::factory(array(
+				"name" => "basic",
+				"href" => "newsletter/edit/" . $entity->getGUID(),
+				"text" => elgg_echo("newsletter:edit:tabs:entity")
+			));
+			$result[] = ElggMenuItem::factory(array(
+				"name" => "styling",
+				"href" => "newsletter/edit/" . $entity->getGUID() . "/styling",
+				"text" => elgg_echo("newsletter:edit:tabs:styling")
+			));
+			$result[] = ElggMenuItem::factory(array(
+				"name" => "content",
+				"href" => "newsletter/edit/" . $entity->getGUID() . "/content",
+				"text" => elgg_echo("newsletter:edit:tabs:content")
+			));
+			$result[] = ElggMenuItem::factory(array(
+				"name" => "recipients",
+				"href" => "newsletter/edit/" . $entity->getGUID() . "/recipients",
+				"text" => elgg_echo("newsletter:edit:tabs:recipients")
+			));
+			$result[] = ElggMenuItem::factory(array(
+				"name" => "schedule",
+				"href" => "newsletter/edit/" . $entity->getGUID() . "/schedule",
+				"text" => elgg_echo("newsletter:edit:tabs:schedule")
+			));
+		}
+		
+		return $result;
+	}
+	
+	/*
 	 * Check if there is a email subscription for the user's email address
 	 * If so, convert the settings to the user and remove the email subscription
 	 *
