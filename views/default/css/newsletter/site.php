@@ -7,6 +7,11 @@
 	font-weight: normal;
 }
 
+.elgg-form-newsletter-edit-content .elgg-menu-longtext {
+	float: none;
+	text-align: right;
+}
+
 #newsletter-recipients-wrapper .elgg-icon-delete-alt {
 	display: none;
 }
