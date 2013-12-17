@@ -12,7 +12,7 @@
 				break;
 			case "preview":
 				set_input("guid", elgg_extract("1", $page));
-				$include_file = $path . "/pages/edit/preview.php";
+				$include_file = $path . "/pages/preview.php";
 				break;
 			case "add":
 				if (isset($page[1]) && is_numeric($page[1])) {
