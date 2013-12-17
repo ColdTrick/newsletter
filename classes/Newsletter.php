@@ -12,4 +12,20 @@
 		public function getURL() {
 			return "newsletter/view/" . $this->getGUID();
 		}
+		
+		public function saveLogging($logging) {
+			$result = false;
+			
+			if (!empty($logging)) {
+				$fh = new ElggFile();
+				$fh->owner_guid = $this->getGUID();
+				$fh->setFilename("logging.json");
+				
+				$fh->open("write");
+				$result = $fh->write(json_encode($logging));
+				$fh->close();
+			}
+			
+			return $result;
+		}
 	}

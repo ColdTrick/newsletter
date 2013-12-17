@@ -89,10 +89,22 @@
 			$entity = get_entity($entity_guid);
 			// is this a Newsletter
 			if (!empty($entity) && elgg_instanceof($entity, "object", Newsletter::SUBTYPE)) {
+				$logging = array(
+					"start_time" => time()
+				);
+				
 				$site = elgg_get_site_entity();
 				$container = $entity->getContainerEntity();
 				$dbprefix = elgg_get_config("dbprefix");
 				
+				// ================================
+				// set newsletter status to sending
+				// ================================
+				$entity->status = "sending";
+				
+				// ==================
+				// get the recipients
+				// ==================
 				// basic set of user selection options
 				$basic_user_options = array(
 					"type" => "user",
@@ -101,24 +113,19 @@
 					"joins" => array("JOIN " . $dbprefix . "users_entity ue ON e.guid = ue.guid"),
 					"wheres" => array(
 						"(e.guid NOT IN (SELECT guid_one
-							FROM " . $dbprefix . "entity_relationships
-							WHERE relationship = '" . NewsletterSubscription::GENERAL_BLACKLIST . "'
-							AND guid_two = " . $site->getGUID() . ")
-						)",
+						FROM " . $dbprefix . "entity_relationships
+						WHERE relationship = '" . NewsletterSubscription::GENERAL_BLACKLIST . "'
+						AND guid_two = " . $site->getGUID() . ")
+					)",
 						"(e.guid NOT IN (SELECT guid_one
-							FROM " . $dbprefix . "entity_relationships
-							WHERE relationship = '" . NewsletterSubscription::BLACKLIST . "'
-							AND guid_two = " . $container->getGUID() . ")
-						)"
+						FROM " . $dbprefix . "entity_relationships
+						WHERE relationship = '" . NewsletterSubscription::BLACKLIST . "'
+						AND guid_two = " . $container->getGUID() . ")
+					)"
 					),
 					"callback" => "newsletter_user_row_to_subscriber_info"
 				);
 				
-				// set newsletter status to sending
-				
-				// ==================
-				// get the recipients
-				// ==================
 				$filtered_recipients = array(
 					"users" => array(),
 					"emails" => array()
@@ -288,18 +295,75 @@
 				// ======================
 				// get newsletter content
 				// ======================
+				$message_subject = elgg_echo("newsletter:subject", array($container->name));
+				$message_plaintext_content = elgg_echo("newsletter:plain_message", array(elgg_get_site_url() . "newsletter/view/" . $entity->getGUID() . "/online"));
 				
-				// =============================================
-				// create individual footer for unsubscribe link
-				// =============================================
+				$message_html_content = elgg_view_layout("newsletter", array("entity" => $entity));
+				// convert to inline CSS for email clients
+				$message_html_content = html_email_handler_css_inliner($message_html_content);
 				
-				// =========
-				// send mail
-				// =========
+				// =======================
+				// proccess all recipients
+				// =======================
+				$recipient_logging = array();
+				$send_options = array(
+					"from" => html_email_handler_make_rfc822_address($container),
+					"subject" => $message_subject,
+					"plaintext_message" => $message_plaintext_content
+				);
+				
+				foreach ($filtered_recipients as $type => $recipients) {
+					
+					if (!empty($recipients)) {
+						
+						foreach ($recipients as $id => $recipient) {
+							$recipient_log = array(
+								"type" => $type,
+								"email" => $recipient,
+								"time" => date(DATE_RFC1123),
+								"timestamp" => time(),
+								"status" => false
+							);
+							
+							// =============================================
+							// create individual footer for unsubscribe link
+							// =============================================
+							if ($type == "users") {
+								$recipient_log["guid"] = $id;
+								
+								$unsubscribe_link = newsletter_generate_unsubscribe_link($container, $id);
+							} else {
+								$unsubscribe_link = newsletter_generate_unsubscribe_link($container, $recipient);
+							}
+							
+							// place the unsubscribe link in the message
+							$message_html_content_user = str_ireplace("{{{unsubscribe_link}}}", $unsubscribe_link, $message_html_content);
+							
+							// =========
+							// send mail
+							// =========
+							$send_options["to"] = $recipient;
+							$send_options["html_message"] = $message_html_content_user;
+							
+							$recipient_log["status"] = html_email_handler_send_email($send_options);
+							
+							// ==============
+							// add to logging
+							// ==============
+							$recipient_logging[] = $recipient_log;
+						}
+					}
+				}
+				
+				$logging["recipients"] = $recipient_logging;
+				$logging["end_time"] = time();
+				
+				$entity->saveLogging($logging);
 				
 				// =============================
 				// set newsletter status to done
 				// =============================
+				$entity->status = "sent";
 			}
 			
 			// restore access
