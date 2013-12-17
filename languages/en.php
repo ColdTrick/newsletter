@@ -30,7 +30,12 @@
 		'newsletter:edit:tabs:schedule' => "Schedule",
 
 		// content
+		'newsletter:edit:content:add_section' => "Add section",
 		'newsletter:edit:content:description' => "Add the content to your newsletter here. Add sections of free text or import an existing blog as content into your newsletter. You can always reorder the content of this newsletter.",
+		'newsletter:edit:content:section:collapse' => "Collapse",
+		'newsletter:edit:content:section:expand' => "Expand",
+		'newsletter:edit:content:section:collapse_all' => "Collapse all",
+		'newsletter:edit:content:section:expand_all' => "Expand all",
 
 		// styling
 		'newsletter:edit:styling:description' => "Here you can control the newsletter layout by changing the html and control the styling by changing the css. Do not forget to preview you newsletter to see if it looks as expected.",

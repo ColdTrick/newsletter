@@ -5,15 +5,28 @@
 elgg.provide("elgg.newsletter");
 
 elgg.newsletter.init = function() {
-	$("#newsletter-section-add").click(elgg.newsletter.section_add);
+	$("#newsletter-section-add").live("click", function(event) {
+		event.preventDefault();
+		elgg.newsletter.section_add(event);
+	});
 	
 	$(".newsletter-section-actions .elgg-icon-delete-alt").live("click", function() {
 		elgg.newsletter.section_remove(this);
 	});
 
 	$("#newsletter-section-list").sortable({
-		containment: "parent",
+		items: "> .newsletter-section",
+		forcePlaceholderSize: true,
+		placeholder: "newsletter-sorting-placeholder",
+		//containment: "parent",
 		handle: ".elgg-icon-cursor-drag-arrow:first",
+		//tolerance: "pointer",
+		start:  function(event, ui) {
+			elgg.newsletter.toggle_drag(true);
+		},
+		stop:  function(event, ui) {
+			elgg.newsletter.toggle_drag(false);
+		},
 		update: function(event, ui) {
 				elgg.newsletter.content_save();
 			},
@@ -21,8 +34,18 @@ elgg.newsletter.init = function() {
 	});
 
 	$("#newsletter-section-list .newsletter-sub-section").sortable({
-		containment: "#newsletter-section-list",
+		items: "> .newsletter-section",
+		forcePlaceholderSize: true,
+		placeholder: "newsletter-sorting-placeholder",
+		//containment: "#newsletter-section-list",
 		handle: ".elgg-icon-cursor-drag-arrow:first",
+		//tolerance: "pointer",
+		start:  function(event, ui) {
+			elgg.newsletter.toggle_drag(true);
+		},
+		stop:  function(event, ui) {
+			elgg.newsletter.toggle_drag(false);
+		},
 		update: function(event, ui) {
 				elgg.newsletter.content_save();
 			},
@@ -32,6 +55,36 @@ elgg.newsletter.init = function() {
 	$("#newsletter-section-list").delegate(".elgg-input-text, .elgg-input-plaintext", "blur", function(event) {
 		elgg.newsletter.content_save();
 	});
+
+	$(".newsletter-actions-edit").live("click", function() {
+		$description = $(this).parent().parent().parent().find("[name='description']");
+		$description.toggle();
+		if ($description.is(":visible")) {
+			$(this).html(elgg.echo("newsletter:edit:content:section:collapse"));
+		} else {
+			$(this).html(elgg.echo("newsletter:edit:content:section:expand"));
+		}
+	});
+
+	$(".newsletter-expand-all").live("click", function(event) {
+		event.preventDefault();
+		$("#newsletter-section-list [name='description']").show();
+		$("#newsletter-section-list .newsletter-actions-edit").html(elgg.echo("newsletter:edit:content:section:collapse"));
+	});
+
+	$(".newsletter-collapse-all").live("click", function(event) {
+		event.preventDefault();
+		$("#newsletter-section-list [name='description']").hide();
+		$("#newsletter-section-list .newsletter-actions-edit").html(elgg.echo("newsletter:edit:content:section:expand"));
+	});
+}
+
+elgg.newsletter.toggle_drag = function(on) {
+	if (on) {
+		$("#newsletter-section-list").addClass("newsletter-sorting");
+	} else {
+		$("#newsletter-section-list").removeClass("newsletter-sorting");
+	}
 }
 
 elgg.newsletter.section_add = function() {

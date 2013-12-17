@@ -1,7 +1,11 @@
 <?php
+// .newsletter-sorting .ui-sortable-helper .newsletter-sub-section {
+// 	display: none;
+// }
+
 ?>
-.newsletter-section .elgg-input-plaintext {
-	height: 30px;
+.newsletter-section {
+	padding-bottom: 2px;
 }
 
 .newsletter-section > table {
@@ -9,15 +13,23 @@
 }
 
 .newsletter-sub-section {
-	margin-left: 20px;
+	margin-left: 30px;
 }
 
+.newsletter-sorting-placeholder {
+	border: 1px dashed #CCC;
+	margin-bottom: 2px;
+}
+
+.newsletter-section-drag,
 .newsletter-section-actions {
-	width: 20px;
+	width: 1px;
 	text-align: center;
 	padding: 5px;
+	white-space: nowrap;
 }
 
+.newsletter-actions-edit,
 .newsletter-section-actions .elgg-icon {
 	cursor: pointer;
 }
