@@ -78,12 +78,26 @@
 		
 		// sidebar - steps
 		'newsletter:sidebar:steps' => "Steps",
-			
+
+		// unsubscribe
+		'newsletter:unsubscribe:error:input' => "Incorrect input, please check the link in your email",
+		'newsletter:unsubscribe:error:code' => "Invalid unsubscribe code, please check the link in your email",
+		'newsletter:unsubscribe:title' => "Unsubscribe from the newsletter",
+		'newsletter:unsubscribe:user' => "Hi %s,
+
+Check the two settings below and click unsubscribe in order to complete the proccess.",
+		'newsletter:unsubscribe:email' => "Your email address %s will be unsubscribed if you click the button below.",
+		'newsletter:unsubscribe:entity' => "I no longer wish to receive the '%s' newsletter",
+		'newsletter:unsubscribe:all' => "I don't want to receive any newsletters from the %s community",
+		
 		// sidebar - subscribe
 		'newsletter:sidebar:subscribe:title' => "Newsletter subscription",
 		'newsletter:subscribe:email:description' => "Subscribe to the %s newsletter",
 		'newsletter:subscribe:user:description:subscribe' => "Subscribe to the %s newsletter",
 		'newsletter:subscribe:user:description:unsubscribe' => "Unsubscribe from the %s newsletter",
+		
+		// registration
+		'newsletter:registration' => "I want to receive site newsletters",
 		
 		// actions
 		// edit

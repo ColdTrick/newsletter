@@ -213,11 +213,11 @@
 					"selects" => array("ue.email"),
 					"site_guids" => false,
 					"limit" => false,
-					"relationship" => NEWSLETTER_USER_SUBSCRIPTION,
+					"relationship" => NewsletterSubscription::SUBSCRIPTION,
 					"relationship_guid" => $container->getGUID(),
 					"inverse_relationship" => true,
 					"joins" => array("JOIN " . elgg_get_config("dbprefix") . "users_entity ue ON e.guid = ue.guid"),
-					"callback" => "newsletter_row_to_subscriber_info"
+					"callback" => "newsletter_user_row_to_subscriber_info"
 				);
 				
 				// @todo make this easier????
@@ -229,26 +229,26 @@
 				}
 				
 				// check the email subscriptions
-				$fh = new ElggFile();
-				$fh->owner_guid = $container->getGUID();
-				$fh->setFilename("newsletter/subscibers.json");
+				$options = array(
+					"type" => "object",
+					"subtype" => NewsletterSubscription::SUBTYPE,
+					"selects" => array("oe.title"),
+					"limit" => false,
+					"relationship" => NewsletterSubscription::SUBSCRIPTION,
+					"relationship_guid" => $container->getGUID(),
+					"inverse_relationship" => true,
+					"joins" => array("JOIN " . elgg_get_config("dbprefix") . "objects_entity oe ON e.guid = oe.guid"),
+					"callback" => "newsletter_subscription_row_to_subscriber_info"
+				);
 				
-				if ($fh->exists()) {
-					$subscribers = $fh->grabFile();
-						
-					if (!empty($subscribers)) {
-						$subscribers = json_decode($subscribers, true);
-				
-						$result["emails"] = $subscribers;
-					}
-				}
+				$result["emails"] = elgg_get_entities_from_relationship($options);
 			} else {
 				// get all subscribed community members
 				$options = array(
 					"type" => "user",
 					"site_guids" => false,
 					"count" => true,
-					"relationship" => NEWSLETTER_USER_SUBSCRIPTION,
+					"relationship" => NewsletterSubscription::SUBSCRIPTION,
 					"relationship_guid" => $container->getGUID(),
 					"inverse_relationship" => true
 				);
@@ -256,19 +256,16 @@
 				$result = elgg_get_entities_from_relationship($options);
 				
 				// check the email subscriptions
-				$fh = new ElggFile();
-				$fh->owner_guid = $container->getGUID();
-				$fh->setFilename("newsletter/subscibers.json");
+				$options = array(
+					"type" => "object",
+					"subtype" => NewsletterSubscription::SUBTYPE,
+					"count" => true,
+					"relationship" => NewsletterSubscription::SUBSCRIPTION,
+					"relationship_guid" => $container->getGUID(),
+					"inverse_relationship" => true,
+				);
 				
-				if ($fh->exists()) {
-					$subscribers = $fh->grabFile();
-					
-					if (!empty($subscribers)) {
-						$subscribers = json_decode($subscribers, true);
-						
-						$result += count($subscribers);
-					}
-				}
+				$result += elgg_get_entities_from_relationship($options);
 			}
 		}
 		
@@ -287,7 +284,7 @@
 		
 		if (!empty($user) && !empty($entity)) {
 			if (elgg_instanceof($user, "user") && (elgg_instanceof($entity, "site") || elgg_instanceof($entity, "group"))) {
-				$result = (bool) check_entity_relationship($user->getGUID(), NEWSLETTER_USER_SUBSCRIPTION, $entity->getGUID());
+				$result = (bool) check_entity_relationship($user->getGUID(), NewsletterSubscription::SUBSCRIPTION, $entity->getGUID());
 			}
 		}
 		
@@ -307,35 +304,25 @@
 		if (!empty($user) && !empty($entity)) {
 			if (elgg_instanceof($user, "user") && (elgg_instanceof($entity, "site") || elgg_instanceof($entity, "group"))) {
 				// check if subscribed
-				if (!check_entity_relationship($user->getGUID(), NEWSLETTER_USER_SUBSCRIPTION, $entity->getGUID())) {
+				if (!check_entity_relationship($user->getGUID(), NewsletterSubscription::SUBSCRIPTION, $entity->getGUID())) {
 					// not yet, so add
-					$result = add_entity_relationship($user->getGUID(), NEWSLETTER_USER_SUBSCRIPTION, $entity->getGUID());
+					$result = add_entity_relationship($user->getGUID(), NewsletterSubscription::SUBSCRIPTION, $entity->getGUID());
 				} else {
 					$result = true;
 				}
 				
-				// check if blocked
-				if (check_entity_relationship($user->getGUID(), NEWSLETTER_USER_BLACKLIST, $entity->getGUID())) {
-					remove_entity_relationship($user->getGUID(), NEWSLETTER_USER_BLACKLIST, $entity->getGUID());
-				}
+				// remove blocklist relation
+				remove_entity_relationship($user->getGUID(), NewsletterSubscription::BLACKLIST, $entity->getGUID());
+				
+				// remove general blocklist
+				$site = elgg_get_site_entity();
+				remove_entity_relationship($user->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID());
 				
 				// check if on email blacklist
-				$fh = new ElggFile();
-				$fh->owner_guid = $entity->getGUID();
-				$fh->setFilename("newsletter/blacklist.json");
-				if ($fh->exists()) {
-					$blacklist = $fh->grabFile();
-					$blacklist = json_decode($blacklist, true);
-					
-					if (in_array($user->email, $blacklist)) {
-						$key = array_search($user->email, $blacklist);
-						unset($blacklist[$key]);
-						
-						// save new blacklist
-						$fh->open("write");
-						$fh->write(json_encode($blacklist));
-						$fh->close();
-					}
+				$subscription = newsletter_get_subscription($user->email);
+				
+				if (!empty($subscription)) {
+					$subscription->removeRelationship($entity, NewsletterSubscription::BLACKLIST);
 				}
 			}
 		}
@@ -355,54 +342,34 @@
 		
 		if (!empty($email) && !empty($entity)) {
 			if (newsletter_is_email_address($email) && (elgg_instanceof($entity, "site") || elgg_instanceof($entity, "group"))) {
-				// get subscriber list and blacklist
-				$fh = new ElggFile();
-				$fh->owner_guid = $entity->getGUID();
+				// check if email belongs to existing user
+				$users = get_user_by_email($email);
 				
-				// subscribers
-				$fh->setFilename("newsletter/subscibers.json");
-				if ($fh->exists()) {
-					$subscribers = $fh->grabFile();
-					$subscribers = json_decode($subscribers, true);
+				if (!empty($users)) {
+					$result = newsletter_subscribe_user($users[0], $entity);
 				} else {
-					$subscribers = array();
+					// check if email address exists in the system
+					$subscription = newsletter_get_subscription($email);
+					
+					if (empty($subscription)) {
+						$subscription = new NewsletterSubscription();
+						$subscription->title = $email;
+						
+						if (!$subscription->save()) {
+							return false;
+						}
+					}
+					
+					// subscribe
+					$result = (bool) $subscription->addRelationship($entity->getGUID(), NewsletterSubscription::SUBSCRIPTION);
+					
+					// remove blocklist relation
+					remove_entity_relationship($subscription->getGUID(), NewsletterSubscription::BLACKLIST, $entity->getGUID());
+					
+					// remove general blocklist
+					$site = elgg_get_site_entity();
+					remove_entity_relationship($user->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID());
 				}
-				
-				// blacklist
-				$fh->setFilename("newsletter/blacklist.json");
-				if ($fh->exists()) {
-					$blacklist = $fh->grabFile();
-					$blacklist = json_decode($blacklist, true);
-				} else {
-					$blacklist = array();
-				}
-				
-				// add to subscriber
-				if (!in_array($email, $subscribers)) {
-					$subscribers[] = $email;
-				}
-				
-				// remove from blacklist
-				if (in_array($email, $blacklist)) {
-					$key = array_search($email, $blacklist);
-					unset($blacklist[$key]);
-				}
-				
-				// save new content
-				// subscribers
-				$fh->setFilename("newsletter/subscibers.json");
-				$fh->open("write");
-				$fh->write(json_encode($subscribers));
-				$fh->close();
-				
-				// blacklist
-				$fh->setFilename("newsletter/blacklist.json");
-				$fh->open("write");
-				$fh->write(json_encode($blacklist));
-				$fh->close();
-				
-				// done
-				$result = true;
 			}
 		}
 		
@@ -421,35 +388,20 @@
 		
 		if (!empty($user) && !empty($entity)) {
 			if (elgg_instanceof($user, "user") && (elgg_instanceof($entity, "site") || elgg_instanceof($entity, "group"))) {
-				// check if subscribed
-				if (check_entity_relationship($user->getGUID(), NEWSLETTER_USER_SUBSCRIPTION, $entity->getGUID())) {
-					// yes, so remove
-					remove_entity_relationship($user->getGUID(), NEWSLETTER_USER_SUBSCRIPTION, $entity->getGUID());
-				}
+				// remove subscription
+				remove_entity_relationship($user->getGUID(), NewsletterSubscription::SUBSCRIPTION, $entity->getGUID());
 				
 				// check if on email subscriptionlist
-				$fh = new ElggFile();
-				$fh->owner_guid = $entity->getGUID();
-				$fh->setFilename("newsletter/subscibers.json");
-				if ($fh->exists()) {
-					$subscribers = $fh->grabFile();
-					$subscribers = json_decode($subscribers, true);
-						
-					if (in_array($user->email, $subscribers)) {
-						$key = array_search($user->email, $subscribers);
-						unset($subscribers[$key]);
+				$subscription = newsletter_get_subscription($user->email);
 				
-						// save new blacklist
-						$fh->open("write");
-						$fh->write(json_encode($subscribers));
-						$fh->close();
-					}
+				if (!empty($subscription)) {
+					$subscription->removeRelationship($entity->getGUID(), NewsletterSubscription::SUBSCRIPTION);
 				}
 		
 				// check if blocked
-				if (!check_entity_relationship($user->getGUID(), NEWSLETTER_USER_BLACKLIST, $entity->getGUID())) {
+				if (!check_entity_relationship($user->getGUID(), NewsletterSubscription::BLACKLIST, $entity->getGUID())) {
 					// not yet, so add
-					$result = add_entity_relationship($user->getGUID(), NEWSLETTER_USER_BLACKLIST, $entity->getGUID());
+					$result = add_entity_relationship($user->getGUID(), NewsletterSubscription::BLACKLIST, $entity->getGUID());
 				} else {
 					$result = true;
 				}
@@ -471,54 +423,31 @@
 		
 		if (!empty($email) && !empty($entity)) {
 			if (newsletter_is_email_address($email) && (elgg_instanceof($entity, "site") || elgg_instanceof($entity, "group"))) {
-				// get subscriber list and blacklist
-				$fh = new ElggFile();
-				$fh->owner_guid = $entity->getGUID();
-		
-				// subscribers
-				$fh->setFilename("newsletter/subscibers.json");
-				if ($fh->exists()) {
-					$subscribers = $fh->grabFile();
-					$subscribers = json_decode($subscribers, true);
+				// check if not existing user
+				$users = get_user_by_email($email);
+				
+				if (!empty($users)) {
+					// existing user
+					$result = newsletter_unsubscribe_user($users[0], $entity);
 				} else {
-					$subscribers = array();
+					// email address
+					$subscription = newsletter_get_subscription($email);
+					
+					if (empty($subscription)) {
+						$subscription = new NewsletterSubscription();
+						$subscription->title = $email;
+						
+						if (!$subscription->save()) {
+							return false;
+						}
+					}
+					
+					// remove existing subscription (if any)
+					$subscription->removeRelationship($entity->getGUID(), NewsletterSubscription::SUBSCRIPTION);
+					
+					// add to blocked list
+					$result = $subscription->addRelationship($entity->getGUID(), NewsletterSubscription::BLACKLIST);
 				}
-		
-				// blacklist
-				$fh->setFilename("newsletter/blacklist.json");
-				if ($fh->exists()) {
-					$blacklist = $fh->grabFile();
-					$blacklist = json_decode($blacklist, true);
-				} else {
-					$blacklist = array();
-				}
-		
-				// remove subscriber
-				if (in_array($email, $subscribers)) {
-					$key = array_search($email, $subscribers);
-					unset($subscribers[$key]);
-				}
-		
-				// remove from blacklist
-				if (!in_array($email, $blacklist)) {
-					$blacklist[] = $email;
-				}
-		
-				// save new content
-				// subscribers
-				$fh->setFilename("newsletter/subscibers.json");
-				$fh->open("write");
-				$fh->write(json_encode($subscribers));
-				$fh->close();
-		
-				// blacklist
-				$fh->setFilename("newsletter/blacklist.json");
-				$fh->open("write");
-				$fh->write(json_encode($blacklist));
-				$fh->close();
-		
-				// done
-				$result = true;
 			}
 		}
 		
@@ -526,18 +455,42 @@
 	}
 	
 	/**
-	 * Custom callback for elgg_get_* function to return a subset of information
+	 * Custom callback for elgg_get_* function to return a subset of information about an user
 	 *
 	 * @param stdObj	$row	A database row
 	 * @return	array			contains [guid] => email
 	 *
 	 * @see elgg_get_entities()
 	 */
-	function newsletter_row_to_subscriber_info($row) {
+	function newsletter_user_row_to_subscriber_info($row) {
 		return array(
 			"guid" => (int) $row->guid,
 			"email" => $row->email
 		);
+	}
+	
+	/**
+	 * Custom callback for elgg_get_* function to return the email address of a subscriber
+	 *
+	 * @param 	stdObj	$row	A database row
+	 * @return	string			the email address of the subscriber
+	 *
+	 * @see elgg_get_entities()
+	 */
+	function newsletter_subscription_row_to_subscriber_info($row) {
+		return $row->title;
+	}
+	
+	/**
+	 * Custom callback for elgg_get_* function to return the GUID of an entity
+	 *
+	 * @param 	stdObj	$row	A database row
+	 * @return	int				The GUID of the entity
+	 *
+	 * @see elgg_get_entities()
+	 */
+	function newsletter_row_to_guid($row) {
+		return (int) $row->guid;
 	}
 	
 	/**
@@ -557,6 +510,236 @@
 			$regexpr = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/";
 			
 			$result = (bool) preg_match($regexpr, $address);
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * Generate an URL so the recipient can directly unsubscribe from a newsletter
+	 *
+	 * @param 	ElggEntity 	$container	Which newsletter container (ElggSite or ElggGroup)
+	 * @param 	string|int 	$recipient	The user_guid or email address of the recipient
+	 * @return 	bool|string				The unsubscribe link or false on failure
+	 */
+	function newsletter_generate_unsubscribe_link(ElggEntity $container, $recipient) {
+		$result = false;
+		
+		if (!empty($container) && (elgg_instanceof($container, "site") || elgg_instanceof($container, "group")) && !empty($recipient)) {
+			$code = newsletter_generate_unsubscribe_code($container, $recipient);
+			
+			if (is_numeric($recipient)) {
+				// recipient is an user_guid
+				$result = "newsletter/unsubscribe/" . $container->getGUID() . "?u=" . $recipient . "&c=" . $code;
+			} elseif (newsletter_is_email_address($recipient)) {
+				// recipient is an email address
+				$result = "newsletter/unsubscribe/" . $container->getGUID() . "?e=" . $recipient . "&c=" . $code;
+			}
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * Generate a unsubscribe code to be used in validation
+	 *
+	 * @param 	ElggEntity 	$container	Which newsletter container (ElggSite or ElggGroup)
+	 * @param 	string|int	$recipient	The user_guid or email address of the recipient
+	 * @return 	bool|string				The unsubscribe code or false on failure
+	 */
+	function newsletter_generate_unsubscribe_code(ElggEntity $container, $recipient) {
+		$result = false;
+		
+		if (!empty($container) && (elgg_instanceof($container, "site") || elgg_instanceof($container, "group")) && !empty($recipient)) {
+			// make sure we have a user_guid or email address
+			if (is_numeric($recipient) || newsletter_is_email_address($recipient)) {
+				$plugin = elgg_get_plugin_from_id("newsletter");
+				
+				$result = hash_hmac("sha256", ($container->getGUID() . "|" . $recipient . "|" . $plugin->time_created), get_site_secret());
+			}
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * Validate a provided unsubscribe code
+	 *
+	 * @param 	ElggEntity 	$container	Which newsletter container (ElggSite or ElggGroup)
+	 * @param 	string|int	$recipient	The user_guid or email address of the recipient
+	 * @param	string		$code		The unsubscribe code the recipient provided
+	 * @return 	bool					true is valid or false on failure
+	 */
+	function newsletter_validate_unsubscribe_code(ElggEntity $container, $recipient, $code) {
+		$result = false;
+		
+		if (!empty($container) && (elgg_instanceof($container, "site") || elgg_instanceof($container, "group")) && !empty($recipient)) {
+			// make sure we have a user_guid or email address
+			if (is_numeric($recipient) || newsletter_is_email_address($recipient)) {
+				// generate the code as it should be
+				$correct_code = newsletter_generate_unsubscribe_code($container, $recipient);
+				
+				// check for a match
+				if ($code === $correct_code) {
+					$result = true;
+				}
+			}
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * Find a subscription entity for the given email address
+	 *
+	 * @param 	string	$email	The email address to find the subscription for
+	 * @return 	bool|NewsletterSubscription	The found subscription or false
+	 */
+	function newsletter_get_subscription($email) {
+		$result = false;
+		
+		if (!empty($email) && newsletter_is_email_address($email)) {
+			// ignore access
+			$ia = elgg_set_ignore_access(true);
+			
+			$options = array(
+				"type" => "object",
+				"subtype" => NewsletterSubscription::SUBTYPE,
+				"limit" => 1,
+				"joins" => array("JOIN " . elgg_get_config("dbprefix") . "objects_entity oe ON e.guid = oe.guid"),
+				"wheres" => array("(oe.title = '" . sanitise_string($email) . "')")
+			);
+			
+			$entities = elgg_get_entities($options);
+			
+			if (!empty($entities)) {
+				$result = $entities[0];
+			}
+			
+			// restore access
+			elgg_set_ignore_access($ia);
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * Block an user from all newsletters
+	 *
+	 * @param 	ElggUser 	$user	The user to block
+	 * @return 	boolean				True on success, false on failure
+	 */
+	function newsletter_unsubscribe_all_user(ElggUser $user) {
+		$result = false;
+		
+		if (!empty($user) && elgg_instanceof($user, "user")) {
+			$site = elgg_get_site_entity();
+			// remove site subscription
+			remove_entity_relationship($user->getGUID(), NewsletterSubscription::SUBSCRIPTION, $site->getGUID());
+			
+			// remove all subscriptions
+			$options = array(
+				"type" => "group",
+				"limit" => false,
+				"relationship" => NewsletterSubscription::SUBSCRIPTION,
+				"relationship_guid" => $user->getGUID(),
+				"callback" => "newsletter_row_to_guid"
+			);
+			
+			$entities = elgg_get_entities_from_relationship($options);
+			
+			if (!empty($entities)) {
+				foreach ($entities as $entity_guid) {
+					remove_entity_relationship($user->getGUID(), NewsletterSubscription::SUBSCRIPTION, $entity_guid);
+				}
+			}
+			
+			// add to general blacklist
+			$result = (bool) add_entity_relationship($user->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID());
+			
+			// remove email subscriptions (if any)
+			$subscription = newsletter_get_subscription($user->email);
+			
+			if (!empty($subscription)) {
+				$subscription->delete();
+			}
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * Block an email address from all newsletters
+	 *
+	 * @param 	string 	$email	The email address to block
+	 * @return 	boolean			True on success, false on failure
+	 */
+	function newsletter_unsubscribe_all_email($email) {
+		$result = false;
+		
+		if (!empty($email) && newsletter_is_email_address($email)) {
+			// get subscription
+			$subscription = newsletter_get_subscription($email);
+			
+			if (empty($subscription)) {
+				$subscription = new NewsletterSubscription();
+				$subscription->title = $email;
+				
+				if (!$subscription->save()) {
+					return false;
+				}
+				
+				// remove all existing subscriptions
+				remove_entity_relationships($subscription->getGUID(), NewsletterSubscription::SUBSCRIPTION);
+				
+				// add to general blacklist
+				$site = elgg_get_site_entity();
+					
+				$result = (bool) add_entity_relationship($subscription->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID());
+			}
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * Convert an email subscription on the newsletters to a user setting
+	 *
+	 * @param 	NewsletterSubscription 	$subscription	The found email subscription
+	 * @param 	ElggUser 				$user			The user to save the new settings to
+	 * @return 	bool									true on success or false on failure
+	 */
+	function newsletter_convert_subscription_to_user_setting(NewsletterSubscription $subscription, ElggUser $user) {
+		$result = false;
+		
+		if (!empty($subscription) && elgg_instanceof($subscription, "object", NewsletterSubscription::SUBTYPE) && !empty($user) && elgg_instanceof($user, "user")) {
+			// check global block list
+			$site = elgg_get_site_entity();
+			if (check_entity_relationship($subscription->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID())) {
+				// copy the block all
+				$result = (bool) add_entity_relationship($user->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID());
+			} else {
+				// check for subscriptions
+				$subscriptions = $subscription->getEntitiesFromRelationship(NewsletterSubscription::SUBSCRIPTION, false, false);
+					
+				if (!empty($subscriptions)) {
+					foreach ($subscriptions as $entity) {
+						newsletter_subscribe_user($user, $entity);
+					}
+				}
+					
+				// check for blocks
+				$blocked = $subscription->getEntitiesFromRelationship(NewsletterSubscription::BLACKLIST, false, false);
+					
+				if (!empty ($blocked)) {
+					foreach ($blocked as $entity) {
+						newsletter_unsubscribe_user($user, $entity);
+					}
+				}
+			}
+			
+			// remove email subscription
+			$result = (bool) $subscription->delete();
 		}
 		
 		return $result;
