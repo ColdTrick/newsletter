@@ -15,7 +15,7 @@
 				$entity->styling_css = $css;
 				$entity->template = $template;
 				
-				system_message(elgg_echo("newsletter:action:styling:success"));
+				system_message(elgg_echo("newsletter:action:template:success"));
 			} else {
 				register_error(elgg_echo("ClassException:ClassnameNotClass", array($guid, elgg_echo("item:object:" . Newsletter::SUBTYPE))));
 			}

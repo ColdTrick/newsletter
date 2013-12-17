@@ -1,38 +1,6 @@
 <?php
-// .newsletter-sorting .ui-sortable-helper .newsletter-sub-section {
-// 	display: none;
-// }
 
 ?>
-.newsletter-section {
-	padding-bottom: 2px;
-}
-
-.newsletter-section > table {
-	width: 100%;
-}
-
-.newsletter-sub-section {
-	margin-left: 30px;
-}
-
-.newsletter-sorting-placeholder {
-	border: 1px dashed #CCC;
-	margin-bottom: 2px;
-}
-
-.newsletter-section-drag,
-.newsletter-section-actions {
-	width: 1px;
-	text-align: center;
-	padding: 5px;
-	white-space: nowrap;
-}
-
-.newsletter-actions-edit,
-.newsletter-section-actions .elgg-icon {
-	cursor: pointer;
-}
 
 .elgg-form-newsletter-edit-template .elgg-input-radios label {
 	font-size: 100%;

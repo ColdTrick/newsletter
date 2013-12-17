@@ -120,8 +120,11 @@ Check the two settings below and click unsubscribe in order to complete the proc
 		// recipients
 		'newsletter:action:recipients:success' => "Recipients saved",
 		
-		// styling
-		'newsletter:action:styling:success' => "Styling saved",
+		// content
+		'newsletter:action:content:success' => "Content saved",
+		
+		// template
+		'newsletter:action:template:success' => "Template saved",
 		
 		// subscribe
 		'newsletter:action:subscribe:error:subscribe' => "An error occured while subscribing, please try again",

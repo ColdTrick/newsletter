@@ -1,25 +1,26 @@
 <?php
+$guid = (int) get_input("guid");
+$content = get_input("content");
 
-$guid = get_input("guid");
-$sections = get_input("sections");
-
-if ($guid) {
+if (!empty($guid) && !empty($content)) {
 	$entity = get_entity($guid);
-}
 
-if ($entity) {
-	if ($entity->getSubtype() == "newsletter" && $entity->canEdit()) {
-		
-		// strip empty sections
-		foreach ($sections as $index => $section) {
-			if (empty($section["title"]) && empty($section["description"])) {
-				unset($sections[$index]);
-			}
+	if (!empty($entity) && $entity->canEdit()) {
+		if (elgg_instanceof($entity, "object", Newsletter::SUBTYPE)) {
+
+			$entity->content = $content;
+
+			// some cleanup
+			system_message(elgg_echo("newsletter:action:content:success"));
+
+		} else {
+			register_error(elgg_echo("ClassException:ClassnameNotClass", array($guid, elgg_echo("item:object:" . Newsletter::SUBTYPE))));
 		}
-		
-		$sections = json_encode($sections);
-		$entity->sections = $sections;
+	} else {
+		register_error(elgg_echo("InvalidParameterException:NoEntityFound"));
 	}
+} else {
+	register_error(elgg_echo("InvalidParameterException:MissingParameter"));
 }
 
-exit();
+forward(REFERER);
