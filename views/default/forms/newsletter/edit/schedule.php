@@ -39,5 +39,6 @@
 	
 	echo "<div class='elgg-foot'>";
 	echo elgg_view("input/hidden", array("name" => "guid", "value" => $entity->getGUID()));
+	echo elgg_view("output/url", array("href" => "action/newsletter/send?guid=" . $entity->getGUID(), "is_action" => true, "text" => elgg_echo("send"), "class" => "elgg-button elgg-button-action float-alt"));
 	echo elgg_view("input/submit", array("value" => elgg_echo("save")));
 	echo "</div>";

@@ -158,6 +158,9 @@ To view the newsletter click here:
 		'newsletter:action:subscriptions:error' => "An unknown error occured while saving your subscription settings, please try again",
 		'newsletter:action:subscriptions:success' => "Your subscription settings were saved",
 		
+		// send
+		'newsletter:action:send:success' => "The newsletter is being send",
+		
 		'' => "",
 	);
 	
