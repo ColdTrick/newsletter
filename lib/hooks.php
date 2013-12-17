@@ -144,28 +144,56 @@
 			$result[] = ElggMenuItem::factory(array(
 				"name" => "basic",
 				"href" => "newsletter/edit/" . $entity->getGUID(),
-				"text" => elgg_echo("newsletter:edit:tabs:entity")
+				"text" => elgg_echo("newsletter:edit:tabs:entity") . elgg_view_icon("checkmark", "float-alt")
 			));
-			$result[] = ElggMenuItem::factory(array(
+			
+			$item = ElggMenuItem::factory(array(
 				"name" => "styling",
 				"href" => "newsletter/edit/" . $entity->getGUID() . "/styling",
 				"text" => elgg_echo("newsletter:edit:tabs:styling")
 			));
-			$result[] = ElggMenuItem::factory(array(
+			
+			if ($entity->template) {
+				$item->setText($item->getText() . elgg_view_icon("checkmark", "float-alt"));
+			}
+			
+			$result[] = $item;
+			
+			$item = ElggMenuItem::factory(array(
 				"name" => "content",
 				"href" => "newsletter/edit/" . $entity->getGUID() . "/content",
 				"text" => elgg_echo("newsletter:edit:tabs:content")
 			));
-			$result[] = ElggMenuItem::factory(array(
+			
+			if ($entity->content) {
+				$item->setText($item->getText() . elgg_view_icon("checkmark", "float-alt"));
+			}
+			
+			$result[] = $item;
+			
+			$item = ElggMenuItem::factory(array(
 				"name" => "recipients",
 				"href" => "newsletter/edit/" . $entity->getGUID() . "/recipients",
 				"text" => elgg_echo("newsletter:edit:tabs:recipients")
 			));
-			$result[] = ElggMenuItem::factory(array(
+			
+			if ($entity->recipients) {
+				$item->setText($item->getText() . elgg_view_icon("checkmark", "float-alt"));
+			}
+				
+			$result[] = $item;
+				
+			$item = ElggMenuItem::factory(array(
 				"name" => "schedule",
 				"href" => "newsletter/edit/" . $entity->getGUID() . "/schedule",
 				"text" => elgg_echo("newsletter:edit:tabs:schedule")
 			));
+			
+			if ($entity->scheduled) {
+				$item->setText($item->getText() . elgg_view_icon("checkmark", "float-alt"));
+			}
+			
+			$result[] = $item;
 		}
 		
 		return $result;
