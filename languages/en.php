@@ -22,12 +22,13 @@
 		'newsletter:edit:title' => "Edit newsletter: %s",
 		'newsletter:schedule:title' => "%s: Schedule",
 		
-		// edit tabs
-		'newsletter:edit:tabs:entity' => "Basic",
-		'newsletter:edit:tabs:content' => "Content",
-		'newsletter:edit:tabs:styling' => "Styling",
-		'newsletter:edit:tabs:recipients' => "Recipients",
-		'newsletter:edit:tabs:schedule' => "Schedule",
+		// steps menu
+		'newsletter:menu:steps:entity' => "Basic",
+		'newsletter:menu:steps:content' => "Content",
+		'newsletter:menu:steps:styling' => "Styling",
+		'newsletter:menu:steps:recipients' => "Recipients",
+		'newsletter:menu:steps:schedule' => "Schedule",
+		'newsletter:menu:steps:log' => "Log",
 
 		// content
 		'newsletter:edit:content:add_section' => "Add section",
