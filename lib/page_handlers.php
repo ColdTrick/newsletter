@@ -6,31 +6,13 @@
 		
 		switch ($page[0]) {
 			case "edit":
-				if (isset($page[1]) && is_numeric($page[1])) {
-					set_input("guid", $page[1]);
-					
-					$subpage = elgg_extract("2", $page);
-					switch ($subpage) {
-						case "content":
-							$include_file = $path . "/pages/edit/content.php";
-							break;
-						case "recipients":
-							$include_file = $path . "/pages/edit/recipients.php";
-							break;
-						case "schedule":
-							$include_file = $path . "/pages/edit/schedule.php";
-							break;
-						case "styling":
-							$include_file = $path . "/pages/edit/styling.php";
-							break;
-						case "preview":
-							$include_file = $path . "/pages/edit/preview.php";
-							break;
-						default:
-							$include_file = $path . "/pages/edit/newsletter.php";
-							break;
-					}
-				}
+				set_input("guid", elgg_extract("1", $page));
+				set_input("subpage", elgg_extract("2", $page));
+				$include_file = $path . "/pages/edit.php";
+				break;
+			case "preview":
+				set_input("guid", elgg_extract("1", $page));
+				$include_file = $path . "/pages/edit/preview.php";
 				break;
 			case "add":
 				if (isset($page[1]) && is_numeric($page[1])) {
