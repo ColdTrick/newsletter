@@ -22,7 +22,7 @@
 		// register page handler
 		elgg_register_page_handler("newsletter", "newsletter_page_handler");
 		
-		// views
+		// CSS & JS
 		elgg_extend_view("css/elgg", "css/newsletter/site");
 		elgg_extend_view("js/elgg", "js/newsletter/site");
 		
@@ -31,14 +31,16 @@
 		$url = elgg_get_simplecache_url("js", "newsletter/recipients");
 		elgg_register_js("newsletter.recipients", $url);
 		
-		// extend the group profile sidebar
+		// extend views
 		elgg_extend_view("groups/sidebar/my_status", "newsletter/sidebar/subscribe");
+		elgg_extend_view("register/extend", "newsletter/register");
 		
 		// register plugin hooks
 		elgg_register_plugin_hook_handler("cron", "hourly", "newsletter_cron_handler");
 		elgg_register_plugin_hook_handler("access:collections:write", "user", "newsletter_write_access_handler");
 		elgg_register_plugin_hook_handler("register", "menu:page", "newsletter_register_page_menu_handler");
 		elgg_register_plugin_hook_handler("usersettings:save", "user", "newsletter_usersettings_save_handler");
+		elgg_register_plugin_hook_handler("register", "user", "newsletter_register_user_handler");
 		
 		// register event handlers
 		elgg_register_event_handler("upgrade", "system", "newsletter_upgrade_event_handler");

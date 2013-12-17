@@ -88,6 +88,9 @@ Check the two settings below and click unsubscribe in order to complete the proc
 		'newsletter:subscribe:user:description:subscribe' => "Subscribe to the %s newsletter",
 		'newsletter:subscribe:user:description:unsubscribe' => "Unsubscribe from the %s newsletter",
 		
+		// registration
+		'newsletter:registration' => "I want to receive site newsletters",
+		
 		// actions
 		// edit
 		'newsletter:action:edit:error:title' => "Please provide a title for the newsletter",

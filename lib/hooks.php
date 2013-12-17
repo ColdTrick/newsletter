@@ -149,3 +149,32 @@
 		}
 	}
 	
+	/**
+	 * A hook fired during the registration proccess of the user
+	 * Check if the user wants to receive site newsletters
+	 *
+	 * @param 	string	$hook			Which hook was triggered
+	 * @param 	string 	$type			What was the type of hook
+	 * @param 	bool 	$returnvalue	you can stop the registration proccess
+	 * @param 	array 	$params			different variables, including the new user
+	 */
+	function newsletter_register_user_handler($hook, $type, $returnvalue, $params) {
+		
+		if (!empty($params) && is_array($params)) {
+			$user = elgg_extract("user", $params);
+			
+			if (!empty($user) && elgg_instanceof($user, "user")) {
+				$site = elgg_get_site_entity();
+				$subscribe = (int) get_input("newsletter_subscription");
+				
+				if (!empty($subscribe)) {
+					// user wants to receive newsletter
+					newsletter_subscribe_user($user, $site);
+				} else {
+					// user doesn't want to recieve newsletter
+					newsletter_unsubscribe_user($user, $site);
+				}
+			}
+		}
+	}
+	
