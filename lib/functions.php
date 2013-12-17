@@ -89,17 +89,217 @@
 			$entity = get_entity($entity_guid);
 			// is this a Newsletter
 			if (!empty($entity) && elgg_instanceof($entity, "object", Newsletter::SUBTYPE)) {
+				$site = elgg_get_site_entity();
+				$container = $entity->getContainerEntity();
+				$dbprefix = elgg_get_config("dbprefix");
+				
+				// basic set of user selection options
+				$basic_user_options = array(
+					"type" => "user",
+					"limit" => false,
+					"selects" => array("ue.email"),
+					"joins" => array("JOIN " . $dbprefix . "users_entity ue ON e.guid = ue.guid"),
+					"wheres" => array(
+						"(e.guid NOT IN (SELECT guid_one
+							FROM " . $dbprefix . "entity_relationships
+							WHERE relationship = '" . NewsletterSubscription::GENERAL_BLACKLIST . "'
+							AND guid_two = " . $site->getGUID() . ")
+						)",
+						"(e.guid NOT IN (SELECT guid_one
+							FROM " . $dbprefix . "entity_relationships
+							WHERE relationship = '" . NewsletterSubscription::BLACKLIST . "'
+							AND guid_two = " . $container->getGUID() . ")
+						)"
+					),
+					"callback" => "newsletter_user_row_to_subscriber_info"
+				);
+				
 				// set newsletter status to sending
 				
+				// ==================
 				// get the recipients
+				// ==================
+				$filtered_recipients = array(
+					"users" => array(),
+					"emails" => array()
+				);
+				$recipients = $entity->recipients;
+				if (!empty($recipients)) {
+					$recipients = json_decode($recipients, true);
+				} else {
+					// no recipients so report error
+					return false;
+				}
 				
+				// recipients is an array consisting of:
+				// - user_guids: 	individual users
+				// - group_guids:	groups to send the content to
+				// - emails:		individual email addresses
+				// - subscribers:	(int) whether or not to add the subscribers of the container
+				// - members:		(int) whether or not to aad the member of the container
+				$user_guids = elgg_extract("user_guids", $recipients);
+				if (!empty($user_guids)) {
+					if (!is_array($user_guids)) {
+						$user_guids = array($user_guids);
+					}
+					
+					// convert to a format we can use
+					$options = $basic_user_options;
+					$options["wheres"][] = "(e.guid IN (" . implode(",", $user_guids) . "))";
+					
+					$users = elgg_get_entities($options);
+					if (!empty($users)) {
+						$new_users = array();
+						foreach ($users as $user) {
+							$new_users[$user["guid"]] = $user["email"];
+						}
+						$filtered_recipients["users"] += $new_users;
+					}
+				}
+				
+				$group_guids = elgg_extract("group_guids", $recipients);
+				if (!empty($group_guids)) {
+					if (!is_array($group_guids)) {
+						$group_guids = array($group_guids);
+					}
+					
+					$options = $basic_user_options;
+					$options["joins"][] = "JOIN " . $dbprefix . "entity_relationships r ON e.guid = r.guid_one";
+					$options["wheres"][] = "(r.guid_two IN (" . implode(",", $group_guids) . ") AND r.relationship = 'member')";
+					
+					$users = elgg_get_entities($options);
+					if (!empty($users)) {
+						$new_users = array();
+						foreach ($users as $user) {
+							$new_users[$user["guid"]] = $user["email"];
+						}
+						$filtered_recipients["users"] += $new_users;
+					}
+				}
+				
+				$subscribers = elgg_extract("subscribers", $recipients);
+				if (!empty($subscribers)) {
+					$subscribers = newsletter_get_subscribers($container);
+					
+					$filtered_recipients["users"] += $subscribers["users"];
+					$filtered_recipients["emails"] = array_merge($filtered_recipients["emails"], $subscribers["emails"]);
+				}
+				
+				$members = elgg_extract("members", $recipients);
+				if (!empty($members)) {
+					$relationship = "member";
+					if (elgg_instanceof($container, "site")) {
+						$relationship = "member_of_site";
+					}
+					
+					$options = $basic_user_options;
+					$options["relationship"] = $relationship;
+					$options["relationship_guid"] = $container->getGUID();
+					$options["inverse_relationship"] = true;
+					
+					$users = elgg_get_entities_from_relationship($options);
+					if (!empty($users)) {
+						$new_users = array();
+						foreach ($users as $user) {
+							$new_users[$user["guid"]] = $user["email"];
+						}
+						$filtered_recipients["users"] += $new_users;
+					}
+				}
+				
+				$emails = elgg_extract("emails", $recipients);
+				if (!empty($emails)) {
+					if (!is_array($emails)) {
+						$emails = array($emails);
+					}
+					
+					// get blocked users
+					$options = array(
+						"type" => "user",
+						"limit" => false,
+						"selects" => array("ue.email"),
+						"joins" => array("JOIN " . $dbprefix . "users_entity ue ON e.guid = ue.guid"),
+						"wheres" => array(
+							"(ue.email IN ('" . implode("','", $emails) . "'))",
+							"(e.guid IN (SELECT guid_one
+								FROM " . $dbprefix . "entity_relationships
+								WHERE relationship = '" . NewsletterSubscription::GENERAL_BLACKLIST . "'
+								AND guid_two = " . $site->getGUID() . ")
+							OR
+							e.guid IN (SELECT guid_one
+								FROM " . $dbprefix . "entity_relationships
+								WHERE relationship = '" . NewsletterSubscription::BLACKLIST . "'
+								AND guid_two = " . $container->getGUID() . ")
+							)"
+						),
+						"callback" => "newsletter_user_row_to_subscriber_info"
+					);
+					
+					$users = elgg_get_entities($options);
+					if (!empty($users)) {
+						$blocked_emails = array();
+						foreach ($users as $user) {
+							$blocked_emails[] = $user["email"];
+						}
+						
+						$emails = array_diff($email, $blocked_emails);
+					}
+					
+					if (!empty($emails)) {
+						// get blocked emails
+						$options = array(
+							"type" => "object",
+							"subtype" => NewsletterSubscription::SUBTYPE,
+							"limit" => false,
+							"selects" => array("oe.title AS email"),
+							"joins" => array("JOIN " . $dbprefix . "objects_entity oe ON e.guid = oe.guid"),
+							"wheres" => array(
+								"(oe.title IN ('" . implode("','", $emails) . "'))",
+								"(e.guid IN (SELECT guid_one
+									FROM " . $dbprefix . "entity_relationships
+									WHERE relationship = '" . NewsletterSubscription::GENERAL_BLACKLIST . "'
+									AND guid_two = " . $site->getGUID() . ")
+								OR
+								e.guid IN (SELECT guid_one
+									FROM " . $dbprefix . "entity_relationships
+									WHERE relationship = '" . NewsletterSubscription::BLACKLIST . "'
+									AND guid_two = " . $container->getGUID() . ")
+								)"
+							),
+							"callback" => "newsletter_user_row_to_subscriber_info"
+						);
+						
+						$subscriptions = elgg_get_entities($options);
+						if (!empty($subscriptions)) {
+							$blocked_emails = array();
+							foreach ($subscriptions as $subscription) {
+								$blocked_emails[] = $subscription["email"];
+							}
+							
+							$emails = array_diff($email, $blocked_emails);
+						}
+						
+						if (!empty($emails)) {
+							$filtered_recipients["emails"] = array_merge($filtered_recipients["emails"], $emails);
+						}
+					}
+				}
+				
+				// ======================
 				// get newsletter content
+				// ======================
 				
+				// =============================================
 				// create individual footer for unsubscribe link
+				// =============================================
 				
+				// =========
 				// send mail
+				// =========
 				
+				// =============================
 				// set newsletter status to done
+				// =============================
 			}
 			
 			// restore access
