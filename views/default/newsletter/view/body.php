@@ -2,7 +2,20 @@
 
 $entity = $vars["entity"];
 
-$content = $entity->styling_html;
+$template = $entity->template;
+
+if ($template == "custom") {
+	$content = $entity->styling_html;
+} else {
+	$content = elgg_view("newsletter/templates/" . $template . "/body");
+}
+
+
+$container_entity = $entity->getContainerEntity();
+$container_url = $container_entity->getURL();
+if ($container_entity instanceof ElggSite) {
+	$container_url = $container_entity->url;
+}
 
 $replacements = array(
 		"{content}" => $entity->content,
@@ -12,9 +25,9 @@ $replacements = array(
 		"{newsletter_url}" => $entity->getURL(),
 		"{unsub}" => elgg_echo("newsletter:body:unsub"),
 		"{site_name}" => elgg_get_site_entity()->name,
-		"{site_url}" => elgg_get_site_entity()->getURL(),
+		"{site_url}" => elgg_get_site_url(),
 		"{container_name}" => $entity->getContainerEntity()->name,
-		"{container_url}" => $entity->getContainerEntity()->getURL(),
+		"{container_url}" => $container_url,
 	);
 
 foreach ($replacements as $search => $replace) {
