@@ -48,7 +48,6 @@
 	$page_data = elgg_view_layout("content", array(
 		"title" => $title_text,
 		"content" => $form,
-		"sidebar" => elgg_view("newsletter/sidebar/steps", array("entity" => $entity)),
 		"filter" => ""
 	));
 	

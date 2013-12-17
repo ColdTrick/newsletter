@@ -77,6 +77,15 @@ elgg.newsletter.init = function() {
 		$("#newsletter-section-list [name='description']").hide();
 		$("#newsletter-section-list .newsletter-actions-edit").html(elgg.echo("newsletter:edit:content:section:expand"));
 	});
+
+	$("#newsletter-edit-template-select").live("change", function(event) {
+		event.stopPropagation();
+		if ($(this).val() == "custom") {
+			$(".newsletter-edit-template-custom").show();
+		} else {
+			$(".newsletter-edit-template-custom").hide();
+		}
+	});
 }
 
 elgg.newsletter.toggle_drag = function(on) {

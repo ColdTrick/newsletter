@@ -37,8 +37,13 @@
 		'newsletter:edit:content:section:collapse_all' => "Collapse all",
 		'newsletter:edit:content:section:expand_all' => "Expand all",
 
-		// styling
-		'newsletter:edit:styling:description' => "Here you can control the newsletter layout by changing the html and control the styling by changing the css. Do not forget to preview you newsletter to see if it looks as expected.",
+		// template
+		'newsletter:edit:template:description' => "Here you can control the newsletter layout by changing the html and control the styling by changing the css. Do not forget to preview you newsletter to see if it looks as expected.",
+		'newsletter:edit:template:select' => "Select a template",
+		'newsletter:edit:template:select:default' => "Default template",
+		'newsletter:edit:template:select:custom' => "Custom template",
+		'newsletter:edit:template:html' => "HTML",
+		'newsletter:edit:template:css' => "CSS",
 	
 		// schedule
 		'newsletter:schedule:description' => "Here you can configure when the newsletter will be delivered to the selected recipients.",

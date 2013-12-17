@@ -4,6 +4,7 @@
 	
 	$html = get_input("html");
 	$css = get_input("css");
+	$template = get_input("template");
 	
 	if (!empty($guid)) {
 		$entity = get_entity($guid);
@@ -12,6 +13,7 @@
 			if (elgg_instanceof($entity, "object", Newsletter::SUBTYPE)) {
 				$entity->styling_html = $html;
 				$entity->styling_css = $css;
+				$entity->template = $template;
 				
 				system_message(elgg_echo("newsletter:action:styling:success"));
 			} else {

@@ -34,6 +34,11 @@
 	cursor: pointer;
 }
 
+.elgg-form-newsletter-edit-template .elgg-input-radios label {
+	font-size: 100%;
+	font-weight: normal;
+}
+
 #newsletter-recipients-wrapper .elgg-icon-delete-alt {
 	display: none;
 }
