@@ -49,6 +49,11 @@
 		'newsletter:edit:template:select:custom' => "Custom template",
 		'newsletter:edit:template:html' => "HTML",
 		'newsletter:edit:template:css' => "CSS",
+			
+		// default template body
+		'newsletter:body:unsub' => "Deze e-mail is verstuurd door <a href='{site_url}' rel='nofollow'>{site_name}</a>. Om je direct af te melden van deze digest, <a href='{unsublink}'>klik hier</a>.",
+		'newsletter:body:online' => "Als je dit bericht niet kunt lezen, bekijk deze digest <a href='{newsletter_url}'>online</a>",
+			
 	
 		// schedule
 		'newsletter:schedule:description' => "Here you can configure when the newsletter will be delivered to the selected recipients.",
