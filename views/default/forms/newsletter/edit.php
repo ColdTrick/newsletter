@@ -4,6 +4,7 @@
 	
 	if (!empty($entity)) {
 		$title = elgg_get_sticky_value("newsletter_edit", "title", $entity->title);
+		$subject = elgg_get_sticky_value("newsletter_edit", "subject", $entity->subject);
 		$description = elgg_get_sticky_value("newsletter_edit", "description", $entity->description);
 		$access_id = (int) elgg_get_sticky_value("newsletter_edit", "access_id", $entity->access_id);
 		
@@ -12,6 +13,7 @@
 		$container_guid = $entity->container_guid;
 	} else {
 		$title = elgg_get_sticky_value("newsletter_edit", "title");
+		$subject = elgg_get_sticky_value("newsletter_edit", "subject");
 		$description = elgg_get_sticky_value("newsletter_edit", "description");
 		$access_id = (int) elgg_get_sticky_value("newsletter_edit", "access_id", get_default_access());
 		
@@ -23,6 +25,11 @@
 	echo "<div>";
 	echo "<label for='newsletter-title'>" . elgg_echo("title") . "</label>";
 	echo elgg_view("input/text", array("name" => "title", "value" => $title, "id" => "newsletter-title"));
+	echo "</div>";
+	
+	echo "<div>";
+	echo "<label for='newsletter-subject'>" . elgg_echo("newsletter:edit:subject") . "</label>";
+	echo elgg_view("input/text", array("name" => "subject", "value" => $subject, "id" => "newsletter-subject"));
 	echo "</div>";
 	
 	echo "<div>";

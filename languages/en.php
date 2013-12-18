@@ -22,6 +22,9 @@
 		'newsletter:edit:title' => "Edit newsletter: %s",
 		'newsletter:schedule:title' => "%s: Schedule",
 		
+		// edit
+		'newsletter:edit:subject' => "Custom e-mail subject (optional)",
+		
 		// steps menu
 		'newsletter:menu:steps:entity' => "Basic",
 		'newsletter:menu:steps:content' => "Content",
@@ -50,6 +53,8 @@
 		'newsletter:schedule:description' => "Here you can configure when the newsletter will be delivered to the selected recipients.",
 		'newsletter:schedule:date' => "Scheduled date",
 		'newsletter:schedule:time' => "Scheduled time",
+		'newsletter:schedule:status_notification' => "E-mail address for status notification (optional)",
+		'newsletter:schedule:status_notification:description' => "When the newsletter is sent, a notification will be send to this e-mail address.",
 
 		// recipients
 		'newsletter:recipients:title' => "Select recipients",
@@ -105,6 +110,22 @@ Check the two settings below and click unsubscribe in order to complete the proc
 		// registration
 		'newsletter:registration' => "I want to receive site newsletters",
 		
+		// email content
+		'newsletter:subject' => "%s newsletter: %s",
+		'newsletter:plain_message' => "In order to correctly view the newsletter your e-mail client needs to support HTML mails.
+
+To view the newsletter online click here:
+%s",
+		
+		// status notification
+		'newsletter:status_notification:subject' => "Newsletter status notification",
+		'newsletter:status_notification:message' => "LS,
+
+Your newsletter '%s' was sent out.
+
+To view the newsletter click here:
+%s",
+		
 		// actions
 		// edit
 		'newsletter:action:edit:error:title' => "Please provide a title for the newsletter",
@@ -136,6 +157,9 @@ Check the two settings below and click unsubscribe in order to complete the proc
 		// subscriptions
 		'newsletter:action:subscriptions:error' => "An unknown error occured while saving your subscription settings, please try again",
 		'newsletter:action:subscriptions:success' => "Your subscription settings were saved",
+		
+		// send
+		'newsletter:action:send:success' => "The newsletter is being send",
 		
 		'' => "",
 	);
