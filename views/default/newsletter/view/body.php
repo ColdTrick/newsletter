@@ -19,11 +19,15 @@ if ($container_entity instanceof ElggSite) {
 
 $replacements = array(
 		"{content}" => $entity->content,
+		
+		"{unsub}" => elgg_echo("newsletter:body:unsub"),
+		"{online}" => elgg_echo("newsletter:body:online"),
+		
+		
 		"{title}" => $entity->title,
 		"{description}" => $entity->description,
 		"{subject}" => $entity->subject,
 		"{newsletter_url}" => $entity->getURL(),
-		"{unsub}" => elgg_echo("newsletter:body:unsub"),
 		"{site_name}" => elgg_get_site_entity()->name,
 		"{site_url}" => elgg_get_site_url(),
 		"{container_name}" => $entity->getContainerEntity()->name,

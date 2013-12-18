@@ -43,14 +43,16 @@ h4 {
 	font-size: 14px;
 }
 
-#digest_online {
+#newsletter_online {
 	font-size: 11px;
 	color: #999999;
-	text-align: right;
+	text-align: center;
 	padding: 10px 20px 0px;
+	margin: 0 auto;
+	width: 600px;
 }
 
-#digest_header {
+#newsletter_header {
 	padding: 10px 30px;
 	min-height: 20px;
 	
@@ -66,27 +68,28 @@ h4 {
 	border-radius: 5px 5px 0 0;
 }
 
-#digest_header h1{
+#newsletter_header h1{
 	color: #FFFFFF;
 }
 
-#digest_container {
+#newsletter_container {
 	padding: 20px 0;
 	width: 600px;
 	margin: 0 auto;
 }
 
-#digest_content {
+#newsletter_content {
 	min-height: 100px;
 }
 
-#digest_unsubscribe {
+#newsletter_unsubscribe {
 	font-size: 11px;
 	color: #999999;
 	padding: 20px;
+	text-align: center;
 }
 
-#digest_footer {
+#newsletter_footer {
 	padding: 30px;
 	background: #F0F0F0;
 	
@@ -98,4 +101,25 @@ h4 {
 	-webkit-border-radius: 0 0 5px 5px;
 	-moz-border-radius: 0 0 5px 5px;
 	border-radius: 0 0 5px 5px;
+}
+
+.elgg-module-newsletter {
+	background: #FFFFFF;
+	padding: 30px;
+	
+	border-top: 1px solid #FFFFFF;
+	border-left: 1px solid #dbdbdb;
+	border-bottom: 1px solid #dbdbdb;
+	border-right: 1px solid #dbdbdb;
+}
+
+.elgg-module-newsletter .elgg-head {
+	padding-bottom: 5px;
+	border-bottom: 1px solid #dbdbdb;
+}
+
+.elgg-module-newsletter h1 a,
+.elgg-module-newsletter h2 a,
+.elgg-module-newsletter h3 a {
+	text-decoration: none;
 }
