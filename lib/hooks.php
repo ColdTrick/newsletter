@@ -194,16 +194,6 @@
 			}
 			
 			$result[] = $item;
-
-			if ($entity->status == "sent") {
-				$item = ElggMenuItem::factory(array(
-					"name" => "log",
-					"href" => "newsletter/log/" . $entity->getGUID(),
-					"text" => elgg_echo("newsletter:menu:steps:log")
-				));
-							
-				$result[] = $item;
-			}
 		}
 		
 		return $result;
@@ -261,3 +251,26 @@
 		}
 	}
 	
+	function newsletter_register_entity_menu_handler($hook, $type, $returnvalue, $params) {
+		$result = $returnvalue;
+		
+		if (!empty($params) && is_array($params)) {
+			$entity = elgg_extract("entity", $params);
+			
+			if (!empty($entity) && elgg_instanceof($entity, "object", Newsletter::SUBTYPE)) {
+				if ($entity->canEdit()) {
+					if (($entity->status == "sent") || $entity->getLogging()) {
+						$item = ElggMenuItem::factory(array(
+							"name" => "log",
+							"href" => "newsletter/log/" . $entity->getGUID(),
+							"text" => elgg_echo("newsletter:menu:entity:log")
+						));
+							
+						$result[] = $item;
+					}
+				}
+			}
+		}
+		
+		return $result;
+	}

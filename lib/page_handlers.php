@@ -62,6 +62,13 @@
 					$include_file = $path . "/pages/subscriptions.php";
 				}
 				break;
+			case "log":
+				if (isset($page[1]) && is_numeric($page[1])) {
+					set_input("guid", $page[1]);
+						
+					$include_file = $path . "/pages/log.php";
+				}
+				break;
 			default:
 				forward("newsletter/site");
 				break;

@@ -40,6 +40,7 @@
 		elgg_register_plugin_hook_handler("access:collections:write", "user", "newsletter_write_access_handler");
 		elgg_register_plugin_hook_handler("register", "menu:page", "newsletter_register_page_menu_handler");
 		elgg_register_plugin_hook_handler("register", "menu:newsletter_steps", "newsletter_register_newsletter_steps_menu_handler");
+		elgg_register_plugin_hook_handler("register", "menu:entity", "newsletter_register_entity_menu_handler");
 		elgg_register_plugin_hook_handler("usersettings:save", "user", "newsletter_usersettings_save_handler");
 		elgg_register_plugin_hook_handler("register", "user", "newsletter_register_user_handler");
 		

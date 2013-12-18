@@ -12,9 +12,18 @@
 		
 		'newsletter:menu:page:subscriptions' => "My subscriptions",
 		'newsletter:menu:page:settings' => "Newsletter subscriptions",
-		'' => "",
+		
+		'newsletter:menu:entity:log' => "View log",
+		
+		// steps menu
+		'newsletter:menu:steps:entity' => "Basic",
+		'newsletter:menu:steps:content' => "Content",
+		'newsletter:menu:steps:styling' => "Styling",
+		'newsletter:menu:steps:recipients' => "Recipients",
+		'newsletter:menu:steps:schedule' => "Schedule",
 		
 		'newsletter:breadcrumb:site' => "Newsletters",
+		'newsletter:breadcrumb:log' => "Delivery log",
 		
 		// pages
 		'newsletter:site:title' => "All site newsletters",
@@ -25,14 +34,6 @@
 		// edit
 		'newsletter:edit:subject' => "Custom e-mail subject (optional)",
 		
-		// steps menu
-		'newsletter:menu:steps:entity' => "Basic",
-		'newsletter:menu:steps:content' => "Content",
-		'newsletter:menu:steps:styling' => "Styling",
-		'newsletter:menu:steps:recipients' => "Recipients",
-		'newsletter:menu:steps:schedule' => "Schedule",
-		'newsletter:menu:steps:log' => "Log",
-
 		// content
 		'newsletter:edit:content:add_section' => "Add section",
 		'newsletter:edit:content:description' => "Add the content to your newsletter here. Add sections of free text or import an existing blog as content into your newsletter. You can always reorder the content of this newsletter.",
@@ -125,6 +126,30 @@ Your newsletter '%s' was sent out.
 
 To view the newsletter click here:
 %s",
+		
+		// logging
+		'newsletter:log:title' => "Delivery log: %s",
+		
+		'newsletter:log:users:title' => "Users",
+		'newsletter:log:users:header:email' => "E-mail address",
+		'newsletter:log:users:header:time' => "Time",
+		'newsletter:log:users:header:status' => "Status",
+		'newsletter:log:users:header:guid' => "User",
+		
+		'newsletter:log:emails:title' => "E-mail addresses",
+		'newsletter:log:email:header:email' => "E-mail address",
+		'newsletter:log:email:header:time' => "Time",
+		'newsletter:log:email:header:status' => "Status",
+		
+		'newsletter:log:general:title' => "General information",
+		'newsletter:log:general:scheduled' => "Scheduled time",
+		'newsletter:log:general:starttime' => "Actual starting time",
+		'newsletter:log:general:endtime' => "Proccessing finished",
+		
+		'newsletter:log:no_contents' => "No log file could be found, are you sure this newsletter is already sent.",
+		'newsletter:log:no_recipients' => "There were no recipients for this newsletter",
+		'newsletter:log:emails:no_recipients' => "There were no individual e-mail addresses in the proccessing of the newsletter. If you had selected some e-mail addresses they could have unsubscribed from the newsletter.",
+		'newsletter:log:users:no_recipients' => "There were no registered users in the proccessing of the newsletter. If you had selected some users they could have unsubscribed from the newsletter.",
 		
 		// actions
 		// edit

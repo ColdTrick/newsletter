@@ -29,6 +29,24 @@
 			return $result;
 		}
 		
+		public function getLogging() {
+			$result = false;
+			
+			$fh = new ElggFile();
+			$fh->owner_guid = $this->getGUID();
+			$fh->setFilename("logging.json");
+			
+			if ($fh->exists()) {
+				$contents = $fh->grabFile();
+				
+				if (!empty($contents)) {
+					$result = json_decode($contents, true);
+				}
+			}
+			
+			return $result;
+		}
+		
 		public function getOnlineURL() {
 			return elgg_get_site_url($this->site_guid) . "newsletter/view/" . $this->getGUID() . "/online";
 		}

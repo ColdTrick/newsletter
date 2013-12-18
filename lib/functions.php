@@ -311,7 +311,6 @@
 				// =======================
 				// proccess all recipients
 				// =======================
-				$recipient_logging = array();
 				$send_options = array(
 					"from" => html_email_handler_make_rfc822_address($container),
 					"subject" => $message_subject,
@@ -356,12 +355,13 @@
 							// ==============
 							// add to logging
 							// ==============
-							$recipient_logging[] = $recipient_log;
+							$logging["recipients"][] = $recipient_log;
+							
+							$entity->saveLogging($logging);
 						}
 					}
 				}
 				
-				$logging["recipients"] = $recipient_logging;
 				$logging["end_time"] = time();
 				
 				$entity->saveLogging($logging);
