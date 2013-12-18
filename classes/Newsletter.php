@@ -30,6 +30,6 @@
 		}
 		
 		public function getOnlineURL() {
-			return elgg_get_site_url($this->site_guid) . "newsletter/view/" . $entity->getGUID() . "/online";
+			return elgg_get_site_url($this->site_guid) . "newsletter/view/" . $this->getGUID() . "/online";
 		}
 	}

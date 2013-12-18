@@ -11,7 +11,7 @@
 		if (!empty($entity) && elgg_instanceof($entity, "object", Newsletter::SUBTYPE)) {
 			// prepare commandline settings
 			$settings = array(
-				"guid" => $entity->getGUID(),
+				"entity_guid" => $entity->getGUID(),
 				"host" => $_SERVER["HTTP_HOST"],
 				"memory_limit" => ini_get("memory_limit"),
 				"secret" => newsletter_generate_commanline_secret($entity->getGUID())
@@ -113,15 +113,15 @@
 					"joins" => array("JOIN " . $dbprefix . "users_entity ue ON e.guid = ue.guid"),
 					"wheres" => array(
 						"(e.guid NOT IN (SELECT guid_one
-						FROM " . $dbprefix . "entity_relationships
-						WHERE relationship = '" . NewsletterSubscription::GENERAL_BLACKLIST . "'
-						AND guid_two = " . $site->getGUID() . ")
-					)",
+							FROM " . $dbprefix . "entity_relationships
+							WHERE relationship = '" . NewsletterSubscription::GENERAL_BLACKLIST . "'
+							AND guid_two = " . $site->getGUID() . ")
+						)",
 						"(e.guid NOT IN (SELECT guid_one
-						FROM " . $dbprefix . "entity_relationships
-						WHERE relationship = '" . NewsletterSubscription::BLACKLIST . "'
-						AND guid_two = " . $container->getGUID() . ")
-					)"
+							FROM " . $dbprefix . "entity_relationships
+							WHERE relationship = '" . NewsletterSubscription::BLACKLIST . "'
+							AND guid_two = " . $container->getGUID() . ")
+						)"
 					),
 					"callback" => "newsletter_user_row_to_subscriber_info"
 				);
@@ -135,6 +135,8 @@
 					$recipients = json_decode($recipients, true);
 				} else {
 					// no recipients so report error
+					$entity->status = "processed";
+					
 					return false;
 				}
 				
