@@ -29,7 +29,7 @@ elgg.newsletter.init = function() {
 
 elgg.newsletter.embed = function(elem) {
 
-	var content = $(elem).html();
+	var content = $(elem).find(".newsletter-embed-item-content").html();
 	
 	var textAreaId = $(".elgg-form-newsletter-edit-content textarea").attr("id");
 	var textArea = $("#" + textAreaId);

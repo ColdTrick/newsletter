@@ -7,6 +7,10 @@
 	font-weight: normal;
 }
 
+#newsletter-edit-template-select li:hover .elgg-requires-confirmation {
+	display: inline;
+}
+
 .elgg-form-newsletter-edit-content .elgg-input-longtext {
 	min-height: 500px;
 }
@@ -67,4 +71,22 @@
 
 .newsletter-input-error {
 	border: 1px solid red;
+}
+
+#newsletter-embed-list {
+	width: 700px;
+}
+
+#newsletter-embed-list > li {
+	padding: 5px;
+	border: 1px solid transparent;
+	cursor: pointer;
+}
+
+#newsletter-embed-list li:hover {
+	border-color: #CCC;
+}
+
+.newsletter-embed-item-content {
+	display: none;
 }

@@ -66,6 +66,7 @@
 		elgg_register_action("newsletter/edit/schedule", dirname(__FILE__) . "/actions/edit/schedule.php");
 		elgg_register_action("newsletter/edit/content", dirname(__FILE__) . "/actions/edit/content.php");
 		elgg_register_action("newsletter/edit/template", dirname(__FILE__) . "/actions/edit/template.php");
+		elgg_register_action("newsletter/edit/template_to_custom", dirname(__FILE__) . "/actions/edit/template_to_custom.php");
 		elgg_register_action("newsletter/edit/recipients", dirname(__FILE__) . "/actions/edit/recipients.php");
 		
 		elgg_register_action("newsletter/delete", dirname(__FILE__) . "/actions/delete.php");
