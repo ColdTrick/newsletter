@@ -78,10 +78,6 @@ h4 {
 	margin: 0 auto;
 }
 
-#newsletter_content {
-	min-height: 100px;
-}
-
 #newsletter_unsubscribe {
 	font-size: 11px;
 	color: #999999;
