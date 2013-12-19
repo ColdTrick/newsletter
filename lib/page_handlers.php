@@ -14,6 +14,10 @@
 				set_input("guid", elgg_extract("1", $page));
 				$include_file = $path . "/pages/preview.php";
 				break;
+			case "embed":
+				set_input("guid", elgg_extract("1", $page));
+				$include_file = $path . "/pages/embed.php";
+				break;
 			case "add":
 				if (isset($page[1]) && is_numeric($page[1])) {
 					elgg_set_page_owner_guid($page[1]);

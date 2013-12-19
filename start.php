@@ -43,13 +43,17 @@
 		// register plugin hooks
 		elgg_register_plugin_hook_handler("cron", "hourly", "newsletter_cron_handler");
 		elgg_register_plugin_hook_handler("access:collections:write", "user", "newsletter_write_access_handler");
+		
 		elgg_register_plugin_hook_handler("register", "menu:page", "newsletter_register_page_menu_handler");
 		elgg_register_plugin_hook_handler("register", "menu:newsletter_steps", "newsletter_register_newsletter_steps_menu_handler");
 		elgg_register_plugin_hook_handler("register", "menu:entity", "newsletter_register_entity_menu_handler");
 		elgg_register_plugin_hook_handler("register", "menu:owner_block", "newsletter_register_owner_block_menu_handler");
 		elgg_register_plugin_hook_handler("register", "menu:filter", "newsletter_register_filter_menu_handler");
+		elgg_register_plugin_hook_handler("register", "menu:longtext", "newsletter_register_longtext_menu_handler");
+		
 		elgg_register_plugin_hook_handler("usersettings:save", "user", "newsletter_usersettings_save_handler");
 		elgg_register_plugin_hook_handler("register", "user", "newsletter_register_user_handler");
+		elgg_register_plugin_hook_handler("usersettings:save", "user", "newsletter_usersettings_save_handler");
 		elgg_register_plugin_hook_handler("entity:icon:url", "object", "newsletter_icon_hook");
 		
 		// register event handlers

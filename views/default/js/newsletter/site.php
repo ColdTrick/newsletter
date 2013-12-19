@@ -13,6 +13,30 @@ elgg.newsletter.init = function() {
 			$(".newsletter-edit-template-custom").hide();
 		}
 	});
+
+	$("#newsletter-embed-list li").live("click", function(event) {
+		elgg.newsletter.embed(this);
+		
+		event.preventDefault();
+	});
+}
+
+elgg.newsletter.embed = function(elem) {
+
+	var content = $(elem).html();
+	
+	var textAreaId = $(".elgg-form-newsletter-edit-content textarea").attr("id");
+	var textArea = $("#" + textAreaId);
+	
+	textArea.val(textArea.val() + content);
+	textArea.focus();
+
+	<?php
+		// See the TinyMCE plugin for an example of this view
+		echo elgg_view('embed/custom_insert_js');
+	?>
+
+	$.fancybox.close();
 }
 
 //register init hook

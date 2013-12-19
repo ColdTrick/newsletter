@@ -394,3 +394,31 @@
 		
 		return $result;
 	}
+	
+	function newsletter_register_longtext_menu_handler($hook, $type, $returnvalue, $params) {
+	
+		$result = $returnvalue;
+		$id = elgg_extract("id", $params);
+
+		if (strpos($id, "newsletter-edit-content-") === 0 ) {
+			if (elgg_is_active_plugin("blog")) {
+				$guid = str_replace("newsletter-edit-content-", "", $id);
+	
+				$result[] = ElggMenuItem::factory(array(
+						"name" => "newsletter-embed-blog",
+						"href" => "newsletter/embed/" . $guid,
+						"text" => elgg_echo("newsletter:menu:longtext:embed_blog"),
+						// "rel" => "embed-lightbox-{$vars["id"]}",
+						// "link_class" => "elgg-longtext-control elgg-lightbox embed-control embed-control-{$vars["id"]}",
+						"link_class" => "elgg-longtext-control elgg-lightbox",
+						"priority" => 5,
+				));
+					
+				elgg_load_js('lightbox');
+				elgg_load_css('lightbox');
+
+			}
+		}
+		
+		return $result;
+	}

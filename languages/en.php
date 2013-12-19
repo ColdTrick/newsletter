@@ -30,6 +30,9 @@
 		'newsletter:menu:steps:template' => "Template",
 		'newsletter:menu:steps:recipients' => "Recipients",
 		'newsletter:menu:steps:schedule' => "Schedule",
+			
+		// long text menu
+		'newsletter:menu:longtext:embed_blog' => "Embed blog",
 		
 		'newsletter:breadcrumb:site' => "Newsletters",
 		'newsletter:breadcrumb:log' => "Delivery log",
@@ -51,6 +54,7 @@
 		'newsletter:edit:content:section:collapse_all' => "Collapse all",
 		'newsletter:edit:content:section:expand_all' => "Expand all",
 
+			
 		// template
 		'newsletter:edit:template:description' => "Here you can control the newsletter layout by changing the html and control the styling by changing the css. Do not forget to preview you newsletter to see if it looks as expected.",
 		'newsletter:edit:template:select' => "Select a template",
