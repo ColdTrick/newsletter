@@ -16,6 +16,7 @@ if (!empty($guid)) {
 	if (!empty($entity) && $entity->canEdit()) {
 		if (elgg_instanceof($entity, "object", Newsletter::SUBTYPE)) {
 			$entity->scheduled = mktime(date("G"), 0, 0, date("n"), date("j"), date("Y"));
+			$entity->status = "scheduled";
 			
 			newsletter_start_commandline_sending($entity);
 			

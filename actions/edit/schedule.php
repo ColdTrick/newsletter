@@ -20,6 +20,7 @@
 				$date = mktime($hour, 0, 0, date("n", $date), date("j", $date), date("Y", $date));
 				
 				$entity->scheduled = $date;
+				$entity->status = "scheduled";
 				
 				// status notification email address
 				if (!empty($status_notification)) {
