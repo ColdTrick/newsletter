@@ -6,11 +6,17 @@
 	$css = get_input("css", "", false);
 	$template = get_input("template");
 	
+	$forward_url = REFERER;
+	
 	if (!empty($guid)) {
 		$entity = get_entity($guid);
 	
 		if (!empty($entity) && $entity->canEdit()) {
 			if (elgg_instanceof($entity, "object", Newsletter::SUBTYPE)) {
+				if (empty($entity->template)) {
+					$forward_url = "newsletter/edit/" . $entity->getGUID() . "/content";
+				}
+				
 				$entity->html = $html;
 				$entity->css = $css;
 				$entity->template = $template;
@@ -26,4 +32,4 @@
 		register_error(elgg_echo("InvalidParameterException:MissingParameter"));
 	}
 	
-	forward(REFERER);
+	forward($forward_url);
