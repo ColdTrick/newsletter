@@ -57,6 +57,9 @@ if (!empty($log)) {
 					$users_row_class = "hidden";
 				}
 				$skip_columns = array("type", "timestamp");
+				if (!elgg_is_admin_logged_in()) {
+					$skip_columns[] = "email";
+				}
 				
 				if (empty($users_header)) {
 					$keys = array_keys($recipient);
