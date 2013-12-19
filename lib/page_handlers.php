@@ -60,8 +60,8 @@
 				$include_file = $path . "/procedures/recipients.php";
 				break;
 			case "subscriptions":
-				if (isset($page[1]) && is_numeric($page[1])) {
-					elgg_set_page_owner_guid($page[1]);
+				if (isset($page[1]) && ($user = get_user_by_username($page[1]))) {
+					elgg_set_page_owner_guid($user->getGUID());
 						
 					$include_file = $path . "/pages/subscriptions.php";
 				}

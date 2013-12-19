@@ -135,7 +135,7 @@
 					$recipients = json_decode($recipients, true);
 				} else {
 					// no recipients so report error
-					$entity->status = "processed";
+					$entity->status = "sent";
 					
 					return false;
 				}

@@ -3,6 +3,14 @@
 	class Newsletter extends ElggObject {
 		const SUBTYPE = "newsletter";
 		
+		public function __clone() {
+			parent::__clone();
+			
+			$this->title = elgg_echo("newsletter:duplicate_of") . " " . $this->title;
+			$this->status = "concept";
+			unset($this->temp_metadata["scheduled"]);
+		}
+		
 		protected function initializeAttributes() {
 			parent::initializeAttributes();
 			

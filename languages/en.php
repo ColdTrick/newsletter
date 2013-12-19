@@ -6,6 +6,7 @@
 		'newsletter:add' => "New newsletter",
 		'newsletter:subscribe' => "Subscribe",
 		'newsletter:unsubscribe' => "Unsubscribe",
+		'newsletter:duplicate_of' => "Duplicate of",
 		
 		// menu's
 		'newsletter:menu:site' => "Newsletters",
@@ -14,6 +15,7 @@
 		'newsletter:menu:page:settings' => "Newsletter subscriptions",
 		
 		'newsletter:menu:entity:log' => "View log",
+		'newsletter:menu:entity:duplicate' => "Duplicate",
 		
 		'newsletter:menu:owner_block:group' => "Group newsletter",
 		
@@ -203,6 +205,9 @@ To view the newsletter click here:
 		// send
 		'newsletter:action:send:success' => "The newsletter is being send",
 		
+		// duplicate
+		'newsletter:action:duplicate:error' => "An unknown error occured while duplicating the newsletter, please try again",
+		'newsletter:action:duplicate:success' => "The newsletter was duplicated",
 		'' => "",
 	);
 	

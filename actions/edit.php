@@ -31,6 +31,8 @@
 			$entity->owner_guid = $container_guid;
 			$entity->container_guid = $container_guid;
 			
+			$entity->status = "concept";
+			
 			$new_entity = true;
 			
 			if (!$entity->save()) {
