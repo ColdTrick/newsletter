@@ -37,6 +37,11 @@ $confirm_options = array(
 	"text" => elgg_echo("newsletter:edit:template:copy_to_custom"),
 	"class" => "mlm hidden"
 );
+$delete_options = array(
+	"confirm" => elgg_echo("deleteconfirm"),
+	"text" => elgg_echo("delete"),
+	"class" => "mlm hidden"
+);
 
 foreach ($template_options as $name => $label) {
 	$checked = "";
@@ -53,6 +58,11 @@ foreach ($template_options as $name => $label) {
 	if ($name !== "custom") {
 		$confirm_options["href"] = "action/newsletter/edit/template_to_custom?guid=" . $entity->guid . "&template=" . $name;
 		echo elgg_view("output/confirmlink", $confirm_options);
+		
+		if (is_numeric($name)) {
+			$delete_options["href"] = "action/newsletter/template/delete?guid=" . $name;
+			echo elgg_view("output/confirmlink", $delete_options);
+		}
 	}
 	
 	echo "</li>";

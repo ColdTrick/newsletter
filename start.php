@@ -77,6 +77,7 @@
 		elgg_register_action("newsletter/duplicate", dirname(__FILE__) . "/actions/duplicate.php");
 		
 		elgg_register_action("newsletter/template/edit", dirname(__FILE__) . "/actions/template/edit.php");
+		elgg_register_action("newsletter/template/delete", dirname(__FILE__) . "/actions/template/delete.php");
 	}
 	
 	function newsletter_pagesetup() {

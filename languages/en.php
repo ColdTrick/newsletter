@@ -227,6 +227,11 @@ To view the newsletter click here:
 		// template - edit
 		'newsletter:action:template:edit:error' => "An unknown error occured while saving the template",
 		'newsletter:action:template:edit:success' => "The template was saved",
+		
+		// template - delete
+		'newsletter:action:template:delete:error:delete' => "An unknown error occured while deleting the newsletter template, please try again",
+		'newsletter:action:template:delete:success' => "The newsletter template was deleted",
+		
 		'' => "",
 	);
 	
