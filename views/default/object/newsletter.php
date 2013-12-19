@@ -25,18 +25,15 @@
 		}
 		
 		$subtitle = "";
-		if ($entity->scheduled) {
-			if ($entity->scheduled > time()) {
-				$subtitle .= "<strong>" . elgg_echo("newsletter:entity:scheduled") . ":</strong> ";
+		switch ($entity->status) {
+			case "scheduled":
+				$subtitle = "<strong>" . elgg_echo("newsletter:entity:scheduled") . ":</strong> ";
 				$subtitle .= date(elgg_echo('friendlytime:date_format'), $entity->scheduled);
-			} else {
-				$subtitle .= "<strong>" . elgg_echo("newsletter:entity:sent") . ":</strong> ";
-				
-				$log = $entity->getLogging();
-				if ($log) {
-					$subtitle .= date(elgg_echo('friendlytime:date_format'), elgg_extract("start_time", $log));
-				}
-			}
+				break;
+			case "sent":
+				$subtitle = "<strong>" . elgg_echo("newsletter:entity:sent") . ":</strong> ";
+				$subtitle .= date(elgg_echo('friendlytime:date_format'), $entity->start_time);
+				break;
 		}
 		
 		$params = array(

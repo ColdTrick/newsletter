@@ -101,6 +101,7 @@
 				// set newsletter status to sending
 				// ================================
 				$entity->status = "sending";
+				$entity->start_time = $logging["start_time"];
 				
 				// ==================
 				// get the recipients
