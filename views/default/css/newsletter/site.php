@@ -7,6 +7,10 @@
 	font-weight: normal;
 }
 
+#newsletter-edit-template-select li:hover .elgg-requires-confirmation {
+	display: inline;
+}
+
 .elgg-form-newsletter-edit-content .elgg-input-longtext {
 	min-height: 500px;
 }

@@ -193,6 +193,9 @@ To view the newsletter click here:
 		
 		// template
 		'newsletter:action:template:success' => "Template saved",
+
+		// template to custom
+		'newsletter:action:template_to_custom:success' => "Template copied to custom",
 		
 		// subscribe
 		'newsletter:action:subscribe:error:subscribe' => "An error occured while subscribing, please try again",
