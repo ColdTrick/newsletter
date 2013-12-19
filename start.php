@@ -51,6 +51,7 @@
 		elgg_register_plugin_hook_handler("register", "menu:filter", "newsletter_register_filter_menu_handler");
 		elgg_register_plugin_hook_handler("register", "menu:longtext", "newsletter_register_longtext_menu_handler");
 		elgg_register_plugin_hook_handler("register", "menu:newsletter_buttons", "newsletter_register_buttons_menu_handler");
+		elgg_register_plugin_hook_handler("register", "menu:longtext", "newsletter_register_longtext_menu_handler");
 		elgg_register_plugin_hook_handler("usersettings:save", "user", "newsletter_usersettings_save_handler");
 		elgg_register_plugin_hook_handler("register", "user", "newsletter_register_user_handler");
 		elgg_register_plugin_hook_handler("usersettings:save", "user", "newsletter_usersettings_save_handler");
