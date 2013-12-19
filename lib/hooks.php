@@ -447,5 +447,14 @@
 				"target" => "_self"
 		));
 		
+		if ($entity->canEdit()) {
+			$result[] = ElggMenuItem::factory(array(
+					"name" => "edit",
+					"href" => "newsletter/edit/" . $entity->getGUID(),
+					"text" => elgg_echo("edit"),
+					"target" => "_self"
+			));
+		}
+		
 		return $result;
 	}

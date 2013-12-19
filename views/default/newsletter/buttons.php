@@ -19,6 +19,11 @@ echo $menu;
 		list-style: none;
 	}
 	
+	.newsletter-buttons li {
+		display: inline-block;
+		margin-left: 10px;
+	}
+	
 	.newsletter-buttons a {
 		font-size: 14px;
 		font-weight: bold;
