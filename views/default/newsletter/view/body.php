@@ -3,6 +3,9 @@
 $entity = $vars["entity"];
 
 $template = $entity->template;
+if (empty($template)) {
+	$template = "default";
+}
 
 if ($template == "custom") {
 	$content = $entity->html;
