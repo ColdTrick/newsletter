@@ -4,6 +4,7 @@ $entity = $vars["entity"];
 
 $template_options = array(
 		"default" => elgg_echo("newsletter:edit:template:select:default"),
+		"default2" => elgg_echo("newsletter:edit:template:select:default2"),
 		"custom" => elgg_echo("newsletter:edit:template:select:custom"),
 	);
 
