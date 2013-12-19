@@ -277,6 +277,14 @@
 							
 						$result[] = $item;
 					}
+					
+					$result[] = ElggMenuItem::factory(array(
+						"name" => "duplicate",
+						"href" => "action/newsletter/duplicate?guid=" . $entity->getGUID(),
+						"text" => elgg_echo("newsletter:menu:entity:duplicate"),
+						"is_action" => true,
+						"is_trusted" => true
+					));
 				}
 			}
 		}

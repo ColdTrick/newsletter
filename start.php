@@ -66,6 +66,7 @@
 		elgg_register_action("newsletter/subscribe", dirname(__FILE__) . "/actions/subscribe.php", "public");
 		elgg_register_action("newsletter/unsubscribe", dirname(__FILE__) . "/actions/unsubscribe.php", "public");
 		elgg_register_action("newsletter/subscriptions", dirname(__FILE__) . "/actions/subscriptions.php");
+		elgg_register_action("newsletter/duplicate", dirname(__FILE__) . "/actions/duplicate.php");
 	}
 	
 	function newsletter_pagesetup() {
