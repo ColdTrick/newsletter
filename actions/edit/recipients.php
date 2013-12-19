@@ -32,11 +32,7 @@
 				system_message(elgg_echo("newsletter:action:recipients:success"));
 				
 				elgg_clear_sticky_form("newsletter_recipients");
-				if (elgg_instanceof($entity->getContainerEntity(), "group")) {
-					$forward_url = "newsletter/group/" . $entity->getContainerGUID();
-				} else {
-					$forward_url = "newsletter/site";
-				}
+
 			} else {
 				register_error(elgg_echo("ClassException:ClassnameNotClass", array($guid, elgg_echo("item:object:" . Newsletter::SUBTYPE))));
 			}

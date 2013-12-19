@@ -148,9 +148,9 @@
 			));
 			
 			$item = ElggMenuItem::factory(array(
-				"name" => "styling",
-				"href" => "newsletter/edit/" . $entity->getGUID() . "/styling",
-				"text" => elgg_echo("newsletter:menu:steps:styling")
+				"name" => "template",
+				"href" => "newsletter/edit/" . $entity->getGUID() . "/template",
+				"text" => elgg_echo("newsletter:menu:steps:template")
 			));
 			
 			if ($entity->template) {

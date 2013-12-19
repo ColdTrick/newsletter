@@ -11,8 +11,8 @@
 	
 		if (!empty($entity) && $entity->canEdit()) {
 			if (elgg_instanceof($entity, "object", Newsletter::SUBTYPE)) {
-				$entity->styling_html = $html;
-				$entity->styling_css = $css;
+				$entity->html = $html;
+				$entity->css = $css;
 				$entity->template = $template;
 				
 				system_message(elgg_echo("newsletter:action:template:success"));

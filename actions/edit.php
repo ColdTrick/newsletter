@@ -11,6 +11,8 @@
 	
 	$forward_url = REFERER;
 	
+	$new_entity = false;
+	
 	if (!empty($title)) {
 		if (!empty($guid)) {
 			$entity = get_entity($guid);
@@ -28,6 +30,8 @@
 			$entity = new Newsletter();
 			$entity->owner_guid = $container_guid;
 			$entity->container_guid = $container_guid;
+			
+			$new_entity = true;
 			
 			if (!$entity->save()) {
 				unset($entity);
@@ -49,7 +53,9 @@
 			if ($entity->save()) {
 				elgg_clear_sticky_form("newsletter_edit");
 				
-				$forward_url = "newsletter/edit/" . $entity->getGUID() . "/content";
+				if ($new_entity) {
+					$forward_url = "newsletter/edit/" . $entity->getGUID() . "/template";
+				}
 				
 				system_message(elgg_echo("newsletter:action:edit:success"));
 			} else {

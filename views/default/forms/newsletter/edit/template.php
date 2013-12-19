@@ -25,11 +25,11 @@ if ($entity->template == "custom") {
 }
 	
 echo "<div><label>" . elgg_echo("newsletter:edit:template:html") . "<br />";
-echo elgg_view("input/plaintext", array("name" => "html", "value" => $entity->styling_html));
+echo elgg_view("input/plaintext", array("name" => "html", "value" => $entity->html));
 echo "</label></div>";
 
 echo "<div><label>" . elgg_echo("newsletter:edit:template:css") . "<br />";
-echo elgg_view("input/plaintext", array("name" => "css", "value" => $entity->styling_css));
+echo elgg_view("input/plaintext", array("name" => "css", "value" => $entity->css));
 echo "</label></div>";
 
 echo "</div>";
