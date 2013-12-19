@@ -22,3 +22,4 @@ if (!elgg_instanceof($entity, "object", Newsletter::SUBTYPE)) {
 }
 
 echo elgg_view_layout("newsletter", array("entity" => $entity));
+echo elgg_view("newsletter/buttons", array("entity" => $entity, "type" => "preview"));
