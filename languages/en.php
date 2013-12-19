@@ -74,7 +74,7 @@
 		'newsletter:schedule:time' => "Scheduled time",
 		'newsletter:schedule:status_notification' => "E-mail address for status notification (optional)",
 		'newsletter:schedule:status_notification:description' => "When the newsletter is sent, a notification will be send to this e-mail address.",
-		'newsletter:schedule:show_in_archive' => "Show the newsletter in the public archive",
+		'newsletter:schedule:show_in_archive' => "Show the newsletter in the archive",
 		'newsletter:schedule:send' => "Send now",
 
 		// recipients
