@@ -1,6 +1,6 @@
 <?php
 $guid = (int) get_input("guid");
-$content = get_input("content");
+$content = get_input("content", "", false);
 
 if (!empty($guid) && !empty($content)) {
 	$entity = get_entity($guid);
