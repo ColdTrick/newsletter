@@ -59,6 +59,7 @@
 		'newsletter:edit:template:copy_to_custom:confirm' => "This action will override the current custom template. Are you sure you wish to copy this template to the custom template for this newsletter?",
 		'newsletter:edit:template:select' => "Select a template",
 		'newsletter:edit:template:select:default' => "Default template",
+		'newsletter:edit:template:select:default2' => "Default template (with sidebar)",
 		'newsletter:edit:template:select:custom' => "Custom template",
 		'newsletter:edit:template:html' => "HTML",
 		'newsletter:edit:template:css' => "CSS",
