@@ -15,6 +15,8 @@
 		
 		'newsletter:menu:entity:log' => "View log",
 		
+		'newsletter:menu:owner_block:group' => "Group newsletter",
+		
 		// steps menu
 		'newsletter:menu:steps:entity' => "Basic",
 		'newsletter:menu:steps:content' => "Content",
@@ -156,6 +158,11 @@ To view the newsletter click here:
 		'newsletter:log:no_recipients' => "There were no recipients for this newsletter",
 		'newsletter:log:emails:no_recipients' => "There were no individual e-mail addresses in the proccessing of the newsletter. If you had selected some e-mail addresses they could have unsubscribed from the newsletter.",
 		'newsletter:log:users:no_recipients' => "There were no registered users in the proccessing of the newsletter. If you had selected some users they could have unsubscribed from the newsletter.",
+		
+		// group
+		'newsletter:group:tool_option' => "Enable group newsletter",
+		'newsletter:group:error:not_enabled' => "Newsletters aren't enabled for this group",
+		'newsletter:group:title' => "%s's newsletters",
 		
 		// actions
 		// edit

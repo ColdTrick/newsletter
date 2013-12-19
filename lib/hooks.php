@@ -251,6 +251,15 @@
 		}
 	}
 	
+	/**
+	 * Add a menu item in the entity's menu
+	 *
+	 * @param 	string	$hook
+	 * @param 	string 	$type
+	 * @param 	array 	$returnvalue	Default menu items
+	 * @param 	array 	$params
+	 * @return 	array					Menu items
+	 */
 	function newsletter_register_entity_menu_handler($hook, $type, $returnvalue, $params) {
 		$result = $returnvalue;
 		
@@ -286,3 +295,34 @@
 			}
 		}
 	}
+	
+	/**
+	 * Add a menu item in the owner block menu of a group
+	 *
+	 * @param 	string	$hook
+	 * @param 	string 	$type
+	 * @param 	array 	$returnvalue	Default menu items
+	 * @param 	array 	$params
+	 * @return 	array					Menu items
+	 */
+	function newsletter_register_owner_block_menu_handler($hook, $type, $returnvalue, $params) {
+		$result = $returnvalue;
+		
+		if (!empty($params) && is_array($params)) {
+			$entity = elgg_extract("entity", $params);
+			
+			if (!empty($entity) && elgg_instanceof($entity, "group")) {
+				if (newsletter_is_group_enabled($entity)) {
+					$result[] = ElggMenuItem::factory(array(
+						"name" => "newsletter",
+						"text" => elgg_echo("newsletter:menu:owner_block:group"),
+						"href" => "newsletter/group/" . $entity->getGUID(),
+						"is_trusted" => true
+					));
+				}
+			}
+		}
+		
+		return $result;
+	}
+	

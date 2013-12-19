@@ -20,7 +20,7 @@
 		}
 	} elseif (elgg_instanceof($page_owner, "group")) {
 		// only for group owners/admins
-		if ($page_owner->canEdit()) {
+		if (newsletter_is_group_enabled($page_owner) && $page_owner->canEdit()) {
 			$container_guid = $page_owner->getGUID();
 		} else {
 			forward(REFERER);

@@ -1026,3 +1026,35 @@
 		return $result;
 	}
 	
+	function newsletter_is_group_enabled(ElggGroup $group = null) {
+		static $plugin_setting;
+		$result = false;
+		
+		// make sure we only get the plugin setting once
+		if (!isset($plugin_setting)) {
+			$plugin_setting = false;
+			
+			$setting = elgg_get_plugin_setting("allow_groups", "newsletter");
+			if ($setting == "yes") {
+				$plugin_setting = true;
+			}
+		}
+		
+		// check the setting of the group (if any)
+		if ($plugin_setting) {
+			if (!empty($group) && elgg_instanceof($group, "group")) {
+				// check the setting of the group
+				$group_setting = $group->newsletter_enable;
+				
+				if ($group_setting != "no") {
+					$result = true;
+				}
+			} else {
+				// no group just checking plugin setting
+				$result = true;
+			}
+		}
+		
+		return $result;
+	}
+	
