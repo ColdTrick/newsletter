@@ -49,6 +49,7 @@
 		elgg_register_plugin_hook_handler("register", "menu:owner_block", "newsletter_register_owner_block_menu_handler");
 		elgg_register_plugin_hook_handler("usersettings:save", "user", "newsletter_usersettings_save_handler");
 		elgg_register_plugin_hook_handler("register", "user", "newsletter_register_user_handler");
+		elgg_register_plugin_hook_handler("entity:icon:url", "object", "newsletter_icon_hook");
 		
 		// register event handlers
 		elgg_register_event_handler("upgrade", "system", "newsletter_upgrade_event_handler");

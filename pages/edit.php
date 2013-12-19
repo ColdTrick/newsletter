@@ -53,7 +53,7 @@
 	
 	if ($subpage) {
 		
-		if ($subpage == "content" || $subpage == "styling") {
+		if ($subpage == "content" || $subpage == "template") {
 			elgg_register_menu_item("title", ElggMenuItem::factory(array(
 					"name" => "preview",
 					"text" => elgg_echo("preview"),

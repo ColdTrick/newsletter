@@ -20,7 +20,7 @@
 		// steps menu
 		'newsletter:menu:steps:entity' => "Basic",
 		'newsletter:menu:steps:content' => "Content",
-		'newsletter:menu:steps:styling' => "Styling",
+		'newsletter:menu:steps:template' => "Template",
 		'newsletter:menu:steps:recipients' => "Recipients",
 		'newsletter:menu:steps:schedule' => "Schedule",
 		
@@ -63,12 +63,13 @@
 		'newsletter:schedule:time' => "Scheduled time",
 		'newsletter:schedule:status_notification' => "E-mail address for status notification (optional)",
 		'newsletter:schedule:status_notification:description' => "When the newsletter is sent, a notification will be send to this e-mail address.",
+		'newsletter:schedule:send' => "Send now",
 
 		// recipients
 		'newsletter:recipients:title' => "Select recipients",
 		'newsletter:recipients:description' => "Below you can configure who you want to receive the newsletter.",
 		'newsletter:recipients:recipient' => "Search a recipient",
-		'newsletter:recipients:recipient:description' => "You can search on name, email and username. Please select one from the dropdown to add the reciepient.",
+		'newsletter:recipients:recipient:description' => "You can search on name, email and username. Please select one from the dropdown to add the recipient.",
 		'newsletter:recipients' => "Recipients",
 		'newsletter:recipients:subscribers' => "To all subscribers",
 		'newsletter:recipients:members' => "To all members",

@@ -22,12 +22,12 @@
 	
 	echo "<div>";
 	echo "<label for='date'>" . elgg_echo("newsletter:schedule:date") . "</label>";
-	echo elgg_view("input/date", array("name" => "date", "value" => $date, "timestamp" => true));
-	echo "</div>";
+	echo elgg_view("input/date", array("name" => "date", "value" => $date, "timestamp" => true, "class" => "mhm"));
 	
-	echo "<div>";
-	echo "<label for='newsletter-schedule-hour'>" . elgg_echo("newsletter:schedule:time") . "</label>";
-	echo elgg_view("input/dropdown", array("name" => "hour", "value" => $hour, "options" => range(0, 23), "class" => "mls", "id" => "newsletter-schedule-hour"));
+	echo "@";
+	
+	echo "<label for='newsletter-schedule-hour' class='hidden'>" . elgg_echo("newsletter:schedule:time") . "</label>";
+	echo elgg_view("input/dropdown", array("name" => "hour", "value" => $hour, "options" => range(0, 23), "class" => "mlm", "id" => "newsletter-schedule-hour"));
 	echo ":00";
 	echo "</div>";
 	
@@ -39,6 +39,6 @@
 	
 	echo "<div class='elgg-foot'>";
 	echo elgg_view("input/hidden", array("name" => "guid", "value" => $entity->getGUID()));
-	echo elgg_view("output/url", array("href" => "action/newsletter/send?guid=" . $entity->getGUID(), "is_action" => true, "text" => elgg_echo("send"), "class" => "elgg-button elgg-button-action float-alt"));
+	echo elgg_view("output/url", array("href" => "action/newsletter/send?guid=" . $entity->getGUID(), "is_action" => true, "text" => elgg_echo("newsletter:schedule:send"), "class" => "elgg-button elgg-button-action float-alt"));
 	echo elgg_view("input/submit", array("value" => elgg_echo("save")));
 	echo "</div>";

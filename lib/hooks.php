@@ -148,9 +148,9 @@
 			));
 			
 			$item = ElggMenuItem::factory(array(
-				"name" => "styling",
-				"href" => "newsletter/edit/" . $entity->getGUID() . "/styling",
-				"text" => elgg_echo("newsletter:menu:steps:styling")
+				"name" => "template",
+				"href" => "newsletter/edit/" . $entity->getGUID() . "/template",
+				"text" => elgg_echo("newsletter:menu:steps:template")
 			));
 			
 			if ($entity->template) {
@@ -282,6 +282,18 @@
 		}
 		
 		return $result;
+	}
+	
+	function newsletter_icon_hook($hook, $entity_type, $returnvalue, $params) {
+		if (!empty($params) && is_array($params)) {
+			$entity = $params["entity"];
+				
+			if(elgg_instanceof($entity, "object", "newsletter")){
+				$url = elgg_get_site_url() . "mod/newsletter/_graphics/newsletter-icon.png";
+				
+				return $url;
+			}
+		}
 	}
 	
 	/**

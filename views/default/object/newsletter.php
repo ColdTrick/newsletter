@@ -24,20 +24,25 @@
 			$excerpt = elgg_get_excerpt($entity->description);
 		}
 		
-		$subitle = "";
+		$subtitle = "";
 		if ($entity->scheduled) {
 			if ($entity->scheduled > time()) {
-				$subitle .= "<strong>" . elgg_echo("newsletter:entity:scheduled") . ":</strong> ";
+				$subtitle .= "<strong>" . elgg_echo("newsletter:entity:scheduled") . ":</strong> ";
+				$subtitle .= date(elgg_echo('friendlytime:date_format'), $entity->scheduled);
 			} else {
-				$subitle .= "<strong>" . elgg_echo("newsletter:entity:sent") . ":</strong> ";
+				$subtitle .= "<strong>" . elgg_echo("newsletter:entity:sent") . ":</strong> ";
+				
+				$log = $entity->getLogging();
+				if ($log) {
+					$subtitle .= date(elgg_echo('friendlytime:date_format'), elgg_extract("start_time", $log));
+				}
 			}
-			$subitle .= date(elgg_echo('friendlytime:date_format'), $entity->scheduled);
 		}
 		
 		$params = array(
 			"entity" => $entity,
 			"metadata" => $entity_menu,
-			"subtitle" => $subitle,
+			"subtitle" => $subtitle,
 			"content" => $excerpt
 		);
 		

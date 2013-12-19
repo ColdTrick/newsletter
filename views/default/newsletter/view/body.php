@@ -5,7 +5,7 @@ $entity = $vars["entity"];
 $template = $entity->template;
 
 if ($template == "custom") {
-	$content = $entity->styling_html;
+	$content = $entity->html;
 } else {
 	$content = elgg_view("newsletter/templates/" . $template . "/body");
 }
@@ -22,7 +22,6 @@ $replacements = array(
 		
 		"{unsub}" => elgg_echo("newsletter:body:unsub"),
 		"{online}" => elgg_echo("newsletter:body:online"),
-		
 		
 		"{title}" => $entity->title,
 		"{description}" => $entity->description,

@@ -16,6 +16,13 @@
 	text-align: right;
 }
 
+.elgg-form-newsletter-edit-schedule .elgg-input-date {
+	width: 100px;
+	text-align: center;
+	height: 22px;
+	padding: 0px;
+}
+
 #newsletter-recipients-wrapper .elgg-icon-delete-alt {
 	display: none;
 }

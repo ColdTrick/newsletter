@@ -2,7 +2,7 @@
 
 $template = $vars["entity"]->template;
 if ($template == "custom") {
-	$css = $vars["entity"]->styling_css;
+	$css = $vars["entity"]->css;
 } else {
 	$css = elgg_view("newsletter/templates/" . $template . "/css");
 }
