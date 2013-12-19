@@ -160,6 +160,8 @@ To view the newsletter click here:
 		
 		// group
 		'newsletter:group:tool_option' => "Enable group newsletter",
+		'newsletter:group:error:not_enabled' => "Newsletters aren't enabled for this group",
+		'newsletter:group:title' => "%s's newsletters",
 		
 		// actions
 		// edit
