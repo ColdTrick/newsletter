@@ -50,10 +50,18 @@
 			);
 			break;
 		default:
-			$options["metadata_name_value_pairs"] = array(
+			$options["metadata_name_value_pairs"] = array();
+			$options["metadata_name_value_pairs"][] = array(
 				"name" => "status",
 				"value" => "sent"
 			);
+			if (!elgg_is_admin_logged_in()) {
+				$options["metadata_name_value_pairs"][] = array(
+					"name" => "show_in_archive",
+					"value" => 1
+				);
+			}
+			
 			$options["order_by_metadata"] = array(
 				"name" => "start_time",
 				"as" => "integer"

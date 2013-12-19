@@ -19,6 +19,8 @@ elgg.newsletter.init = function() {
 		
 		event.preventDefault();
 	});
+
+	$("#newsletter-send-now").live("click", elgg.newsletter.schedule_send_now);
 }
 
 elgg.newsletter.embed = function(elem) {
@@ -37,6 +39,13 @@ elgg.newsletter.embed = function(elem) {
 	?>
 
 	$.fancybox.close();
+}
+
+elgg.newsletter.schedule_send_now = function() {
+	if (confirm(elgg.echo("question:areyousure"))) {
+		$("#newsletter-form-schedule").attr("action", elgg.get_site_url() + "action/newsletter/send");
+		$("#newsletter-form-schedule").submit();
+	}
 }
 
 //register init hook
