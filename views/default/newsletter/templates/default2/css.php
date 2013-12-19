@@ -49,7 +49,7 @@ h4 {
 	text-align: center;
 	padding: 10px 20px 0px;
 	margin: 0 auto;
-	width: 600px;
+	width: 800px;
 }
 
 #newsletter_header {
@@ -74,8 +74,25 @@ h4 {
 
 #newsletter_container {
 	padding: 20px 0;
-	width: 600px;
+	width: 800px;
 	margin: 0 auto;
+}
+
+#newsletter_content_wrapper {
+	display: inline-block;
+	border-left: 1px solid #dbdbdb;
+	border-bottom: 1px solid #dbdbdb;
+}
+
+#newsletter_sidebar {
+	width: 179px;
+	float: left;
+	padding: 30px 10px;
+}
+
+#newsletter_content {
+	width: 600px;
+	float: right;
 }
 
 #newsletter_unsubscribe {

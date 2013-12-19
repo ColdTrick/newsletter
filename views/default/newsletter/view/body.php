@@ -31,6 +31,7 @@ $replacements = array(
 		"{subject}" => $entity->subject,
 		"{newsletter_url}" => $entity->getURL(),
 		"{site_name}" => elgg_get_site_entity()->name,
+		"{site_description}" => elgg_get_site_entity()->description,
 		"{site_url}" => elgg_get_site_url(),
 		"{container_name}" => $entity->getContainerEntity()->name,
 		"{container_url}" => $container_url,

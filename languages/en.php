@@ -61,6 +61,7 @@
 		'newsletter:edit:template:copy_to_custom:confirm' => "This action will override the current custom template. Are you sure you wish to copy this template to the custom template for this newsletter?",
 		'newsletter:edit:template:select' => "Select a template",
 		'newsletter:edit:template:select:default' => "Default template",
+		'newsletter:edit:template:select:default2' => "Default template (with sidebar)",
 		'newsletter:edit:template:select:custom' => "Custom template",
 		'newsletter:edit:template:html' => "HTML",
 		'newsletter:edit:template:css' => "CSS",
@@ -69,8 +70,8 @@
 		'newsletter:edit:template:error:save_as' => "Please check the marked required fields",
 			
 		// default template body
-		'newsletter:body:unsub' => "Deze e-mail is verstuurd door <a href='{site_url}' rel='nofollow'>{site_name}</a>. Om je direct af te melden van deze digest, <a href='{unsublink}'>klik hier</a>.",
-		'newsletter:body:online' => "Als je dit bericht niet kunt lezen, bekijk deze digest <a href='{newsletter_url}'>online</a>",
+		'newsletter:body:unsub' => "This newsletter is sent from <a href='{site_url}' rel='nofollow'>{site_name}</a>. Click <a href='{unsublink}'>here</a> to unsubscribe from this newsletter.",
+		'newsletter:body:online' => "If you can't read this newsletter, check it <a href='{newsletter_url}'>online</a>",
 			
 	
 		// schedule

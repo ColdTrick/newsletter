@@ -3,7 +3,8 @@
 $entity = $vars["entity"];
 
 $template_options = array(
-	"default" => elgg_echo("newsletter:edit:template:select:default")
+	"default" => elgg_echo("newsletter:edit:template:select:default"),
+	"default2" => elgg_echo("newsletter:edit:template:select:default2")
 );
 
 $options = array(
@@ -32,10 +33,10 @@ echo "<div class='mtm'><label for='newsletter-edit-template-select'>" . elgg_ech
 echo "<ul id='newsletter-edit-template-select' class='elgg-input-radios elgg-vertical'>";
 
 $confirm_options = array(
-		"confirm" => elgg_echo("newsletter:edit:template:copy_to_custom:confirm"),
-		"text" => elgg_echo("newsletter:edit:template:copy_to_custom"),
-		"class" => "mlm hidden"
-	);
+	"confirm" => elgg_echo("newsletter:edit:template:copy_to_custom:confirm"),
+	"text" => elgg_echo("newsletter:edit:template:copy_to_custom"),
+	"class" => "mlm hidden"
+);
 
 foreach ($template_options as $name => $label) {
 	$checked = "";
