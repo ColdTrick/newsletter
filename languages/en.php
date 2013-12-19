@@ -47,16 +47,12 @@
 		'newsletter:edit:subject' => "Custom e-mail subject (optional)",
 		
 		// content
-		'newsletter:edit:content:add_section' => "Add section",
-		'newsletter:edit:content:description' => "Add the content to your newsletter here. Add sections of free text or import an existing blog as content into your newsletter. You can always reorder the content of this newsletter.",
-		'newsletter:edit:content:section:collapse' => "Collapse",
-		'newsletter:edit:content:section:expand' => "Expand",
-		'newsletter:edit:content:section:collapse_all' => "Collapse all",
-		'newsletter:edit:content:section:expand_all' => "Expand all",
-
-			
+		'newsletter:edit:content:description' => "Add the content to your newsletter here. Add free text or import an existing blog as content into your newsletter.",
+					
 		// template
 		'newsletter:edit:template:description' => "Here you can control the newsletter layout by changing the html and control the styling by changing the css. Do not forget to preview you newsletter to see if it looks as expected.",
+		'newsletter:edit:template:copy_to_custom' => "Copy to custom",
+		'newsletter:edit:template:copy_to_custom:confirm' => "This action will override the current custom template. Are you sure you wish to copy this template to the custom template for this newsletter?",
 		'newsletter:edit:template:select' => "Select a template",
 		'newsletter:edit:template:select:default' => "Default template",
 		'newsletter:edit:template:select:custom' => "Custom template",
