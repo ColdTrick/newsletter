@@ -19,11 +19,7 @@ if (!empty($guid)) {
 			
 			newsletter_start_commandline_sending($entity);
 			
-// 			if (elgg_instanceof($entity->getContainerEntity(), "site")) {
-// 				$forward_url = "newsletter/site";
-// 			} else {
-// 				$forward_url = "newsletter/group/" . $entity->getContainerGUID();
-// 			}
+			$forward_url = "newsletter/log/" . $entity->getGUID();
 			
 			system_message(elgg_echo("newsletter:action:send:success"));
 		} else {
