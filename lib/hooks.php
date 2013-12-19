@@ -347,8 +347,6 @@
 						"name" => "newsletter-embed-blog",
 						"href" => "newsletter/embed/" . $guid,
 						"text" => elgg_echo("newsletter:menu:longtext:embed_blog"),
-						// "rel" => "embed-lightbox-{$vars["id"]}",
-						// "link_class" => "elgg-longtext-control elgg-lightbox embed-control embed-control-{$vars["id"]}",
 						"link_class" => "elgg-longtext-control elgg-lightbox",
 						"priority" => 5,
 				));
@@ -357,6 +355,29 @@
 				elgg_load_css('lightbox');
 			}
 		}
+		
+		return $result;
+	}
+
+	function newsletter_register_buttons_menu_handler($hook, $type, $returnvalue, $params) {
+	
+		$result = $returnvalue;
+		$entity = elgg_extract("entity", $params);
+		
+		$container = $entity->getContainerEntity();
+		
+		if ($container instanceof ElggGroup) {
+			$href = "newsletter/group/" . $container->getGUID();
+		} else {
+			$href = "newsletter/site";
+		}
+		
+		$result[] = ElggMenuItem::factory(array(
+				"name" => "more",
+				"href" => $href,
+				"text" => elgg_echo("newsletter:menu:site"),
+				"target" => "_self"
+		));
 		
 		return $result;
 	}
