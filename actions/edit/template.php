@@ -2,8 +2,8 @@
 
 	$guid = (int) get_input("guid");
 	
-	$html = get_input("html");
-	$css = get_input("css");
+	$html = get_input("html", "", false);
+	$css = get_input("css", "", false);
 	$template = get_input("template");
 	
 	if (!empty($guid)) {
