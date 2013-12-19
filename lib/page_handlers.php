@@ -66,6 +66,13 @@
 					$include_file = $path . "/pages/subscriptions.php";
 				}
 				break;
+			case "received":
+				if (isset($page[1]) && ($user = get_user_by_username($page[1]))) {
+					elgg_set_page_owner_guid($user->getGUID());
+						
+					$include_file = $path . "/pages/received.php";
+				}
+				break;
 			case "log":
 				if (isset($page[1]) && is_numeric($page[1])) {
 					set_input("guid", $page[1]);

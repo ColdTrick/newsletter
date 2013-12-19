@@ -108,6 +108,12 @@
 				"text" => elgg_echo("newsletter:menu:page:subscriptions"),
 				"is_trusted" => true
 			));
+			$result[] = ElggMenuItem::factory(array(
+				"name" => "newsletter_received",
+				"href" => "newsletter/received/" . $user->username,
+				"text" => elgg_echo("newsletter:menu:page:received"),
+				"is_trusted" => true
+			));
 		}
 		
 		// settings pages

@@ -2,6 +2,7 @@
 
 	class Newsletter extends ElggObject {
 		const SUBTYPE = "newsletter";
+		const SEND_TO = "send_to";
 		
 		public function __clone() {
 			parent::__clone();

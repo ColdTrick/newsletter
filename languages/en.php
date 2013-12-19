@@ -13,6 +13,7 @@
 		
 		'newsletter:menu:page:subscriptions' => "My subscriptions",
 		'newsletter:menu:page:settings' => "Newsletter subscriptions",
+		'newsletter:menu:page:received' => "My received newsletters",
 		
 		'newsletter:menu:entity:log' => "View log",
 		'newsletter:menu:entity:duplicate' => "Duplicate",
@@ -36,12 +37,15 @@
 		
 		'newsletter:breadcrumb:site' => "Newsletters",
 		'newsletter:breadcrumb:log' => "Delivery log",
+		'newsletter:breadcrumb:received' => "Received",
 		
 		// pages
 		'newsletter:site:title' => "All site newsletters",
 		'newsletter:add:title' => "Create a newsletter",
 		'newsletter:edit:title' => "Edit newsletter: %s",
 		'newsletter:schedule:title' => "%s: Schedule",
+		'newsletter:received:title' => "%s's received newsletters",
+		'newsletter:received:title:mine' => "My received newsletters",
 		
 		// edit
 		'newsletter:edit:subject' => "Custom e-mail subject (optional)",
