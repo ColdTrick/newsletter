@@ -334,3 +334,63 @@
 		return $result;
 	}
 	
+	/**
+	 * Replace the filter menu on the newsletter pages
+	 *
+	 * @param 	string	$hook
+	 * @param 	string 	$type
+	 * @param 	array 	$returnvalue	Default menu items
+	 * @param 	array 	$params
+	 * @return 	array					Menu items
+	 */
+	function newsletter_register_filter_menu_handler($hook, $type, $returnvalue, $params) {
+		$result = $returnvalue;
+		
+		if (elgg_in_context("newsletter")) {
+			$result = array();
+			
+			$page_owner = elgg_get_page_owner_entity();
+			
+			if (elgg_is_admin_logged_in() || (!empty($page_owner) && $page_owner->canEdit())) {
+				$base_url = "newsletter/site";
+				if (elgg_instanceof($page_owner, "group")) {
+					$base_url = "newsletter/group/" . $page_owner->getGUID();
+				}
+				$current_filter = get_input("filter", "sent");
+				
+				$result[] = ElggMenuItem::factory(array(
+					"name" => "concept",
+					"text" => elgg_echo("newsletter:menu:filter:concept"),
+					"href" => $base_url . "?filter=concept",
+					"is_trusted" => true,
+					"selected" => ($current_filter == "concept")
+				));
+				
+				$result[] = ElggMenuItem::factory(array(
+					"name" => "scheduled",
+					"text" => elgg_echo("newsletter:menu:filter:scheduled"),
+					"href" => $base_url . "?filter=scheduled",
+					"is_trusted" => true,
+					"selected" => ($current_filter == "scheduled")
+				));
+				
+				$result[] = ElggMenuItem::factory(array(
+					"name" => "sending",
+					"text" => elgg_echo("newsletter:menu:filter:sending"),
+					"href" => $base_url . "?filter=sending",
+					"is_trusted" => true,
+					"selected" => ($current_filter == "sending")
+				));
+				
+				$result[] = ElggMenuItem::factory(array(
+					"name" => "sent",
+					"text" => elgg_echo("newsletter:menu:filter:sent"),
+					"href" => $base_url,
+					"is_trusted" => true,
+					"selected" => ($current_filter == "sent")
+				));
+			}
+		}
+		
+		return $result;
+	}
