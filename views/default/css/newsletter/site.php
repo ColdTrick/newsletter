@@ -68,3 +68,21 @@
 	width: 25px;
 	text-align: center;
 }
+
+#newsletter-embed-list {
+	width: 700px;
+}
+
+#newsletter-embed-list > li {
+	padding: 5px;
+	border: 1px solid transparent;
+	cursor: pointer;
+}
+
+#newsletter-embed-list li:hover {
+	border-color: #CCC;
+}
+
+.newsletter-embed-item-content {
+	display: none;
+}

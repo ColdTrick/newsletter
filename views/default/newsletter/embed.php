@@ -16,7 +16,19 @@ $entities = elgg_get_entities($options);
 
 echo "<ul id='newsletter-embed-list'>";
 foreach($entities as $entity) {
-	echo "<li><p>" . $entity->title . "</p></li>";
+	$description = $entity->description;
+	
+	echo "<li>";
+	echo "<div>";
+	echo "<strong>" . $entity->title . "</strong><br />";
+	echo elgg_get_excerpt($description);
+	echo "</div>";
+	echo "<div class='newsletter-embed-item-content'>";
+	
+	echo "<strong>" . $entity->title . "</strong><br />";
+	echo elgg_view("output/longtext", array("value" => $description));
+	
+	echo "</div></li>";
 }
 
 echo "</ul>";
