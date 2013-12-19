@@ -11,8 +11,18 @@ if (!empty($guid) && !empty($template)) {
 		if (elgg_instanceof($entity, "object", Newsletter::SUBTYPE)) {
 			
 			$entity->template = "custom";
-			$entity->css = elgg_view("newsletter/templates/" . $template . "/css");
-			$entity->html = elgg_view("newsletter/templates/" . $template . "/body");
+			
+			if (is_numeric($template)) {
+				$template_entity = get_entity($template);
+				if (!empty($template_entity) && elgg_instanceof($template_entity, "object", NEWSLETTER_TEMPLATE)) {
+					$entity->html = $template_entity->html;
+					$entity->css = $template_entity->css;
+				}
+			} else {
+				// assume the template is provided in a view
+				$entity->css = elgg_view("newsletter/templates/" . $template . "/css");
+				$entity->html = elgg_view("newsletter/templates/" . $template . "/body");
+			}
 
 			system_message(elgg_echo("newsletter:action:template_to_custom:success"));
 
