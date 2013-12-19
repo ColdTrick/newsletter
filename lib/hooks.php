@@ -104,7 +104,7 @@
 			// link to your subscriptions
 			$result[] = ElggMenuItem::factory(array(
 				"name" => "newsletter_suscriptions",
-				"href" => "newsletter/subscriptions/" . $user->getGUID(),
+				"href" => "newsletter/subscriptions/" . $user->username,
 				"text" => elgg_echo("newsletter:menu:page:subscriptions"),
 				"is_trusted" => true
 			));
@@ -116,7 +116,7 @@
 			if (elgg_instanceof($page_owner, "user") && $page_owner->canEdit()) {
 				$result[] = ElggMenuItem::factory(array(
 					"name" => "edit",
-					"href" => "newsletter/subscriptions/" . $page_owner->getGUID(),
+					"href" => "newsletter/subscriptions/" . $page_owner->username,
 					"text" => elgg_echo("newsletter:menu:page:settings"),
 					"is_trusted" => true
 				));
