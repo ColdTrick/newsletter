@@ -8,9 +8,20 @@
 	 */
 
 	$entity = elgg_extract("entity", $vars);
+	$display_subbox = false;
 	
-	$title = elgg_echo("newsletter:sidebar:subscribe:title");
+	if (elgg_instanceof($entity, "group")) {
+		if (newsletter_is_group_enabled($entity)) {
+			$display_subbox = true;
+		}
+	} else {
+		$display_subbox = true;
+	}
 	
-	$content = elgg_view_form("newsletter/subscribe", array(), array("entity" => $entity));
-	
-	echo elgg_view_module("aside", $title, $content);
+	if ($display_subbox) {
+		$title = elgg_echo("newsletter:sidebar:subscribe:title");
+		
+		$content = elgg_view_form("newsletter/subscribe", array(), array("entity" => $entity));
+		
+		echo elgg_view_module("aside", $title, $content);
+	}
