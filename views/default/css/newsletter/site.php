@@ -64,3 +64,7 @@
 	width: 25px;
 	text-align: center;
 }
+
+.newsletter-input-error {
+	border: 1px solid red;
+}

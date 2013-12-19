@@ -3,6 +3,8 @@
 	$english = array(
 		// general
 		'item:object:newsletter' => "Newsletter",
+		'item:object:newsletter_template' => "Newsletter template",
+		'item:object:newsletter_subscription' => "Newsletter subscription",
 		'newsletter:add' => "New newsletter",
 		'newsletter:subscribe' => "Subscribe",
 		'newsletter:unsubscribe' => "Unsubscribe",
@@ -66,6 +68,9 @@
 		'newsletter:edit:template:select:custom' => "Custom template",
 		'newsletter:edit:template:html' => "HTML",
 		'newsletter:edit:template:css' => "CSS",
+		'newsletter:edit:template:name' => "Name for the custom template (only needed for saving template)",
+		'newsletter:edit:template:save_as' => "Save as template",
+		'newsletter:edit:template:error:save_as' => "Please check the marked required fields",
 			
 		// default template body
 		'newsletter:body:unsub' => "Deze e-mail is verstuurd door <a href='{site_url}' rel='nofollow'>{site_name}</a>. Om je direct af te melden van deze digest, <a href='{unsublink}'>klik hier</a>.",
@@ -218,6 +223,10 @@ To view the newsletter click here:
 		// duplicate
 		'newsletter:action:duplicate:error' => "An unknown error occured while duplicating the newsletter, please try again",
 		'newsletter:action:duplicate:success' => "The newsletter was duplicated",
+		
+		// template - edit
+		'newsletter:action:template:edit:error' => "An unknown error occured while saving the template",
+		'newsletter:action:template:edit:success' => "The template was saved",
 		'' => "",
 	);
 	

@@ -3,7 +3,7 @@
 	$guid = (int) get_input("guid");
 	
 	$html = get_input("html", "", false);
-	$css = get_input("css", "", false);
+	$css = strip_tags(get_input("css"));
 	$template = get_input("template");
 	
 	$forward_url = REFERER;
