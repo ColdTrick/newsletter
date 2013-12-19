@@ -8,6 +8,7 @@
 	$subject = get_input("subject");
 	$description = get_input("description");
 	$access_id = (int) get_input("access_id");
+	$tags = string_to_tag_array(get_input("tags"));
 	
 	$forward_url = REFERER;
 	
@@ -51,6 +52,8 @@
 			} else {
 				unset($entity->subject);
 			}
+			
+			$entity->tags = $tags;
 			
 			if ($entity->save()) {
 				elgg_clear_sticky_form("newsletter_edit");

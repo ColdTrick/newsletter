@@ -63,7 +63,11 @@
 			)));
 		}
 		
-		$content = elgg_view("newsletter/edit/" . $subpage, $vars);
+		$form_vars = array(
+			"id" => "newsletter-form-" . $subpage
+		);
+		
+		$content = elgg_view_form("newsletter/edit/" . $subpage, $form_vars, $vars);
 	} else {
 		$content = elgg_view("newsletter/edit", $vars);
 	}

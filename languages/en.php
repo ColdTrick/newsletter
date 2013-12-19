@@ -19,6 +19,11 @@
 		
 		'newsletter:menu:owner_block:group' => "Group newsletter",
 		
+		'newsletter:menu:filter:sent' => "Sent",
+		'newsletter:menu:filter:concept' => "Concept",
+		'newsletter:menu:filter:scheduled' => "Scheduled",
+		'newsletter:menu:filter:sending' => "Sending",
+		
 		// steps menu
 		'newsletter:menu:steps:entity' => "Basic",
 		'newsletter:menu:steps:content' => "Content",

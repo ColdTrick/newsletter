@@ -43,7 +43,7 @@ elgg.newsletter_recipients.init = function() {
 					return result;
 				},
 				guid: function() {
-					return $("#newsletter-recipients-form input[name='guid']").val();
+					return $("#newsletter-form-recipients input[name='guid']").val();
 				}
 			}, response);
 		},

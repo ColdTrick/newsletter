@@ -6,6 +6,7 @@
  * @uses elgg_get_page_owner_entity() the group to list the newsletter from
  */
 
+$filter = false;
 $page_owner = elgg_get_page_owner_entity();
 if (empty($page_owner) || !elgg_instanceof($page_owner, "group")) {
 	register_error(elgg_echo("pageownerunavailable", array(elgg_get_page_owner_guid())));
@@ -24,6 +25,8 @@ elgg_push_breadcrumb($page_owner->name);
 // build page elements
 if ($page_owner->canEdit()) {
 	elgg_register_title_button();
+	
+	$filter = get_input("filter");
 }
 
 $title_text = elgg_echo("newsletter:group:title", array($page_owner->name));
@@ -35,6 +38,41 @@ $options = array(
 	"full_view" => false
 );
 
+switch ($filter) {
+	case "concept":
+		$options["metadata_name_value_pairs"] = array(
+			"name" => "status",
+			"value" => "concept"
+		);
+		break;
+	case "scheduled":
+		$options["metadata_name_value_pairs"] = array(
+			"name" => "status",
+			"value" => "scheduled"
+		);
+		$options["order_by_metadata"] = array(
+			"name" => "scheduled",
+			"as" => "integer"
+		);
+		break;
+	case "sending":
+		$options["metadata_name_value_pairs"] = array(
+			"name" => "status",
+			"value" => "sending"
+		);
+		break;
+	default:
+		$options["metadata_name_value_pairs"] = array(
+			"name" => "status",
+			"value" => "sent"
+		);
+		$options["order_by_metadata"] = array(
+			"name" => "start_time",
+			"as" => "integer"
+		);
+		break;
+}
+
 if (!($content = elgg_list_entities($options))) {
 	$content = elgg_view("output/longtext", array("value" => elgg_echo("notfound")));
 }
@@ -45,8 +83,7 @@ $sidebar = elgg_view("newsletter/sidebar/subscribe", array("entity" => $page_own
 $page_data = elgg_view_layout("content", array(
 	"title" => $title_text,
 	"content" => $content,
-	"sidebar" => $sidebar,
-	"filter" => ""
+	"sidebar" => $sidebar
 ));
 
 // draw page

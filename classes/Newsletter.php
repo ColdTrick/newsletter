@@ -9,6 +9,7 @@
 			$this->title = elgg_echo("newsletter:duplicate_of") . " " . $this->title;
 			$this->status = "concept";
 			unset($this->temp_metadata["scheduled"]);
+			unset($this->temp_metadata["start_time"]);
 		}
 		
 		protected function initializeAttributes() {
