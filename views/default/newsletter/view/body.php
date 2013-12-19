@@ -7,12 +7,25 @@ if (empty($template)) {
 	$template = "default";
 }
 
-if ($template == "custom") {
-	$content = $entity->html;
-} else {
-	$content = elgg_view("newsletter/templates/" . $template . "/body");
+if (is_numeric($template)) {
+	// probably a custom template, lets check
+	$template_entity = get_entity($template);
+	
+	if ($template_entity && ($template_entity->getSubtype() == NEWSLETTER_TEMPLATE)) {
+		$content = $template_entity->html;
+	} else {
+		// something wrong, reset to default
+		$template = "default";
+	}
 }
 
+if (!isset($content)) {
+	if ($template == "custom") {
+		$content = $entity->html;
+	} else {
+		$content = elgg_view("newsletter/templates/" . $template . "/body");
+	}
+}
 
 $container_entity = $entity->getContainerEntity();
 $container_url = $container_entity->getURL();

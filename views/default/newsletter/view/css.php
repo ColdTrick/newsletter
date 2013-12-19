@@ -5,10 +5,24 @@ if (empty($template)) {
 	$template = "default";
 }
 
-if ($template == "custom") {
-	$css = $vars["entity"]->css;
-} else {
-	$css = elgg_view("newsletter/templates/" . $template . "/css");
+if (is_numeric($template)) {
+	// probably a custom template, lets check
+	$template_entity = get_entity($template);
+
+	if ($template_entity && ($template_entity->getSubtype() == NEWSLETTER_TEMPLATE)) {
+		$css = $template_entity->css;
+	} else {
+		// something wrong, reset to default
+		$template = "default";
+	}
+}
+
+if (!isset($css)) {
+	if ($template == "custom") {
+		$css = $vars["entity"]->css;
+	} else {
+		$css = elgg_view("newsletter/templates/" . $template . "/css");
+	}
 }
 
 echo $css;
