@@ -27,9 +27,19 @@ elgg.newsletter.init = function() {
 	$("#newsletter-edit-template-save-as").live("click", elgg.newsletter.save_template);
 
 	$("#newsletter-embed-pagination a").live("click", function(event) {
-		url = $(this).attr("href");
+		var url = $(this).attr("href");
 		$("#newsletter-embed-pagination").parent().load(url);
 		event.preventDefault();
+	});
+
+	$("#newsletter-embed-search").live("submit", function(event) {
+
+		event.preventDefault();
+
+		var query = $(this).find("[name='q']").val();
+		var url = $(this).attr("action") + "?q=" + query;
+			
+		$(this).parent().load(url);
 	});
 }
 

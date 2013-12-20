@@ -4,6 +4,9 @@ $entity = $vars["entity"];
 $offset = (int) max(get_input("offset", 0), 0);
 $limit = 10;
 
+$query = get_input("q");
+$query = sanitise_string($query);
+
 $options = array(
 		"type" => "object",
 		"subtype" => "blog",
@@ -17,13 +20,24 @@ if ($entity->getContainerEntity() instanceof ElggGroup) {
 	$options["container_guid"] = $entity->getContainerGUID();
 }
 
+if (!empty($query)) {
+	$dbprefix = elgg_get_config("dbprefix");
+	$options["joins"] = array("JOIN " . $dbprefix . "objects_entity oe ON e.guid = oe.guid");
+	$options["wheres"] = array("(oe.title LIKE '%" . $query . "%')");
+}
+
 $count = elgg_get_entities($options);
 
 unset($options["count"]);
 
 if ($count > 0) {
 	$entities = elgg_get_entities($options);
-
+	
+	$form_data = elgg_view("input/text", array("name" => "q", "value" => $query));
+	$form_data .= elgg_view("input/submit", array("value" => elgg_echo("search"), "class" => "elgg-button-action"));
+	
+	echo elgg_view("input/form", array("action" => "newsletter/embed/" . $entity->getGUID(), "id" => "newsletter-embed-search", "body" => $form_data));
+	
 	echo "<ul id='newsletter-embed-list'>";
 	foreach($entities as $entity) {
 		$description = $entity->description;

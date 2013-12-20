@@ -109,3 +109,17 @@
 .newsletter-embed-item-content {
 	display: none;
 }
+
+#newsletter-embed-search {
+	padding-bottom: 5px;
+	margin-bottom: 5px;
+}
+
+#newsletter-embed-search .elgg-input-text {
+	width: 400px;
+	margin-right: 10px;
+}
+
+#newsletter-embed-search .elgg-button-action {
+	padding: 5px 15px;
+}
