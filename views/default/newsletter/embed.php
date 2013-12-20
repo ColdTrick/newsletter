@@ -33,11 +33,10 @@ unset($options["count"]);
 if ($count > 0) {
 	$entities = elgg_get_entities($options);
 	
-	echo "<div id='newsletter-embed-search'>";
-	echo elgg_view("input/hidden", array("name" => "guid", "value" => $entity->getGUID()));
-	echo elgg_view("input/text", array("name" => "q", "value" => $query));
-	echo elgg_view("input/button", array("value" => elgg_echo("search"), "class" => "elgg-button-action"));
-	echo "</div>";
+	$form_data = elgg_view("input/text", array("name" => "q", "value" => $query));
+	$form_data .= elgg_view("input/submit", array("value" => elgg_echo("search"), "class" => "elgg-button-action"));
+	
+	echo elgg_view("input/form", array("action" => "newsletter/embed/" . $entity->getGUID(), "id" => "newsletter-embed-search", "body" => $form_data));
 	
 	echo "<ul id='newsletter-embed-list'>";
 	foreach($entities as $entity) {

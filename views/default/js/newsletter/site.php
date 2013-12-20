@@ -32,13 +32,14 @@ elgg.newsletter.init = function() {
 		event.preventDefault();
 	});
 
-	$("#newsletter-embed-search .elgg-button-action").live("click", function() {
-		$form = $("#newsletter-embed-search");
-		var guid = $form.find("[name='guid']").val();
-		var query = $form.find("[name='q']").val();
-		var url = elgg.get_site_url() + "newsletter/embed/" + guid + "?q=" + query;
+	$("#newsletter-embed-search").live("submit", function(event) {
+
+		event.preventDefault();
+
+		var query = $(this).find("[name='q']").val();
+		var url = $(this).attr("action") + "?q=" + query;
 			
-		$form.parent().load(url);
+		$(this).parent().load(url);
 	});
 }
 
