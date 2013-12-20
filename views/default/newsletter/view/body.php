@@ -42,12 +42,12 @@ $replacements = array(
 		"{title}" => $entity->title,
 		"{description}" => $entity->description,
 		"{subject}" => $entity->subject,
-		"{newsletter_url}" => $entity->getURL(),
+		"{newsletter_url}" => elgg_normalize_url($entity->getURL()),
 		"{site_name}" => elgg_get_site_entity()->name,
 		"{site_description}" => elgg_get_site_entity()->description,
 		"{site_url}" => elgg_get_site_url(),
 		"{container_name}" => $entity->getContainerEntity()->name,
-		"{container_url}" => $container_url,
+		"{container_url}" => elgg_normalize_url($container_url),
 	);
 
 foreach ($replacements as $search => $replace) {

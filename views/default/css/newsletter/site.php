@@ -11,6 +11,10 @@
 	display: inline;
 }
 
+#newsletter-edit-template-select .elgg-icon-delete-alt {
+	position: absolute;
+}
+
 .elgg-form-newsletter-edit-content .elgg-input-longtext {
 	min-height: 500px;
 }
@@ -47,9 +51,16 @@
 	display: inline-block;
 }
 
-#newsletter-recipients-wrapper .elgg-module,
-#newsletter-recipients-wrapper.elgg-module {
-	margin-bottom: 10px;
+.elgg-module-newsletter-recipients-wrapper {
+	margin-bottom: 0px;
+}
+
+.elgg-module-newsletter-recipients {
+	margin: 10px 0;
+}
+
+.elgg-module-newsletter-recipients-wrapper .elgg-icon-delete-alt {
+	cursor: pointer;
 }
 
 .newsletter-recipient-autocomplete-group span,
