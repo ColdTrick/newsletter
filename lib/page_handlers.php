@@ -29,6 +29,10 @@
 				if (isset($page[1]) && is_numeric($page[1])) {
 					set_input("guid", $page[1]);
 					
+					if (!empty($page[2])) {
+						set_input("code", $page[2]);
+					}
+					
 					$include_file = $path . "/pages/view.php";
 				}
 				break;

@@ -104,6 +104,7 @@
 		// entity view
 		'newsletter:entity:scheduled' => "Scheduled",
 		'newsletter:entity:sent' => "Sent",
+		'newsletter:entity:error:code' => "Invalid or missing code to view this newsletter online",
 		
 		// my subscriptions
 		'newsletter:subscriptions:description' => "Below you can manage all your newsletter subscriptions as once.",
