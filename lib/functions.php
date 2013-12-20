@@ -343,7 +343,7 @@
 							}
 							
 							// place the unsubscribe link in the message
-							$message_html_content_user = str_ireplace("{{{unsubscribe_link}}}", $unsubscribe_link, $message_html_content);
+							$message_html_content_user = str_ireplace("{unsublink}", $unsubscribe_link, $message_html_content);
 							
 							// =========
 							// send mail
@@ -1058,6 +1058,45 @@
 				// no group just checking plugin setting
 				$result = true;
 			}
+		}
+		
+		return $result;
+	}
+	
+	function newsletter_send_preview(Newsletter $entity, $email) {
+		$result = false;
+		
+		if (!empty($entity) && elgg_instanceof($entity, "object", Newsletter::SUBTYPE) && !empty($email)) {
+			$container = $entity->getContainerEntity();
+			
+			// build correct subject
+			if ($entity->subject) {
+				$message_subject = $entity->subject;
+			} else {
+				$message_subject = elgg_echo("newsletter:subject", array($container->name, $entity->title));
+			}
+			//  plaintext message
+			$message_plaintext_content = elgg_echo("newsletter:plain_message", array($entity->getURL()));
+			
+			// html content
+			$message_html_content = elgg_view_layout("newsletter", array("entity" => $entity));
+			// convert to inline CSS for email clients
+			$message_html_content = html_email_handler_css_inliner($message_html_content);
+			
+			$unsubscribe_link = newsletter_generate_unsubscribe_link($container, $email);
+			$message_html_content = str_ireplace("{unsublink}", $unsubscribe_link, $message_html_content);
+			
+			// start creating sending options
+			$send_options = array(
+				"from" => html_email_handler_make_rfc822_address($container),
+				"subject" => $message_subject,
+				"plaintext_message" => $message_plaintext_content,
+				"to" => $email,
+				"html_message" => $message_html_content
+			);
+			
+			// send preview
+			$result = html_email_handler_send_email($send_options);
 		}
 		
 		return $result;

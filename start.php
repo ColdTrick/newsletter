@@ -75,6 +75,7 @@
 		elgg_register_action("newsletter/unsubscribe", dirname(__FILE__) . "/actions/unsubscribe.php", "public");
 		elgg_register_action("newsletter/subscriptions", dirname(__FILE__) . "/actions/subscriptions.php");
 		elgg_register_action("newsletter/duplicate", dirname(__FILE__) . "/actions/duplicate.php");
+		elgg_register_action("newsletter/preview_mail", dirname(__FILE__) . "/actions/preview_mail.php");
 		
 		elgg_register_action("newsletter/template/edit", dirname(__FILE__) . "/actions/template/edit.php");
 		elgg_register_action("newsletter/template/delete", dirname(__FILE__) . "/actions/template/delete.php");

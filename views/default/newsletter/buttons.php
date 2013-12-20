@@ -3,7 +3,7 @@
 $type = elgg_extract("type", $vars, "view");
 $entity = elgg_extract("entity", $vars);
 
-$menu = elgg_view_menu("newsletter_buttons", array("entity" => $entity, "type" => $type, "class" => "newsletter-buttons"));
+$menu = elgg_view_menu("newsletter_buttons", array("entity" => $entity, "type" => $type, "class" => "newsletter-buttons", "sort_by" => "priority"));
 
 echo $menu;
 ?>
@@ -17,6 +17,7 @@ echo $menu;
 		margin: 0;
 		
 		list-style: none;
+		text-align: right;
 	}
 	
 	.newsletter-buttons li {
@@ -24,7 +25,24 @@ echo $menu;
 		margin-left: 10px;
 	}
 	
-	.newsletter-buttons a {
+	.newsletter-buttons li.elgg-menu-item-mail {
+		display: block;
+		margin-top: 10px;
+		margin-left: 0;
+	}
+	
+	.newsletter-buttons li.elgg-menu-item-mail .elgg-button-submit {
+		margin-left: 5px;
+	}
+	
+	.newsletter-buttons fieldset {
+		border: none;
+		padding: 0;
+		margin: 0;
+	}
+	
+	.newsletter-buttons a,
+	.elgg-button-submit {
 		font-size: 14px;
 		font-weight: bold;
 		
@@ -45,7 +63,9 @@ echo $menu;
 	}
 	
 	.newsletter-buttons a:hover,
-	.newsletter-buttons a:focus {
+	.newsletter-buttons a:focus,
+	.elgg-button-submit:hover,
+	.elgg-button-submit:focus {
 		background: #ccc url(<?php echo elgg_get_site_url(); ?>_graphics/button_background.gif) repeat-x 0 -15px;
 		color: #111;
 		text-decoration: none;

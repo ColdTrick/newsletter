@@ -233,6 +233,8 @@ To view the newsletter click here:
 		'newsletter:action:template:delete:error:delete' => "An unknown error occured while deleting the newsletter template, please try again",
 		'newsletter:action:template:delete:success' => "The newsletter template was deleted",
 		
+		// preview mail
+		'newsletter:action:preview_mail:success' => "Mail sent, check your inbox",
 		'' => "",
 	);
 	
