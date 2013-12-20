@@ -42,6 +42,15 @@
 	$content .= "</tr>";
 	$content .= "</table>";
 	
+	$content .= "<div class='mtm'>";
+	$checked = array();
+	if (check_entity_relationship($entity->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID())) {
+		$checked = array("checked" => "checked");
+	}
+	$content .= elgg_view("input/checkbox", array("name" => "block_all", "value" => "1", "id" => "newsletter-subscription-block-all") + $checked);
+	$content .= "<label for='newsletter-subscription-block-all'>" . elgg_echo("newsletter:unsubscribe:all", array($site->name)) . "</label>";
+	$content .= "</div>";
+	
 	echo elgg_view_module("info", $title, $content);
 	
 	// my group subscriptions

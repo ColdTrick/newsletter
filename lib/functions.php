@@ -353,7 +353,7 @@
 							
 							$recipient_log["status"] = html_email_handler_send_email($send_options);
 							
-							if (true && !empty($recipient_log["guid"])) {
+							if ($recipient_log["status"] && !empty($recipient_log["guid"])) {
 								$entity->addRelationship($recipient_log["guid"], Newsletter::SEND_TO);
 							}
 							
