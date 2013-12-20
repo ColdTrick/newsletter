@@ -27,9 +27,18 @@ elgg.newsletter.init = function() {
 	$("#newsletter-edit-template-save-as").live("click", elgg.newsletter.save_template);
 
 	$("#newsletter-embed-pagination a").live("click", function(event) {
-		url = $(this).attr("href");
+		var url = $(this).attr("href");
 		$("#newsletter-embed-pagination").parent().load(url);
 		event.preventDefault();
+	});
+
+	$("#newsletter-embed-search .elgg-button-action").live("click", function() {
+		$form = $("#newsletter-embed-search");
+		var guid = $form.find("[name='guid']").val();
+		var query = $form.find("[name='q']").val();
+		var url = elgg.get_site_url() + "newsletter/embed/" + guid + "?q=" + query;
+			
+		$form.parent().load(url);
 	});
 }
 
