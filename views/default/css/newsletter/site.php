@@ -92,6 +92,14 @@
 	padding: 5px;
 	border: 1px solid transparent;
 	cursor: pointer;
+	
+	white-space: nowrap;
+	overflow: hidden;
+	color: #999;
+}
+
+#newsletter-embed-list > li > div > strong {
+	color: black;
 }
 
 #newsletter-embed-list li:hover {

@@ -25,6 +25,12 @@ elgg.newsletter.init = function() {
 	$("#newsletter-send-now").live("click", elgg.newsletter.schedule_send_now);
 
 	$("#newsletter-edit-template-save-as").live("click", elgg.newsletter.save_template);
+
+	$("#newsletter-embed-pagination a").live("click", function(event) {
+		url = $(this).attr("href");
+		$("#newsletter-embed-pagination").parent().load(url);
+		event.preventDefault();
+	});
 }
 
 elgg.newsletter.embed = function(elem) {
