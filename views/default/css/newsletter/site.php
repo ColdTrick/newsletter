@@ -11,6 +11,10 @@
 	display: inline;
 }
 
+#newsletter-edit-template-select .elgg-icon-delete-alt {
+	position: absolute;
+}
+
 .elgg-form-newsletter-edit-content .elgg-input-longtext {
 	min-height: 500px;
 }

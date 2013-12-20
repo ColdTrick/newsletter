@@ -39,7 +39,7 @@ $confirm_options = array(
 );
 $delete_options = array(
 	"confirm" => elgg_echo("deleteconfirm"),
-	"text" => elgg_echo("delete"),
+	"text" => elgg_view_icon("delete-alt"),
 	"class" => "mlm hidden"
 );
 
