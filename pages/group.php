@@ -82,7 +82,7 @@ switch ($filter) {
 		break;
 }
 
-if (!($content = elgg_list_entities($options))) {
+if (!($content = elgg_list_entities_from_metadata($options))) {
 	$content = elgg_view("output/longtext", array("value" => elgg_echo("notfound")));
 }
 
