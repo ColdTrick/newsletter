@@ -22,6 +22,12 @@
 	</requires>
 	
 	<requires>
+		<type>plugin</type>
+		<name>tinymce</name>
+		<version>1.8</version>
+	</requires>
+	
+	<requires>
 		<type>php_extension</type>
 		<name>json</name>
 	</requires>
