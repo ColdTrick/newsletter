@@ -50,6 +50,11 @@ if ($count > 0) {
 		echo "<div class='newsletter-embed-item-content'>";
 		
 		echo "<strong>" . $entity->title . "</strong><br />";
+		
+		if ($entity->icontime) {
+			$description = elgg_view("output/img", array("src" => $entity->getIconURL("large"), "alt" => $entity->title, "style" => "float: left; margin: 5px;")) . $description;
+		}
+		
 		echo elgg_view("output/longtext", array("value" => $description));
 		
 		echo "</div></li>";
