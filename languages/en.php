@@ -251,6 +251,14 @@ To view the newsletter click here:
 		
 		// preview mail
 		'newsletter:action:preview_mail:success' => "Mail sent, check your inbox",
+		
+		// unsubscribe
+		'newsletter:action:unsubscribe:error:recipient' => "Invalild recipient to unsubscribe",
+		'newsletter:action:unsubscribe:error:all' => "An error occured while unsubscribing you from all newsletters, please try again",
+		'newsletter:action:unsubscribe:error:entity' => "An error occured while unsubscribing you from the %s newsletter, please try again",
+		'newsletter:action:unsubscribe:success:all' => "You've been unsubscribed from all newsletters",
+		'newsletter:action:unsubscribe:success:entity' => "You've been unsubscribed from the %s newsletter",
+		
 		'' => "",
 	);
 	
