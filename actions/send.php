@@ -27,6 +27,9 @@ if (!empty($guid)) {
 			
 			newsletter_start_commandline_sending($entity);
 			
+			// sleep to make sure the log page has content
+			sleep(2);
+			
 			$forward_url = "newsletter/log/" . $entity->getGUID();
 			
 			system_message(elgg_echo("newsletter:action:send:success"));
