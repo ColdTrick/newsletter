@@ -491,3 +491,23 @@ function newsletter_register_buttons_menu_handler($hook, $type, $returnvalue, $p
 	
 	return $result;
 }
+
+/**
+ * Extend public pages
+ *
+ * @param string   $hook_name    "public_pages"
+ * @param string   $entity_type  "walled_garden"
+ * @param string[] $return_value array of public pages
+ * @param mixed    $params       unused
+ *
+ * @return string[]
+ */
+function newsletter_public_pages($hook_name, $entity_type, $return_value, $params) {
+	$return = $return_value;
+	if (is_array($return)) {
+		$return[] = "newsletter/view/.*";
+		$return[] = "newsletter/unsubscribe/.*";
+		$return[] = "action/newsletter/unsubscribe";
+	}
+	return $return;
+}

@@ -57,6 +57,9 @@
 		elgg_register_plugin_hook_handler("usersettings:save", "user", "newsletter_usersettings_save_handler");
 		elgg_register_plugin_hook_handler("entity:icon:url", "object", "newsletter_icon_hook");
 		
+		// extend public pages
+		elgg_register_plugin_hook_handler('public_pages', 'walled_garden', 'newsletter_public_pages');
+		
 		// register event handlers
 		elgg_register_event_handler("upgrade", "system", "newsletter_upgrade_event_handler");
 		elgg_register_event_handler("create", "member_of_site", "newsletter_join_site_event_handler");
