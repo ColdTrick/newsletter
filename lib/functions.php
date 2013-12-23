@@ -127,7 +127,12 @@ function newsletter_process($entity_guid) {
 				"limit" => false,
 				"selects" => array("ue.email"),
 				"joins" => array("JOIN " . $dbprefix . "users_entity ue ON e.guid = ue.guid"),
-				"wheres" => array(
+				"callback" => "newsletter_user_row_to_subscriber_info"
+			);
+			// include users without settings
+			if (newsletter_include_existing_users()) {
+				// yes, so exclude blocked
+				$basic_user_options["wheres"] = array(
 					"(e.guid NOT IN (SELECT guid_one
 						FROM " . $dbprefix . "entity_relationships
 						WHERE relationship = '" . NewsletterSubscription::GENERAL_BLACKLIST . "'
@@ -138,9 +143,17 @@ function newsletter_process($entity_guid) {
 						WHERE relationship = '" . NewsletterSubscription::BLACKLIST . "'
 						AND guid_two = " . $container->getGUID() . ")
 					)"
-				),
-				"callback" => "newsletter_user_row_to_subscriber_info"
-			);
+				);
+			} else {
+				// no, so subscription is required
+				$basic_user_options["wheres"] = array(
+					"(e.guid IN (SELECT guid_one
+						FROM " . $dbprefix . "entity_relationships
+						WHERE relationship = '" . NewsletterSubscription::SUBSCRIPTION . "'
+						AND guid_two = " . $container->getGUID() . ")
+					)"
+				);
+			}
 			
 			$filtered_recipients = array(
 				"users" => array(),
@@ -589,7 +602,14 @@ function newsletter_check_user_subscription(ElggUser $user, ElggEntity $entity) 
 	
 	if (!empty($user) && !empty($entity)) {
 		if (elgg_instanceof($user, "user") && (elgg_instanceof($entity, "site") || elgg_instanceof($entity, "group"))) {
-			$result = (bool) check_entity_relationship($user->getGUID(), NewsletterSubscription::SUBSCRIPTION, $entity->getGUID());
+			// include all users
+			if (newsletter_include_existing_users()) {
+				// exclude if blocked
+				$result = !((bool) check_entity_relationship($user->getGUID(), NewsletterSubscription::BLACKLIST, $entity->getGUID()));
+			} else {
+				// only if opt-in
+				$result = (bool) check_entity_relationship($user->getGUID(), NewsletterSubscription::SUBSCRIPTION, $entity->getGUID());
+			}
 		}
 	}
 	
@@ -1146,6 +1166,26 @@ function newsletter_send_preview(Newsletter $entity, $email) {
 		
 		// send preview
 		$result = html_email_handler_send_email($send_options);
+	}
+	
+	return $result;
+}
+
+/**
+ * Check a plugin setting to force existing users to opt-in for newsletters
+ *
+ * @return bool true if opt-in is required
+ */
+function newsletter_include_existing_users() {
+	static $result;
+	
+	if (!isset($result)) {
+		$result = true;
+		
+		$setting = elgg_get_plugin_setting("include_existing_users", "newsletter");
+		if ($setting == "no") {
+			$result = false;
+		}
 	}
 	
 	return $result;

@@ -14,9 +14,9 @@
 	echo "</div>";
 	
 	echo "<div>";
-	echo elgg_echo("newsletter:settings:opt_out_existing_users");
-	echo elgg_view("input/dropdown", array("name" => "params[opt_out_existing_users]", "value" => $plugin->opt_out_existing_users, "options_values" => $noyes_options, "class" => "mls"));
-	echo "<div class='elgg-subtext'>" . elgg_echo("newsletter:settings:opt_out_existing_users:description") . "</div>";
+	echo elgg_echo("newsletter:settings:include_existing_users");
+	echo elgg_view("input/dropdown", array("name" => "params[include_existing_users]", "value" => $plugin->include_existing_users, "options_values" => array_reverse($noyes_options), "class" => "mls"));
+	echo "<div class='elgg-subtext'>" . elgg_echo("newsletter:settings:include_existing_users:description") . "</div>";
 	echo "</div>";
 	
 	
