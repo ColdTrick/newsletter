@@ -46,13 +46,6 @@
 			case "site":
 				$include_file = $path . "/pages/site.php";
 				break;
-			case "subscribe":
-				if (isset($page[1]) && is_numeric($page[1])) {
-					elgg_set_page_owner_guid($page[1]);
-					
-					$include_file = $path . "/pages/subscribe.php";
-				}
-				break;
 			case "unsubscribe":
 				if (isset($page[1]) && is_numeric($page[1])) {
 					set_input("guid", (int)$page[1]);
