@@ -18,6 +18,7 @@
 	<requires>
 		<type>plugin</type>
 		<name>html_email_handler</name>
+		<version>2.5</version>
 	</requires>
 	
 	<requires>
