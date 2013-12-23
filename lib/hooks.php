@@ -6,10 +6,12 @@
 /**
  * The cron hook will take care of sending all the scheduled newsletters
  *
- * @param string $hook
- * @param string $type
- * @param string $returnvalue
- * @param array $params
+ * @param string $hook        name of the hook
+ * @param string $type        type of the hook
+ * @param string $returnvalue returnvalue of the hook
+ * @param array  $params      params of the hook
+ *
+ * @return void
  */
 function newsletter_cron_handler($hook, $type, $returnvalue, $params) {
 	
@@ -55,11 +57,12 @@ function newsletter_cron_handler($hook, $type, $returnvalue, $params) {
 /**
  * Remove some options from the write access array if it's a newsletter
  *
- * @param string $hook
- * @param string $type
- * @param string $returnvalue
- * @param array $params
- * @return array
+ * @param string $hook        name of the hook
+ * @param string $type        type of the hook
+ * @param string $returnvalue returnvalue of the hook
+ * @param array  $params      params of the hook
+ *
+ * @return array					write access array
  */
 function newsletter_write_access_handler($hook, $type, $returnvalue, $params) {
 	$result = $returnvalue;
@@ -92,11 +95,12 @@ function newsletter_write_access_handler($hook, $type, $returnvalue, $params) {
 /**
  * Add a menu item in the sidebar to go to the newsletter subsciptions
  *
- * @param 	string	$hook
- * @param 	string 	$type
- * @param 	array 	$returnvalue	Default menu items
- * @param 	array 	$params
- * @return 	array					Menu items
+ * @param string $hook        name of the hook
+ * @param string $type        type of the hook
+ * @param array  $returnvalue Default menu items
+ * @param array  $params      params for the hook
+ *
+ * @return array Menu items
  */
 function newsletter_register_page_menu_handler($hook, $type, $returnvalue, $params) {
 	$result = $returnvalue;
@@ -138,11 +142,12 @@ function newsletter_register_page_menu_handler($hook, $type, $returnvalue, $para
 /**
  * Add a menu item in the sidebar for the steps of creating a newsletter
  *
- * @param 	string	$hook
- * @param 	string 	$type
- * @param 	array 	$returnvalue	Default menu items
- * @param 	array 	$params
- * @return 	array					Menu items
+ * @param string $hook        name of the hook
+ * @param string $type        type of the hook
+ * @param array  $returnvalue Default menu items
+ * @param array  $params      params for the hook
+ *
+ * @return array Menu items
  */
 function newsletter_register_newsletter_steps_menu_handler($hook, $type, $returnvalue, $params) {
 	$result = $returnvalue;
@@ -208,14 +213,15 @@ function newsletter_register_newsletter_steps_menu_handler($hook, $type, $return
 	return $result;
 }
 
-/*
+/**
  * Check if there is a email subscription for the user's email address
  * If so, convert the settings to the user and remove the email subscription
  *
- * @param 	string	$hook			Which hook was triggered
- * @param 	string 	$type			What was the type of hook
- * @param 	array 	$returnvalue	null
- * @param 	array 	$params			null
+ * @param string $hook        Which hook was triggered
+ * @param string $type        What was the type of hook
+ * @param array  $returnvalue null
+ * @param array  $params      null
+ *
  * @return 	void
  */
 function newsletter_usersettings_save_handler($hook, $type, $returnvalue, $params) {
@@ -235,10 +241,12 @@ function newsletter_usersettings_save_handler($hook, $type, $returnvalue, $param
  * A hook fired during the registration proccess of the user
  * Check if the user wants to receive site newsletters
  *
- * @param 	string	$hook			Which hook was triggered
- * @param 	string 	$type			What was the type of hook
- * @param 	bool 	$returnvalue	you can stop the registration proccess
- * @param 	array 	$params			different variables, including the new user
+ * @param string $hook        Which hook was triggered
+ * @param string $type        What was the type of hook
+ * @param bool   $returnvalue you can stop the registration proccess
+ * @param array  $params      different variables, including the new user
+ *
+ * @return void
  */
 function newsletter_register_user_handler($hook, $type, $returnvalue, $params) {
 	
@@ -263,11 +271,12 @@ function newsletter_register_user_handler($hook, $type, $returnvalue, $params) {
 /**
  * Add a menu item in the entity's menu
  *
- * @param 	string	$hook
- * @param 	string 	$type
- * @param 	array 	$returnvalue	Default menu items
- * @param 	array 	$params
- * @return 	array					Menu items
+ * @param string $hook        name of the hook
+ * @param string $type        type of the hook
+ * @param array  $returnvalue Default menu items
+ * @param array  $params      params for the hook
+ *
+ * @return array Menu items
  */
 function newsletter_register_entity_menu_handler($hook, $type, $returnvalue, $params) {
 	$result = $returnvalue;
@@ -301,11 +310,21 @@ function newsletter_register_entity_menu_handler($hook, $type, $returnvalue, $pa
 	return $result;
 }
 
-function newsletter_icon_hook($hook, $entity_type, $returnvalue, $params) {
+/**
+ * Handles newsletter icon urls
+ *
+ * @param string $hook        name of the hook
+ * @param string $type        type of the hook
+ * @param array  $returnvalue Default menu items
+ * @param array  $params      params for the hook
+ *
+ * @return string url
+ */
+function newsletter_icon_hook($hook, $type, $returnvalue, $params) {
 	if (!empty($params) && is_array($params)) {
 		$entity = $params["entity"];
 			
-		if(elgg_instanceof($entity, "object", "newsletter")){
+		if (elgg_instanceof($entity, "object", "newsletter")) {
 			$url = elgg_get_site_url() . "mod/newsletter/_graphics/newsletter-icon.png";
 			
 			return $url;
@@ -316,11 +335,12 @@ function newsletter_icon_hook($hook, $entity_type, $returnvalue, $params) {
 /**
  * Add a menu item in the owner block menu of a group
  *
- * @param 	string	$hook
- * @param 	string 	$type
- * @param 	array 	$returnvalue	Default menu items
- * @param 	array 	$params
- * @return 	array					Menu items
+ * @param string $hook        name of the hook
+ * @param string $type        type of the hook
+ * @param array  $returnvalue Default menu items
+ * @param array  $params      params for the hook
+ *
+ * @return array Menu items
  */
 function newsletter_register_owner_block_menu_handler($hook, $type, $returnvalue, $params) {
 	$result = $returnvalue;
@@ -346,11 +366,12 @@ function newsletter_register_owner_block_menu_handler($hook, $type, $returnvalue
 /**
  * Replace the filter menu on the newsletter pages
  *
- * @param 	string	$hook
- * @param 	string 	$type
- * @param 	array 	$returnvalue	Default menu items
- * @param 	array 	$params
- * @return 	array					Menu items
+ * @param string $hook        name of the hook
+ * @param string $type        type of the hook
+ * @param array  $returnvalue Default menu items
+ * @param array  $params      params for the hook
+ *
+ * @return array Menu items
  */
 function newsletter_register_filter_menu_handler($hook, $type, $returnvalue, $params) {
 	$result = $returnvalue;
@@ -407,18 +428,19 @@ function newsletter_register_filter_menu_handler($hook, $type, $returnvalue, $pa
 /**
  * Add a menu item in the long text inputs (like embed and tinymce)
  *
- * @param 	string	$hook
- * @param 	string 	$type
- * @param 	array 	$returnvalue	Default menu items
- * @param 	array 	$params
- * @return 	array					Menu items
+ * @param string $hook        name of the hook
+ * @param string $type        type of the hook
+ * @param array  $returnvalue Default menu items
+ * @param array  $params      params for the hook
+ *
+ * @return array Menu items
  */
 function newsletter_register_longtext_menu_handler($hook, $type, $returnvalue, $params) {
 
 	$result = $returnvalue;
 	$id = elgg_extract("id", $params);
 
-	if (strpos($id, "newsletter-edit-content-") === 0 ) {
+	if (strpos($id, "newsletter-edit-content-") === 0) {
 		if (elgg_is_active_plugin("blog")) {
 			$guid = str_replace("newsletter-edit-content-", "", $id);
 
@@ -442,11 +464,12 @@ function newsletter_register_longtext_menu_handler($hook, $type, $returnvalue, $
 /**
  * Add a menu item in the buttons menu of the online/preview view
  *
- * @param 	string	$hook
- * @param 	string 	$type
- * @param 	array 	$returnvalue	Default menu items
- * @param 	array 	$params
- * @return 	array					Menu items
+ * @param string $hook        name of the hook
+ * @param string $type        type of the hook
+ * @param array  $returnvalue Default menu items
+ * @param array  $params      params for the hook
+ *
+ * @return array Menu items
  */
 function newsletter_register_buttons_menu_handler($hook, $type, $returnvalue, $params) {
 	$result = $returnvalue;

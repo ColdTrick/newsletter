@@ -11,7 +11,6 @@ $entity = elgg_extract("entity", $vars);
 $log = $entity->getLogging();
 
 if (!empty($log)) {
-// 	var_dump($log);
 	// general info
 	$title = elgg_echo("newsletter:log:general:title");
 	
@@ -87,9 +86,9 @@ if (!empty($log)) {
 								break;
 							case "status":
 								if ($data) {
-									$users_content .= "<td class='center'>" . elgg_view_icon("checkmark"). "</td>";
+									$users_content .= "<td class='center'>" . elgg_view_icon("checkmark") . "</td>";
 								} else {
-									$users_content .= "<td class='center'>" . elgg_view_icon("attention"). "</td>";
+									$users_content .= "<td class='center'>" . elgg_view_icon("attention") . "</td>";
 								}
 								break;
 							default:
@@ -129,9 +128,9 @@ if (!empty($log)) {
 						switch ($key) {
 							case "status":
 								if ($data) {
-									$emails_content .= "<td class='center'>" . elgg_view_icon("checkmark"). "</td>";
+									$emails_content .= "<td class='center'>" . elgg_view_icon("checkmark") . "</td>";
 								} else {
-									$emails_content .= "<td class='center'>" . elgg_view_icon("attention"). "</td>";
+									$emails_content .= "<td class='center'>" . elgg_view_icon("attention") . "</td>";
 								}
 								break;
 							default:

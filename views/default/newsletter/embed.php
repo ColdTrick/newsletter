@@ -39,7 +39,7 @@ if ($count > 0) {
 	echo elgg_view("input/form", array("action" => "newsletter/embed/" . $entity->getGUID(), "id" => "newsletter-embed-search", "body" => $form_data));
 	
 	echo "<ul id='newsletter-embed-list'>";
-	foreach($entities as $entity) {
+	foreach ($entities as $entity) {
 		$description = $entity->description;
 		
 		echo "<li>";
