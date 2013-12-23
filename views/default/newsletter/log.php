@@ -25,7 +25,13 @@ if (!empty($log)) {
 	$general .= "</tr>";
 	$general .= "<tr>";
 	$general .= "<td>" . elgg_echo("newsletter:log:general:endtime") . "</td>";
-	$general .= "<td>" . date(elgg_echo("friendlytime:date_format"), elgg_extract("end_time", $log)) . "</td>";
+	$general .= "<td>";
+	if ($entity->status == "sent"){
+		$general .= date(elgg_echo("friendlytime:date_format"), elgg_extract("end_time", $log));
+	} else {
+		$general .= elgg_echo("newsletter:status:" . $entity->status);
+	}
+	$general .= "</td>";
 	$general .= "</tr>";
 	$general .= "</table>";
 	
@@ -42,10 +48,12 @@ if (!empty($log)) {
 		$users_content = "";
 		$users_row_class = "";
 		$users_counter = 0;
+		$users_error_counter = 0;
 		$emails_header = "";
 		$emails_content = "";
 		$emails_row_class = "";
 		$emails_counter = 0;
+		$emails_error_counter = 0;
 		
 		foreach ($recipients as $recipient) {
 			$type = elgg_extract("type", $recipient);
@@ -88,6 +96,7 @@ if (!empty($log)) {
 								if ($data) {
 									$users_content .= "<td class='center'>" . elgg_view_icon("checkmark") . "</td>";
 								} else {
+									$users_error_counter++;
 									$users_content .= "<td class='center'>" . elgg_view_icon("attention") . "</td>";
 								}
 								break;
@@ -115,6 +124,7 @@ if (!empty($log)) {
 							if ($key == "status") {
 								$emails_header .= "<th class='center'>" . elgg_echo("newsletter:log:email:header:" . $key) . "</th>";
 							} else {
+								$emails_error_counter++;
 								$emails_header .= "<th>" . elgg_echo("newsletter:log:email:header:" . $key) . "</th>";
 							}
 						}
@@ -145,6 +155,11 @@ if (!empty($log)) {
 		}
 		
 		if (!empty($users_content)) {
+			$users_title .= " (";
+			$users_title .= ($users_counter - $users_error_counter) . " " . elgg_echo("newsletter:log:counter:success");
+			$users_title .= ", " . $users_error_counter . " " . elgg_echo("newsletter:log:counter:error");
+			$users_title .= ")";
+			
 			$users_content = "<table class='elgg-table' id='newsletter-log-users-table'>" . $users_header . $users_content . "</table>";
 			
 			if (!empty($users_row_class)) {
@@ -162,6 +177,11 @@ if (!empty($log)) {
 		}
 		
 		if (!empty($emails_content)) {
+			$emails_title .= " (";
+			$emails_title .= ($emails_counter - $emails_error_counter) . " " . elgg_echo("newsletter:log:counter:success");
+			$emails_title .= ", " . $emails_error_counter . " " . elgg_echo("newsletter:log:counter:error");
+			$emails_title .= ")";
+			
 			$emails_content = "<table class='elgg-table' id='newsletter-log-emails-table'>" . $emails_header . $emails_content . "</table>";
 			
 			if (!empty($emails_row_class)) {
