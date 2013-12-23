@@ -72,7 +72,6 @@ function newsletter_write_access_handler($hook, $type, $returnvalue, $params) {
 		
 		if (!empty($page_owner)) {
 			$allowed_keys = array(
-				ACCESS_PRIVATE,
 				ACCESS_LOGGED_IN,
 				ACCESS_PUBLIC
 			);
