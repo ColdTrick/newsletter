@@ -10,6 +10,11 @@
 		'newsletter:unsubscribe' => "Unsubscribe",
 		'newsletter:duplicate_of' => "Duplicate of",
 		
+		'newsletter:status:concept' => "Concept",
+		'newsletter:status:sending' => "Sending",
+		'newsletter:status:scheduled' => "Scheduled",
+		'newsletter:status:sent' => "Sent",
+		
 		// menu's
 		'newsletter:menu:site' => "Newsletters",
 		
@@ -172,6 +177,8 @@ To view the newsletter click here:
 		
 		// logging
 		'newsletter:log:title' => "Delivery log: %s",
+		'newsletter:log:counter:success' => "sent",
+		'newsletter:log:counter:error' => "errors",
 		
 		'newsletter:log:users:title' => "Users",
 		'newsletter:log:users:header:email' => "E-mail address",
