@@ -20,7 +20,7 @@
 		'newsletter:menu:entity:log' => "View log",
 		'newsletter:menu:entity:duplicate' => "Duplicate",
 		
-		'newsletter:menu:owner_block:group' => "Group newsletter",
+		'newsletter:menu:owner_block:group' => "Group newsletters",
 		
 		'newsletter:menu:filter:sent' => "Sent",
 		'newsletter:menu:filter:concept' => "Concept",
@@ -195,7 +195,7 @@ To view the newsletter click here:
 		'newsletter:log:users:no_recipients' => "There were no registered users in the proccessing of the newsletter. If you had selected some users they could have unsubscribed from the newsletter.",
 		
 		// group
-		'newsletter:group:tool_option' => "Enable group newsletter",
+		'newsletter:group:tool_option' => "Enable group newsletters",
 		'newsletter:group:error:not_enabled' => "Newsletters aren't enabled for this group",
 		'newsletter:group:title' => "%s's newsletters",
 		

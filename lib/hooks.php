@@ -394,7 +394,7 @@ function newsletter_register_filter_menu_handler($hook, $type, $returnvalue, $pa
 			$result[] = ElggMenuItem::factory(array(
 				"name" => "sent",
 				"text" => elgg_echo("newsletter:menu:filter:sent"),
-				"href" => $base_url,
+				"href" => $base_url . "?filter=sent",
 				"is_trusted" => true,
 				"selected" => ($current_filter == "sent")
 			));

@@ -27,6 +27,11 @@ if ($page_owner->canEdit()) {
 	elgg_register_title_button();
 	
 	$filter = get_input("filter");
+	if (empty($filter)) {
+		$filter = "concept";
+		// input is used in filter tabs also
+		set_input("filter", $filter);
+	}
 }
 
 $title_text = elgg_echo("newsletter:group:title", array($page_owner->name));

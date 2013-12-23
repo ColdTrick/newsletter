@@ -14,6 +14,12 @@
 		elgg_register_title_button();
 		
 		$filter = get_input("filter");
+		
+		if (empty($filter)) {
+			$filter = "concept";
+			// input is used in filter tabs also
+			set_input("filter", $filter);
+		}
 	}
 	
 	// build page elements
@@ -49,6 +55,7 @@
 				"value" => "sending"
 			);
 			break;
+		case "sent":
 		default:
 			$options["metadata_name_value_pairs"] = array();
 			$options["metadata_name_value_pairs"][] = array(
