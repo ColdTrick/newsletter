@@ -12,12 +12,13 @@
  	
  	<requires>
 		<type>elgg_release</type>
-		<version>1.8.16</version>
+		<version>1.8.15</version>
 	</requires>
 	
 	<requires>
 		<type>plugin</type>
 		<name>html_email_handler</name>
+		<version>2.5</version>
 	</requires>
 	
 	<requires>

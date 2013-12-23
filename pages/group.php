@@ -81,12 +81,13 @@ switch ($filter) {
 		
 		$options["order_by_metadata"] = array(
 			"name" => "start_time",
-			"as" => "integer"
+			"as" => "integer",
+			"direction" => "DESC"
 		);
 		break;
 }
 
-if (!($content = elgg_list_entities($options))) {
+if (!($content = elgg_list_entities_from_metadata($options))) {
 	$content = elgg_view("output/longtext", array("value" => elgg_echo("notfound")));
 }
 

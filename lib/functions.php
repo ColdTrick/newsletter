@@ -303,7 +303,7 @@
 				} else {
 					$message_subject = elgg_echo("newsletter:subject", array($container->name, $entity->title));
 				}
-				$message_plaintext_content = elgg_echo("newsletter:plain_message", array($entity->getURL()));
+				$message_plaintext_content = elgg_echo("newsletter:plain_message", array(elgg_normalize_url($entity->getURL())));
 				
 				$message_html_content = elgg_view_layout("newsletter", array("entity" => $entity));
 				// convert to inline CSS for email clients
@@ -343,7 +343,8 @@
 							}
 							
 							// place the unsubscribe link in the message
-							$message_html_content_user = str_ireplace("{unsublink}", $unsubscribe_link, $message_html_content);
+							$unsubscribe_link = elgg_normalize_url($unsubscribe_link);
+							$message_html_content_user = str_ireplace(urlencode("{unsublink}"), $unsubscribe_link, $message_html_content);
 							
 							// =========
 							// send mail
