@@ -82,7 +82,9 @@ echo "<div><label>" . elgg_echo("newsletter:edit:template:html") . "<br />";
 echo elgg_view("input/plaintext", array("name" => "html", "value" => $entity->html));
 echo "</label></div>";
 
-echo "<div><label>" . elgg_echo("newsletter:edit:template:css") . "<br />";
+echo elgg_view("newsletter/placeholders");
+
+echo "<div class='mtm'><label>" . elgg_echo("newsletter:edit:template:css") . "<br />";
 echo elgg_view("input/plaintext", array("name" => "css", "value" => $entity->css));
 echo "</label></div>";
 
