@@ -4,11 +4,20 @@
  *
  * @var SUBTYPE		The subtype of the newsletters
  * @var SEND_TO		A relationship to link users to this newsletter
+ *
+ * @package Newsletter
  */
 class Newsletter extends ElggObject {
 	const SUBTYPE = "newsletter";
 	const SEND_TO = "send_to";
 	
+	/**
+	 * Clones the newsletter
+	 *
+	 * @return void
+	 *
+	 * @see ElggEntity::__clone()
+	 */
 	public function __clone() {
 		parent::__clone();
 		
@@ -18,16 +27,36 @@ class Newsletter extends ElggObject {
 		unset($this->temp_metadata["start_time"]);
 	}
 	
+	/**
+	 * Initializes attributes for this class
+	 *
+	 * @return void
+	 *
+	 * @see ElggObject::initializeAttributes()
+	 */
 	protected function initializeAttributes() {
 		parent::initializeAttributes();
 		
 		$this->attributes["subtype"] = self::SUBTYPE;
 	}
 	
+	/**
+	 * Returns the url to the newsletter
+	 *
+	 * @return string url to the newsletter
+	 * @see ElggEntity::getURL()
+	 */
 	public function getURL() {
-		return "newsletter/view/" . $this->getGUID() . "/" . newsletter_generate_commanline_secret($this->getGUID());
+		return elgg_normalize_url("newsletter/view/" . $this->getGUID() . "/" . newsletter_generate_commanline_secret($this->getGUID()));
 	}
 	
+	/**
+	 * Writes logging data to a file
+	 *
+	 * @param string $logging data to be saved
+	 *
+	 * @return Ambigous <boolean, number>
+	 */
 	public function saveLogging($logging) {
 		$result = false;
 		
@@ -44,6 +73,11 @@ class Newsletter extends ElggObject {
 		return $result;
 	}
 	
+	/**
+	 * Returns logging from a file
+	 *
+	 * @return Ambigous <boolean, string>
+	 */
 	public function getLogging() {
 		$result = false;
 		

@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Custom class for Newsletter Subscriptions
+ *
+ * @package Newsletter
+ *
+ */
 class NewsletterSubscription extends ElggObject {
 	const SUBSCRIPTION = "subscribed";
 	const BLACKLIST = "blacklisted";
@@ -7,6 +12,13 @@ class NewsletterSubscription extends ElggObject {
 	
 	const SUBTYPE = "newsletter_subscription";
 	
+	/**
+	 * Initializes attributes for this class
+	 *
+	 * @return void
+	 *
+	 * @see ElggObject::initializeAttributes()
+	 */
 	public function initializeAttributes() {
 		parent::initializeAttributes();
 		
