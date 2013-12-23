@@ -64,7 +64,8 @@
 			
 			$options["order_by_metadata"] = array(
 				"name" => "start_time",
-				"as" => "integer"
+				"as" => "integer",
+				"direction" => "DESC"
 			);
 			break;
 	}
