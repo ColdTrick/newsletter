@@ -123,3 +123,9 @@
 #newsletter-embed-search .elgg-button-action {
 	padding: 5px 15px;
 }
+
+.newsletter-placeholders li {
+	display: inline-block;
+	padding-right: 5px;
+	cursor: help;
+}

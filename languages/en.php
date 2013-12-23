@@ -52,6 +52,22 @@
 		// edit
 		'newsletter:edit:subject' => "Custom e-mail subject (optional)",
 		
+		// placeholders
+		'newsletter:placeholders:info' => "You can use the following placeholders in your text. They will be replaced by system text or by information about the newsletter. If you hover over them, you will get some more details.",
+		'newsletter:placeholders:content' => "Content will be replaced by the content step of the newsletter (do not use on the content page)",
+		'newsletter:placeholders:unsub' => "Unsub will be replaced by a default unsubcribe text containing a unsubscribe link",
+		'newsletter:placeholders:unsublink' => "Unsublink will be replaced by a unsubscribe link",
+		'newsletter:placeholders:online' => "Online will be replaced by a default text on where to view the newsletter online",
+		'newsletter:placeholders:title' => "Title will be replaced by the title of the newsletter",
+		'newsletter:placeholders:description' => "Description will be replaced by the description of the newsletter",
+		'newsletter:placeholders:subject' => "Subject will be replaced by the subject of the newsletter",
+		'newsletter:placeholders:newsletter_url' => "Newsletter_url will be replaced by the url to the newsletter",
+		'newsletter:placeholders:site_name' => "Site_name will be replaced by the name of the site",
+		'newsletter:placeholders:site_description' => "Site_description will be replaced by the description of the site",
+		'newsletter:placeholders:site_url' => "Site_url will be replaced by the url of the site",
+		'newsletter:placeholders:container_name' => "Container_name will be replaced by the name of the container (can be group or site)",
+		'newsletter:placeholders:container_url' => "Container_url will be replaced by the url of the container (can be group or site)",
+			
 		// content
 		'newsletter:edit:content:description' => "Add the content to your newsletter here. Add free text or import an existing blog as content into your newsletter.",
 					
