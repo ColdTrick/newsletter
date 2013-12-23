@@ -37,16 +37,27 @@ $options = array(
 	),
 	"relationship" => Newsletter::SEND_TO,
 	"relationship_guid" => $user->getGUID(),
-	"inverse_relationship" => true
+	"inverse_relationship" => true,
+	"limit" => max(0, (int) get_input("limit", 10)),
+	"offset" => max(0, (int) get_input("offset", 0)),
+	"order_by_metadata" => array(
+		"name" => "start_time",
+		"as" => "integer",
+		"direction" => "DESC"
+	)
 );
 
 $ia = elgg_set_ignore_access(true);
+$entities = elgg_get_entities_from_metadata($options);
+elgg_set_ignore_access($ia);
 
-if (!($content = elgg_list_entities_from_relationship($options))) {
+if (!empty($entities)) {
+	$content = elgg_view_entity_list($entities, $options);
+} else {
 	$content = elgg_view("output/longtext", array("value" => elgg_echo("notfound")));
 }
 
-elgg_set_ignore_access($ia);
+
 
 // build page
 $page_data = elgg_view_layout("content", array(
