@@ -849,8 +849,9 @@ function newsletter_generate_unsubscribe_link(ElggEntity $container, $recipient)
 			// recipient is an email address
 			$result = "newsletter/unsubscribe/" . $container->getGUID() . "?e=" . $recipient . "&c=" . $code;
 		}
-		
-		$result = elgg_normalize_url($result);
+		if ($result) {
+			$result = elgg_normalize_url($result);
+		}
 	}
 	
 	return $result;
