@@ -7,9 +7,11 @@
 /**
  * Do something on the 'upgrade', 'system' event (when running upgrade.php)
  *
- * @param 	string 	$event	which event was triggered
- * @param 	string	$type	what is the type of the event
- * @param 	mixed 	$object	On what object was the event triggered
+ * @param string $event  which event was triggered
+ * @param string $type   what is the type of the event
+ * @param mixed  $object On what object was the event triggered
+ *
+ * @return void
  *
  * @see elgg_trigger_event()
  */
@@ -30,9 +32,11 @@ function newsletter_upgrade_event_handler($event, $type, $object) {
 /**
  * Listen to the join site event and check for email subscriptions
  *
- * @param 	string				$event		What event was fired
- * @param 	string				$type		What was the type of event
- * @param 	ElggRelationship 	$object	The relationship object, containing the user and site
+ * @param string           $event  What event was fired
+ * @param string           $type   What was the type of event
+ * @param ElggRelationship $object The relationship object, containing the user and site
+ *
+ * @return void
  */
 function newsletter_join_site_event_handler($event, $type, $object) {
 	
