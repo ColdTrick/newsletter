@@ -50,6 +50,19 @@ $replacements = array(
 		"{container_url}" => elgg_normalize_url($container_url),
 	);
 
+if (PHP_SAPI !== "cli") {
+	// (pre)viewing online
+	if (elgg_is_logged_in()) {
+		$replacements["{unsublink}"] = elgg_normalize_url("newsletter/subscriptions/" . elgg_get_logged_in_user_entity()->username);
+	} else {
+		$email = get_input("e");
+		if ($email) {
+			$replacements["{newsletter_url}"] = $replacements["{newsletter_url}"] . "?e=" . $email;
+			$replacements["{unsublink}"] = newsletter_generate_unsubscribe_link($entity->getContainerEntity(), $email);
+		}
+	}
+}
+
 foreach ($replacements as $search => $replace) {
 	$content = str_ireplace($search, $replace, $content);
 }

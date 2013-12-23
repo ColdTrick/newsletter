@@ -374,6 +374,14 @@ function newsletter_process($entity_guid) {
 						$unsubscribe_link = elgg_normalize_url($unsubscribe_link);
 						$message_html_content_user = str_ireplace(urlencode("{unsublink}"), $unsubscribe_link, $message_html_content);
 						
+						// replace the online link for logged out users to add an emailadres
+						if ($type !== "users") {
+							$online_link = $entity->getURL();
+							$new_online_link = $online_link . "?e=" . $recipient;
+							
+							$message_html_content_user = str_ireplace($online_link, $new_online_link, $message_html_content_user);
+						}
+						
 						// =========
 						// send mail
 						// =========
@@ -868,6 +876,9 @@ function newsletter_generate_unsubscribe_link(ElggEntity $container, $recipient)
 		} elseif (newsletter_is_email_address($recipient)) {
 			// recipient is an email address
 			$result = "newsletter/unsubscribe/" . $container->getGUID() . "?e=" . $recipient . "&c=" . $code;
+		}
+		if ($result) {
+			$result = elgg_normalize_url($result);
 		}
 	}
 	
