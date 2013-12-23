@@ -3,7 +3,8 @@ Newsletter
 
 Allows the creation and management of a newsletter to site/group members
 
-== Features
+Features
+--------
 
  - Create site or group newsletters
  - Use one of the 2 default tempaltes or create your own templates
@@ -19,7 +20,8 @@ Allows the creation and management of a newsletter to site/group members
  - Unsubscribe settings/page to configure your newsletter preferences
  - Recipients log
 
-== Configuration
+Configuration
+-------------
 
 You can configure if newsletters can be send by group owners.
 
