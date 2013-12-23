@@ -1,4 +1,4 @@
-Newsletter
+Newsletter [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/ColdTrick/newsletter/badges/quality-score.png?s=6086ad5aac5e7c11988c2d92d3680834a286a08c)](https://scrutinizer-ci.com/g/ColdTrick/newsletter/)
 ==========
 
 Allows the creation and management of a newsletter to site/group members
