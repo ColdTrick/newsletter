@@ -1,14 +1,64 @@
 <?php
 
+$messages = null;
+if (count_messages()) {
+	// get messages - try for errors first
+	$messages = system_messages(NULL, "error");
+	if (count($messages["error"]) == 0) {
+		// no errors so grab rest of messages
+		$messages = system_messages(null, "");
+	} else {
+		// we have errors - clear out remaining messages
+		system_messages(null, "");
+	}
+}
+
 $type = elgg_extract("type", $vars, "view");
 $entity = elgg_extract("entity", $vars);
 
 $menu = elgg_view_menu("newsletter_buttons", array("entity" => $entity, "type" => $type, "class" => "newsletter-buttons", "sort_by" => "priority"));
 
 echo $menu;
+
+echo elgg_view('page/elements/messages', array('object' => $messages));
 ?>
 
 <style type="text/css">
+	.elgg-system-messages {
+		position: absolute;
+		top: 20px;
+		left: 20px;
+		margin: 0;
+		list-style: none;
+	}
+	
+	.elgg-system-messages .elgg-state-success {
+		background: black;
+	}
+	
+	.elgg-system-messages .elgg-state-error {
+		background: red;
+	}
+	
+	.elgg-system-messages .elgg-message {
+		padding: 5px 10px;
+		
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		border-radius: 5px;
+		
+		color: white;
+		font-weight: bold;
+	}
+	
+	.elgg-system-messages p {
+		margin: 0;
+	}
+	
+	.hidden {
+		display: none;
+	}
+
 	.newsletter-buttons {
 		position: absolute;
 		top: 20px;
