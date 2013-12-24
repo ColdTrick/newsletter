@@ -53,50 +53,57 @@ $content .= "</div>";
 
 echo elgg_view_module("info", $title, $content);
 
-// my group subscriptions
-$my_groups = get_users_membership($entity->getGUID());
-
-if (!empty($my_groups)) {
-	$title = elgg_echo("newsletter:subscriptions:groups:title");
+// are group newsletters allowed
+if (newsletter_is_group_enabled()) {
+	// my group subscriptions
+	$my_groups = get_users_membership($entity->getGUID());
 	
-	$content = elgg_view("output/longtext", array("value" => elgg_echo("newsletter:subscriptions:groups:description"), "class" => "mtn mbs"));
-	
-	$content .= "<table class='elgg-table-alt'>";
-	$content .= "<tr>";
-	$content .= "<th>&nbsp;</th>";
-	$content .= "<th class='newsletter-settings-small'>" . elgg_echo("on") . "</th>";
-	$content .= "<th class='newsletter-settings-small'>" . elgg_echo("off") . "</th>";
-	$content .= "</tr>";
-	
-	$group_content = array();
-	$group_order = array();
-	
-	foreach ($my_groups as $group) {
-		$processed_subscriptions[] = $group->getGUID();
-		$group_order[$group->getGUID()] = $group->name;
+	if (!empty($my_groups)) {
+		$title = elgg_echo("newsletter:subscriptions:groups:title");
 		
-		$on = "";
-		$off = "checked='checked'";
-		if (newsletter_check_user_subscription($entity, $group)) {
-			$on = "checked='checked'";
-			$off = "";
+		$content = elgg_view("output/longtext", array("value" => elgg_echo("newsletter:subscriptions:groups:description"), "class" => "mtn mbs"));
+		
+		$content .= "<table class='elgg-table-alt'>";
+		$content .= "<tr>";
+		$content .= "<th>&nbsp;</th>";
+		$content .= "<th class='newsletter-settings-small'>" . elgg_echo("on") . "</th>";
+		$content .= "<th class='newsletter-settings-small'>" . elgg_echo("off") . "</th>";
+		$content .= "</tr>";
+		
+		$group_content = array();
+		$group_order = array();
+		
+		foreach ($my_groups as $group) {
+			$processed_subscriptions[] = $group->getGUID();
+			
+			// check if newsletter is enabled for this group
+			if (newsletter_is_group_enabled($group)) {
+				$group_order[$group->getGUID()] = $group->name;
+				
+				$on = "";
+				$off = "checked='checked'";
+				if (newsletter_check_user_subscription($entity, $group)) {
+					$on = "checked='checked'";
+					$off = "";
+				}
+				
+				$group_content[$group->getGUID()] = "<tr>";
+				$group_content[$group->getGUID()] .= "<td>" . $group->name . "</td>";
+				$group_content[$group->getGUID()] .= "<td class='newsletter-settings-small'><input type='radio' name='subscriptions[" . $group->getGUID() . "]' value='1' " . $on . " /></td>";
+				$group_content[$group->getGUID()] .= "<td class='newsletter-settings-small'><input type='radio' name='subscriptions[" . $group->getGUID() . "]' value='0' " . $off . " /></td>";
+				$group_content[$group->getGUID()] .= "</tr>";
+			}
 		}
 		
-		$group_content[$group->getGUID()] = "<tr>";
-		$group_content[$group->getGUID()] .= "<td>" . $group->name . "</td>";
-		$group_content[$group->getGUID()] .= "<td class='newsletter-settings-small'><input type='radio' name='subscriptions[" . $group->getGUID() . "]' value='1' " . $on . " /></td>";
-		$group_content[$group->getGUID()] .= "<td class='newsletter-settings-small'><input type='radio' name='subscriptions[" . $group->getGUID() . "]' value='0' " . $off . " /></td>";
-		$group_content[$group->getGUID()] .= "</tr>";
+		natcasesort($group_order);
+		foreach ($group_order as $guid => $dummy) {
+			$content .= $group_content[$guid];
+		}
+		
+		$content .= "</table>";
+		
+		echo elgg_view_module("info", $title, $content);
 	}
-	
-	natcasesort($group_order);
-	foreach ($group_order as $guid => $dummy) {
-		$content .= $group_content[$guid];
-	}
-	
-	$content .= "</table>";
-	
-	echo elgg_view_module("info", $title, $content);
 }
 
 // other group subscriptions
@@ -126,20 +133,23 @@ if (!empty($subscriptions)) {
 	$subscriptions_content = array();
 	
 	foreach ($subscriptions as $subscription) {
-		$subscriptions_order[$subscription->getGUID()] = $subscription->name;
-		
-		$on = "";
-		$off = "checked='checked'";
-		if (newsletter_check_user_subscription($entity, $subscription)) {
-			$on = "checked='checked'";
-			$off = "";
-		}
+		// check if group and enabled or site
+		if (elgg_instanceof($subscription, "site") || (elgg_instanceof($subscription, "group") && newsletter_is_group_enabled($subscription))) {
+			$subscriptions_order[$subscription->getGUID()] = $subscription->name;
 			
-		$subscriptions_content[$subscription->getGUID()] = "<tr>";
-		$subscriptions_content[$subscription->getGUID()] .= "<td>" . $subscription->name . "</td>";
-		$subscriptions_content[$subscription->getGUID()] .= "<td class='newsletter-settings-small'><input type='radio' name='subscriptions[" . $subscription->getGUID() . "]' value='1' " . $on . " /></td>";
-		$subscriptions_content[$subscription->getGUID()] .= "<td class='newsletter-settings-small'><input type='radio' name='subscriptions[" . $subscription->getGUID() . "]' value='0' " . $off . " /></td>";
-		$subscriptions_content[$subscription->getGUID()] .= "</tr>";
+			$on = "";
+			$off = "checked='checked'";
+			if (newsletter_check_user_subscription($entity, $subscription)) {
+				$on = "checked='checked'";
+				$off = "";
+			}
+				
+			$subscriptions_content[$subscription->getGUID()] = "<tr>";
+			$subscriptions_content[$subscription->getGUID()] .= "<td>" . $subscription->name . "</td>";
+			$subscriptions_content[$subscription->getGUID()] .= "<td class='newsletter-settings-small'><input type='radio' name='subscriptions[" . $subscription->getGUID() . "]' value='1' " . $on . " /></td>";
+			$subscriptions_content[$subscription->getGUID()] .= "<td class='newsletter-settings-small'><input type='radio' name='subscriptions[" . $subscription->getGUID() . "]' value='0' " . $off . " /></td>";
+			$subscriptions_content[$subscription->getGUID()] .= "</tr>";
+		}
 	}
 	
 	natcasesort($subscriptions_order);
