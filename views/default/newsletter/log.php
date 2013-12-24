@@ -124,7 +124,6 @@ if (!empty($log)) {
 							if ($key == "status") {
 								$emails_header .= "<th class='center'>" . elgg_echo("newsletter:log:email:header:" . $key) . "</th>";
 							} else {
-								$emails_error_counter++;
 								$emails_header .= "<th>" . elgg_echo("newsletter:log:email:header:" . $key) . "</th>";
 							}
 						}
@@ -140,6 +139,7 @@ if (!empty($log)) {
 								if ($data) {
 									$emails_content .= "<td class='center'>" . elgg_view_icon("checkmark") . "</td>";
 								} else {
+									$emails_error_counter++;
 									$emails_content .= "<td class='center'>" . elgg_view_icon("attention") . "</td>";
 								}
 								break;
