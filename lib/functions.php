@@ -703,7 +703,7 @@ function newsletter_subscribe_email($email, ElggEntity $entity) {
 				
 				// remove general blocklist
 				$site = elgg_get_site_entity();
-				remove_entity_relationship($user->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID());
+				remove_entity_relationship($subscription->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID());
 			}
 		}
 	}
