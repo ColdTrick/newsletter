@@ -280,7 +280,7 @@ function newsletter_process($entity_guid) {
 						$blocked_emails[] = $user["email"];
 					}
 					
-					$emails = array_diff($email, $blocked_emails);
+					$emails = array_diff($emails, $blocked_emails);
 				}
 				
 				if (!empty($emails)) {
@@ -314,7 +314,7 @@ function newsletter_process($entity_guid) {
 							$blocked_emails[] = $subscription["email"];
 						}
 						
-						$emails = array_diff($email, $blocked_emails);
+						$emails = array_diff($emails, $blocked_emails);
 					}
 					
 					if (!empty($emails)) {
