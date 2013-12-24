@@ -1163,8 +1163,15 @@ function newsletter_send_preview(Newsletter $entity, $email) {
 		// convert to inline CSS for email clients
 		$message_html_content = html_email_handler_css_inliner($message_html_content);
 		
+		// add unsubscribe link
 		$unsubscribe_link = newsletter_generate_unsubscribe_link($container, $email);
-		$message_html_content = str_ireplace("{unsublink}", $unsubscribe_link, $message_html_content);
+		$message_html_content = str_ireplace(urlencode("{unsublink}"), $unsubscribe_link, $message_html_content);
+		
+		// replace online link
+		$online_link = $entity->getURL();
+		$new_online_link = $online_link . "?e=" . $email;
+		
+		$message_html_content = str_ireplace($online_link, $new_online_link, $message_html_content);
 		
 		// start creating sending options
 		$send_options = array(
