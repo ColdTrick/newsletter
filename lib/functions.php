@@ -1208,3 +1208,64 @@ function newsletter_include_existing_users() {
 	
 	return $result;
 }
+
+/**
+ * Returns all the available templates, these include those provided by themes
+ * and the saved templates
+ *
+ * Other plugins/themes can provide their own template if the create a view
+ * newsletter/templates/<some name>/{body|css}
+ *
+ * @param int $container_guid The container of the current newsletter
+ * @return array The available templates
+ */
+function newsletter_get_available_templates($container_guid) {
+	$result = array();
+	
+	// detect templates provided by themes/plugins
+	$views = elgg_get_config("views");
+	$locations = $views->locations["default"];
+	$keys = array_keys($locations);
+	
+	$pattern = '/^newsletter\/templates\/(?P<name>\w+)\/(body|css)$/';
+	
+	foreach ($keys as $view) {
+		$matches = array();
+		$res = preg_match($pattern, $view, $matches);
+		
+		if ($res) {
+			$name = elgg_extract("name", $matches);
+			$lan_key = "newsletter:edit:template:select:" . $name;
+			$title = elgg_echo($lan_key);
+			
+			if ($title == $lan_key) {
+				$title = $name;
+			}
+			
+			$result[$name] = $title;
+		}
+	}
+	
+	// get saved templates
+	if (!empty($container_guid)) {
+		$options = array(
+			"type" => "object",
+			"subtype" => NEWSLETTER_TEMPLATE,
+			"container_guid" => $container_guid,
+			"limit" => false
+		);
+		
+		$templates = elgg_get_entities($options);
+		if (!empty($templates)) {
+			foreach ($templates as $template) {
+				$result[$template->getGUID()] = $template->title;
+			}
+		}
+	}
+	
+	// the custom selection option
+	unset($result["custom"]); // make sure custom is last in the list (shouldn't be provided by a plugin/theme)
+	$result["custom"] = elgg_echo("newsletter:edit:template:select:custom");
+	
+	return $result;
+}

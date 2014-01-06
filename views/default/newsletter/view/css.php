@@ -21,6 +21,11 @@ if (!isset($css)) {
 	if ($template == "custom") {
 		$css = $vars["entity"]->css;
 	} else {
+		if (!elgg_view_exists("newsletter/templates/" . $template . "/css")) {
+			// something wrong, reset to default
+			$template = "default";
+		}
+		
 		$css = elgg_view("newsletter/templates/" . $template . "/css");
 	}
 }

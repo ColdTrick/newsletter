@@ -23,6 +23,11 @@ if (!isset($content)) {
 	if ($template == "custom") {
 		$content = $entity->html;
 	} else {
+		if (!elgg_view_exists("newsletter/templates/" . $template . "/body")) {
+			// something wrong, reset to default
+			$template = "default";
+		}
+		
 		$content = elgg_view("newsletter/templates/" . $template . "/body");
 	}
 }

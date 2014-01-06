@@ -2,29 +2,18 @@
 
 $entity = $vars["entity"];
 
-$template_options = array(
-	"default" => elgg_echo("newsletter:edit:template:select:default"),
-	"default2" => elgg_echo("newsletter:edit:template:select:default2")
-);
+// get the available tempaltes for this container
+$template_options = newsletter_get_available_templates($entity->getContainerGUID());
 
-$options = array(
-	"type" => "object",
-	"subtype" => NEWSLETTER_TEMPLATE,
-	"container_guid" => $entity->getContainerGUID(),
-	"limit" => false
-);
-$templates = elgg_get_entities($options);
-if (!empty($templates)) {
-	foreach ($templates as $template) {
-		$template_options[$template->getGUID()] = $template->title;
-	}
-}
-
-$template_options["custom"] = elgg_echo("newsletter:edit:template:select:custom");
-
+// select the correct template
 $template = "default";
 if ($entity->template) {
 	$template = $entity->template;
+}
+
+// make sure we can select a template
+if (!array_key_exists($template, $template_options)) {
+	$template = "default";
 }
 
 echo elgg_view("output/text", array("value" => elgg_echo("newsletter:edit:template:description")));
