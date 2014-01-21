@@ -1,5 +1,9 @@
 <?php
 $language = array (
+  'newsletter:csv:no_email' => 'Er kon geen e-mail kolom worden gevonden in de eerste 2 regels van het CSV-bestand',
+  'newsletter:csv:added' => '%s e-mail adressen toegevoegd vanuit het CSV-bestand',
+  'newsletter:recipients:csv' => 'Upload een CSV-bestand met e-mail adressen van ontvangers',
+  'newsletter:recipients:csv:description' => 'Je kunt een CSV-bestand uploaden welke e-mail adressen van ontvangers bevat. Het tekst scheidingsteken moet een " (dubbel quote) zijn en het kolom scheidingsteken moet een ; (puntkomma) zijn. Het systeem zoekt zelf naar de kolom met e-mail adressen door de eerste 2 regels te doorzoeken.',
   'item:object:newsletter' => 'Nieuwsbrief',
   'item:object:newsletter_template' => 'Nieuwsbrief template',
   'item:object:newsletter_subscription' => 'Nieuwsbrief inschrijving',

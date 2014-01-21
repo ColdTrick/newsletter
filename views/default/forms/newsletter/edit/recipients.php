@@ -30,6 +30,12 @@ echo elgg_view("output/longtext", array("value" => elgg_echo("newsletter:recipie
 echo "</div>";
 
 echo "<div>";
+echo "<label for='newsletter-recipients-csv'>" . elgg_echo("newsletter:recipients:csv") . "</label>";
+echo elgg_view("input/file", array("name" => "csv", "id" => "newsletter-recipients-csv"));
+echo "<div class='elgg-subtext'>" . elgg_echo("newsletter:recipients:csv:description") . "</div>";
+echo "</div>";
+
+echo "<div>";
 echo "<label for='newsletter-recipients-autocomplete'>" . elgg_echo("newsletter:recipients:recipient") . "</label>";
 echo elgg_view("input/text", array("name" => "q", "id" => "newsletter-recipients-autocomplete", "class" => "elgg-input-autocomplete"));
 echo "<div class='elgg-subtext'>" . elgg_echo("newsletter:recipients:recipient:description") . "</div>";

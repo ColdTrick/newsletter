@@ -1,4 +1,15 @@
 <?php
+/**
+ * Add recipients to a newsletter.
+ *
+ * This can be done by providing
+ * - user_guids
+ * - group_guids
+ * - email addresses
+ * - set subscibers
+ * - set members (site or group)
+ * - uploading a CSV with email addresses
+ */
 
 elgg_make_sticky_form("newsletter_recipients");
 
@@ -23,6 +34,26 @@ if (!empty($guid)) {
 				$forward_url = "newsletter/edit/" . $entity->getGUID() . "/schedule";
 			}
 			
+			// make sere we have the correct format
+			if (empty($user_guids)) {
+				$user_guids = array();
+			} elseif (!is_array($user_guids)) {
+				$user_guids = array($user_guids);
+			}
+			
+			if (empty($group_guids)) {
+				$group_guids = array();
+			} elseif (!is_array($group_guids)) {
+				$group_guids = array($group_guids);
+			}
+			
+			if (empty($emails)) {
+				$emails = array();
+			} elseif (!is_array($emails)) {
+				$emails = array($emails);
+			}
+			
+			// prepare save
 			$tmp = array(
 				"user_guids" => $user_guids,
 				"group_guids" => $group_guids,
@@ -31,6 +62,12 @@ if (!empty($guid)) {
 				"members" => $members
 			);
 			
+			// check for an uploaded CSV
+			if (get_uploaded_file("csv")) {
+				$tmp = newsletter_process_csv_upload($tmp);
+			}
+			
+			// save results
 			$entity->recipients = json_encode($tmp);
 			
 			system_message(elgg_echo("newsletter:action:recipients:success"));

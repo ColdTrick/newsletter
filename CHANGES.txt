@@ -1,5 +1,9 @@
 = Version History =
 
+x.x:
+
+- added: option to upload a CSV with recipients
+
 1.0 (2013-12-24):
 
 - initial release

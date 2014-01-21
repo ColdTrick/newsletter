@@ -1269,3 +1269,105 @@ function newsletter_get_available_templates($container_guid) {
 	
 	return $result;
 }
+
+/**
+ * Process an uploaded CSV file to find new recipients.
+ *
+ * @param array $recipients previous recipients, to prevent duplicates
+ * Contains:
+ *
+ * user_guids => array() existing users
+ * emails => array() extra email addresses
+ *
+ * @return array
+ */
+function newsletter_process_csv_upload(array $recipients) {
+	
+	// is a file uploaded
+	if (get_uploaded_file("csv")) {
+		// open the file as CSV
+		$fh = fopen($_FILES["csv"]["tmp_name"], "r");
+		
+		if (!empty($fh)) {
+			$email_column = false;
+			
+			// try to find an email column (in the first 2 rows)
+			for ($i = 0; $i < 2; $i++) {
+				$row = fgetcsv($fh, null, ";", "\"");
+				if ($row) {
+					foreach ($row as $index => $field) {
+						if (newsletter_is_email_address($field)) {
+							$email_column = $index;
+							break;
+						}
+					}
+				}
+			}
+			
+			// found an email column
+			if ($email_column !== false) {
+				$counter = 0;
+				
+				// start at the beginning
+				if (rewind($fh)) {
+					$row = fgetcsv($fh, null, ";", "\"");
+					while ($row !== false) {
+						// get the email address
+						$email = @$row[$email_column];
+						
+						// make sure it's a valid email address
+						if (newsletter_is_email_address($email)) {
+							$counter++;
+							$exists = false;
+							
+							// is this email address already in the recipients list
+							if (in_array($email, $recipients["emails"])) {
+								$exists = true;
+							} else {
+								// check for an existing user
+								$ia = elgg_set_ignore_access(true);
+								
+								$users = get_user_by_email($email);
+								if (!empty($users)) {
+									foreach ($users as $user) {
+										if (in_array($user->getGUID(), $recipients["user_guids"])) {
+											$exists = true;
+										}
+									}
+								}
+								
+								elgg_set_ignore_access($ia);
+							}
+							
+							if ($exists === false) {
+								// email address wasn't added yet
+								// so add to the list
+								$ia = elgg_set_ignore_access(true);
+								
+								$users = get_user_by_email($email);
+								if (!empty($users)) {
+									$recipients["user_guids"][] = $users[0]->getGUID();
+								} else {
+									$recipients["emails"][] = $email;
+								}
+								
+								elgg_set_ignore_access($ia);
+							}
+						}
+						
+						// go to the next row
+						$row = fgetcsv($fh, null, ";", "\"");
+					}
+					
+					// done, report the added emails
+					system_message(elgg_echo("newsletter:csv:added", array($counter)));
+				}
+			} else {
+				// no email column found, report this
+				system_message(elgg_echo("newsletter:csv:no_email"));
+			}
+		}
+	}
+	
+	return $recipients;
+}

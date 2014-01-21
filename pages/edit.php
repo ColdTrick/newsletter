@@ -52,6 +52,9 @@ $vars = array(
 );
 
 if ($subpage) {
+	$form_vars = array(
+		"id" => "newsletter-form-" . $subpage
+	);
 	
 	if ($subpage == "content" || $subpage == "template") {
 		if ($entity->content) {
@@ -64,11 +67,9 @@ if ($subpage) {
 					"target" => "_blank"
 			)));
 		}
+	} elseif ($subpage == "recipients") {
+		$form_vars["enctype"] = "multipart/form-data";
 	}
-	
-	$form_vars = array(
-		"id" => "newsletter-form-" . $subpage
-	);
 	
 	$content = elgg_view_form("newsletter/edit/" . $subpage, $form_vars, $vars);
 } else {
