@@ -24,6 +24,9 @@ function newsletter_init() {
 	// register page handler
 	elgg_register_page_handler("newsletter", "newsletter_page_handler");
 	
+	// Register entity_type for search
+	elgg_register_entity_type("object", "newsletter");
+	
 	// CSS & JS
 	elgg_extend_view("css/elgg", "css/newsletter/site");
 	elgg_extend_view("js/elgg", "js/newsletter/site");
