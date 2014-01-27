@@ -63,8 +63,7 @@ if ($subpage) {
 					"name" => "preview",
 					"text" => elgg_echo("preview"),
 					"href" => "newsletter/preview/" . $guid,
-					"link_class" => "elgg-button elgg-button-action",
-					"target" => "_blank"
+					"link_class" => "elgg-button elgg-button-action"
 			)));
 		}
 	} elseif ($subpage == "recipients") {
