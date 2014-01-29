@@ -13,10 +13,10 @@ $entity_guid = (int) get_input("entity_guid");
 
 $forward_url = REFERER;
 
-if (!empty($entity_guid) && !empty($code) && !empty($recipient)) {
+if (!empty($entity_guid) && !empty($recipient)) {
 	$entity = get_entity($entity_guid);
 	
-	if (!empty($entity) && newsletter_validate_unsubscribe_code($entity, $recipient, $code)) {
+	if (!empty($entity) && (empty($code) || newsletter_validate_unsubscribe_code($entity, $recipient, $code))) {
 		$recipient_error = false;
 		
 		// what to unsubscribe

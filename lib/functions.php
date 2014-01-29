@@ -867,19 +867,22 @@ function newsletter_is_email_address($address) {
 function newsletter_generate_unsubscribe_link(ElggEntity $container, $recipient) {
 	$result = false;
 	
-	if (!empty($container) && (elgg_instanceof($container, "site") || elgg_instanceof($container, "group")) && !empty($recipient)) {
-		$code = newsletter_generate_unsubscribe_code($container, $recipient);
+	if (!empty($container) && (elgg_instanceof($container, "site") || elgg_instanceof($container, "group"))) {
+		$result = "newsletter/unsubscribe/" . $container->getGUID();
 		
-		if (is_numeric($recipient)) {
-			// recipient is an user_guid
-			$result = "newsletter/unsubscribe/" . $container->getGUID() . "?u=" . $recipient . "&c=" . $code;
-		} elseif (newsletter_is_email_address($recipient)) {
-			// recipient is an email address
-			$result = "newsletter/unsubscribe/" . $container->getGUID() . "?e=" . $recipient . "&c=" . $code;
+		if (!empty($recipient)) {
+			$code = newsletter_generate_unsubscribe_code($container, $recipient);
+			
+			if (is_numeric($recipient)) {
+				// recipient is an user_guid
+				$result .= "?u=" . $recipient . "&c=" . $code;
+			} elseif (newsletter_is_email_address($recipient)) {
+				// recipient is an email address
+				$result .= "?e=" . $recipient . "&c=" . $code;
+			}
 		}
-		if ($result) {
-			$result = elgg_normalize_url($result);
-		}
+		
+		$result = elgg_normalize_url($result);
 	}
 	
 	return $result;

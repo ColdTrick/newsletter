@@ -18,6 +18,9 @@ if (is_numeric($recipient)) {
 	echo elgg_view("output/longtext", array("value" => elgg_echo("newsletter:unsubscribe:user", array($user->name))));
 } elseif (newsletter_is_email_address($recipient)) {
 	echo elgg_view("output/longtext", array("value" => elgg_echo("newsletter:unsubscribe:email", array($recipient))));
+} elseif (!$recipient) {
+	echo elgg_view("output/longtext", array("value" => elgg_echo("newsletter:unsubscribe:email:empty")));
+	echo elgg_view("input/text", array("name" => "recipient")) . "<br /><br />";
 }
 
 echo "<div>";
@@ -32,7 +35,11 @@ echo "<label for='newsletter-unsubscribe-all'>" . elgg_echo("newsletter:unsubscr
 echo "</div>";
 
 echo "<div class='elgg-foot'>";
-echo elgg_view("input/hidden", array("name" => "recipient", "value" => $recipient));
+
+if ($recipient) {
+	echo elgg_view("input/hidden", array("name" => "recipient", "value" => $recipient));
+}
+
 echo elgg_view("input/hidden", array("name" => "code", "value" => elgg_extract("code", $vars)));
 echo elgg_view("input/hidden", array("name" => "entity_guid", "value" => $entity->getGUID()));
 echo elgg_view("input/submit", array("value" => elgg_echo("newsletter:unsubscribe")));

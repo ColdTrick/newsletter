@@ -12,7 +12,7 @@ $user_guid = (int) get_input("u");
 $email = get_input("e");
 
 // check if we have correct input
-if (empty($guid) || empty($code) || (empty($user_guid) && empty($email))) {
+if (empty($guid)) {
 	register_error(elgg_echo("newsletter:unsubscribe:error:input"));
 	forward();
 }
@@ -29,7 +29,7 @@ if (!empty($user_guid)) {
 }
 
 // validate validation code
-if (!newsletter_validate_unsubscribe_code($entity, $recipient, $code)) {
+if ($code && !newsletter_validate_unsubscribe_code($entity, $recipient, $code)) {
 	register_error(elgg_echo("newsletter:unsubscribe:error:code"));
 	forward();
 }

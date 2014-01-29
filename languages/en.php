@@ -153,6 +153,7 @@
 
 Check the two settings below and click unsubscribe in order to complete the proccess.",
 		'newsletter:unsubscribe:email' => "Your email address %s will be unsubscribed if you click the button below.",
+		'newsletter:unsubscribe:email:empty' => "Enter your email address and click the button below to unsubscribe.",
 		'newsletter:unsubscribe:entity' => "I no longer wish to receive the '%s' newsletter",
 		'newsletter:unsubscribe:all' => "I don't want to receive any newsletters from the %s community",
 		

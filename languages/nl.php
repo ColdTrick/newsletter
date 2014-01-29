@@ -110,6 +110,7 @@ $language = array (
 
 controleer de twee instellingen hieronder en klik op uitschrijven om het het proces af te ronden.',
   'newsletter:unsubscribe:email' => 'Je e-mail adres %s zal worden uitgeschreven als je op de onderstaande knop klik.',
+  'newsletter:unsubscribe:email:empty' => "Voer het emailadres in wat u wilt uitschrijven.",
   'newsletter:unsubscribe:entity' => 'Ik wil de \'%s\' nieuwsbrief niet langen ontvangen',
   'newsletter:unsubscribe:all' => 'Ik wil geen enkele nieuwsbrief van de %s community ontvangen',
   'newsletter:sidebar:subscribe:title' => 'Nieuwsbrief abonnementen',

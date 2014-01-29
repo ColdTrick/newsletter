@@ -64,6 +64,8 @@ if (PHP_SAPI !== "cli") {
 		if ($email) {
 			$replacements["{newsletter_url}"] = $replacements["{newsletter_url}"] . "?e=" . $email;
 			$replacements["{unsublink}"] = newsletter_generate_unsubscribe_link($entity->getContainerEntity(), $email);
+		} else {
+			$replacements["{unsublink}"] = newsletter_generate_unsubscribe_link($entity->getContainerEntity(), "");
 		}
 	}
 }
