@@ -3,6 +3,7 @@
 $entity = elgg_extract("entity", $vars);
 
 $entity_date = gmmktime(0, 0, 0);
+$entity_date += (24 * 60 * 60); // add one day for scheduling
 $entity_hour = 0;
 if ($entity->scheduled) {
 	// input/date expects GMT timestamp

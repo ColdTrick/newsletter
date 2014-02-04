@@ -3,6 +3,7 @@
 x.x:
 
 - added: option to upload a CSV with recipients
+- changed: default send date set to tomorrow
 
 1.0 (2013-12-24):
 
