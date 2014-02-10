@@ -30,4 +30,23 @@ class NewsletterSubscription extends ElggObject {
 		$this->attributes["access_id"] = ACCESS_PRIVATE;
 		
 	}
+	
+	/**
+	 * Save the subscription to the database
+	 *
+	 * @return bool
+	 *
+	 * @see ElggObject::save()
+	 */
+	public function save() {
+		// ignore access restrictions
+		$ia = elgg_set_ignore_access(true);
+		
+		$result = parent::save();
+		
+		// restore access
+		elgg_set_ignore_access($ia);
+		
+		return $result;
+	}
 }
