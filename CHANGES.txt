@@ -3,7 +3,14 @@
 x.x:
 
 - added: option to upload a CSV with recipients
+- added: template autodetection #4
+- added: newsletter entities to search
+- added: option to unsubscribe without manual inputting an emailaddress
+- fixed: copy template to custom from theme/plugin works even if no CSS or HTML provided
+- fixed: email subscription caused fatal error
+- fixed: templates are saved with wrong access
 - changed: default send date set to tomorrow
+- changed: do not open preview in blank window
 
 1.0 (2013-12-24):
 
