@@ -32,7 +32,7 @@ if (!empty($guid) || !empty($newsletter_guid)) {
 				$template->subtype = NEWSLETTER_TEMPLATE;
 				$template->owner_guid = $newsletter->owner_guid;
 				$template->container_guid = $newsletter->container_guid;
-				$template->access_id = ACCESS_LOGGED_IN;
+				$template->access_id = ACCESS_PUBLIC;
 				
 				if ($template->save()) {
 					$newsletter->template = $template->getGUID();

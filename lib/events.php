@@ -27,6 +27,45 @@ function newsletter_upgrade_event_handler($event, $type, $object) {
 		// first time the plugin was activated
 		add_subtype("object", NewsletterSubscription::SUBTYPE, "NewsletterSubscription");
 	}
+	
+	// proccess upgrade scripts
+	$upgrade_scripts = array();
+	$upgrade_dir = dirname(__FILE__) . "/upgrades/";
+	$fh = opendir($upgrade_dir);
+	
+	// read all available upgrade scripts
+	if (!empty($fh)) {
+		while (($upgrade_file = readdir($fh)) !== false) {
+			if (!is_dir($upgrade_dir . $upgrade_file)) {
+				$upgrade_scripts[] = $upgrade_file;
+			}
+		}
+		
+		closedir($fh);
+	}
+	
+	if (!empty($upgrade_scripts)) {
+		// get already run scripts
+		$processed_upgrades = elgg_get_processed_upgrades();
+		if (!is_array($processed_upgrades)) {
+			$processed_upgrades = array();
+		}
+		
+		// do we have something left
+		$unprocessed = array_diff($upgrade_scripts, $processed_upgrades);
+		if (!empty($unprocessed)) {
+			// proccess all upgrades
+			foreach ($unprocessed as $script) {
+				include($upgrade_dir . $script);
+				
+				$processed_upgrades[] = $script;
+			}
+			
+			// save new list
+			elgg_set_processed_upgrades($processed_upgrades);
+		}
+	}
+	
 }
 
 /**
