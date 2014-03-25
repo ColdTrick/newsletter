@@ -6,6 +6,7 @@ x.x:
 - added: template autodetection #4
 - added: newsletter entities to search
 - added: option to unsubscribe without manual inputting an emailaddress
+- added: widget to subscribe to the newsletter #14
 - fixed: copy template to custom from theme/plugin works even if no CSS or HTML provided
 - fixed: email subscription caused fatal error
 - fixed: templates are saved with wrong access

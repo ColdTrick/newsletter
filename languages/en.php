@@ -213,6 +213,9 @@ To view the newsletter click here:
 		'newsletter:group:error:not_enabled' => "Newsletters aren't enabled for this group",
 		'newsletter:group:title' => "%s's newsletters",
 		
+		// widget
+		'newsletter:widget:subscribe:description' => "Show a quick widget to subscribe to the newsletter",
+		
 		// actions
 		// edit
 		'newsletter:action:edit:error:title' => "Please provide a title for the newsletter",

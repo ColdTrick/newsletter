@@ -533,3 +533,32 @@ function newsletter_public_pages($hook_name, $entity_type, $return_value, $param
 	}
 	return $return;
 }
+
+/**
+ * Provide an URL for a widget title
+ *
+ * @param string $hook_name    "widget_url"
+ * @param string $entity_type  "widget_manager"
+ * @param string $return_value the current url (if any)
+ * @param mixed  $params       provided params
+ *
+ * @return string
+ */
+function newsletter_widget_url_handler($hook_name, $entity_type, $return_value, $params) {
+	$result = $return_value;
+	
+	if (empty($result) && !empty($params) && is_array($params)) {
+		$user = elgg_get_logged_in_user_entity();
+		$widget = elgg_extract("entity", $params);
+		
+		if (!empty($user) && !empty($widget) && elgg_instanceof($widget, "object", "widget")) {
+			switch ($widget->handler) {
+				case "newsletter_subscribe":
+					$result = "newsletter/subscriptions/" . $user->username;
+					break;
+			}
+		}
+	}
+	
+	return $result;
+}
