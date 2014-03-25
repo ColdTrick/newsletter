@@ -26,7 +26,7 @@ if (!empty($log)) {
 	$general .= "<tr>";
 	$general .= "<td>" . elgg_echo("newsletter:log:general:endtime") . "</td>";
 	$general .= "<td>";
-	if ($entity->status == "sent"){
+	if ($entity->status == "sent") {
 		$general .= date(elgg_echo("friendlytime:date_format"), elgg_extract("end_time", $log));
 	} else {
 		$general .= elgg_echo("newsletter:status:" . $entity->status);
