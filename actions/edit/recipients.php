@@ -30,7 +30,7 @@ if (!empty($guid)) {
 	if (!empty($entity) && $entity->canEdit()) {
 		if (elgg_instanceof($entity, "object", Newsletter::SUBTYPE)) {
 			
-			if (empty($entity->recipients)) {
+			if (empty($entity->getRecipients())) {
 				$forward_url = "newsletter/edit/" . $entity->getGUID() . "/schedule";
 			}
 			
@@ -40,18 +40,24 @@ if (!empty($guid)) {
 			} elseif (!is_array($user_guids)) {
 				$user_guids = array($user_guids);
 			}
+			// filter duplicates
+			$user_guids = array_unique($user_guids);
 			
 			if (empty($group_guids)) {
 				$group_guids = array();
 			} elseif (!is_array($group_guids)) {
 				$group_guids = array($group_guids);
 			}
+			// filter duplicates
+			$group_guids = array_unique($group_guids);
 			
 			if (empty($emails)) {
 				$emails = array();
 			} elseif (!is_array($emails)) {
 				$emails = array($emails);
 			}
+			// filter duplicates
+			$emails = array_unique($emails);
 			
 			// prepare save
 			$tmp = array(
@@ -68,7 +74,7 @@ if (!empty($guid)) {
 			}
 			
 			// save results
-			$entity->recipients = json_encode($tmp);
+			$entity->setRecipients($tmp);
 			
 			system_message(elgg_echo("newsletter:action:recipients:success"));
 			

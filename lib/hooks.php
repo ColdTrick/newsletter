@@ -190,7 +190,7 @@ function newsletter_register_newsletter_steps_menu_handler($hook, $type, $return
 			"text" => elgg_echo("newsletter:menu:steps:recipients")
 		));
 		
-		if ($entity->recipients) {
+		if ($entity->getRecipients()) {
 			$item->setText($item->getText() . elgg_view_icon("checkmark", "float-alt"));
 		}
 			

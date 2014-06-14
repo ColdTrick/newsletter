@@ -10,6 +10,7 @@ x.x:
 - fixed: copy template to custom from theme/plugin works even if no CSS or HTML provided
 - fixed: email subscription caused fatal error
 - fixed: templates are saved with wrong access
+- fixed: storage of large numbers of recipients failed
 - changed: default send date set to tomorrow
 - changed: do not open preview in blank window
 

@@ -18,9 +18,6 @@ if (!elgg_is_logged_in()) {
 $query = get_input("term");
 $limit = (int) get_input("limit", 5);
 $guid = (int) get_input("guid");
-$user_guids = get_input("user_guids");
-$group_guids = get_input("group_guids");
-$emails = string_to_tag_array(get_input("emails"));
 
 if (!empty($query) && !empty($guid)) {
 	$entity = get_entity($guid);
@@ -42,10 +39,6 @@ if (!empty($query) && !empty($guid)) {
 			"wheres" => array("(ue.name LIKE '%" . $filtered_query . "%' OR ue.email LIKE '%" . $filtered_query . "%' OR ue.username LIKE '%" . $filtered_query . "%')")
 		);
 		
-		if (!empty($user_guids)) {
-			$options["wheres"][] = "(e.guid NOT IN (" . $user_guids . "))";
-		}
-		
 		$users = elgg_get_entities_from_relationship($options);
 		
 		if (!empty($users)) {
@@ -66,10 +59,6 @@ if (!empty($query) && !empty($guid)) {
 				"wheres" => array("(ge.name LIKE '%" . $filtered_query . "%' OR ge.description LIKE '%" . $filtered_query . "%')")
 			);
 			
-			if (!empty($group_guids)) {
-				$options["wheres"][] = "(e.guid NOT IN (" . $group_guids . "))";
-			}
-			
 			$groups = elgg_get_entities($options);
 			
 			if (!empty($groups)) {
@@ -85,20 +74,12 @@ if (!empty($query) && !empty($guid)) {
 		if (newsletter_is_email_address($query)) {
 			if ($users = get_user_by_email($query)) {
 				// found a user with this email address
-				$user_guids = string_to_tag_array($user_guids);
+				$key = strtolower($users[0]->name) . $users[0]->getGUID();
 				
-				if (!in_array($users[0]->getGUID(), $user_guids)) {
-					// user not already selected
-					$key = strtolower($users[0]->name) . $users[0]->getGUID();
-					
-					$result[$key] = newsletter_format_recipient($users[0]);
-				}
+				$result[$key] = newsletter_format_recipient($users[0]);
 			} else {
 				// no user found
-				if (!in_array($query, $emails)) {
-					
-					$result[$query] = newsletter_format_recipient($query);
-				}
+				$result[$query] = newsletter_format_recipient($query);
 			}
 		}
 	}

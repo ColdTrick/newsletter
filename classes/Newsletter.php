@@ -95,4 +95,61 @@ class Newsletter extends ElggObject {
 		
 		return $result;
 	}
+	
+	/**
+	 * Save the recipients on disk
+	 * 
+	 * @param array $recipients the recipients config
+	 * 
+	 * @return boolean
+	 */
+	public function setRecipients($recipients) {
+		$result = false;
+		
+		if (!is_array($recipients)) {
+			return $result;
+		}
+		
+		// check for previous DB recipients
+		if ($this->recipients) {
+			unset($this->recipients);
+		}
+		
+		$fh = new ElggFile();
+		$fh->owner_guid = $this->getGUID();
+		$fh->setFilename("recipients.json");
+		
+		$fh->open("write");
+		$result = $fh->write(json_encode($recipients));
+		$fh->close();
+		
+		return $result;
+	}
+	
+	/**
+	 * Get the recipients
+	 * 
+	 * @return bool|array
+	 */
+	public function getRecipients() {
+		$result = false;
+		
+		// check for previous DB recipients
+		if ($this->recipients) {
+			$recipients = json_decode($this->recipients, true);
+			$this->setRecipients($recipients);
+		}
+		
+		$fh = new ElggFile();
+		$fh->owner_guid = $this->getGUID();
+		$fh->setFilename("recipients.json");
+		
+		if ($fh->exists()) {
+			$raw = $fh->grabFile();
+			
+			$result = json_decode($raw, true);
+		}
+		
+		return $result;
+	}
 }

@@ -159,10 +159,8 @@ function newsletter_process($entity_guid) {
 				"users" => array(),
 				"emails" => array()
 			);
-			$recipients = $entity->recipients;
-			if (!empty($recipients)) {
-				$recipients = json_decode($recipients, true);
-			} else {
+			$recipients = $entity->getRecipients();
+			if (empty($recipients)) {
 				// no recipients so report error
 				$entity->status = "sent";
 				

@@ -3,9 +3,8 @@
 $entity = elgg_extract("entity", $vars);
 $container = $entity->getContainerEntity();
 
-$recipients = $entity->recipients;
+$recipients = $entity->getRecipients();
 if (!empty($recipients)) {
-	$recipients = json_decode($recipients, true);
 	
 	$user_guids = elgg_get_sticky_value("newsletter_recipients", "user_guids", elgg_extract("user_guids", $recipients));
 	$group_guids = elgg_get_sticky_value("newsletter_recipients", "group_guids", elgg_extract("group_guids", $recipients));

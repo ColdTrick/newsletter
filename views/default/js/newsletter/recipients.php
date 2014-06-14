@@ -15,33 +15,6 @@ elgg.newsletter_recipients.init = function() {
 
 			$.getJSON(elgg.get_site_url() + "newsletter/recipients", {
 				term: request.term,
-				user_guids: function() {
-					var result = new Array();
-					
-					$("#newsletter-recipients-users input[name='user_guids[]']").each(function(index, elem) {
-						result.push($(elem).val());
-					});
-
-					return result;
-				},
-				group_guids: function() {
-					var result = new Array();
-					
-					$("#newsletter-recipients-groups input[name='group_guids[]']").each(function(index, elem) {
-						result.push($(elem).val());
-					});
-
-					return result;
-				},
-				emails: function() {
-					var result = new Array();
-					
-					$("#newsletter-recipients-emails input[name='emails[]']").each(function(index, elem) {
-						result.push($(elem).val());
-					});
-
-					return result;
-				},
 				guid: function() {
 					return $("#newsletter-form-recipients input[name='guid']").val();
 				}
