@@ -30,7 +30,8 @@ if (!empty($guid)) {
 	if (!empty($entity) && $entity->canEdit()) {
 		if (elgg_instanceof($entity, "object", Newsletter::SUBTYPE)) {
 			
-			if (empty($entity->getRecipients())) {
+			$recipients = $entity->getRecipients();
+			if (empty($recipients)) {
 				$forward_url = "newsletter/edit/" . $entity->getGUID() . "/schedule";
 			}
 			
