@@ -9,6 +9,7 @@
 gatekeeper();
 
 $page_owner = elgg_get_page_owner_entity();
+$container_guid = 0;
 
 // check if we have access
 if (elgg_instanceof($page_owner, "user")) {

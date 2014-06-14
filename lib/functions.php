@@ -1069,7 +1069,7 @@ function newsletter_convert_subscription_to_user_setting(NewsletterSubscription 
 		$site = elgg_get_site_entity();
 		if (check_entity_relationship($subscription->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID())) {
 			// copy the block all
-			$result = (bool) add_entity_relationship($user->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID());
+			add_entity_relationship($user->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID());
 		} else {
 			// check for subscriptions
 			$subscriptions = $subscription->getEntitiesFromRelationship(NewsletterSubscription::SUBSCRIPTION, false, false);

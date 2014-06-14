@@ -59,7 +59,7 @@ function newsletter_cron_handler($hook, $type, $returnvalue, $params) {
  *
  * @param string $hook        name of the hook
  * @param string $type        type of the hook
- * @param string $returnvalue returnvalue of the hook
+ * @param array  $returnvalue returnvalue of the hook
  * @param array  $params      params of the hook
  *
  * @return array					write access array
