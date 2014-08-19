@@ -1,9 +1,9 @@
 <?php
 
-	/**
-	 * A JS file for the recipient selection of a newsletter
-	 *
-	 */
+/**
+ * A JS file for the recipient selection of a newsletter
+ *
+ */
 ?>
 //<script>
 elgg.provide("elgg.newsletter_recipients");
@@ -11,8 +11,6 @@ elgg.provide("elgg.newsletter_recipients");
 elgg.newsletter_recipients.init = function() {
 	$("#newsletter-recipients-autocomplete").autocomplete({
 		source: function( request, response ) {
-			
-
 			$.getJSON(elgg.get_site_url() + "newsletter/recipients", {
 				term: request.term,
 				guid: function() {

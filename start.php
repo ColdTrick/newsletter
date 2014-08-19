@@ -46,7 +46,7 @@ function newsletter_init() {
 	}
 	
 	// widget
-	elgg_register_widget_type("newsletter_subscribe", elgg_echo("newsletter:sidebar:subscribe:title"), elgg_echo("newsletter:widget:subscribe:description"), "index,groups");
+	elgg_register_widget_type("newsletter_subscribe", elgg_echo("newsletter:sidebar:subscribe:title"), elgg_echo("newsletter:widget:subscribe:description"), array("index","groups"));
 	
 	// register plugin hooks
 	elgg_register_plugin_hook_handler("cron", "hourly", "newsletter_cron_handler");

@@ -58,7 +58,7 @@ elgg.newsletter.embed = function(elem) {
 		echo elgg_view('embed/custom_insert_js');
 	?>
 
-	$.fancybox.close();
+	elgg.ui.lightbox.close();
 }
 
 elgg.newsletter.schedule_send_now = function() {
