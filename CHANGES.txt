@@ -1,6 +1,6 @@
 = Version History =
 
-x.x:
+1.1 (2014-06-14):
 
 - added: option to upload a CSV with recipients
 - added: template autodetection #4
