@@ -6,6 +6,7 @@ Version History
 - changes for Elgg 1.9
 - added: steps to the creation page of a newsletter #32
 - changed: steps moved to tabs #31
+- changed: text on save buttons on schedule page #33
 
 1.1 (2014-06-14):
 

@@ -56,5 +56,5 @@ echo "</div>";
 echo "<div class='elgg-foot'>";
 echo elgg_view("input/hidden", array("name" => "guid", "value" => $entity->getGUID()));
 echo elgg_view("input/button", array("value" => elgg_echo("newsletter:schedule:send"), "class" => "elgg-button-action float-alt", "id" => "newsletter-send-now"));
-echo elgg_view("input/submit", array("value" => elgg_echo("save")));
+echo elgg_view("input/submit", array("value" => elgg_echo("newsletter:schedule:save")));
 echo "</div>";
