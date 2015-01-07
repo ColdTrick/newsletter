@@ -211,6 +211,41 @@ function newsletter_register_newsletter_steps_menu_handler($hook, $type, $return
 		}
 		
 		$returnvalue[] = $item;
+	} else {
+		// basic info
+		$returnvalue[] = ElggMenuItem::factory(array(
+			"name" => "basic",
+			"href" => "javascript:void(0);",
+			"text" => elgg_echo("newsletter:menu:steps:entity"),
+			"selected" => true
+		));
+		
+		// template
+		$returnvalue[] = ElggMenuItem::factory(array(
+			"name" => "template",
+			"href" => "javascript:void(0);",
+			"text" => elgg_echo("newsletter:menu:steps:template")
+		));
+		
+		// content
+		$returnvalue[] = ElggMenuItem::factory(array(
+			"name" => "content",
+			"href" => "javascript:void(0);",
+			"text" => elgg_echo("newsletter:menu:steps:content")
+		));
+		// recipients
+		$returnvalue[] = ElggMenuItem::factory(array(
+			"name" => "recipients",
+			"href" => "javascript:void(0);",
+			"text" => elgg_echo("newsletter:menu:steps:recipients")
+		));
+		
+		// schedule
+		$returnvalue[] = ElggMenuItem::factory(array(
+			"name" => "schedule",
+			"href" => "javascript:void(0);",
+			"text" => elgg_echo("newsletter:menu:steps:schedule")
+		));
 	}
 	
 	return $returnvalue;
