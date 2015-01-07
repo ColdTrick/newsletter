@@ -36,10 +36,12 @@ elgg.newsletter.init = function() {
 
 		event.preventDefault();
 
-		var query = $(this).find("[name='q']").val();
-		var url = $(this).attr("action") + "?q=" + query;
+		var query = $(this).serialize();
+		var url = $(this).attr("action");
 			
-		$(this).parent().load(url);
+		$(this).parent().load(url, query, function() {
+			$.colorbox.resize();
+		});
 	});
 }
 

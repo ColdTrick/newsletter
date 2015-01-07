@@ -183,5 +183,6 @@ Om de nieuwsbrief te bekijken klik hier:
   'newsletter:action:unsubscribe:error:entity' => 'Er is een fout opgetreden tijden het uitschrijven van de %s nieuwsbrief, probeer het nogmaals',
   'newsletter:action:unsubscribe:success:all' => 'Je bent uitgeschreven van alle nieuwsbrieven',
   'newsletter:action:unsubscribe:success:entity' => 'Je bent uitgeschreven van de %s nieuwsbrief',
+  'newsletter:embed:show_all' => "Toon all content, niet alleen van de groep",
 );
 add_translation("nl", $language);

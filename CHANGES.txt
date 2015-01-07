@@ -5,6 +5,7 @@ Version History
 
 - changes for Elgg 1.9
 - added: steps to the creation page of a newsletter #32
+- added: option to embed content from outside the group #35
 - fixed: load correct php.ini for background process #40
 - changed: steps moved to tabs #31
 - changed: text on save buttons on schedule page #33

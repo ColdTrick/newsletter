@@ -58,6 +58,9 @@ return array(
 	'newsletter:received:title' => "%s's received newsletters",
 	'newsletter:received:title:mine' => "My received newsletters",
 	
+	// embed
+	'newsletter:embed:show_all' => "Show all content, not just group content",
+	
 	// edit
 	'newsletter:edit:subject' => "Custom e-mail subject (optional)",
 	
