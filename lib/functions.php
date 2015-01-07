@@ -26,6 +26,13 @@ function newsletter_start_commandline_sending(Newsletter $entity) {
 			$settings["https"] = $_SERVER["HTTPS"];
 		}
 		
+		// ini settings
+		$ini_param = "";
+		$ini_file = php_ini_loaded_file();
+		if (!empty($ini_file)) {
+			$ini_param = "-c " . $ini_file . " ";
+		}
+		
 		// which script to run
 		$script_location = dirname(dirname(__FILE__)) . "/procedures/cli.php";
 		
@@ -34,9 +41,9 @@ function newsletter_start_commandline_sending(Newsletter $entity) {
 		
 		// start the correct commandline
 		if (PHP_OS === "WINNT") {
-			pclose(popen("start /B php " . $script_location . " " . $query_string, "r"));
+			pclose(popen("start /B php " . $ini_param . $script_location . " " . $query_string, "r"));
 		} else {
-			exec("php " . $script_location . " " . $query_string . " > /dev/null &");
+			exec("php " . $ini_param . $script_location . " " . $query_string . " > /dev/null &");
 		}
 	}
 }

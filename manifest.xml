@@ -17,6 +17,11 @@
 	</requires>
 	
 	<requires>
+		<type>php_version</type>
+		<version>5.2.4</version>
+	</requires>
+	
+	<requires>
 		<type>plugin</type>
 		<name>html_email_handler</name>
 		<version>3.0</version>
