@@ -103,7 +103,6 @@ $language = array (
   'newsletter:subscriptions:groups:description' => 'Alle groepen die nieuwsbrieven hebben geconfigureerd en waar je lid van bent staan hier, zo kun je eenvoudig je abonnementen beheren.',
   'newsletter:subscriptions:other:title' => 'Andere abonnementen',
   'newsletter:subscriptions:other:description' => 'Als je bent geabonneerd op een nieuwsbrief van een groep waar je neit lid van bent, staat deze hier vermeld.',
-  'newsletter:sidebar:steps' => 'Stappen',
   'newsletter:unsubscribe:error:input' => 'Ongeldige invoer, controleer de link in je e-mail',
   'newsletter:unsubscribe:error:code' => 'Ongeldige uitschrijvingscode, controleer de link in je e-mail',
   'newsletter:unsubscribe:title' => 'Schrijf je uit van de nieuwsbrief',

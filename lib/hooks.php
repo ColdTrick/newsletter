@@ -149,17 +149,18 @@ function newsletter_register_page_menu_handler($hook, $type, $returnvalue, $para
  * @return array Menu items
  */
 function newsletter_register_newsletter_steps_menu_handler($hook, $type, $returnvalue, $params) {
-	$result = $returnvalue;
 	
-	$entity = $params["entity"];
+	$entity = elgg_extract("entity", $params);
 	
-	if ($entity) {
-		$result[] = ElggMenuItem::factory(array(
+	if (!empty($entity) && elgg_instanceof($entity, "object", Newsletter::SUBTYPE)) {
+		// basic info
+		$returnvalue[] = ElggMenuItem::factory(array(
 			"name" => "basic",
 			"href" => "newsletter/edit/" . $entity->getGUID(),
-			"text" => elgg_echo("newsletter:menu:steps:entity") . elgg_view_icon("checkmark", "float-alt")
+			"text" => elgg_view_icon("checkmark", "mrs") . elgg_echo("newsletter:menu:steps:entity")
 		));
 		
+		// template
 		$item = ElggMenuItem::factory(array(
 			"name" => "template",
 			"href" => "newsletter/edit/" . $entity->getGUID() . "/template",
@@ -167,11 +168,12 @@ function newsletter_register_newsletter_steps_menu_handler($hook, $type, $return
 		));
 		
 		if ($entity->template) {
-			$item->setText($item->getText() . elgg_view_icon("checkmark", "float-alt"));
+			$item->setText(elgg_view_icon("checkmark", "mrs") . $item->getText());
 		}
 		
-		$result[] = $item;
+		$returnvalue[] = $item;
 		
+		// content
 		$item = ElggMenuItem::factory(array(
 			"name" => "content",
 			"href" => "newsletter/edit/" . $entity->getGUID() . "/content",
@@ -179,11 +181,12 @@ function newsletter_register_newsletter_steps_menu_handler($hook, $type, $return
 		));
 		
 		if ($entity->content) {
-			$item->setText($item->getText() . elgg_view_icon("checkmark", "float-alt"));
+			$item->setText(elgg_view_icon("checkmark", "mrs") . $item->getText());
 		}
 		
-		$result[] = $item;
+		$returnvalue[] = $item;
 		
+		// recipients
 		$item = ElggMenuItem::factory(array(
 			"name" => "recipients",
 			"href" => "newsletter/edit/" . $entity->getGUID() . "/recipients",
@@ -191,11 +194,12 @@ function newsletter_register_newsletter_steps_menu_handler($hook, $type, $return
 		));
 		
 		if ($entity->getRecipients()) {
-			$item->setText($item->getText() . elgg_view_icon("checkmark", "float-alt"));
+			$item->setText(elgg_view_icon("checkmark", "mrs") . $item->getText());
 		}
 			
-		$result[] = $item;
+		$returnvalue[] = $item;
 			
+		// schedule
 		$item = ElggMenuItem::factory(array(
 			"name" => "schedule",
 			"href" => "newsletter/edit/" . $entity->getGUID() . "/schedule",
@@ -203,13 +207,13 @@ function newsletter_register_newsletter_steps_menu_handler($hook, $type, $return
 		));
 		
 		if ($entity->scheduled) {
-			$item->setText($item->getText() . elgg_view_icon("checkmark", "float-alt"));
+			$item->setText(elgg_view_icon("checkmark", "mrs") . $item->getText());
 		}
 		
-		$result[] = $item;
+		$returnvalue[] = $item;
 	}
 	
-	return $result;
+	return $returnvalue;
 }
 
 /**

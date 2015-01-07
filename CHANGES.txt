@@ -4,6 +4,7 @@ Version History
 2.0:
 
 - changes for Elgg 1.9
+- changed: steps moved to tabs #31
 
 1.1 (2014-06-14):
 

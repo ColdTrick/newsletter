@@ -142,9 +142,6 @@
 		'newsletter:subscriptions:other:title' => "Other subscription",
 		'newsletter:subscriptions:other:description' => "Did you want to receive a newsletter from a group your not a member of, they are listed here.",
 		
-		// sidebar - steps
-		'newsletter:sidebar:steps' => "Steps",
-
 		// unsubscribe
 		'newsletter:unsubscribe:error:input' => "Incorrect input, please check the link in your email",
 		'newsletter:unsubscribe:error:code' => "Invalid unsubscribe code, please check the link in your email",
