@@ -387,6 +387,9 @@ function newsletter_process($entity_guid) {
 							$message_html_content_user = str_ireplace($online_link, $new_online_link, $message_html_content_user);
 						}
 						
+						// add URL postfix to all internal links
+						$message_html_content_user = newsletter_apply_url_postfix($message_html_content_user);
+						
 						// =========
 						// send mail
 						// =========
@@ -1378,4 +1381,80 @@ function newsletter_process_csv_upload(array $recipients) {
 	}
 	
 	return $recipients;
+}
+
+/**
+ * Get the plugin settings for URL postfix
+ *
+ * @return bool|array
+ */
+function newsletter_get_url_postfix() {
+	static $result;
+	
+	if (!isset($result)) {
+		$result = false;
+		
+		$url_postfix_name = elgg_get_plugin_setting("url_postfix_name", "newsletter");
+		$url_postfix_value = elgg_get_plugin_setting("url_postfix_value", "newsletter");
+		
+		if (!is_null($url_postfix_name) && ($url_postfix_name !== false) && !is_null($url_postfix_value) && ($url_postfix_value !== false)) {
+			$result = array($url_postfix_name => $url_postfix_value);
+		}
+	}
+	
+	return $result;
+}
+
+/**
+ * Add the URL postfix to all url's in the newsletter content
+ *
+ * @param string $html_content the content of the newletter
+ *
+ * @return string
+ */
+function newsletter_apply_url_postfix($html_content) {
+	static $pattern;
+	
+	// get the postfix settings
+	$url_postfix_settings = newsletter_get_url_postfix();
+	if (empty($url_postfix_settings)) {
+		return $html_content;
+	}
+	
+	// build the pattern once
+	if (!isset($pattern)) {
+		// convert site url to preg friendly version
+		$preg_site_url = elgg_get_site_url();
+		$preg_site_url = substr($preg_site_url, 0, -1);
+		$preg_site_url = str_replace("/", "\\/", $preg_site_url);
+		$preg_site_url = str_replace(".", "\\.", $preg_site_url);
+		
+		$pattern = '/\shref=([\'"]' . $preg_site_url . '[^\'"]*[\'"])/i';
+	}
+	
+	// find all matches
+	$matches = array();
+	preg_match_all($pattern, $html_content, $matches);
+	
+	if (empty($matches) || !isset($matches[1])) {
+		return $html_content;
+	}
+	
+	// go through all the matches
+	$urls = $matches[1];
+	$urls = array_unique($urls);
+	
+	foreach ($urls as $url) {
+		// remove wrapping quotes from the url
+		$real_url = substr($url, 1, -1);
+		// add the postfix params
+		$new_url = elgg_http_add_url_query_elements($real_url, $url_postfix_settings);
+		// make the correct replacement string
+		$replacement = str_replace($real_url, $new_url, $url);
+		
+		// replace the url in the content
+		$html_content = str_replace($url, $replacement, $html_content);
+	}
+	
+	return $html_content;
 }

@@ -132,6 +132,11 @@ return array(
 	'newsletter:settings:include_existing_users' => "Include users without subscription settings",
 	'newsletter:settings:include_existing_users:description' => "When this setting is set to 'no', all existing users without subscription settings will no longer receive newsletters.",
 	
+	'newsletter:settings:url_postfix' => "URL postfix settings",
+	'newsletter:settings:url_postfix:description' => "You can configure a postfix name/value pair that will be placed in all (internal) links that go out in the Newsletter. This will allow tracking system to see that your users came from the Newsletter.",
+	'newsletter:settings:url_postfix:name' => "Postfix name",
+	'newsletter:settings:url_postfix:value' => "Postfix value",
+	
 	// entity view
 	'newsletter:entity:scheduled' => "Scheduled",
 	'newsletter:entity:sent' => "Sent",
