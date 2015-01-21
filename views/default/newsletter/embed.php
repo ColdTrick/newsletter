@@ -60,6 +60,7 @@ if (elgg_instanceof($container, "group")) {
 	$form_data .= "</div>";
 }
 
+echo "<div id='newsletter-embed-wrapper'>";
 echo elgg_view("input/form", array(
 	"action" => "newsletter/embed/" . $newsletter->getGUID(),
 	"id" => "newsletter-embed-search",
@@ -90,4 +91,9 @@ if ($count > 0) {
 	echo "</div>";
 } else {
 	echo elgg_echo("notfound");
+}
+
+echo "</div>";
+if ($count > 0) {
+	echo elgg_view("newsletter/format");
 }
