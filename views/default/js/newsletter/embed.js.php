@@ -39,8 +39,6 @@ elgg.newsletter.embed_format = function(elem) {
 	if (!data) {
 		return false;
 	}
-
-	console.log(data);
 	
 	$("#newsletter-embed-format-icon").parent().hide();
 	if (data.iconUrl) {
