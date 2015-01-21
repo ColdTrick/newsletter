@@ -4,9 +4,10 @@ $entity = elgg_extract("entity", $vars);
 if (empty($entity) || !elgg_instanceof($entity, "object")) {
 	return;
 }
-$page_owner = elgg_extract("page_owner", $vars);
+$newsletter = elgg_extract("newsletter", $vars);
 $container = $entity->getContainerEntity();
 
+// data for embedding
 $data = array(
 	"class" => "newsletter-embed-item-data",
 	"data-title" => $entity->title,
@@ -14,16 +15,32 @@ $data = array(
 	"data-url" => $entity->getURL()
 );
 
+// excerpt support
+$excerpt = $entity->excerpt;
+if (empty($excerpt)) {
+	$excerpt = elgg_get_excerpt($entity->description);
+}
+if (!empty($excerpt)) {
+	$data["data-excerpt"] = $excerpt;
+}
+
+// icon support
+if ($entity->icontime) {
+	$data["data-icon-url"] = $entity->getIconURL("large");
+}
+
+// subtitle
 $subtitle = array(
 	elgg_echo("item:object:" . $entity->getSubtype()),
 	elgg_echo("by") . " " . $entity->getOwnerEntity()->name
 );
 if (elgg_instanceof($container, "group")) {
-	if (!empty($page_owner) && ($container->getGUID() != $page_owner->getGUID())) {
+	if (!empty($newsletter) && ($container->getGUID() != $newsletter->getContainerGUID())) {
 		$subtitle[] = elgg_echo("river:ingroup", array($container->name));
 	}
 }
 
+// build listing view
 $params = array(
 	"entity" => $entity,
 	"title" => $entity->title,
@@ -32,5 +49,6 @@ $params = array(
 	"content" => elgg_get_excerpt($entity->description)
 );
 
+echo "<div " . elgg_format_attributes($data) . ">";
 echo elgg_view("object/elements/summary", $params);
-echo "<div " . elgg_format_attributes($data) . "></div>";
+echo "</div>";

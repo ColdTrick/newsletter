@@ -75,7 +75,7 @@ if ($count > 0) {
 	foreach ($entities as $entity) {
 		
 		echo "<li class='newsletter-embed-item'>";
-		echo newsletter_view_embed_content($entity, array("page_owner" => $container));
+		echo newsletter_view_embed_content($entity, array("newsletter" => $newsletter));
 		echo "</li>";
 	}
 	
