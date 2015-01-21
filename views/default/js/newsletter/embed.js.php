@@ -7,7 +7,7 @@ elgg.newsletter.init = function() {
 
 	$("#newsletter-embed-list li").live("click", function(event) {
 		elgg.newsletter.embed_format(this);
-		
+
 		event.preventDefault();
 	});
 
@@ -28,20 +28,73 @@ elgg.newsletter.init = function() {
 			$.colorbox.resize();
 		});
 	});
+
+	$("#newsletter-embed-format-description, #newsletter-embed-format-icon").live("change", function() {
+		elgg.newsletter.embed_format_preview();
+	});
 }
 
 elgg.newsletter.embed_format = function(elem) {
 	var data = $(elem).find("> div").data();
-	
 	if (!data) {
 		return false;
 	}
-	
+
+	$("#newsletter-embed-format-icon").parent().hide();
+	if (data.iconUrl) {
+		$("#newsletter-embed-format-icon").parent().show();
+	}
+		
 	$("#newsletter-embed-wrapper, #newsletter-embed-format").toggleClass("hidden");
 	
-	console.log(data);
+	$("#newsletter-embed-format-preview").data(data);
+
+	elgg.newsletter.embed_format_preview();
 }
 
+elgg.newsletter.embed_format_preview = function() {
+	var $preview = $("#newsletter-embed-format-preview");
+	var data = $preview.data();
+	var content = "";
+	var content_description = "";
+	var content_icon = "";
+
+	var description_option = $("#newsletter-embed-format-description").val();
+	var icon_option = $("#newsletter-embed-format-icon").val();
+	
+	
+ 	if (description_option === "full") {
+ 	 	content_description += data.description;
+ 	} else if (description_option === "excerpt") {
+ 		content_description += data.excerpt;
+ 		content_description += "<p><a href='" + data.url + "' class='newsletter-embed-read-more'>" + elgg.echo("newsletter:embed:read_more") + "</a></p>"; 
+ 	}
+
+ 	if (data.iconUrl) {
+		if (icon_option === "left" || icon_option === "right") {
+			content_icon += "<img src='" + data.iconUrl + "' />";
+		}
+ 	}
+ 	
+ 	content += "<table>";
+ 	content += "<tr><td colspan=2><a href='" + data.url + "'>" + data.title + "</a></td></tr>";
+	
+ 	content += "<tr>";
+
+	if (content_icon) {
+		if (icon_option === "left") {
+			content += "<td>" + content_icon + "</td><td>" + content_description + "</td>";
+		} else {
+			content += "<td>" + content_description + "</td><td>" + content_icon + "</td>"; 
+		}
+	} else {
+		content += "<td colspan='2'>" + content_description + "</td>";	
+	}
+	content += "</tr></table>"
+
+	$preview.html(content);
+}
+	
 elgg.newsletter.embed_format_submit = function() {
 	elgg.newsletter.embed($("#newsletter-embed-format-preview").html());
 }

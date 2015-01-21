@@ -13,11 +13,12 @@ echo elgg_view("input/select", array(
 		"no" => elgg_echo("newsletter:embed:format:description:option:no")
 	),
 	"name" => "newsletter-embed-format-description",
+	"id" => "newsletter-embed-format-description",
 	"class" => "mlm"
 ));
 echo "</div>";
 
-echo "<div id='newsletter-embed-format-icon'>";
+echo "<div>";
 
 echo "<label>" . elgg_echo("newsletter:embed:format:icon:title") . "</label>";
 echo elgg_view("input/select", array(
@@ -27,6 +28,7 @@ echo elgg_view("input/select", array(
 		"none" => elgg_echo("newsletter:embed:format:icon:option:none")
 	),
 	"name" => "newsletter-embed-format-icon",
+	"id" => "newsletter-embed-format-icon",
 	"class" => "mlm"
 ));
 		
