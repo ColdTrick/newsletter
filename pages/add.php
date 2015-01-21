@@ -8,6 +8,8 @@
 
 elgg_gatekeeper();
 
+elgg_require_js("newsletter/edit");
+
 $page_owner = elgg_get_page_owner_entity();
 $container_guid = 0;
 

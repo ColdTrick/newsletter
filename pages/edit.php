@@ -8,6 +8,8 @@
 
 elgg_gatekeeper();
 
+elgg_require_js("newsletter/edit");
+
 $guid = (int) get_input("guid");
 $subpage = get_input("subpage");
 
