@@ -7,10 +7,12 @@ Version History
 - added: steps to the creation page of a newsletter #32
 - added: option to embed content from outside the group #35
 - added: plugin setting for url postfix #38
+- added: support for content from the static plugin #36
 - fixed: load correct php.ini for background process #40
 - changed: steps moved to tabs #31
 - changed: text on save buttons on schedule page #33
 - changed: text of Sending tab #34
+- changed: more layout options when embeddind content #37
 
 1.1 (2014-06-14):
 
