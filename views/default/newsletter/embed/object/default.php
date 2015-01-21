@@ -8,6 +8,7 @@ $page_owner = elgg_extract("page_owner", $vars);
 $container = $entity->getContainerEntity();
 
 $data = array(
+	"class" => "newsletter-embed-item-data",
 	"data-title" => $entity->title,
 	"data-description" => $entity->description,
 	"data-url" => $entity->getURL()
@@ -32,3 +33,4 @@ $params = array(
 );
 
 echo elgg_view("object/elements/summary", $params);
+echo "<div " . elgg_format_attributes($data) . "></div>";
