@@ -4,6 +4,7 @@
 	"type": "elgg-plugin",
 	"keywords": ["elgg", "plugin", "tools", "communication"],
 	"license": "GPL-2.0",
+	"homepage": "https://community.elgg.org/plugins/1564847",
 	"support": {
 		"source": "https://github.com/ColdTrick/newsletter",
 		"issues": "https://github.com/ColdTrick/newsletter/issues"
