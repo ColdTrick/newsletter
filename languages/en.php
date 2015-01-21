@@ -44,7 +44,7 @@ return array(
 	'newsletter:menu:steps:schedule' => "Schedule",
 		
 	// long text menu
-	'newsletter:menu:longtext:embed_blog' => "Embed blog",
+	'newsletter:menu:longtext:embed_content' => "Embed content",
 	
 	'newsletter:breadcrumb:site' => "Newsletters",
 	'newsletter:breadcrumb:log' => "Delivery log",

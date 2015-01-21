@@ -1458,3 +1458,62 @@ function newsletter_apply_url_postfix($html_content) {
 	
 	return $html_content;
 }
+
+/**
+ * Check if embed functionality is availble for Newslettes
+ *
+ * Eg require blog or static
+ *
+ * @return bool
+ */
+function newsletter_embed_available() {
+	static $result;
+	
+	if (!isset($result)) {
+		$result = false;
+		
+		if (elgg_is_active_plugin("blog")) {
+			$result = true;
+		}
+		
+		if (!$result && elgg_is_active_plugin("static")) {
+			$result = true;
+		}
+	}
+	
+	return $result;
+}
+
+/**
+ * Display conten in the correct layout for embedding in Newsletter
+ *
+ * @param ElggEntity $entity the entity to embed
+ * @param array      $vars   optional variables to pass to the embed view
+ *
+ * @return bool|string
+ */
+function newsletter_view_embed_content(ElggEntity $entity, $vars = array()) {
+	
+	if (empty($entity) || !elgg_instanceof($entity)) {
+		return false;
+	}
+	
+	if (!is_array($vars)) {
+		$vars = array();
+	}
+	
+	$vars["entity"] = $entity;
+	
+	$type = $entity->getType();
+	$subtype = $entity->getSubtype();
+	
+	if (!empty($subtype) && elgg_view_exists("newsletter/embed/" . $type . "/" . $subtype)) {
+		return elgg_view("newsletter/embed/" . $type . "/" . $subtype, $vars);
+	} elseif (elgg_view_exists("newsletter/embed/" . $type . "/default")) {
+		return elgg_view("newsletter/embed/" . $type . "/default", $vars);
+	} elseif (elgg_view_exists("newsletter/embed/default")) {
+		return elgg_view("newsletter/embed/default", $vars);
+	}
+	
+	return false;
+}
