@@ -492,6 +492,7 @@ function newsletter_register_longtext_menu_handler($hook, $type, $returnvalue, $
 				
 			elgg_load_js("lightbox");
 			elgg_load_css("lightbox");
+			elgg_require_js("newsletter/embed");
 		}
 	}
 	
