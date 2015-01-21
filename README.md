@@ -13,7 +13,7 @@ Features
 
  - Create site or group newsletters
  - Use one of the 2 default tempaltes or create your own templates
- - Add content with a WYSIWYG editor (requires TinyMCE)
+ - Add content with a WYSIWYG editor (requires CKEditor)
  - Select multiple recipients
    - Individual users
    - Groups
