@@ -19,32 +19,30 @@ elgg.newsletter_recipients.init = function() {
 		select: function (event, ui) {
 			// clear the search term from the input
 			this.value = "";
-
+			var counter = 0;
+			
 			// put the result in a different location
 			switch (ui.item.type) {
 				case "user":
 					$("#newsletter-recipients-users>.elgg-body").append(ui.item.content);
 					$("#newsletter-recipients-users").show();
 
-					var counter = 0;
 					counter = $("#newsletter-recipients-users .elgg-body .newsletter-recipient-result").length;
-					$("#newsletter-recipients-users .elgg-head .newsletter-counter").html("(" + counter + ")")
+					$("#newsletter-recipients-users .elgg-head .newsletter-counter").html("(" + counter + ")");
 					break;
 				case "group":
 					$("#newsletter-recipients-groups>.elgg-body").append(ui.item.content);
 					$("#newsletter-recipients-groups").show();
 
-					var counter = 0;
 					counter = $("#newsletter-recipients-groups .elgg-body .newsletter-recipient-result").length;
-					$("#newsletter-recipients-groups .elgg-head .newsletter-counter").html("(" + counter + ")")
+					$("#newsletter-recipients-groups .elgg-head .newsletter-counter").html("(" + counter + ")");
 					break;
 				case "email":
 					$("#newsletter-recipients-emails>.elgg-body").append(ui.item.content);
 					$("#newsletter-recipients-emails").show();
 
-					var counter = 0;
 					counter = $("#newsletter-recipients-emails .elgg-body .newsletter-recipient-result").length;
-					$("#newsletter-recipients-emails .elgg-head .newsletter-counter").html("(" + counter + ")")
+					$("#newsletter-recipients-emails .elgg-head .newsletter-counter").html("(" + counter + ")");
 					break;
 			}
 			
@@ -66,7 +64,7 @@ elgg.newsletter_recipients.init = function() {
 			$container.hide();
 		}
 	});
-}
+};
 
 //register init hook
 elgg.register_hook_handler("init", "system", elgg.newsletter_recipients.init);
