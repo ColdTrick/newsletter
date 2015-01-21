@@ -9,7 +9,6 @@ $container = $entity->getContainerEntity();
 
 // data for embedding
 $data = array(
-	"class" => "newsletter-embed-item-data",
 	"data-title" => $entity->title,
 	"data-description" => $entity->description,
 	"data-url" => $entity->getURL()
@@ -35,9 +34,7 @@ $subtitle = array(
 	elgg_echo("by") . " " . $entity->getOwnerEntity()->name
 );
 if (elgg_instanceof($container, "group")) {
-	if (!empty($newsletter) && ($container->getGUID() != $newsletter->getContainerGUID())) {
-		$subtitle[] = elgg_echo("river:ingroup", array($container->name));
-	}
+	$subtitle[] = elgg_echo("river:ingroup", array($container->name));
 }
 
 // build listing view
