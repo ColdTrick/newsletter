@@ -22,7 +22,7 @@ if (!empty($recipients)) {
 }
 
 elgg_load_js('jquery.ui.autocomplete.html');
-elgg_load_js('newsletter.recipients');
+elgg_require_js('newsletter/recipients');
 
 echo "<div>";
 echo elgg_view("output/longtext", array("value" => elgg_echo("newsletter:recipients:description")));

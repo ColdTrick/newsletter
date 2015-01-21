@@ -1,11 +1,3 @@
-<?php
-
-/**
- * A JS file for the recipient selection of a newsletter
- *
- */
-?>
-//<script>
 elgg.provide("elgg.newsletter_recipients");
 
 elgg.newsletter_recipients.init = function() {
