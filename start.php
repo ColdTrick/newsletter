@@ -29,12 +29,8 @@ function newsletter_init() {
 	
 	// CSS & JS
 	elgg_extend_view("css/elgg", "css/newsletter/site");
-	elgg_extend_view("js/elgg", "js/newsletter/site");
 	
-	// register JS library
-	elgg_register_simplecache_view("js/newsletter/recipients");
-	$url = elgg_get_simplecache_url("js", "newsletter/recipients");
-	elgg_register_js("newsletter.recipients", $url);
+	elgg_register_simplecache_view("js/newsletter/embed.js");
 	
 	// extend views
 	elgg_extend_view("groups/sidebar/my_status", "newsletter/sidebar/subscribe");

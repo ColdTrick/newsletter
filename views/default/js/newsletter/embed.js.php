@@ -1,12 +1,12 @@
-<?php
-?>
+<?php ?>
 //<script>
+
 elgg.provide("elgg.newsletter");
 
 elgg.newsletter.init = function() {
 
 	$("#newsletter-embed-list li").live("click", function(event) {
-		elgg.newsletter.embed(this);
+		elgg.newsletter.embed_format(this);
 		
 		event.preventDefault();
 	});
@@ -30,10 +30,24 @@ elgg.newsletter.init = function() {
 	});
 }
 
-elgg.newsletter.embed = function(elem) {
-
-	var content = $(elem).find(".newsletter-embed-item-content").html();
+elgg.newsletter.embed_format = function(elem) {
+	var data = $(elem).find("> div").data();
 	
+	if (!data) {
+		return false;
+	}
+	
+	$("#newsletter-embed-wrapper, #newsletter-embed-format").toggleClass("hidden");
+	
+	console.log(data);
+}
+
+elgg.newsletter.embed_format_submit = function() {
+	elgg.newsletter.embed($("#newsletter-embed-format-preview").html());
+}
+
+elgg.newsletter.embed = function(content) {
+
 	var textAreaId = $(".elgg-form-newsletter-edit-content textarea").attr("id");
 	var textArea = $("#" + textAreaId);
 	
