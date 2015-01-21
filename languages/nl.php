@@ -1,5 +1,15 @@
 <?php
-$language = array (
+/**
+ * This file was created by Translation Editor v2.0
+ * On 2015-01-21 15:17
+ */
+
+return array (
+  'newsletter:menu:longtext:embed_content' => 'Content invoegen',
+  'newsletter:settings:url_postfix' => 'URL postfix instellingen',
+  'newsletter:settings:url_postfix:description' => 'Je kunt een postfix naam/waarde combinatie opgeven welke toegevoegd zal worden aan alle (interne) links die zich in de Nieuwsbrief bevinden. Dit maakt het mogelijk om het gebruik van de nieuwsbrief te volgen.',
+  'newsletter:settings:url_postfix:name' => 'Postfix naam',
+  'newsletter:settings:url_postfix:value' => 'Postfix waarde',
   'newsletter:widget:subscribe:description' => 'Toon een widget om je snel aan te kunnen melden voor de nieuwsbrief',
   'newsletter:csv:no_email' => 'Er kon geen e-mail kolom worden gevonden in de eerste 2 regels van het CSV-bestand',
   'newsletter:csv:added' => '%s e-mail adressen toegevoegd vanuit het CSV-bestand',
@@ -32,7 +42,6 @@ $language = array (
   'newsletter:menu:steps:template' => 'Sjabloon',
   'newsletter:menu:steps:recipients' => 'Ontvangers',
   'newsletter:menu:steps:schedule' => 'Planning',
-  'newsletter:menu:longtext:embed_blog' => 'Embed blog',
   'newsletter:breadcrumb:site' => 'Nieuwsbrieven',
   'newsletter:breadcrumb:log' => 'Aflever logboek',
   'newsletter:breadcrumb:received' => 'Ontvangen',
@@ -183,6 +192,5 @@ Om de nieuwsbrief te bekijken klik hier:
   'newsletter:action:unsubscribe:error:entity' => 'Er is een fout opgetreden tijden het uitschrijven van de %s nieuwsbrief, probeer het nogmaals',
   'newsletter:action:unsubscribe:success:all' => 'Je bent uitgeschreven van alle nieuwsbrieven',
   'newsletter:action:unsubscribe:success:entity' => 'Je bent uitgeschreven van de %s nieuwsbrief',
-  'newsletter:embed:show_all' => "Toon all content, niet alleen van de groep",
+  'newsletter:embed:show_all' => 'Toon all content, niet alleen van de groep',
 );
-add_translation("nl", $language);
