@@ -56,7 +56,7 @@ echo elgg_view_module("info", $title, $content);
 // are group newsletters allowed
 if (newsletter_is_group_enabled()) {
 	// my group subscriptions
-	$my_groups = get_users_membership($entity->getGUID());
+	$my_groups = $entity->getGroups(array("limit" => false));
 	
 	if (!empty($my_groups)) {
 		$title = elgg_echo("newsletter:subscriptions:groups:title");
