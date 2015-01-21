@@ -13,7 +13,7 @@ elgg.newsletter.init = function() {
 
 	$("#newsletter-embed-pagination a").live("click", function(event) {
 		var url = $(this).attr("href");
-		$("#newsletter-embed-pagination").parent().load(url);
+		$("#newsletter-embed-pagination").parent().parent().load(url);
 		event.preventDefault();
 	});
 
@@ -40,6 +40,8 @@ elgg.newsletter.embed_format = function(elem) {
 		return false;
 	}
 
+	console.log(data);
+	
 	$("#newsletter-embed-format-icon").parent().hide();
 	if (data.iconUrl) {
 		$("#newsletter-embed-format-icon").parent().show();
