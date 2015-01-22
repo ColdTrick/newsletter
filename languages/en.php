@@ -60,6 +60,20 @@ return array(
 	
 	// embed
 	'newsletter:embed:show_all' => "Show all content, not just group content",
+	'newsletter:embed:format:description:title' => "Show description",
+	'newsletter:embed:format:description:option:full' => "Full",
+	'newsletter:embed:format:description:option:excerpt' => "Excerpt",
+	'newsletter:embed:format:description:option:no' => "No",
+
+	'newsletter:embed:format:icon:title' => "Show icon",
+	'newsletter:embed:format:icon:option:left' => "Left aligned",
+	'newsletter:embed:format:icon:option:right' => "Right aligned",
+	'newsletter:embed:format:icon:option:none' => "Do not show icon",
+	
+	'newsletter:embed:format:add_to_newsletter' => "Add to newsletter",
+	'newsletter:embed:format:preview:title' => "Preview",
+	
+	'newsletter:embed:read_more' => "Read more",
 	
 	// edit
 	'newsletter:edit:subject' => "Custom e-mail subject (optional)",
