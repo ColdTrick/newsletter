@@ -24,7 +24,7 @@ elgg.newsletter.init = function() {
 		var query = $(this).serialize();
 		var url = $(this).attr("action");
 			
-		$(this).parent().load(url, query, function() {
+		$(this).parent().parent().load(url, query, function() {
 			$.colorbox.resize();
 		});
 	});
