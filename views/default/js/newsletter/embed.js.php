@@ -67,7 +67,7 @@ elgg.newsletter.embed_format_preview = function() {
  	 	content_description += data.description;
  	} else if (description_option === "excerpt") {
  		content_description += data.excerpt;
- 		content_description += "<p><a href='" + data.url + "' class='newsletter-embed-read-more'>" + elgg.echo("newsletter:embed:read_more") + "</a></p>"; 
+ 		content_description += "<p class='newsletter-embed-item-read-more'><a href='" + data.url + "'>" + elgg.echo("newsletter:embed:read_more") + " ></a></p>"; 
  	}
 
  	if (data.iconUrl) {
@@ -76,23 +76,30 @@ elgg.newsletter.embed_format_preview = function() {
 		}
  	}
  	
- 	content += "<table>";
- 	content += "<tr><td colspan=2><a href='" + data.url + "'>" + data.title + "</a></td></tr>";
-	
- 	content += "<tr>";
+ 	content += "<table class='newsletter-embed-item'><tr>";
 
-	if (content_icon) {
+ 	if (content_icon) {
 		if (icon_option === "left") {
-			content += "<td>" + content_icon + "</td><td>" + content_description + "</td>";
-		} else {
-			content += "<td>" + content_description + "</td><td>" + content_icon + "</td>"; 
+			content += "<td rowspan='2' class='newsletter-embed-item-icon'>" + content_icon + "</td>";
 		}
-	} else {
-		content += "<td colspan='2'>" + content_description + "</td>";	
-	}
-	content += "</tr></table>"
+ 	}
 
+ 	content += "<td class='newsletter-embed-item-title'><h3><a href='" + data.url + "'>" + data.title + "</a></h3></td>";
+
+ 	if (content_icon) {
+		if (icon_option === "right") {
+			content += "<td rowspan='2' class='newsletter-embed-item-icon'>" + content_icon + "</td>"; 
+		}
+ 	}
+ 	
+ 	content += "</tr><tr>";
+ 	content += "<td class='newsletter-embed-item-description'>" + content_description + "</td>";
+ 	content += "</tr>";
+
+ 	content += "</table>";
+	
 	$preview.html(content);
+	$.colorbox.resize();
 }
 	
 elgg.newsletter.embed_format_submit = function() {
