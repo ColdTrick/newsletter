@@ -112,7 +112,7 @@ return array(
 	'newsletter:edit:template:error:save_as' => "Please check the marked required fields",
 		
 	// default template body
-	'newsletter:body:unsub' => "This newsletter is sent from <a href='{site_url}' rel='nofollow'>{site_name}</a>. Click <a href='{unsublink}'>here</a> to unsubscribe from this newsletter.",
+	'newsletter:body:unsub' => "This newsletter is sent from <a href='{container_url}' rel='nofollow'>{container_name}</a>. Click <a href='{unsublink}'>here</a> to unsubscribe from this newsletter.",
 	'newsletter:body:online' => "If you can't read this newsletter, check it <a href='{newsletter_url}'>online</a>",
 		
 
