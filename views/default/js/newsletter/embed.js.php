@@ -80,23 +80,21 @@ elgg.newsletter.embed_format_preview = function() {
 
  	if (content_icon) {
 		if (icon_option === "left") {
-			content += "<td rowspan='2' class='newsletter-embed-item-icon'>" + content_icon + "</td>";
+			content += "<td class='newsletter-embed-item-icon'>" + content_icon + "</td>";
 		}
  	}
 
- 	content += "<td class='newsletter-embed-item-title'><h3><a href='" + data.url + "'>" + data.title + "</a></h3></td>";
+ 	content += "<td class='newsletter-embed-item-title'>";
+ 	content += "<table><tr><td><h3><a href='" + data.url + "'>" + data.title + "</a></h3></td></tr><tr><td class='newsletter-embed-item-description'>" + content_description + "</td></tr></table>";
+ 	content += "</td>";
 
  	if (content_icon) {
 		if (icon_option === "right") {
-			content += "<td rowspan='2' class='newsletter-embed-item-icon'>" + content_icon + "</td>"; 
+			content += "<td class='newsletter-embed-item-icon'>" + content_icon + "</td>"; 
 		}
  	}
  	
- 	content += "</tr><tr>";
- 	content += "<td class='newsletter-embed-item-description'>" + content_description + "</td>";
- 	content += "</tr>";
-
- 	content += "</table>";
+ 	content += "</tr></table>";
 	
 	$preview.html(content);
 	$.colorbox.resize();
