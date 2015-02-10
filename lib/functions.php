@@ -1278,7 +1278,11 @@ function newsletter_get_available_templates($container_guid) {
 	unset($result["custom"]); // make sure custom is last in the list (shouldn't be provided by a plugin/theme)
 	$result["custom"] = elgg_echo("newsletter:edit:template:select:custom");
 	
-	return $result;
+	$params = array(
+		"container_guid" => $container_guid
+	);
+	
+	return elgg_trigger_plugin_hook("templates", "newsletter", $params, $result);
 }
 
 /**
