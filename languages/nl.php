@@ -90,6 +90,7 @@ return array (
   'newsletter:schedule:send' => 'Opslaan en nu versturen',
   'newsletter:schedule:save' => 'Opslaan en inplannen',
   'newsletter:recipients:title' => 'Selecteer ontvangers',
+  'newsletter:recipients:tooltip' => 'Vink je alle leden aan? Dan verstuur je de nieuwsbrief naar alle leden van de groep (behalve degenen die hebben aangegeven dat ze de nieuwsbrief niet willen ontvangen). Met alle abonnees wordt bedoeld alle gebruikers die niet per se lid zijn van jouw groep maar die wel een abonnement op de nieuwsbrief hebben. Als er achter abonnees een (0) staat, dan heeft deze nieuwsbrief geen abonnees. ',
   'newsletter:recipients:description' => 'Hieronder kun je aangeven wie de nieuwsbrief moet ontvangen.',
   'newsletter:recipients:recipient' => 'Zoek een ontvanger',
   'newsletter:recipients:recipient:description' => 'Je kunt zoeken op naam, e-mail en gebruikersnaam. Selecteer de ontvanger uit de lijst om toe te voegen.',

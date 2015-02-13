@@ -163,7 +163,14 @@ if (!empty($emails)) {
 
 $emails = elgg_view_module("newsletter-recipients", elgg_echo("newsletter:recipients:email") . "<span class='newsletter-counter mls'>" . $counter . "</span>", $email_content, array("class" => $class, "id" => "newsletter-recipients-emails"));
 
-echo elgg_view_module("newsletter-recipients-wrapper", elgg_echo("newsletter:recipients"), $checkboxes . $users . $groups . $emails, array("id" => "newsletter-recipients-wrapper"));
+$icon_options = array(
+	"class" => array("elgg-icon-info", "mlm"),
+	"title" => elgg_echo("newsletter:recipients:tooltip")
+);
+
+$wrapper_title = elgg_echo("newsletter:recipients") . elgg_view("output/icon", $icon_options);
+
+echo elgg_view_module("newsletter-recipients-wrapper", $wrapper_title, $checkboxes . $users . $groups . $emails, array("id" => "newsletter-recipients-wrapper"));
 
 echo "<div class='elgg-foot'>";
 echo elgg_view("input/hidden", array("name" => "guid", "value" => $entity->getGUID()));

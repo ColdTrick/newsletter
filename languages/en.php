@@ -128,6 +128,7 @@ return array(
 
 	// recipients
 	'newsletter:recipients:title' => "Select recipients",
+	'newsletter:recipients:tooltip' => "Tick all members? Then you send the newsletter to all members of the group (except those who have indicated that they do not want to receive the newsletter). With all subscribers is meant all those subscribers who are not necessary members of your group but who have a subscription to the newsletter. If the number behind subscribers is a (0), then this newsletter has no subscribers.",
 	'newsletter:recipients:description' => "Below you can configure who you want to receive the newsletter.",
 	'newsletter:recipients:csv' => "Upload a CSV-file with recipient e-mail addresses",
 	'newsletter:recipients:csv:description' => "You can upload a CSV file that contains the e-mail addresses for recipients. The text delimiter for the file needs to be \" (double quote) and the column delimiter needs to be a ; (semicolon). The system will auto-detect the e-mail column by searching the first 2 rows.",
