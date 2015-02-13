@@ -49,17 +49,17 @@ if ($subpage) {
 		"id" => "newsletter-form-" . $subpage
 	);
 	
-	if ($subpage == "content" || $subpage == "template") {
-		if ($entity->content) {
-			// only show preview if content available
-			elgg_register_menu_item("title", ElggMenuItem::factory(array(
-					"name" => "preview",
-					"text" => elgg_echo("preview"),
-					"href" => "newsletter/preview/" . $guid,
-					"link_class" => "elgg-button elgg-button-action"
-			)));
-		}
-	} elseif ($subpage == "recipients") {
+	if ($entity->content) {
+		// only show preview if content available
+		elgg_register_menu_item("title", ElggMenuItem::factory(array(
+				"name" => "preview",
+				"text" => elgg_echo("preview"),
+				"href" => "newsletter/preview/" . $guid,
+				"link_class" => "elgg-button elgg-button-action"
+		)));
+	}
+		
+	if ($subpage == "recipients") {
 		$form_vars["enctype"] = "multipart/form-data";
 	}
 	
