@@ -125,6 +125,7 @@ return array(
 	'newsletter:schedule:show_in_archive' => "Show the newsletter in the archive",
 	'newsletter:schedule:send' => "Save and send now",
 	'newsletter:schedule:save' => "Save and schedule",
+	'newsletter:schedule:no_recipients' => "You selected no recipients, are you sure you want to do this action?",
 
 	// recipients
 	'newsletter:recipients:title' => "Select recipients",
