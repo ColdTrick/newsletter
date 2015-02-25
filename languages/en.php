@@ -60,6 +60,20 @@ return array(
 	
 	// embed
 	'newsletter:embed:show_all' => "Show all content, not just group content",
+	'newsletter:embed:format:description:title' => "Show description",
+	'newsletter:embed:format:description:option:full' => "Full",
+	'newsletter:embed:format:description:option:excerpt' => "Excerpt",
+	'newsletter:embed:format:description:option:no' => "No",
+
+	'newsletter:embed:format:icon:title' => "Show icon",
+	'newsletter:embed:format:icon:option:left' => "Left aligned",
+	'newsletter:embed:format:icon:option:right' => "Right aligned",
+	'newsletter:embed:format:icon:option:none' => "Do not show icon",
+	
+	'newsletter:embed:format:add_to_newsletter' => "Add to newsletter",
+	'newsletter:embed:format:preview:title' => "Preview",
+	
+	'newsletter:embed:read_more' => "Read more",
 	
 	// edit
 	'newsletter:edit:subject' => "Custom e-mail subject (optional)",
@@ -98,7 +112,7 @@ return array(
 	'newsletter:edit:template:error:save_as' => "Please check the marked required fields",
 		
 	// default template body
-	'newsletter:body:unsub' => "This newsletter is sent from <a href='{site_url}' rel='nofollow'>{site_name}</a>. Click <a href='{unsublink}'>here</a> to unsubscribe from this newsletter.",
+	'newsletter:body:unsub' => "This newsletter is sent from <a href='{container_url}' rel='nofollow'>{container_name}</a>. Click <a href='{unsublink}'>here</a> to unsubscribe from this newsletter.",
 	'newsletter:body:online' => "If you can't read this newsletter, check it <a href='{newsletter_url}'>online</a>",
 		
 
@@ -111,9 +125,11 @@ return array(
 	'newsletter:schedule:show_in_archive' => "Show the newsletter in the archive",
 	'newsletter:schedule:send' => "Save and send now",
 	'newsletter:schedule:save' => "Save and schedule",
+	'newsletter:schedule:no_recipients' => "You selected no recipients, are you sure you want to do this action?",
 
 	// recipients
 	'newsletter:recipients:title' => "Select recipients",
+	'newsletter:recipients:tooltip' => "Tick all members? Then you send the newsletter to all members of the group (except those who have indicated that they do not want to receive the newsletter). With all subscribers is meant all those subscribers who are not necessary members of your group but who have a subscription to the newsletter. If the number behind subscribers is a (0), then this newsletter has no subscribers.",
 	'newsletter:recipients:description' => "Below you can configure who you want to receive the newsletter.",
 	'newsletter:recipients:csv' => "Upload a CSV-file with recipient e-mail addresses",
 	'newsletter:recipients:csv:description' => "You can upload a CSV file that contains the e-mail addresses for recipients. The text delimiter for the file needs to be \" (double quote) and the column delimiter needs to be a ; (semicolon). The system will auto-detect the e-mail column by searching the first 2 rows.",

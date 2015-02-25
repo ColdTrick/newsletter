@@ -47,7 +47,15 @@ elgg.newsletter_recipients.init = function() {
 			}
 			
 			return false;
-		}
+		},
+		// turn off experimental live help - no i18n support and a little buggy
+		messages: {
+			noResults: '',
+			results: function() {}
+		},
+		create: function (e) {
+	        $(this).prev('.ui-helper-hidden-accessible').remove();
+	    }
 	});
 
 	$("#newsletter-recipients-wrapper .elgg-icon-delete-alt").live("click", function() {

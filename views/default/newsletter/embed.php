@@ -82,8 +82,11 @@ if ($count > 0) {
 	echo "</ul>";
 	
 	echo "<div id='newsletter-embed-pagination'>";
+	
+	$show_all_value = $show_all ? 1 : 0;
+	
 	echo elgg_view("navigation/pagination", array(
-		"base_url" => elgg_normalize_url("newsletter/embed/" . $newsletter->getGUID() . "?q=$query"),
+		"base_url" => elgg_normalize_url("newsletter/embed/" . $newsletter->getGUID() . "?q=$query&show_all=$show_all_value"),
 		"offset" => $offset,
 		"limit" => $limit,
 		"count" => $count

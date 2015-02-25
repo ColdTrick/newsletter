@@ -55,6 +55,25 @@ echo "</div>";
 
 echo "<div class='elgg-foot'>";
 echo elgg_view("input/hidden", array("name" => "guid", "value" => $entity->getGUID()));
-echo elgg_view("input/button", array("value" => elgg_echo("newsletter:schedule:send"), "class" => "elgg-button-action float-alt", "id" => "newsletter-send-now"));
-echo elgg_view("input/submit", array("value" => elgg_echo("newsletter:schedule:save")));
+
+$save_and_send_now_options = array(
+	"value" => elgg_echo("newsletter:schedule:send"),
+	"class" => "elgg-button-action float-alt", 
+	"id" => "newsletter-send-now"
+);
+$save_and_schedule_options = array(
+	"value" => elgg_echo("newsletter:schedule:save"), 
+	"class" => "elgg-button-submit"
+);
+
+if (!$entity->getRecipients()) {
+	$save_and_send_now_options["class"] .= " elgg-requires-confirmation";
+	$save_and_send_now_options["data-confirm"] = elgg_echo("newsletter:schedule:no_recipients");
+	
+	$save_and_schedule_options["class"] .= " elgg-requires-confirmation";
+	$save_and_schedule_options["data-confirm"] = elgg_echo("newsletter:schedule:no_recipients");
+}
+
+echo elgg_view("input/button", $save_and_send_now_options);
+echo elgg_view("input/submit", $save_and_schedule_options);
 echo "</div>";
