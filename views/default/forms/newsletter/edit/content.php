@@ -41,7 +41,7 @@ echo "</div>";
 			editor_selector : "newsletter-input-plaintext",
 			theme : "advanced",
 			language : "<?php echo tinymce_get_site_language(); ?>",
-			plugins : "lists,spellchecker,autosave,inlinepopups,embed,media,paste,table,style,advimage,advlink,contextmenu,fullscreen,visualchars,nonbreaking,xhtmlxtras",
+			plugins : "lists,spellchecker,autosave,inlinepopups,media,paste,table,style,advimage,advlink,contextmenu,fullscreen,visualchars,nonbreaking,xhtmlxtras",
 			relative_urls : false,
 			remove_script_host : false,
 			document_base_url : elgg.config.wwwroot,
