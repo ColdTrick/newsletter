@@ -77,6 +77,7 @@ return array(
 	
 	// edit
 	'newsletter:edit:subject' => "Custom e-mail subject (optional)",
+	'newsletter:edit:from' => "Custom sending e-mail address (optional)",
 	'newsletter:edit:description:description' => "This description is used in the listing of the newsletters and will by default not be part of the newsletter content.",
 	
 	// placeholders
@@ -150,6 +151,10 @@ return array(
 	'newsletter:settings:allow_groups:description' => "Group administrators can create a newsletter for their group members.",
 	'newsletter:settings:include_existing_users' => "Include users without subscription settings",
 	'newsletter:settings:include_existing_users:description' => "When this setting is set to 'no', all existing users without subscription settings will no longer receive newsletters.",
+	'newsletter:settings:custom_from' => "Allow newsletters to be send from a custom e-mail address",
+	'newsletter:settings:custom_from:description' => "When this setting is set to 'yes', users are allowed to enter a custom e-mail address which will be used to as the from adress of the newsleter. Please keep in mind that this could allow abuse and could make newsletter end up in the spam folders more often.",
+	'newsletter:settings:custom_from:domains' => "Limit the custom e-mail addresses to the following domains",
+	'newsletter:settings:custom_from:domains:description' => "Enter a comma seperated list of domains to limit the custom e-mail addresses to. For example: example.com, this will allow user@example.com but not user@example2.com or user2@sub.example.com",
 	
 	'newsletter:settings:url_postfix' => "URL postfix settings",
 	'newsletter:settings:url_postfix:description' => "You can configure a postfix name/value pair that will be placed in all (internal) links that go out in the Newsletter. This will allow tracking system to see that your users came from the Newsletter.",
@@ -244,6 +249,7 @@ To view the newsletter click here:
 	// actions
 	// edit
 	'newsletter:action:edit:error:title' => "Please provide a title for the newsletter",
+	'newsletter:action:edit:error:from' => "The supplied e-mail address is not allowed to send newsletters",
 	'newsletter:action:edit:error:save' => "An unknown error occured while saving the newsletter, please try again",
 	'newsletter:action:edit:success' => "The newsletter was saved",
 	

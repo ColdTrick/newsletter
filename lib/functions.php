@@ -345,8 +345,17 @@ function newsletter_process($entity_guid) {
 			// =======================
 			// proccess all recipients
 			// =======================
+			if (newsletter_custom_from_enabled() && !empty($entity->from)) {
+				// from is validated to a valid email address in the newsletter save action
+				$from = $entity->from;
+			} else {
+				// default to the container email address
+				$from = html_email_handler_make_rfc822_address($container);
+			}
+			
+			// set default send options
 			$send_options = array(
-				"from" => html_email_handler_make_rfc822_address($container),
+				"from" => $from,
 				"subject" => $message_subject,
 				"plaintext_message" => $message_plaintext_content
 			);
@@ -1520,4 +1529,73 @@ function newsletter_view_embed_content(ElggEntity $entity, $vars = array()) {
 	}
 	
 	return false;
+}
+
+/**
+ * Check the plugin setting for custom from addresses
+ *
+ * @return bool
+ */
+function newsletter_custom_from_enabled() {
+	static $result;
+	
+	if (!isset($result)) {
+		$result = false;
+		
+		$plugin_setting = elgg_get_plugin_setting("custom_from", "newsletter");
+		if ($plugin_setting === "yes") {
+			$result = true;
+		}
+	}
+	
+	return $result;
+}
+
+/**
+ * Validate the custom from email address
+ *
+ * This also triggers a plugin hook 'from_email', 'newsletter' for other plugins to hook into
+ * Supplied params:
+ * - email: the email address to validate
+ *
+ * @param string $from_email the email address to check
+ *
+ * @return bool
+ */
+function newsletter_validate_custom_from($from_email) {
+	
+	if (empty($from_email)) {
+		// empty is allowed, sending will fallback to container
+		return true;
+	}
+	
+	if (!newsletter_is_email_address($from_email)) {
+		// not an email address, always fail
+		return false;
+	}
+	
+	$result = true;
+	
+	// check plugin settings domain limitations
+	$plugin_setting = elgg_get_plugin_setting("custom_from_domains", "newsletter");
+	if (!empty($plugin_setting)) {
+		$result = false;
+		$plugin_setting = string_to_tag_array($plugin_setting);
+		
+		list(, $domain) = explode("@", $from_email);
+		foreach ($plugin_setting as $allowed_domain) {
+			if ($domain === $allowed_domain) {
+				// custom from is from an allowed domain
+				$result = true;
+				break;
+			}
+		}
+	}
+	
+	// trigger a plugin hook so others are allowed to validate
+	$params = array(
+		"email" => $from_email
+	);
+	
+	return (bool) elgg_trigger_plugin_hook("from_email", "newsletter", $params, $result);
 }

@@ -1,10 +1,16 @@
 <?php
 /**
  * This file was created by Translation Editor v2.0.1
- * On 2015-04-01 13:07
+ * On 2015-04-01 14:55
  */
 
 return array (
+  'newsletter:edit:from' => 'Aangepast afzender e-mail adres (optioneel)',
+  'newsletter:settings:custom_from' => 'Nieuwsbrieven mogen worden verzonden met een aangepast e-mail adres',
+  'newsletter:settings:custom_from:description' => 'Als deze optie op \'ja\' wordt gezet is het gebruikers toegestaan om een aangepast e-mail adres op te geven als de afzender van de nieuwsbrief. Houd er rekening mee dat dit misbruikt kan worden en dat de kans dat nieuwsbrieven als spam worden gemarkeerd toeneemt.',
+  'newsletter:settings:custom_from:domains' => 'Beperkt de aangepaste e-mail adressen tot de volgende domeinen',
+  'newsletter:settings:custom_from:domains:description' => 'Geen een komma gescheiden lijst op met domeinen welke zijn toegestaan. Bijvoorbeeld: example.com, hiermee is user@example.com toegestaan maar niet user@example2.com of user@sub.example.com',
+  'newsletter:action:edit:error:from' => 'The opgegeven e-mail adres is niet toegestaan voor het verzenden van nieuwsbrieven',
   'newsletter:schedule:status_notification:me' => 'Stuur mij een status bericht',
   'newsletter:schedule:status_notification:toggle' => 'of geef een ander e-mail adres op',
   'newsletter:edit:description:description' => 'Deze omschrijving wordt gebruikt in de lijstweergave van de nieuwsbrieven en is standaard géén onderdeel van inhoud van de nieuwsbrief.',

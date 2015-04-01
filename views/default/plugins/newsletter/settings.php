@@ -29,6 +29,26 @@ echo elgg_view("input/dropdown", array(
 echo "<div class='elgg-subtext'>" . elgg_echo("newsletter:settings:include_existing_users:description") . "</div>";
 echo "</div>";
 
+echo "<div>";
+echo elgg_echo("newsletter:settings:custom_from");
+echo elgg_view("input/dropdown", array(
+	"name" => "params[custom_from]",
+	"value" => $plugin->custom_from,
+	"options_values" => $noyes_options,
+	"class" => "mls"
+));
+echo "<div class='elgg-subtext'>" . elgg_echo("newsletter:settings:custom_from:description") . "</div>";
+echo "</div>";
+
+echo "<div>";
+echo elgg_echo("newsletter:settings:custom_from:domains");
+echo elgg_view("input/text", array(
+	"name" => "params[custom_from_domains]",
+	"value" => $plugin->custom_from_domains,
+));
+echo "<div class='elgg-subtext'>" . elgg_echo("newsletter:settings:custom_from:domains:description") . "</div>";
+echo "</div>";
+
 // url postfix
 $url_postfix = elgg_view("output/longtext", array("value" => elgg_echo("newsletter:settings:url_postfix:description")));
 
