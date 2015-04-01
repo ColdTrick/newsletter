@@ -15,6 +15,9 @@ elgg.newsletter.init_edit = function() {
 	$("#newsletter-send-now").live("click", elgg.newsletter.schedule_send_now);
 
 	$("#newsletter-edit-template-save-as").live("click", elgg.newsletter.save_template);
+	
+	$("#newsletter-status-notification-toggle").on("click", elgg.newsletter.toggle_status_notification);
+	$("#newsletter-status-notification-me").on("click", elgg.newsletter.status_notification_me);
 };
 
 elgg.newsletter.schedule_send_now = function() {
@@ -40,6 +43,20 @@ elgg.newsletter.save_template = function() {
 		$("#newsletter-form-template").submit();
 	} else {
 		alert(elgg.echo("newsletter:edit:template:error:save_as"));
+	}
+};
+
+elgg.newsletter.toggle_status_notification = function(event) {
+	event.preventDefault();
+	
+	$(".newsletter-status-notification").toggleClass("hidden");
+};
+
+elgg.newsletter.status_notification_me = function() {
+	if ($(this).is(":checked")) {
+		$("#newsletter-status-notification").val($(this).val());
+	} else {
+		$("#newsletter-status-notification").val("");
 	}
 };
 

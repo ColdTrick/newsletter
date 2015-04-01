@@ -34,11 +34,32 @@ echo elgg_view("input/date", array("name" => "date", "value" => $date, "timestam
 echo "@";
 
 echo "<label for='newsletter-schedule-hour' class='hidden'>" . elgg_echo("newsletter:schedule:time") . "</label>";
-echo elgg_view("input/dropdown", array("name" => "hour", "value" => $hour, "options" => range(0, 23), "class" => "mlm", "id" => "newsletter-schedule-hour"));
+echo elgg_view("input/select", array("name" => "hour", "value" => $hour, "options" => range(0, 23), "class" => "mlm", "id" => "newsletter-schedule-hour"));
 echo ":00";
 echo "</div>";
 
-echo "<div>";
+$status_class = "newsletter-status-notification";
+if (empty($status_notification)) {
+	echo "<div class='" . $status_class . "'>";
+	echo elgg_view("input/checkbox", array(
+		"name" => "status_notification_me",
+		"value" => elgg_get_logged_in_user_entity()->email,
+		"id" => "newsletter-status-notification-me",
+		"default" => false
+	));
+	echo "<label for='newsletter-status-notification-me'>" . elgg_echo("newsletter:schedule:status_notification:me") . "</label>";
+	echo elgg_view("output/url", array(
+		"text" => elgg_echo("newsletter:schedule:status_notification:toggle"),
+		"href" => "#",
+		"id" => "newsletter-status-notification-toggle",
+		"class" => "mls"
+	));
+	echo "</div>";
+	
+	$status_class .= " hidden";
+}
+
+echo "<div class='" . $status_class . "'>";
 echo "<label for='newsletter-status-notification'>" . elgg_echo("newsletter:schedule:status_notification") . "</label>";
 echo elgg_view("input/email", array("name" => "status_notification", "value" => $status_notification, "id" => "newsletter-status-notification"));
 echo "<div class='elgg-subtext'>" . elgg_echo("newsletter:schedule:status_notification:description") . "</div>";
@@ -58,11 +79,11 @@ echo elgg_view("input/hidden", array("name" => "guid", "value" => $entity->getGU
 
 $save_and_send_now_options = array(
 	"value" => elgg_echo("newsletter:schedule:send"),
-	"class" => "elgg-button-action float-alt", 
+	"class" => "elgg-button-action float-alt",
 	"id" => "newsletter-send-now"
 );
 $save_and_schedule_options = array(
-	"value" => elgg_echo("newsletter:schedule:save"), 
+	"value" => elgg_echo("newsletter:schedule:save"),
 	"class" => "elgg-button-submit"
 );
 

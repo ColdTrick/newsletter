@@ -1,10 +1,12 @@
 <?php
 /**
  * This file was created by Translation Editor v2.0.1
- * On 2015-04-01 12:08
+ * On 2015-04-01 13:07
  */
 
 return array (
+  'newsletter:schedule:status_notification:me' => 'Stuur mij een status bericht',
+  'newsletter:schedule:status_notification:toggle' => 'of geef een ander e-mail adres op',
   'newsletter:edit:description:description' => 'Deze omschrijving wordt gebruikt in de lijstweergave van de nieuwsbrieven en is standaard géén onderdeel van inhoud van de nieuwsbrief.',
   'newsletter:menu:longtext:embed_content' => 'Content invoegen',
   'newsletter:settings:url_postfix' => 'URL postfix instellingen',
@@ -85,7 +87,7 @@ return array (
   'newsletter:schedule:description' => 'Hier kun je instellen wanneer de nieuwsbrief zal worden afgeleverd aan de geselecteerde ontvangers.',
   'newsletter:schedule:date' => 'Geplande datum',
   'newsletter:schedule:time' => 'Geplande tijd',
-  'newsletter:schedule:status_notification' => 'E-mail adres voor een status bericht (optioneel)',
+  'newsletter:schedule:status_notification' => 'E-mail adres voor een status bericht',
   'newsletter:schedule:status_notification:description' => 'Als de nieuwsbrief is verzonden zal er een bericht worden verzonden naar dit email adres.',
   'newsletter:schedule:show_in_archive' => 'Toon de nieuwsbrief in het archief',
   'newsletter:schedule:send' => 'Opslaan en nu versturen',
