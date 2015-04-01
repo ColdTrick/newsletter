@@ -524,6 +524,17 @@ function newsletter_register_buttons_menu_handler($hook, $type, $returnvalue, $p
 				$href = "newsletter/site";
 			}
 			
+			$referer = elgg_extract('HTTP_REFERER', $_SERVER);
+			if (!empty($referer) && stristr($referer, elgg_get_site_url())) {
+				// there is history to this site, so add a back button
+				$result[] = ElggMenuItem::factory(array(
+					"name" => "back",
+					"href" => $referer,
+					"text" => elgg_echo("back"),
+					"target" => "_self"
+				));
+			}
+			
 			$result[] = ElggMenuItem::factory(array(
 				"name" => "more",
 				"href" => $href,
