@@ -54,8 +54,8 @@ elgg.newsletter_recipients.init = function() {
 			results: function() {}
 		},
 		create: function (e) {
-	        $(this).prev('.ui-helper-hidden-accessible').remove();
-	    }
+			$(this).prev('.ui-helper-hidden-accessible').remove();
+		}
 	});
 
 	$("#newsletter-recipients-wrapper .elgg-icon-delete-alt").live("click", function() {

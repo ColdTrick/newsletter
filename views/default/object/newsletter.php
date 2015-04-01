@@ -13,9 +13,7 @@ if (!elgg_in_context("widgets")) {
 	));
 }
 
-if ($full_view) {
-	// full view
-} else {
+if (!$full_view) {
 	// listing view
 	$icon = elgg_view_entity_icon($entity, "small");
 	

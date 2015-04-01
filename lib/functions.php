@@ -1318,7 +1318,7 @@ function newsletter_process_csv_upload(array $recipients) {
 			// try to find an email column (in the first 2 rows)
 			for ($i = 0; $i < 2; $i++) {
 				$row = fgetcsv($fh, null, ";", "\"");
-				if ($row) {
+				if (!empty($row)) {
 					foreach ($row as $index => $field) {
 						if (newsletter_is_email_address($field)) {
 							$email_column = $index;
