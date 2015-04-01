@@ -1,10 +1,11 @@
 <?php
 /**
- * This file was created by Translation Editor v2.0
- * On 2015-01-21 15:17
+ * This file was created by Translation Editor v2.0.1
+ * On 2015-04-01 12:08
  */
 
 return array (
+  'newsletter:edit:description:description' => 'Deze omschrijving wordt gebruikt in de lijstweergave van de nieuwsbrieven en is standaard géén onderdeel van inhoud van de nieuwsbrief.',
   'newsletter:menu:longtext:embed_content' => 'Content invoegen',
   'newsletter:settings:url_postfix' => 'URL postfix instellingen',
   'newsletter:settings:url_postfix:description' => 'Je kunt een postfix naam/waarde combinatie opgeven welke toegevoegd zal worden aan alle (interne) links die zich in de Nieuwsbrief bevinden. Dit maakt het mogelijk om het gebruik van de nieuwsbrief te volgen.',
@@ -89,7 +90,7 @@ return array (
   'newsletter:schedule:show_in_archive' => 'Toon de nieuwsbrief in het archief',
   'newsletter:schedule:send' => 'Opslaan en nu versturen',
   'newsletter:schedule:save' => 'Opslaan en inplannen',
-  'newsletter:schedule:no_recipients' => "Je hebt geen ontvangers geselecteerd. Wil je toch doorgaan?",
+  'newsletter:schedule:no_recipients' => 'Je hebt geen ontvangers geselecteerd. Wil je toch doorgaan?',
   'newsletter:recipients:title' => 'Selecteer ontvangers',
   'newsletter:recipients:tooltip' => 'Vink je alle leden aan? Dan verstuur je de nieuwsbrief naar alle leden van de groep (behalve degenen die hebben aangegeven dat ze de nieuwsbrief niet willen ontvangen). Met alle abonnees wordt bedoeld alle gebruikers die niet per se lid zijn van jouw groep maar die wel een abonnement op de nieuwsbrief hebben. Als er achter abonnees een (0) staat, dan heeft deze nieuwsbrief geen abonnees. ',
   'newsletter:recipients:description' => 'Hieronder kun je aangeven wie de nieuwsbrief moet ontvangen.',

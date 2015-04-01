@@ -77,6 +77,7 @@ return array(
 	
 	// edit
 	'newsletter:edit:subject' => "Custom e-mail subject (optional)",
+	'newsletter:edit:description:description' => "This description is used in the listing of the newsletters and will by default not be part of the newsletter content.",
 	
 	// placeholders
 	'newsletter:placeholders:info' => "You can use the following placeholders in your text. They will be replaced by system text or by information about the newsletter. If you hover over them, you will get some more details.",

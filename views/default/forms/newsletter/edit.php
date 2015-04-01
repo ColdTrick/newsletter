@@ -37,6 +37,7 @@ echo "</div>";
 echo "<div>";
 echo "<label for='newsletter-description'>" . elgg_echo("description") . "</label>";
 echo elgg_view("input/longtext", array("name" => "description", "value" => $description, "id" => "newsletter-description"));
+echo "<div class='elgg-subtext'>" . elgg_echo("newsletter:edit:description:description") . "</div>";
 echo "</div>";
 
 echo "<div>";
