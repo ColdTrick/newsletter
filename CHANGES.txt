@@ -1,6 +1,10 @@
 Version History
 ===============
 
+x.x:
+
+- fixed: newsletters in groups could be made private
+
 2.0:
 
 - changes for Elgg 1.9
