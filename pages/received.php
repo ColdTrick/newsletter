@@ -48,7 +48,7 @@ $options = array(
 );
 
 $ia = elgg_set_ignore_access(true);
-$entities = elgg_get_entities_from_metadata($options);
+$entities = elgg_get_entities_from_relationship($options);
 elgg_set_ignore_access($ia);
 
 if (!empty($entities)) {
