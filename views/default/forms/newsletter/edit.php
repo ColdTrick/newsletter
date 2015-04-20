@@ -40,6 +40,7 @@ if (newsletter_custom_from_enabled()) {
 	echo "<div>";
 	echo "<label for='newsletter-from'>" . elgg_echo("newsletter:edit:from") . "</label>";
 	echo elgg_view("input/email", array("name" => "from", "value" => $from, "id" => "newsletter-from"));
+	echo "<div class='elgg-subtext'>" . elgg_echo("newsletter:edit:from:description", array('<strong>' . elgg_get_site_entity()->email . '</strong>')) . "</div>";
 	echo "</div>";
 }
 
