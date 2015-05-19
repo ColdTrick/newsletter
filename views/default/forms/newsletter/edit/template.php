@@ -46,11 +46,11 @@ foreach ($template_options as $name => $label) {
 	
 	if ($name !== "custom") {
 		$confirm_options["href"] = "action/newsletter/edit/template_to_custom?guid=" . $entity->guid . "&template=" . $name;
-		echo elgg_view("output/confirmlink", $confirm_options);
+		echo elgg_view("output/url", $confirm_options);
 		
 		if (is_numeric($name)) {
 			$delete_options["href"] = "action/newsletter/template/delete?guid=" . $name;
-			echo elgg_view("output/confirmlink", $delete_options);
+			echo elgg_view("output/url", $delete_options);
 		}
 	}
 	

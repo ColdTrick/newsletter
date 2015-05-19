@@ -63,9 +63,10 @@ $member_count = 0;
 if (elgg_instanceof($container, "site")) {
 	$options = array(
 		"site_guids" => false,
-		"count" => true
+		"count" => true,
+		"type" => "user"
 	);
-	$member_count = $container->getMembers($options);
+	$member_count = $container->getEntities($options);
 	
 	$member_count .= " " . elgg_echo("newsletter:recipients:members:site");
 } elseif (elgg_instanceof($container, "group")) {
