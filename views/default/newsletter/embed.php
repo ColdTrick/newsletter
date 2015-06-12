@@ -7,6 +7,8 @@ $limit = 6;
 $query = get_input("q");
 $query = sanitise_string($query);
 
+$dbprefix = elgg_get_config("dbprefix");
+
 $show_all = (bool) get_input("show_all", false);
 
 $subtypes = array();
@@ -27,18 +29,31 @@ $options = array(
 	"full_view" => false,
 	"limit" => $limit,
 	"offset" => $offset,
-	"count" => true
+	"count" => true,
+	"wheres" => array()
 );
 
 $container = $newsletter->getContainerEntity();
 if (empty($show_all) && elgg_instanceof($container, "group")) {
-	$options["container_guid"] = $newsletter->getContainerGUID();
+	$container_guid = $newsletter->getContainerGUID();
+	
+	if (elgg_is_active_plugin("static")) {
+		// static subpages do not have a group container so do an extra check
+		$options["wheres"][] = "
+			((e.container_guid = {$container_guid}) OR e.guid IN (
+				SELECT sub_r.guid_one from {$dbprefix}entity_relationships sub_r
+				JOIN {$dbprefix}entities sub_e ON sub_e.guid = sub_r.guid_two
+				WHERE sub_e.container_guid = {$container_guid}
+				AND sub_r.relationship = 'subpage_of'
+			))";
+	} else {
+		$options["container_guid"] = $container_guid;
+	}
 }
 
 if (!empty($query)) {
-	$dbprefix = elgg_get_config("dbprefix");
 	$options["joins"] = array("JOIN " . $dbprefix . "objects_entity oe ON e.guid = oe.guid");
-	$options["wheres"] = array("(oe.title LIKE '%" . $query . "%')");
+	$options["wheres"][] = "(oe.title LIKE '%" . $query . "%')";
 }
 
 $count = elgg_get_entities($options);
