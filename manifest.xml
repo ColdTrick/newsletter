@@ -3,17 +3,17 @@
 	<name>Newsletter</name>
 	<id>newsletter</id>
 	<author>ColdTrick IT Solutions</author>
-	<version>2.0</version>
+	<version>3.0</version>
 	<description>Allows the creation and management of a newletter to site/group members</description>
 	<website>http://www.coldtrick.com/</website>
 	<repository>https://github.com/ColdTrick/newsletter</repository>
 	<bugtracker>https://github.com/ColdTrick/newsletter/issues</bugtracker>
-	<copyright>(C) ColdTrick IT Solutions 2013</copyright>
+	<copyright>(C) ColdTrick IT Solutions 2013 - 2015</copyright>
 	<license>GNU General Public License version 2</license>
  	
  	<requires>
 		<type>elgg_release</type>
-		<version>1.9</version>
+		<version>1.10</version>
 	</requires>
 	
 	<requires>
