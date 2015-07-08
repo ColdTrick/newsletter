@@ -1,22 +1,45 @@
 Version History
 ===============
 
-x.x:
+2.0 (2015-07-08):
 
-- fixed: newsletters in groups could be made private
-
-2.0:
-
-- changes for Elgg 1.9
-- added: steps to the creation page of a newsletter #32
+- added: a subtext to the custom sender e-mail address input field
+- added: a tooltip to the subscribers form
+- added: back button to preview page if there is a referer
+- added: description to the newsletter description to explain that is will not be part of the newsletter content by default
+- added: extra confirm to schedule form if no recipients are selected
+- added: missing language keys for embed format step
+- added: plugin hook so other plugin can influence template availability
+- added: plugin settings to allow custom email addresses to be used for the sending of newsletters
+- added: the format form
+- added: allow formatting of content before being embedded #37
 - added: option to embed content from outside the group #35
 - added: plugin setting for url postfix #38
-- added: support for content from the static plugin #36
-- fixed: load correct php.ini for background process #40
+- added: steps to the creation page of a newsletter #32
+- added: composer support
+- changed: replaced site with container in footer unsubscribe link
+- changed: output html of format embed step
+- changed: layout of embed table
 - changed: steps moved to tabs #31
-- changed: text on save buttons on schedule page #33
 - changed: text of Sending tab #34
-- changed: more layout options when embeddind content #37
+- changed: text on save buttons on schedule page #33
+- changed: easier selection of the status notification to yourself (initialy)
+- changed: moved part of the js to an AMD loaded module
+- fixed: correctly fetch the recieved newsletters of a user
+- fixed: newsletter description is no a regular text input
+- fixed: use default friendly time for sent timestamp
+- fixed: prevent the creation of the unwanted hidden-accessible element
+- fixed: moved site subscription to a sub view
+- fixed: remember show_all flag when navigating embed listing
+- fixed: show preview button on all subpages if there is content
+- fixed: double loading of format step html
+- fixed: format page not functioning after searching in embed content
+- fixed: load correct php.ini for background process #40
+- fixed: newsletter search results not displaying correctly
+- fixed: newsletters in groups could be made private
+- fixed: use of a removed function #27
+- fixed: no longer automaticly set status to sending when clicking 'send now button'
+- removed: left over console.log
 
 1.1 (2014-06-14):
 
