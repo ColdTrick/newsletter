@@ -28,7 +28,7 @@ if (!isset($content)) {
 			$template = "default";
 		}
 		
-		$content = elgg_view("newsletter/templates/" . $template . "/body");
+		$content = elgg_view("newsletter/templates/" . $template . "/body", $vars);
 	}
 }
 
