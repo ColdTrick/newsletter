@@ -1,10 +1,15 @@
 <?php
 /**
- * This file was created by Translation Editor v2.0.1
- * On 2015-04-01 14:55
+ * This file was created by Translation Editor v4.0
+ * On 2015-07-27 16:51
  */
 
 return array (
+  'newsletter:edit:from:description' => 'Standaard worden de nieuwsbrieven verstuurd vanaf %s. Je kunt een aangepast e-mail adres opgeven. Dit e-mail adres zal ook alle non-delivery reports ontvangen.',
+  'newsletter:settings:url_postfix:upgrade' => 'Je moet upgrade.php draaien om een aantal oude plugin instellingen te migreren naar de nieuwe instellingen.',
+  'newsletter:settings:url_postfix:setting' => 'Postfix instellingen',
+  'newsletter:settings:url_postfix:setting:description' => 'Er zijn bepaalde placeholders welke je kunt gebruiken in de postfix waardes: %s',
+  'newsletter:settings:url_postfix:description' => 'Je kunt een of meerdere postfix naam/waarde combinaties opgeven welke toegevoegd zal worden aan alle (interne) links die zich in de Nieuwsbrief bevinden. Je kunt één naam/waarde combinatie per regel configureren in het formaat \'naam=waarde\' (bijv bron=nieuwsbrief) Dit maakt het mogelijk om het gebruik van de nieuwsbrief te volgen.',
   'newsletter:edit:from' => 'Aangepast afzender e-mail adres (optioneel)',
   'newsletter:settings:custom_from' => 'Nieuwsbrieven mogen worden verzonden met een aangepast e-mail adres',
   'newsletter:settings:custom_from:description' => 'Als deze optie op \'ja\' wordt gezet is het gebruikers toegestaan om een aangepast e-mail adres op te geven als de afzender van de nieuwsbrief. Houd er rekening mee dat dit misbruikt kan worden en dat de kans dat nieuwsbrieven als spam worden gemarkeerd toeneemt.',
@@ -16,9 +21,6 @@ return array (
   'newsletter:edit:description:description' => 'Deze omschrijving wordt gebruikt in de lijstweergave van de nieuwsbrieven en is standaard géén onderdeel van inhoud van de nieuwsbrief.',
   'newsletter:menu:longtext:embed_content' => 'Content invoegen',
   'newsletter:settings:url_postfix' => 'URL postfix instellingen',
-  'newsletter:settings:url_postfix:description' => 'Je kunt een postfix naam/waarde combinatie opgeven welke toegevoegd zal worden aan alle (interne) links die zich in de Nieuwsbrief bevinden. Dit maakt het mogelijk om het gebruik van de nieuwsbrief te volgen.',
-  'newsletter:settings:url_postfix:name' => 'Postfix naam',
-  'newsletter:settings:url_postfix:value' => 'Postfix waarde',
   'newsletter:widget:subscribe:description' => 'Toon een widget om je snel aan te kunnen melden voor de nieuwsbrief',
   'newsletter:csv:no_email' => 'Er kon geen e-mail kolom worden gevonden in de eerste 2 regels van het CSV-bestand',
   'newsletter:csv:added' => '%s e-mail adressen toegevoegd vanuit het CSV-bestand',

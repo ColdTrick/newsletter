@@ -7,6 +7,10 @@ $noyes_options = array(
 	"yes" => elgg_echo("option:yes")
 );
 
+$url_postfix_replacements = array(
+	'{guid}'
+);
+
 echo "<div>";
 echo elgg_echo("newsletter:settings:allow_groups");
 echo elgg_view("input/dropdown", array(
@@ -52,20 +56,17 @@ echo "</div>";
 // url postfix
 $url_postfix = elgg_view("output/longtext", array("value" => elgg_echo("newsletter:settings:url_postfix:description")));
 
-$url_postfix .= "<div>";
-$url_postfix .= elgg_echo("newsletter:settings:url_postfix:name");
-$url_postfix .= elgg_view("input/text", array(
-	"name" => "params[url_postfix_name]",
-	"value" => $plugin->url_postfix_name
-));
-$url_postfix .= "</div>";
+if ($plugin->url_postfix_name || $plugin->url_postfix_value) {
+	$url_postfix .= '<div class="elgg-message elgg-state-error">' . elgg_echo("newsletter:settings:url_postfix:upgrade") . '</div>';
+}
 
 $url_postfix .= "<div>";
-$url_postfix .= elgg_echo("newsletter:settings:url_postfix:value");
-$url_postfix .= elgg_view("input/text", array(
-	"name" => "params[url_postfix_value]",
-	"value" => $plugin->url_postfix_value
+$url_postfix .= elgg_echo("newsletter:settings:url_postfix:setting");
+$url_postfix .= elgg_view("input/plaintext", array(
+	"name" => "params[url_postfix]",
+	"value" => $plugin->url_postfix
 ));
+$url_postfix .= '<div class="elgg-subtext">' . elgg_echo("newsletter:settings:url_postfix:setting:description", array(implode(' ', $url_postfix_replacements))) . '</div>';
 $url_postfix .= "</div>";
 
 echo elgg_view_module("inline", elgg_echo("newsletter:settings:url_postfix"), $url_postfix);

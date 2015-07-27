@@ -31,3 +31,8 @@ Configuration
 You can configure if newsletters can be send by group owners.
 
 You can configure if the current userbase of your community is receiving the newsletter by default or that they have to opt-in.
+
+Upgrading from pre 3.1
+----------------------
+
+The URL postfix plugin setting has been changed. Please run upgrade.php in order to save your current setting to the new format.

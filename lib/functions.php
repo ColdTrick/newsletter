@@ -1,5 +1,6 @@
 <?php
 
+use Symfony\Component\HttpFoundation\Tests\NewRequest;
 /**
  * This file contains all supportive functions for the Newsletter plugin
  */
@@ -397,7 +398,7 @@ function newsletter_process($entity_guid) {
 						}
 						
 						// add URL postfix to all internal links
-						$message_html_content_user = newsletter_apply_url_postfix($message_html_content_user);
+						$message_html_content_user = newsletter_apply_url_postfix($message_html_content_user, $entity);
 						
 						// =========
 						// send mail
@@ -1407,11 +1408,28 @@ function newsletter_get_url_postfix() {
 	if (!isset($result)) {
 		$result = false;
 		
-		$url_postfix_name = elgg_get_plugin_setting("url_postfix_name", "newsletter");
-		$url_postfix_value = elgg_get_plugin_setting("url_postfix_value", "newsletter");
+		$url_postfix = elgg_get_plugin_setting("url_postfix", "newsletter");
 		
-		if (!is_null($url_postfix_name) && ($url_postfix_name !== false) && !is_null($url_postfix_value) && ($url_postfix_value !== false)) {
-			$result = array($url_postfix_name => $url_postfix_value);
+		if (!is_null($url_postfix) && ($url_postfix !== false)) {
+			$lines = explode(PHP_EOL, $url_postfix);
+			$temp_result = array();
+			
+			foreach ($lines as $line) {
+				list($name, $value) = explode('=', $line);
+				
+				if (is_null($name) || ($name === false)) {
+					continue;
+				}
+				if (is_null($value) || ($value === false)) {
+					continue;
+				}
+				
+				$temp_result[$name] = $value;
+			}
+			
+			if (!empty($temp_result)) {
+				$result = $temp_result;
+			}
 		}
 	}
 	
@@ -1421,12 +1439,17 @@ function newsletter_get_url_postfix() {
 /**
  * Add the URL postfix to all url's in the newsletter content
  *
- * @param string $html_content the content of the newletter
+ * @param string     $html_content the content of the newletter
+ * @param Newsletter $newsletter   the source newsletter to use for some replacements in the postfix
  *
  * @return string
  */
-function newsletter_apply_url_postfix($html_content) {
+function newsletter_apply_url_postfix($html_content, Newsletter $newsletter) {
 	static $pattern;
+	
+	if (empty($newsletter) || !($newsletter instanceof Newsletter)) {
+		return $html_content;
+	}
 	
 	// get the postfix settings
 	$url_postfix_settings = newsletter_get_url_postfix();
@@ -1451,6 +1474,16 @@ function newsletter_apply_url_postfix($html_content) {
 	
 	if (empty($matches) || !isset($matches[1])) {
 		return $html_content;
+	}
+	
+	// url postfix placeholder replacements
+	$replacements = array(
+		'{guid}' => $newsletter->getGUID(),
+	);
+	foreach ($url_postfix_settings as $name => $value) {
+		$value = str_ireplace(array_keys($replacements), array_values($replacements), $value);
+		
+		$url_postfix_settings[$name] = $value;
 	}
 	
 	// go through all the matches

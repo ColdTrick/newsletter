@@ -158,9 +158,10 @@ return array(
 	'newsletter:settings:custom_from:domains:description' => "Enter a comma seperated list of domains to limit the custom e-mail addresses to. For example: example.com, this will allow user@example.com but not user@example2.com or user2@sub.example.com",
 	
 	'newsletter:settings:url_postfix' => "URL postfix settings",
-	'newsletter:settings:url_postfix:description' => "You can configure a postfix name/value pair that will be placed in all (internal) links that go out in the Newsletter. This will allow tracking system to see that your users came from the Newsletter.",
-	'newsletter:settings:url_postfix:name' => "Postfix name",
-	'newsletter:settings:url_postfix:value' => "Postfix value",
+	'newsletter:settings:url_postfix:description' => "You can configure one or more postfix name/value pairs that will be placed in all (internal) links that go out in the Newsletter. You can configure one name/value pair per line in the format 'name=value' (eg source=newsletter). This will allow tracking systems to see that your users came from the Newsletter.",
+	'newsletter:settings:url_postfix:upgrade' => "You need to run upgrade.php in order to convert some old plugin settings to the new values.",
+	'newsletter:settings:url_postfix:setting' => "Postfix settings",
+	'newsletter:settings:url_postfix:setting:description' => "There are certain placeholders you can use in your postfix values: %s",
 	
 	// entity view
 	'newsletter:entity:scheduled' => "Scheduled",
