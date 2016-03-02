@@ -1,50 +1,43 @@
 <?php
 
-echo "<div class='hidden' id='newsletter-embed-format'>";
+$format_description = elgg_format_element('label', [], elgg_echo('newsletter:embed:format:description:title'));
+$format_description .= elgg_view('input/select', [
+	'options_values' => [
+		'full' => elgg_echo('newsletter:embed:format:description:option:full'),
+		'excerpt' => elgg_echo('newsletter:embed:format:description:option:excerpt'),
+		'no' => elgg_echo('newsletter:embed:format:description:option:no'),
+	],
+	'name' => 'newsletter-embed-format-description',
+	'id' => 'newsletter-embed-format-description',
+	'class' => 'mlm',
+]);
+$format_description = elgg_format_element('div', [], $format_description);
 
-echo "<fieldset>";
+$format_icon = elgg_format_element('label', [], elgg_echo('newsletter:embed:format:icon:title'));
+$format_icon .= elgg_view('input/select', [
+	'options_values' => [
+		'left' => elgg_echo('newsletter:embed:format:icon:option:left'),
+		'right' => elgg_echo('newsletter:embed:format:icon:option:right'),
+		'none' => elgg_echo('newsletter:embed:format:icon:option:none'),
+	],
+	'name' => 'newsletter-embed-format-icon',
+	'id' => 'newsletter-embed-format-icon',
+	'class' => 'mlm',
+]);
 
-echo "<div>";
-echo "<label>" . elgg_echo("newsletter:embed:format:description:title") . "</label>";
-echo elgg_view("input/select", array(
-	"options_values" => array(
-		"full" => elgg_echo("newsletter:embed:format:description:option:full"),
-		"excerpt" => elgg_echo("newsletter:embed:format:description:option:excerpt"),
-		"no" => elgg_echo("newsletter:embed:format:description:option:no")
-	),
-	"name" => "newsletter-embed-format-description",
-	"id" => "newsletter-embed-format-description",
-	"class" => "mlm"
-));
-echo "</div>";
+$format_icon = elgg_format_element('div', [], $format_icon);
 
-echo "<div>";
+$result = elgg_format_element('fieldset', [], $format_description . $format_icon);
 
-echo "<label>" . elgg_echo("newsletter:embed:format:icon:title") . "</label>";
-echo elgg_view("input/select", array(
-	"options_values" => array(
-		"left" => elgg_echo("newsletter:embed:format:icon:option:left"),
-		"right" => elgg_echo("newsletter:embed:format:icon:option:right"),
-		"none" => elgg_echo("newsletter:embed:format:icon:option:none")
-	),
-	"name" => "newsletter-embed-format-icon",
-	"id" => "newsletter-embed-format-icon",
-	"class" => "mlm"
-));
-		
-echo "</div>";
+$result .= elgg_view('input/button', [
+	'class' => 'elgg-button-submit mvl',
+	'value' => elgg_echo('newsletter:embed:format:add_to_newsletter'),
+	'onclick' => 'elgg.newsletter.embed_format_submit()',
+]);
 
-echo "</fieldset>";
+$preview_title = elgg_echo('newsletter:embed:format:preview:title');
+$preview_content = elgg_format_element('div', ['id' => 'newsletter-embed-format-preview']);
 
-echo elgg_view("input/button", array(
-	"class" => "elgg-button-submit mvl",
-	"value" => elgg_echo("newsletter:embed:format:add_to_newsletter"),
-	"onclick" => "elgg.newsletter.embed_format_submit()"
-));
+$result .= elgg_view_module('info', $preview_title, $preview_content);
 
-$preview_title = elgg_echo("newsletter:embed:format:preview:title");
-$preview_content = "<div id='newsletter-embed-format-preview'></div>";
-
-echo elgg_view_module("info", $preview_title, $preview_content);
-
-echo "</div>";
+echo elgg_format_element('div', ['class' => 'hidden', 'id' => 'newsletter-embed-format'], $result);

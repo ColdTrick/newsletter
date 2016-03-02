@@ -308,6 +308,4 @@ To view the newsletter click here:
 	'newsletter:action:unsubscribe:error:entity' => "An error occured while unsubscribing you from the %s newsletter, please try again",
 	'newsletter:action:unsubscribe:success:all' => "You've been unsubscribed from all newsletters",
 	'newsletter:action:unsubscribe:success:entity' => "You've been unsubscribed from the %s newsletter",
-	
-	'' => "",
 );

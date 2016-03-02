@@ -5,5 +5,5 @@
  */
 
 // unregister the class handler of the Newsletter
-update_subtype("object", Newsletter::SUBTYPE);
-update_subtype("object", NewsletterSubscription::SUBTYPE);
+update_subtype('object', Newsletter::SUBTYPE);
+update_subtype('object', NewsletterSubscription::SUBTYPE);
