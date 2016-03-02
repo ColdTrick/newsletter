@@ -9,12 +9,13 @@
 		"source": "https://github.com/ColdTrick/newsletter",
 		"issues": "https://github.com/ColdTrick/newsletter/issues"
 	},
-	"autoload": {
-		"classmap": ["classes/"]
-	},
 	"require": {
 		"php": ">=5.2.4",
 		"ext-json": "*",
 		"composer/installers": "^1.0.8"
+	},
+	"require-dev": {
+		"coldtrick/sniffs": "dev-master",
+		"coldtrick/releases": "dev-master"
 	}
 }
