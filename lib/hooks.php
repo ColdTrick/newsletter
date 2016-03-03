@@ -349,28 +349,6 @@ function newsletter_register_entity_menu_handler($hook, $type, $returnvalue, $pa
 }
 
 /**
- * Handles newsletter icon urls
- *
- * @param string $hook        name of the hook
- * @param string $type        type of the hook
- * @param array  $returnvalue Default menu items
- * @param array  $params      params for the hook
- *
- * @return string url
- */
-function newsletter_icon_hook($hook, $type, $returnvalue, $params) {
-	if (!empty($params) && is_array($params)) {
-		$entity = $params["entity"];
-			
-		if (elgg_instanceof($entity, "object", "newsletter")) {
-			$url = elgg_get_site_url() . "mod/newsletter/_graphics/newsletter-icon.png";
-			
-			return $url;
-		}
-	}
-}
-
-/**
  * Add a menu item in the owner block menu of a group
  *
  * @param string $hook        name of the hook
