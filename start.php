@@ -6,9 +6,6 @@ define('NEWSLETTER_TEMPLATE', 'newsletter_template');
 
 // load library files
 require_once(dirname(__FILE__) . '/lib/functions.php');
-require_once(dirname(__FILE__) . '/lib/events.php');
-require_once(dirname(__FILE__) . '/lib/hooks.php');
-require_once(dirname(__FILE__) . '/lib/page_handlers.php');
 
 // register default Elgg events
 elgg_register_event_handler('init', 'system', 'newsletter_init');
@@ -22,13 +19,13 @@ elgg_register_event_handler('pagesetup', 'system', 'newsletter_pagesetup');
 function newsletter_init() {
 	
 	// register page handler
-	elgg_register_page_handler('newsletter', 'newsletter_page_handler');
+	elgg_register_page_handler('newsletter', '\ColdTrick\Newsletter\PageHandler::newsletter');
 	
 	// Register entity_type for search
 	elgg_register_entity_type('object', 'newsletter');
 	
 	// CSS & JS
-	elgg_extend_view('css/elgg', 'css/newsletter/site');
+	elgg_extend_view('css/elgg', 'css/newsletter.css');
 	
 	elgg_register_simplecache_view('js/newsletter/embed.js');
 	
@@ -42,33 +39,32 @@ function newsletter_init() {
 	}
 	
 	// widget
-	elgg_register_widget_type('newsletter_subscribe', elgg_echo('newsletter:sidebar:subscribe:title'), elgg_echo('newsletter:widget:subscribe:description'), array('index','groups'));
+	elgg_register_widget_type('newsletter_subscribe', elgg_echo('newsletter:sidebar:subscribe:title'), elgg_echo('newsletter:widget:subscribe:description'), ['index','groups']);
 	
 	// register plugin hooks
-	elgg_register_plugin_hook_handler('cron', 'hourly', 'newsletter_cron_handler');
-	elgg_register_plugin_hook_handler('access:collections:write', 'all', 'newsletter_write_access_handler', 600); // needs to be after groups
+	elgg_register_plugin_hook_handler('cron', 'hourly', '\ColdTrick\Newsletter\Cron::sendNewsletters');
+	elgg_register_plugin_hook_handler('access:collections:write', 'all', '\ColdTrick\Newsletter\Access::writeAccessCollections', 600); // needs to be after groups
 	
-	elgg_register_plugin_hook_handler('register', 'menu:page', 'newsletter_register_page_menu_handler');
-	elgg_register_plugin_hook_handler('register', 'menu:newsletter_steps', 'newsletter_register_newsletter_steps_menu_handler');
-	elgg_register_plugin_hook_handler('register', 'menu:entity', 'newsletter_register_entity_menu_handler');
-	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'newsletter_register_owner_block_menu_handler');
-	elgg_register_plugin_hook_handler('register', 'menu:filter', 'newsletter_register_filter_menu_handler');
-	elgg_register_plugin_hook_handler('register', 'menu:longtext', 'newsletter_register_longtext_menu_handler');
-	elgg_register_plugin_hook_handler('register', 'menu:newsletter_buttons', 'newsletter_register_buttons_menu_handler');
-	elgg_register_plugin_hook_handler('register', 'menu:longtext', 'newsletter_register_longtext_menu_handler');
+	elgg_register_plugin_hook_handler('register', 'menu:page', '\ColdTrick\Newsletter\Menus::pageRegister');
+	elgg_register_plugin_hook_handler('register', 'menu:newsletter_steps', '\ColdTrick\Newsletter\Menus::newsletterSteps');
+	elgg_register_plugin_hook_handler('register', 'menu:entity', '\ColdTrick\Newsletter\Menus::entityRegister');
+	elgg_register_plugin_hook_handler('register', 'menu:owner_block', '\ColdTrick\Newsletter\Menus::ownerBlockRegister');
+	elgg_register_plugin_hook_handler('register', 'menu:filter', '\ColdTrick\Newsletter\Menus::filterRegister');
+	elgg_register_plugin_hook_handler('register', 'menu:newsletter_buttons', '\ColdTrick\Newsletter\Menus::newsletterButtonsRegister');
+	elgg_register_plugin_hook_handler('register', 'menu:longtext', '\ColdTrick\Newsletter\Menus::longtextRegister');
 	
-	elgg_register_plugin_hook_handler('usersettings:save', 'user', 'newsletter_usersettings_save_handler');
-	elgg_register_plugin_hook_handler('register', 'user', 'newsletter_register_user_handler');
+	elgg_register_plugin_hook_handler('usersettings:save', 'user', '\ColdTrick\Newsletter\User::convertEmailSubscriptionToUserSetting');
+	elgg_register_plugin_hook_handler('register', 'user', '\ColdTrick\Newsletter\User::subscribeToSiteNewsletter');
 	
-	elgg_register_plugin_hook_handler('widget_url', 'widget_manager', 'newsletter_widget_url_handler');
-	elgg_register_plugin_hook_handler('notification_type_subtype', 'tag_tools', 'newsletter_tag_tools_notifications');
+	elgg_register_plugin_hook_handler('widget_url', 'widget_manager', '\ColdTrick\Newsletter\Widgets::widgetURL');
+	elgg_register_plugin_hook_handler('notification_type_subtype', 'tag_tools', '\ColdTrick\Newsletter\TagTools::notificationTypeSubtype');
 	
 	// extend public pages
-	elgg_register_plugin_hook_handler('public_pages', 'walled_garden', 'newsletter_public_pages');
+	elgg_register_plugin_hook_handler('public_pages', 'walled_garden', '\ColdTrick\Newsletter\Site::publicPages');
 	
 	// register event handlers
 	elgg_register_event_handler('upgrade', 'system', '\ColdTrick\Newsletter\Upgrade::urlPostfix');
-	elgg_register_event_handler('create', 'member_of_site', 'newsletter_join_site_event_handler');
+	elgg_register_event_handler('create', 'member_of_site', '\ColdTrick\Newsletter\Site::join');
 	
 	// register actions
 	elgg_register_action('newsletter/edit', dirname(__FILE__) . '/actions/edit.php');
@@ -90,14 +86,12 @@ function newsletter_init() {
 	elgg_register_action('newsletter/template/delete', dirname(__FILE__) . '/actions/template/delete.php');
 }
 
-
 /**
  * Page setup for newsletter
  *
  * @return void
  */
 function newsletter_pagesetup() {
-	// register site menu
 	elgg_register_menu_item('site', [
 		'name' => 'newsletter',
 		'text' => elgg_echo('newsletter:menu:site'),

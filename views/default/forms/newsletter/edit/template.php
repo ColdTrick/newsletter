@@ -1,90 +1,95 @@
 <?php
 
-$entity = $vars["entity"];
+$entity = elgg_extract('entity', $vars);
 
 // get the available tempaltes for this container
 $template_options = newsletter_get_available_templates($entity->getContainerGUID());
 
 // select the correct template
-$template = "default";
+$template = 'default';
 if ($entity->template) {
 	$template = $entity->template;
 }
 
 // make sure we can select a template
 if (!array_key_exists($template, $template_options)) {
-	$template = "default";
+	$template = 'default';
 }
 
-echo elgg_view("output/text", array("value" => elgg_echo("newsletter:edit:template:description")));
+echo elgg_view('output/text', ['value' => elgg_echo('newsletter:edit:template:description')]);
 
-echo "<div class='mtm'><label for='newsletter-edit-template-select'>" . elgg_echo("newsletter:edit:template:select") . "</label><br />";
-echo "<ul id='newsletter-edit-template-select' class='elgg-input-radios elgg-vertical'>";
+$selector = elgg_format_element('div', [], elgg_format_element('label', ['for' => 'newsletter-edit-template-select'], elgg_echo('newsletter:edit:template:select')));
 
-$confirm_options = array(
-	"confirm" => elgg_echo("newsletter:edit:template:copy_to_custom:confirm"),
-	"text" => elgg_echo("newsletter:edit:template:copy_to_custom"),
-	"class" => "mlm hidden"
-);
-$delete_options = array(
-	"confirm" => elgg_echo("deleteconfirm"),
-	"text" => elgg_view_icon("delete-alt"),
-	"class" => "mlm hidden"
-);
+$confirm_options = [
+	'confirm' => elgg_echo('newsletter:edit:template:copy_to_custom:confirm'),
+	'text' => elgg_echo('newsletter:edit:template:copy_to_custom'),
+	'class' => 'mlm hidden',
+];
+$delete_options = [
+	'confirm' => elgg_echo('deleteconfirm'),
+	'text' => elgg_view_icon('delete-alt'),
+	'class' => 'mlm hidden',
+];
 
+$list_items = '';
 foreach ($template_options as $name => $label) {
-	$checked = "";
-	if ($name == $template) {
-		$checked = " checked='checked'";
-	}
+
+	$input = elgg_format_element('input', [
+		'id' => 'newsletter-edit-template-select',
+		'class' => 'elgg-input-radio',
+		'type' => 'radio',
+		'value' => $name,
+		'checked' => ($name == $template),
+		'name' => 'template',
+	]);
+	$template_selector = elgg_format_element('label', [], $input . $label);
 	
-	echo "<li>";
-	echo "<label>";
-	echo "<input id='newsletter-edit-template-select' class='elgg-input-radio' type='radio' value='$name'$checked name='template' />";
-	echo $label;
-	echo "</label>";
-	
-	if ($name !== "custom") {
-		$confirm_options["href"] = "action/newsletter/edit/template_to_custom?guid=" . $entity->guid . "&template=" . $name;
-		echo elgg_view("output/url", $confirm_options);
+	if ($name !== 'custom') {
+		$confirm_options['href'] = 'action/newsletter/edit/template_to_custom?guid=' . $entity->guid . '&template=' . $name;
+		$template_selector .= elgg_view('output/url', $confirm_options);
 		
 		if (is_numeric($name)) {
-			$delete_options["href"] = "action/newsletter/template/delete?guid=" . $name;
-			echo elgg_view("output/url", $delete_options);
+			$delete_options['href'] = 'action/newsletter/template/delete?guid=' . $name;
+			$template_selector .= elgg_view('output/url', $delete_options);
 		}
 	}
-	
-	echo "</li>";
+	$list_items .= elgg_format_element('li', [], $template_selector);
 }
-echo "</ul>";
+$selector .= elgg_format_element('ul', ['id' => 'newsletter-edit-template-select', 'class' => 'elgg-input-radios elgg-vertical'], $list_items);
 
-echo "</div>";
+echo elgg_format_element('div', ['class' => 'mtm'], $selector);
 
-$class = "hidden";
-if ($entity->template == "custom") {
-	$class = "";
+$custom_template_class = ['newsletter-edit-template-custom'];
+if ($entity->template !== 'custom') {
+	$custom_template_class[] = 'hidden';
 }
 
-echo "<div class='newsletter-edit-template-custom " . $class . "'>";
+$custom_template = '';
 
-echo "<div><label>" . elgg_echo("newsletter:edit:template:html") . "<br />";
-echo elgg_view("input/plaintext", array("name" => "html", "value" => $entity->html));
-echo "</label></div>";
+$custom_template_html = elgg_format_element('label', ['for' => 'html'], elgg_echo('newsletter:edit:template:html'));
+$custom_template_html .= elgg_view('input/plaintext', ['name' => 'html', 'value' => $entity->html]);
 
-echo elgg_view("newsletter/placeholders");
+$custom_template .= elgg_format_element('div', [], $custom_template_html);
 
-echo "<div class='mtm'><label>" . elgg_echo("newsletter:edit:template:css") . "<br />";
-echo elgg_view("input/plaintext", array("name" => "css", "value" => $entity->css));
-echo "</label></div>";
+$custom_template .= elgg_view('newsletter/placeholders');
 
-echo "<div><label>" . elgg_echo("newsletter:edit:template:name") . "<br />";
-echo elgg_view("input/text", array("name" => "name"));
-echo "</label></div>";
+$custom_template_css = elgg_format_element('label', ['for' => 'css'], elgg_echo('newsletter:edit:template:css'));
+$custom_template_css .= elgg_view('input/plaintext', ['name' => 'css', 'value' => $entity->css]);
 
-echo "</div>";
+$custom_template .= elgg_format_element('div', ['class' => 'mtm'], $custom_template_css);
 
-echo "<div class='elgg-foot'>";
-echo elgg_view("input/hidden", array("name" => "guid", "value" => $entity->getGUID()));
-echo elgg_view("input/button", array("value" => elgg_echo("newsletter:edit:template:save_as"), "id" => "newsletter-edit-template-save-as", "class" => "elgg-button-action float-alt " . $class));
-echo elgg_view("input/submit", array("value" => elgg_echo("save")));
-echo "</div>";
+$custom_template_name = elgg_format_element('label', ['for' => 'name'], elgg_echo('newsletter:edit:template:name'));
+$custom_template_name .= elgg_view('input/text', ['name' => 'name']);
+
+$custom_template .= elgg_format_element('div', [], $custom_template_name);
+
+echo elgg_format_element('div', ['class' => $custom_template_class], $custom_template);
+
+$foot = elgg_view('input/hidden', ['name' => 'guid', 'value' => $entity->getGUID()]);
+$foot .= elgg_view('input/button', [
+	'value' => elgg_echo('newsletter:edit:template:save_as'),
+	'id' => 'newsletter-edit-template-save-as',
+	'class' => 'elgg-button-action float-alt ' . $class,
+]);
+$foot .= elgg_view('input/submit', ['value' => elgg_echo('save')]);
+echo elgg_format_element('div', ['class' => 'elgg-foot'], $foot);

@@ -1,40 +1,40 @@
 <?php
 
-$entity = elgg_extract("entity", $vars);
+$entity = elgg_extract('entity', $vars);
 $site = elgg_get_site_entity();
 
-$title = elgg_echo("newsletter:subscriptions:site:title");
+$header_row = elgg_format_element('th', [], '&nbsp;');
+$header_row .= elgg_format_element('th', ['class' => 'newsletter-settings-small'], elgg_echo('on'));
+$header_row .= elgg_format_element('th', ['class' => 'newsletter-settings-small'], elgg_echo('off'));
+$rows = elgg_format_element('tr', [], $header_row);
 
-$content = elgg_view("output/longtext", array("value" => elgg_echo("newsletter:subscriptions:site:description"), "class" => "mtn mbs"));
+$has_subscription = newsletter_check_user_subscription($entity, $site);
 
-$content .= "<table class='elgg-table-alt'>";
-$content .= "<tr>";
-$content .= "<th>&nbsp;</th>";
-$content .= "<th class='newsletter-settings-small'>" . elgg_echo("on") . "</th>";
-$content .= "<th class='newsletter-settings-small'>" . elgg_echo("off") . "</th>";
-$content .= "</tr>";
+$row_data = elgg_format_element('td', [], $site->name);
+$row_data .= elgg_format_element('td', ['class' => 'newsletter-settings-small'], elgg_view('input/radio', [
+	'name' => "subscriptions[{$site->getGUID()}]",
+	'value' => '1',
+	'checked' => $has_subscription,
+]));
 
-$on = "";
-$off = "checked='checked'";
-if (newsletter_check_user_subscription($entity, $site)) {
-	$on = "checked='checked'";
-	$off = "";
-}
+$row_data .= elgg_format_element('td', ['class' => 'newsletter-settings-small'], elgg_view('input/radio', [
+	'name' => "subscriptions[{$site->getGUID()}]",
+	'value' => '0',
+	'checked' => !$has_subscription,
+]));
+$rows .= elgg_format_element('tr', [], $subscription_row_data);
 
-$content .= "<tr>";
-$content .= "<td>" . $site->name . "</td>";
-$content .= "<td class='newsletter-settings-small'><input type='radio' name='subscriptions[" . $site->getGUID() . "]' value='1' " . $on . " /></td>";
-$content .= "<td class='newsletter-settings-small'><input type='radio' name='subscriptions[" . $site->getGUID() . "]' value='0' " . $off . " /></td>";
-$content .= "</tr>";
-$content .= "</table>";
+$black_list_relationship = check_entity_relationship($entity->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID());
+$block_all = elgg_view('input/checkbox', [
+	'name' => 'block_all',
+	'value' => '1',
+	'id' => 'newsletter-subscription-block-all',
+	'checked' => !empty($black_list_relationship),
+]);
+$block_all .= elgg_format_element('label', ['for' => 'newsletter-subscription-block-all'], elgg_echo('newsletter:unsubscribe:all', [$site->name]));
 
-$content .= "<div class='mtm'>";
-$checked = array();
-if (check_entity_relationship($entity->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID())) {
-	$checked = array("checked" => "checked");
-}
-$content .= elgg_view("input/checkbox", array("name" => "block_all", "value" => "1", "id" => "newsletter-subscription-block-all") + $checked);
-$content .= "<label for='newsletter-subscription-block-all'>" . elgg_echo("newsletter:unsubscribe:all", array($site->name)) . "</label>";
-$content .= "</div>";
+$content = elgg_view('output/longtext', ['value' => elgg_echo('newsletter:subscriptions:site:description'), 'class' => 'mtn mbs']);
+$content .= elgg_format_element('table', ['class' => 'elgg-table-alt'], $rows);
+$content .= elgg_format_element('div', ['class' => 'mtm'], $block_all);
 
-echo elgg_view_module("info", $title, $content);
+echo elgg_view_module('info', elgg_echo('newsletter:subscriptions:site:title'), $content);

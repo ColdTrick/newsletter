@@ -1,11 +1,10 @@
 <?php
-
 /**
  * This file is called when activating the plugin
  *
  */
 
-// update the newsletter subtype to it's own class (when the plugin was active before
+// update the newsletter subtype to it's own class (when the plugin was actived before)
 if (!update_subtype('object', Newsletter::SUBTYPE, 'Newsletter')) {
 	// first time the plugin was activated
 	add_subtype('object', Newsletter::SUBTYPE, 'Newsletter');

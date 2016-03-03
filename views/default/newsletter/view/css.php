@@ -1,8 +1,9 @@
 <?php
 
-$template = $vars["entity"]->template;
+$entity = elgg_extract('entity', $vars);
+$template = $entity->template;
 if (empty($template)) {
-	$template = "default";
+	$template = 'default';
 }
 
 if (is_numeric($template)) {
@@ -13,20 +14,20 @@ if (is_numeric($template)) {
 		$css = $template_entity->css;
 	} else {
 		// something wrong, reset to default
-		$template = "default";
+		$template = 'default';
 	}
 }
 
 if (!isset($css)) {
-	if ($template == "custom") {
-		$css = $vars["entity"]->css;
+	if ($template == 'custom') {
+		$css = $entity->css;
 	} else {
-		if (!elgg_view_exists("newsletter/templates/" . $template . "/css")) {
+		if (!elgg_view_exists("newsletter/templates/{$template}/css")) {
 			// something wrong, reset to default
-			$template = "default";
+			$template = 'default';
 		}
 		
-		$css = elgg_view("newsletter/templates/" . $template . "/css");
+		$css = elgg_view("newsletter/templates/{$template}/css");
 	}
 }
 

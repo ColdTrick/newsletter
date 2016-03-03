@@ -1,18 +1,19 @@
 <?php
 
-$entity = $vars["entity"];
+$entity = elgg_extract('entity', $vars);
 
-$id = "newsletter-edit-content-" . $entity->getGUID();
+echo elgg_view('output/text', ['value' => elgg_echo('newsletter:edit:content:description')]);
 
-echo elgg_view("output/text", array("value" => elgg_echo("newsletter:edit:content:description")));
+$content_input = elgg_view('input/longtext', [
+	'name' => 'content',
+	'value' => $entity->content,
+	'id' => "newsletter-edit-content-{$entity->getGUID()}",
+	'class' => 'newsletter-input-plaintext',
+]);
+echo elgg_format_element('div', ['class' => 'mvm'], $content_input);
 
-echo "<div class='mvm'>";
-echo elgg_view("input/longtext", array("name" => "content", "value" => $entity->content, "id" => $id, "class" => "newsletter-input-plaintext"));
-echo "</div>";
+echo elgg_view('newsletter/placeholders');
 
-echo elgg_view("newsletter/placeholders");
-
-echo "<div class='elgg-foot mtm'>";
-echo elgg_view("input/hidden", array("name" => "guid", "value" => $entity->getGUID()));
-echo elgg_view("input/submit", array("value" => elgg_echo("save")));
-echo "</div>";
+$foot = elgg_view('input/hidden', ['name' => 'guid', 'value' => $entity->getGUID()]);
+$foot .= elgg_view('input/submit', ['value' => elgg_echo('save')]);
+echo elgg_format_element('div', ['class' => 'elgg-foot mtm'], $foot);

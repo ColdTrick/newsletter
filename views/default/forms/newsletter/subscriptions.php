@@ -1,134 +1,132 @@
 <?php
-
 /**
  * Manage the subsciptions of a specific user
  *
  * @uses	$vars['entity']	The user to manage the subscriptions of
  */
 
-$entity = elgg_extract("entity", $vars);
+$entity = elgg_extract('entity', $vars);
 
-$processed_subscriptions = array();
+$processed_subscriptions = [];
 
 // description
-echo elgg_view("output/longtext", array("value" => elgg_echo("newsletter:subscriptions:description"), "class" => "mtn"));
+echo elgg_view('output/longtext', ['value' => elgg_echo('newsletter:subscriptions:description'), 'class' => 'mtn']);
 
 // site subscription
 $site = elgg_get_site_entity();
 $processed_subscriptions[] = $site->getGUID();
 
-echo elgg_view("forms/newsletter/subscriptions/site", $vars);
+echo elgg_view('forms/newsletter/subscriptions/site', $vars);
 
 // are group newsletters allowed
 if (newsletter_is_group_enabled()) {
 	// my group subscriptions
-	$my_groups = $entity->getGroups(array("limit" => false));
+	$my_groups = $entity->getGroups(['limit' => false]);
 	
 	if (!empty($my_groups)) {
-		$title = elgg_echo("newsletter:subscriptions:groups:title");
 		
-		$content = elgg_view("output/longtext", array("value" => elgg_echo("newsletter:subscriptions:groups:description"), "class" => "mtn mbs"));
+		$header_row = elgg_format_element('th', [], '&nbsp;');
+		$header_row .= elgg_format_element('th', ['class' => 'newsletter-settings-small'], elgg_echo('on'));
+		$header_row .= elgg_format_element('th', ['class' => 'newsletter-settings-small'], elgg_echo('off'));
+		$rows = elgg_format_element('tr', [], $header_row);
 		
-		$content .= "<table class='elgg-table-alt'>";
-		$content .= "<tr>";
-		$content .= "<th>&nbsp;</th>";
-		$content .= "<th class='newsletter-settings-small'>" . elgg_echo("on") . "</th>";
-		$content .= "<th class='newsletter-settings-small'>" . elgg_echo("off") . "</th>";
-		$content .= "</tr>";
-		
-		$group_content = array();
-		$group_order = array();
+		$group_content = [];
+		$group_order = [];
 		
 		foreach ($my_groups as $group) {
 			$processed_subscriptions[] = $group->getGUID();
 			
 			// check if newsletter is enabled for this group
-			if (newsletter_is_group_enabled($group)) {
-				$group_order[$group->getGUID()] = $group->name;
-				
-				$on = "";
-				$off = "checked='checked'";
-				if (newsletter_check_user_subscription($entity, $group)) {
-					$on = "checked='checked'";
-					$off = "";
-				}
-				
-				$group_content[$group->getGUID()] = "<tr>";
-				$group_content[$group->getGUID()] .= "<td>" . $group->name . "</td>";
-				$group_content[$group->getGUID()] .= "<td class='newsletter-settings-small'><input type='radio' name='subscriptions[" . $group->getGUID() . "]' value='1' " . $on . " /></td>";
-				$group_content[$group->getGUID()] .= "<td class='newsletter-settings-small'><input type='radio' name='subscriptions[" . $group->getGUID() . "]' value='0' " . $off . " /></td>";
-				$group_content[$group->getGUID()] .= "</tr>";
+			if (!newsletter_is_group_enabled($group)) {
+				continue;
 			}
+			
+			$group_order[$group->getGUID()] = $group->name;
+			
+			$has_subscription = newsletter_check_user_subscription($entity, $group);
+			
+			$group_content_row_data = elgg_format_element('td', [], $group->name);
+			$group_content_row_data .= elgg_format_element('td', ['class' => 'newsletter-settings-small'], elgg_view('input/radio', [
+				'name' => "subscriptions[{$group->getGUID()}]",
+				'value' => '1',
+				'checked' => $has_subscription,
+			]));
+			
+			$group_content_row_data .= elgg_format_element('td', ['class' => 'newsletter-settings-small'], elgg_view('input/radio', [
+				'name' => "subscriptions[{$group->getGUID()}]",
+				'value' => '0',
+				'checked' => !$has_subscription,
+			]));
+			
+			$group_content[$group->getGUID()] = elgg_format_element('tr', [], $group_content_row_data);
 		}
 		
 		natcasesort($group_order);
 		foreach ($group_order as $guid => $dummy) {
-			$content .= $group_content[$guid];
+			$rows .= $group_content[$guid];
 		}
 		
-		$content .= "</table>";
+		$content = elgg_view('output/longtext', ['value' => elgg_echo('newsletter:subscriptions:groups:description'), 'class' => 'mtn mbs']);
+		$content .= elgg_format_element('table', ['class' => 'elgg-table-alt'], $rows);
 		
-		echo elgg_view_module("info", $title, $content);
+		echo elgg_view_module('info', elgg_echo('newsletter:subscriptions:groups:title'), $content);
 	}
 }
 
 // other group subscriptions
-$options = array(
-	"types" => array("site", "group"),
-	"relationship" => NewsletterSubscription::SUBSCRIPTION,
-	"relationship_guid" => $entity->getGUID(),
-	"limit" => false,
-	"wheres" => array("(e.guid NOT IN (" . implode(",", $processed_subscriptions) . "))")
-);
-
-$subscriptions = elgg_get_entities_from_relationship($options);
+$subscriptions = elgg_get_entities_from_relationship([
+	'types' => ['site', 'group'],
+	'relationship' => NewsletterSubscription::SUBSCRIPTION,
+	'relationship_guid' => $entity->getGUID(),
+	'limit' => false,
+	'wheres' => ['(e.guid NOT IN (' . implode(',', $processed_subscriptions) . '))'],
+]);
 
 if (!empty($subscriptions)) {
-	$title = elgg_echo("newsletter:subscriptions:other:title");
 	
-	$content = elgg_view("output/longtext", array("value" => elgg_echo("newsletter:subscriptions:other:description"), "class" => "mtn mbs"));
+	$header_row = elgg_format_element('th', [], '&nbsp;');
+	$header_row .= elgg_format_element('th', ['class' => 'newsletter-settings-small'], elgg_echo('on'));
+	$header_row .= elgg_format_element('th', ['class' => 'newsletter-settings-small'], elgg_echo('off'));
+	$rows = elgg_format_element('tr', [], $header_row);
 	
-	$content .= "<table class='elgg-table-alt'>";
-	$content .= "<tr>";
-	$content .= "<th>&nbsp;</th>";
-	$content .= "<th class='newsletter-settings-small'>" . elgg_echo("on") . "</th>";
-	$content .= "<th class='newsletter-settings-small'>" . elgg_echo("off") . "</th>";
-	$content .= "</tr>";
-	
-	$subscriptions_order = array();
-	$subscriptions_content = array();
+	$subscriptions_order = [];
+	$subscriptions_content = [];
 	
 	foreach ($subscriptions as $subscription) {
 		// check if group and enabled or site
-		if (elgg_instanceof($subscription, "site") || (elgg_instanceof($subscription, "group") && newsletter_is_group_enabled($subscription))) {
+		if (elgg_instanceof($subscription, 'site') || (elgg_instanceof($subscription, 'group') && newsletter_is_group_enabled($subscription))) {
 			$subscriptions_order[$subscription->getGUID()] = $subscription->name;
-			
-			$on = "";
-			$off = "checked='checked'";
-			if (newsletter_check_user_subscription($entity, $subscription)) {
-				$on = "checked='checked'";
-				$off = "";
-			}
+						
+			$has_subscription = newsletter_check_user_subscription($entity, $subscription);
+
+			$subscription_row_data = elgg_format_element('td', [], $subscription->name);
+			$subscription_row_data .= elgg_format_element('td', ['class' => 'newsletter-settings-small'], elgg_view('input/radio', [
+				'name' => "subscriptions[{$subscription->getGUID()}]",
+				'value' => '1',
+				'checked' => $has_subscription,
+			]));
 				
-			$subscriptions_content[$subscription->getGUID()] = "<tr>";
-			$subscriptions_content[$subscription->getGUID()] .= "<td>" . $subscription->name . "</td>";
-			$subscriptions_content[$subscription->getGUID()] .= "<td class='newsletter-settings-small'><input type='radio' name='subscriptions[" . $subscription->getGUID() . "]' value='1' " . $on . " /></td>";
-			$subscriptions_content[$subscription->getGUID()] .= "<td class='newsletter-settings-small'><input type='radio' name='subscriptions[" . $subscription->getGUID() . "]' value='0' " . $off . " /></td>";
-			$subscriptions_content[$subscription->getGUID()] .= "</tr>";
+			$subscription_row_data .= elgg_format_element('td', ['class' => 'newsletter-settings-small'], elgg_view('input/radio', [
+				'name' => "subscriptions[{$subscription->getGUID()}]",
+				'value' => '0',
+				'checked' => !$has_subscription,
+			]));
+			
+			$subscriptions_content[$subscription->getGUID()] = elgg_format_element('tr', [], $subscription_row_data);
 		}
 	}
 	
 	natcasesort($subscriptions_order);
 	foreach ($subscriptions_order as $guid => $dummy) {
-		$content .= $subscriptions_content[$guid];
+		$rows .= $subscriptions_content[$guid];
 	}
 	
-	$content .= "</table>";
+	$content = elgg_view('output/longtext', ['value' => elgg_echo('newsletter:subscriptions:other:description'), 'class' => 'mtn mbs']);
+	$content .= elgg_format_element('table', ['class' => 'elgg-table-alt'], $rows);
 	
-	echo elgg_view_module("info", $title, $content);
+	echo elgg_view_module('info', elgg_echo('newsletter:subscriptions:other:title'), $content);
 }
 
-echo "<div class='elgg-foot'>";
-echo elgg_view("input/hidden", array("name" => "user_guid", "value" => $entity->getGUID()));
-echo elgg_view("input/submit", array("value" => elgg_echo("save")));
-echo "</div>";
+$foot = elgg_view('input/hidden', ['name' => 'user_guid', 'value' => $entity->getGUID()]);
+$foot .= elgg_view('input/submit', ['value' => elgg_echo('save')]);
+echo elgg_format_element('div', ['class' => 'elgg-foot'], $foot);
