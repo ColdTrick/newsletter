@@ -25,4 +25,5 @@ echo elgg_view_menu('newsletter_buttons', [
 
 echo elgg_view('page/elements/messages', ['object' => $messages]);
 
+echo elgg_format_element('style', ['text/css'], elgg_view('css/newsletter/buttons.css'));
 elgg_load_css('newsletter_buttons');
