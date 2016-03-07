@@ -3,7 +3,7 @@
 	font-weight: normal;
 }
 
-#newsletter-edit-template-select li:hover .elgg-requires-confirmation {
+.elgg-form-newsletter-edit-template .elgg-discover:hover .elgg-discoverable {
 	display: inline;
 }
 

@@ -23,12 +23,12 @@ $selector = elgg_format_element('div', [], elgg_format_element('label', ['for' =
 $confirm_options = [
 	'confirm' => elgg_echo('newsletter:edit:template:copy_to_custom:confirm'),
 	'text' => elgg_echo('newsletter:edit:template:copy_to_custom'),
-	'class' => 'mlm hidden',
+	'class' => 'mlm hidden elgg-discoverable',
 ];
 $delete_options = [
 	'confirm' => elgg_echo('deleteconfirm'),
 	'text' => elgg_view_icon('delete-alt'),
-	'class' => 'mlm hidden',
+	'class' => 'mlm hidden elgg-discoverable',
 ];
 
 $list_items = '';
@@ -53,7 +53,7 @@ foreach ($template_options as $name => $label) {
 			$template_selector .= elgg_view('output/url', $delete_options);
 		}
 	}
-	$list_items .= elgg_format_element('li', [], $template_selector);
+	$list_items .= elgg_format_element('li', ['class' => 'elgg-discover'], $template_selector);
 }
 $selector .= elgg_format_element('ul', ['id' => 'newsletter-edit-template-select', 'class' => 'elgg-input-radios elgg-vertical'], $list_items);
 
