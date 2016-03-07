@@ -38,7 +38,13 @@ if (!empty($secret) && !empty($entity_guid)) {
 	ini_set('memory_limit', $memory_limit);
 	
 	// start the Elgg engine
-	require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/engine/start.php');
+	$autoload_root = dirname(dirname(dirname(__DIR__)));
+	if (!is_file("$autoload_root/vendor/autoload.php")) {
+		// installation through composer
+		$autoload_root = dirname(dirname(__DIR__));
+	}
+	require_once "$autoload_root/vendor/autoload.php";
+	\Elgg\Application::start();
 	
 	// vaildate the supplied secret
 	if (newsletter_validate_commandline_secret($entity_guid, $secret)) {
