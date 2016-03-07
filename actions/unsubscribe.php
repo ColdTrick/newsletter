@@ -13,7 +13,7 @@ $entity_guid = (int) get_input('entity_guid');
 $forward_url = REFERER;
 
 if (empty($entity_guid) || empty($recipient)) {
-	register_error(elgg_echo('InvalidParameterException:MissingParameter'));
+	register_error(elgg_echo('error:missing_data'));
 	forward(REFERER);
 }
 

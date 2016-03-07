@@ -30,11 +30,11 @@ if (!empty($guid)) {
 	
 	if (!empty($entity) && $entity->canEdit()) {
 		if (!elgg_instanceof($entity, 'object', Newsletter::SUBTYPE)) {
-			register_error(elgg_echo('ClassException:ClassnameNotClass', [$guid, elgg_echo('item:object:' . Newsletter::SUBTYPE)]));
+			register_error(elgg_echo('error:missing_data'));
 			forward(REFERER);
 		}
 	} else {
-		register_error(elgg_echo('InvalidParameterException:NoEntityFound'));
+		register_error(elgg_echo('actionunauthorized'));
 		forward(REFERER);
 	}
 } else {
@@ -48,13 +48,13 @@ if (!empty($guid)) {
 	$new_entity = true;
 	
 	if (!$entity->save()) {
-		register_error(elgg_echo('IOException:UnableToSaveNew', [elgg_echo('item:object:' . Newsletter::SUBTYPE)]));
+		register_error(elgg_echo('save:fail'));
 		forward(REFERER);
 	}
 }
 
 if (empty($entity)) {
-	register_error(elgg_echo('InvalidParameterException:NoEntityFound'));
+	register_error(elgg_echo('actionunauthorized'));
 	forward(REFERER);
 }
 

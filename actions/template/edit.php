@@ -9,7 +9,7 @@ $css = strip_tags(get_input('css'));
 $name = get_input('name');
 
 if (empty($guid) && empty($newsletter_guid)) {
-	register_error(elgg_echo('InvalidParameterException:MissingParameter'));
+	register_error(elgg_echo('error:missing_data'));
 	forward(REFERER);
 }
 
@@ -19,11 +19,11 @@ if (!empty($guid)) {
 	if (!empty($template) && $template->canEdit()) {
 		if (!elgg_instanceof($template, 'object', NEWSLETTER_TEMPLATE)) {
 			unset($template);
-			register_error(elgg_echo('ClassException:ClassnameNotClass', [$guid, elgg_echo('item:object:' . NEWSLETTER_TEMPLATE)]));
+			register_error(elgg_echo('error:missing_data'));
 		}
 	} else {
 		unset($template);
-		register_error(elgg_echo('InvalidParameterException:NoEntityFound'));
+		register_error(elgg_echo('actionunauthorized'));
 	}
 } elseif (!empty($newsletter_guid)) {
 	$newsletter = get_entity($newsletter_guid);
@@ -40,13 +40,13 @@ if (!empty($guid)) {
 				$newsletter->template = $template->getGUID();
 			} else {
 				unset($template);
-				register_error(elgg_echo('IOException:UnableToSaveNew', [elgg_echo('item:object:' . NEWSLETTER_TEMPLATE)]));
+				register_error(elgg_echo('save:fail'));
 			}
 		} else {
-			register_error(elgg_echo('ClassException:ClassnameNotClass', [$guid, elgg_echo('item:object:' . Newsletter::SUBTYPE)]));
+			register_error(elgg_echo('error:missing_data'));
 		}
 	} else {
-		register_error(elgg_echo('InvalidParameterException:NoEntityFound'));
+		register_error(elgg_echo('actionunauthorized'));
 	}
 }
 

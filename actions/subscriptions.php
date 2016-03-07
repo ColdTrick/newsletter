@@ -8,13 +8,13 @@ $subscriptions = get_input('subscriptions');
 $block_all = (int) get_input('block_all');
 
 if (empty($user_guid) || empty($subscriptions) || !is_array($subscriptions)) {
-	register_error(elgg_echo('InvalidParameterException:MissingParameter'));
+	register_error(elgg_echo('error:missing_data'));
 	forward(REFERER);
 }
 	
 $user = get_user($user_guid);
 if (empty($user) || !$user->canEdit()) {
-	register_error(elgg_echo('InvalidParameterException:NoEntityFound'));
+	register_error(elgg_echo('actionunauthorized'));
 	forward(REFERER);
 }
 

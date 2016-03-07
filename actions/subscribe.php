@@ -30,7 +30,7 @@ if (!empty($guid) && (!empty($user_guid) || !empty($email))) {
 					}
 				}
 			} else {
-				register_error(elgg_echo('user:resetpassword:unknown_user'));
+				register_error(elgg_echo('error:missing_data'));
 			}
 		} else {
 			if (newsletter_is_email_address($email)) {
@@ -45,10 +45,10 @@ if (!empty($guid) && (!empty($user_guid) || !empty($email))) {
 			}
 		}
 	} else {
-		register_error(elgg_echo('InvalidParameterException:NoEntityFound'));
+		register_error(elgg_echo('actionunauthorized'));
 	}
 } else {
-	register_error(elgg_echo('InvalidParameterException:MissingParameter'));
+	register_error(elgg_echo('error:missing_data'));
 }
 
 forward(REFERER);

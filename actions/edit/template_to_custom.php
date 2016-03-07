@@ -3,18 +3,15 @@ $guid = (int) get_input('guid');
 $template = get_input('template');
 
 if (empty($guid) || empty($template)) {
-	register_error(elgg_echo('InvalidParameterException:MissingParameter'));
+	register_error(elgg_echo('error:missing_data'));
 	forward(REFERER);
 }
 
+elgg_entity_gatekeeper($guid, 'object', Newsletter::SUBTYPE);
 $entity = get_entity($guid);
-if (empty($entity) || !$entity->canEdit()) {
-	register_error(elgg_echo('InvalidParameterException:NoEntityFound'));
-	forward(REFERER);
-}
 
-if (!elgg_instanceof($entity, 'object', Newsletter::SUBTYPE)) {
-	register_error(elgg_echo('ClassException:ClassnameNotClass', [$guid, elgg_echo('item:object:' . Newsletter::SUBTYPE)]));
+if (!$entity->canEdit()) {
+	register_error(elgg_echo('actionunauthorized'));
 	forward(REFERER);
 }
 	

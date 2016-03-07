@@ -12,7 +12,7 @@ if (empty($user) || !elgg_instanceof($user, 'user')) {
 }
 
 if (!$user->canEdit()) {
-	register_error(elgg_echo('InvalidParameterException:NoEntityFound'));
+	register_error(elgg_echo('actionunauthorized'));
 	forward(REFERER);
 }
 

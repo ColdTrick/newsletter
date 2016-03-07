@@ -10,7 +10,7 @@ $code = get_input('code');
 
 // validate input
 if (empty($guid)) {
-	register_error(elgg_echo('InvalidParameterException:MissingParameter'));
+	register_error(elgg_echo('error:missing_data'));
 	forward(REFERER);
 }
 
@@ -19,7 +19,7 @@ $entity = get_entity($guid);
 if (empty($entity)) {
 	// does the entity exist
 	if (!elgg_entity_exists($guid)) {
-		register_error(elgg_echo('InvalidParameterException:NoEntityFound'));
+		register_error(elgg_echo('actionunauthorized'));
 		forward(REFERER);
 	}
 	
@@ -36,7 +36,7 @@ if (empty($entity)) {
 
 // validate entity
 if (empty($entity) || !elgg_instanceof($entity, 'object', Newsletter::SUBTYPE)) {
-	register_error(elgg_echo('ClassException:ClassnameNotClass', [$guid, elgg_echo('item:object:' . Newsletter::SUBTYPE)]));
+	register_error(elgg_echo('error:missing_data'));
 	
 	// restore access
 	elgg_set_ignore_access($ia);
