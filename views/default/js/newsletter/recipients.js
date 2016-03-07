@@ -58,21 +58,21 @@ elgg.newsletter_recipients.init = function() {
 		}
 	});
 
-	$("#newsletter-recipients-wrapper .elgg-icon-delete-alt").live("click", function() {
-		var $container = $(this).parents(".elgg-module-newsletter-recipients");
+	$(document).on('click', '#newsletter-recipients-wrapper .elgg-icon-delete-alt', function() {
+		var $container = $(this).parents('.elgg-module-newsletter-recipients');
 		
-		$(this).parents(".newsletter-recipient-result").remove();
+		$(this).parents('.newsletter-recipient-result').remove();
 
 		var counter = 0;
-		counter = $container.find(".newsletter-recipient-result").length;
+		counter = $container.find('.newsletter-recipient-result').length;
 		if (counter > 0) {
-			$container.find(".elgg-head .newsletter-counter").html("(" + counter + ")");
+			$container.find('.elgg-head .newsletter-counter').html('(' + counter + ')');
 		} else {
-			$container.find(".elgg-head .newsletter-counter").html("");
+			$container.find('.elgg-head .newsletter-counter').html('');
 			$container.hide();
 		}
 	});
 };
 
 //register init hook
-elgg.register_hook_handler("init", "system", elgg.newsletter_recipients.init);
+elgg.register_hook_handler('init', 'system', elgg.newsletter_recipients.init);

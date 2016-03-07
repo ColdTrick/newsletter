@@ -1,35 +1,33 @@
 <?php ?>
 //<script>
 
-elgg.provide("elgg.newsletter");
+elgg.provide('elgg.newsletter');
 
 elgg.newsletter.init = function() {
 
-	$("#newsletter-embed-list li").live("click", function(event) {
+	$(document).on('click', '#newsletter-embed-list li', function(event) {
 		elgg.newsletter.embed_format(this);
-
 		event.preventDefault();
 	});
 
-	$("#newsletter-embed-pagination a").live("click", function(event) {
-		var url = $(this).attr("href");
-		$("#newsletter-embed-pagination").parent().parent().load(url);
+	$(document).on('click', '#newsletter-embed-pagination a', function(event) {
+		var url = $(this).attr('href');
+		$('#newsletter-embed-pagination').parent().parent().load(url);
 		event.preventDefault();
 	});
 
-	$("#newsletter-embed-search").live("submit", function(event) {
-
+	$(document).on('submit', '#newsletter-embed-search', function(event) {
 		event.preventDefault();
 
 		var query = $(this).serialize();
-		var url = $(this).attr("action");
+		var url = $(this).attr('action');
 			
 		$(this).parent().parent().load(url, query, function() {
 			$.colorbox.resize();
 		});
 	});
 
-	$("#newsletter-embed-format-description, #newsletter-embed-format-icon").live("change", function() {
+	$(document).on('change', '#newsletter-embed-format-description, #newsletter-embed-format-icon', function() {
 		elgg.newsletter.embed_format_preview();
 	});
 }
@@ -67,7 +65,7 @@ elgg.newsletter.embed_format_preview = function() {
  	 	content_description += data.description;
  	} else if (description_option === "excerpt") {
  		content_description += data.excerpt;
- 		content_description += "<p class='newsletter-embed-item-read-more'><a href='" + data.url + "'>" + elgg.echo("newsletter:embed:read_more") + " ></a></p>"; 
+ 		content_description += "<p class='newsletter-embed-item-read-more'><a href='" + data.url + "'>" + elgg.echo("newsletter:embed:read_more") + " ></a></p>";
  	}
 
  	if (data.iconUrl) {
@@ -90,7 +88,7 @@ elgg.newsletter.embed_format_preview = function() {
 
  	if (content_icon) {
 		if (icon_option === "right") {
-			content += "<td class='newsletter-embed-item-icon'>" + content_icon + "</td>"; 
+			content += "<td class='newsletter-embed-item-icon'>" + content_icon + "</td>";
 		}
  	}
  	
