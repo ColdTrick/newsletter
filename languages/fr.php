@@ -15,6 +15,8 @@ return array(
 	'newsletter:status:scheduled' => "Programmé",
 	'newsletter:status:sent' => "Envoyé",
 	
+	'newsletter:cli:error:secret' => "Secret invalide pour l'utilisation de l'interface en ligne de commande (CLI)",
+	
 	// CSV upload
 	'newsletter:csv:no_email' => "Aucune colonne d'email n'a pu être trouvée dans les 2 premières colonnes du fichier CSV",
 	'newsletter:csv:added' => "%s adresses email ajoutées à partir du fichier CSV",
