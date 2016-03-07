@@ -21,7 +21,6 @@ if (!empty($recipients)) {
 	$members = (int) elgg_get_sticky_value('newsletter_recipients', 'members');
 }
 
-elgg_load_js('jquery.ui.autocomplete.html');
 elgg_require_js('newsletter/recipients');
 
 echo elgg_format_element('div', [], elgg_view('output/longtext', ['value' => elgg_echo('newsletter:recipients:description')]));

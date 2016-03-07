@@ -1,3 +1,5 @@
+require(['jquery.ui.autocomplete.html']);
+
 elgg.provide("elgg.newsletter_recipients");
 
 elgg.newsletter_recipients.init = function() {
