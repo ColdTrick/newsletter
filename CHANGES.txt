@@ -1,6 +1,22 @@
 Version History
 ===============
 
+4.0-RC.1 (2016-03-07):
+
+- added: French translation
+- changed: refactored some code
+- changed: replaced custom newsletter icon with a fontawesome alternative
+- changed: url postfix setting now supports multiple name/value pairs and replacements
+- fixed: added missing CLI secret error message
+- fixed: load correct jquery autocomplete html
+- fixed: replaced .live js registrations with .on
+- fixed: replaced invalid language keys
+- fixed: replaced the way views are retrieved
+- fixed: replaced token generation with elgg function
+- fixed: templates not supplied with all variables (eg newsletter entity)
+- fixed: use the new Elgg 2.0 way of starting the engine
+- removed: upgrade event to fix access issues in v1.0
+
 3.0 (2015-07-08):
 
 - changes for Elgg 1.10
