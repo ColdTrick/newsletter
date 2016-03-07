@@ -46,13 +46,15 @@ if (newsletter_is_group_enabled()) {
 			$has_subscription = newsletter_check_user_subscription($entity, $group);
 			
 			$group_content_row_data = elgg_format_element('td', [], $group->name);
-			$group_content_row_data .= elgg_format_element('td', ['class' => 'newsletter-settings-small'], elgg_view('input/radio', [
+			$group_content_row_data .= elgg_format_element('td', ['class' => 'newsletter-settings-small'], elgg_format_element('input',[
+				'type' => 'radio',
 				'name' => "subscriptions[{$group->getGUID()}]",
 				'value' => '1',
 				'checked' => $has_subscription,
 			]));
 			
-			$group_content_row_data .= elgg_format_element('td', ['class' => 'newsletter-settings-small'], elgg_view('input/radio', [
+			$group_content_row_data .= elgg_format_element('td', ['class' => 'newsletter-settings-small'], elgg_format_element('input',[
+				'type' => 'radio',
 				'name' => "subscriptions[{$group->getGUID()}]",
 				'value' => '0',
 				'checked' => !$has_subscription,

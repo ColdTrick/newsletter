@@ -11,18 +11,20 @@ $rows = elgg_format_element('tr', [], $header_row);
 $has_subscription = newsletter_check_user_subscription($entity, $site);
 
 $row_data = elgg_format_element('td', [], $site->name);
-$row_data .= elgg_format_element('td', ['class' => 'newsletter-settings-small'], elgg_view('input/radio', [
+$row_data .= elgg_format_element('td', ['class' => 'newsletter-settings-small'], elgg_format_element('input',[
+	'type' => 'radio',
 	'name' => "subscriptions[{$site->getGUID()}]",
 	'value' => '1',
 	'checked' => $has_subscription,
 ]));
 
-$row_data .= elgg_format_element('td', ['class' => 'newsletter-settings-small'], elgg_view('input/radio', [
+$row_data .= elgg_format_element('td', ['class' => 'newsletter-settings-small'], elgg_format_element('input',[
+	'type' => 'radio',
 	'name' => "subscriptions[{$site->getGUID()}]",
 	'value' => '0',
 	'checked' => !$has_subscription,
 ]));
-$rows .= elgg_format_element('tr', [], $subscription_row_data);
+$rows .= elgg_format_element('tr', [], $row_data);
 
 $black_list_relationship = check_entity_relationship($entity->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID());
 $block_all = elgg_view('input/checkbox', [
