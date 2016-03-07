@@ -66,8 +66,8 @@ function newsletter_generate_commanline_secret($entity_guid) {
 	}
 	
 	$plugin = elgg_get_plugin_from_id('newsletter');
-		
-	return hash_hmac('sha256', ($plugin->getGUID() . '|' . $entity_guid . '|' . $plugin->time_created), get_site_secret());
+	$hmac = elgg_build_hmac([$plugin->getGUID(), $entity_guid, $plugin->time_created]);
+	return $hmac->getToken();
 }
 
 /**
@@ -903,8 +903,8 @@ function newsletter_generate_unsubscribe_code(ElggEntity $container, $recipient)
 	}
 	
 	$plugin = elgg_get_plugin_from_id('newsletter');
-	
-	return hash_hmac('sha256', ($container->getGUID() . '|' . $recipient . '|' . $plugin->time_created), get_site_secret());
+	$hmac = elgg_build_hmac([$container->getGUID(), $recipient, $plugin->time_created]);
+	return $hmac->getToken();
 }
 
 /**
