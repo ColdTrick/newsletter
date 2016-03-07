@@ -86,10 +86,14 @@ $custom_template .= elgg_format_element('div', [], $custom_template_name);
 echo elgg_format_element('div', ['class' => $custom_template_class], $custom_template);
 
 $foot = elgg_view('input/hidden', ['name' => 'guid', 'value' => $entity->getGUID()]);
-$foot .= elgg_view('input/button', [
+$save_as_options = [
 	'value' => elgg_echo('newsletter:edit:template:save_as'),
 	'id' => 'newsletter-edit-template-save-as',
-	'class' => 'elgg-button-action float-alt ' . $class,
-]);
+	'class' => ['elgg-button-action', 'float-alt'],
+];
+if ($entity->template !== 'custom') {
+	$save_as_options['class'][] = 'hidden';
+}
+$foot .= elgg_view('input/button', $save_as_options);
 $foot .= elgg_view('input/submit', ['value' => elgg_echo('save')]);
 echo elgg_format_element('div', ['class' => 'elgg-foot'], $foot);
