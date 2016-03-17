@@ -59,6 +59,8 @@ function newsletter_init() {
 	elgg_register_plugin_hook_handler('widget_url', 'widget_manager', '\ColdTrick\Newsletter\Widgets::widgetURL');
 	elgg_register_plugin_hook_handler('notification_type_subtype', 'tag_tools', '\ColdTrick\Newsletter\TagTools::notificationTypeSubtype');
 	
+	elgg_register_plugin_hook_handler('likes:is_likable', 'object:' . \Newsletter::SUBTYPE, '\Elgg\Values::getTrue');
+	
 	// extend public pages
 	elgg_register_plugin_hook_handler('public_pages', 'walled_garden', '\ColdTrick\Newsletter\Site::publicPages');
 	
