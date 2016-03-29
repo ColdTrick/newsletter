@@ -29,11 +29,11 @@ if ($entity->description) {
 $subtitle = '';
 switch ($entity->status) {
 	case 'scheduled':
-		$subtitle = elgg_format_element('strong', [], elgg_echo('newsletter:entity:scheduled') . ':');
+		$subtitle = elgg_format_element('strong', [], elgg_echo('newsletter:entity:scheduled') . ': ');
 		$subtitle .= date(elgg_echo('friendlytime:date_format'), $entity->scheduled);
 		break;
 	case 'sent':
-		$subtitle = elgg_format_element('strong', [], elgg_echo('newsletter:entity:sent') . ':');
+		$subtitle = elgg_format_element('strong', [], elgg_echo('newsletter:entity:sent') . ': ');
 		$subtitle .= elgg_view_friendly_time($entity->start_time);
 		break;
 }
