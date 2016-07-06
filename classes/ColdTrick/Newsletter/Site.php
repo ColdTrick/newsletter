@@ -14,7 +14,12 @@ class Site {
 	 * @return void
 	 */
 	public static function join($event, $type, $object) {
+		
 		if (!($object instanceof \ElggRelationship)) {
+			return;
+		}
+		
+		if ($object->relationship !== 'member_of_site') {
 			return;
 		}
 		
