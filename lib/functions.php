@@ -902,8 +902,16 @@ function newsletter_generate_unsubscribe_code(ElggEntity $container, $recipient)
 		return false;
 	}
 	
+	if (is_numeric($recipient)) {
+		$recipient = (int) $recipient;
+	}
+	
 	$plugin = elgg_get_plugin_from_id('newsletter');
-	$hmac = elgg_build_hmac([$container->getGUID(), $recipient, $plugin->time_created]);
+	$hmac = elgg_build_hmac([
+		$container->getGUID(),
+		$recipient,
+		$plugin->time_created,
+	]);
 	return $hmac->getToken();
 }
 
