@@ -23,6 +23,18 @@ if (!elgg_instanceof($entity, 'site') && !elgg_instanceof($entity, 'group')) {
 }
 
 if (!empty($user_guid)) {
+	
+	if (elgg_is_logged_in() && ($user_guid !== elgg_get_logged_in_user_guid())) {
+		// got the link from a forwarded email?
+		$forward_url = 'newsletter/site';
+		if ($entity instanceof ElggGroup) {
+			$forward_url = "newsletter/group/{$entity->getGUID()}";
+		}
+		
+		register_error(elgg_echo('newsletter:unsubscribe:error:invalid_user'));
+		forward($forward_url);
+	}
+	
 	$recipient = $user_guid;
 } else {
 	$recipient = $email;

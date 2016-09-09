@@ -182,6 +182,7 @@ return array(
 	// unsubscribe
 	'newsletter:unsubscribe:error:input' => "Incorrect input, please check the link in your email",
 	'newsletter:unsubscribe:error:code' => "Invalid unsubscribe code, please check the link in your email",
+	'newsletter:unsubscribe:error:invalid_user' => "The unsubscribe link isn't valid for your user account",
 	'newsletter:unsubscribe:title' => "Unsubscribe from the newsletter",
 	'newsletter:unsubscribe:user' => "Hi %s,
 
