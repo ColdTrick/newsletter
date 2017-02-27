@@ -1,10 +1,12 @@
 <?php
 /**
- * This file was created by Translation Editor v4.0
- * On 2015-07-27 16:51
+ * This file was created by Translation Editor v5.1
+ * On 2016-09-09 16:45
  */
 
 return array (
+  'newsletter:unsubscribe:error:invalid_user' => 'De link om je uit te schrijven is niet geldig voor jouw gebruikersaccount',
+  'newsletter:cli:error:secret' => 'Ongeldige geheime sleutel voor gebruik in de CLI',
   'newsletter:edit:from:description' => 'Standaard worden de nieuwsbrieven verstuurd vanaf %s. Je kunt een aangepast e-mail adres opgeven. Dit e-mail adres zal ook alle non-delivery reports ontvangen.',
   'newsletter:settings:url_postfix:upgrade' => 'Je moet upgrade.php draaien om een aantal oude plugin instellingen te migreren naar de nieuwe instellingen.',
   'newsletter:settings:url_postfix:setting' => 'Postfix instellingen',

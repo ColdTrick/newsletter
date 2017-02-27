@@ -66,7 +66,7 @@ function newsletter_init() {
 	
 	// register event handlers
 	elgg_register_event_handler('upgrade', 'system', '\ColdTrick\Newsletter\Upgrade::urlPostfix');
-	elgg_register_event_handler('create', 'member_of_site', '\ColdTrick\Newsletter\Site::join');
+	elgg_register_event_handler('create', 'relationship', '\ColdTrick\Newsletter\Site::join');
 	
 	// register actions
 	elgg_register_action('newsletter/edit', dirname(__FILE__) . '/actions/edit.php');
