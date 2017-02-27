@@ -418,6 +418,9 @@ function newsletter_process($entity_guid) {
 	// set newsletter status to done
 	$entity->status = 'sent';
 	
+	// needed to trigger the update ts so we now something changed
+	$entity->save();
+	
 	// send status notification
 	if (newsletter_is_email_address($entity->status_notification)) {
 		$from = html_email_handler_make_rfc822_address($site);
