@@ -400,4 +400,27 @@ class Menus {
 	
 		return $returnvalue;
 	}
+	
+	/**
+	 * Registers menu items to the site menu
+	 *
+	 * @param string $hook        name of the hook
+	 * @param string $type        type of the hook
+	 * @param array  $returnvalue Default menu items
+	 * @param array  $params      params for the hook
+	 *
+	 * @return array Menu items
+	 */
+	public static function siteRegister($hook, $type, $returnvalue, $params) {
+
+		// link to your subscriptions
+		$returnvalue[] = \ElggMenuItem::factory([
+			'name' => 'newsletter',
+			'href' => 'newsletter/site',
+			'text' => elgg_echo('newsletter:menu:site'),
+			'is_trusted' => true,
+		]);
+
+		return $returnvalue;
+	}
 }

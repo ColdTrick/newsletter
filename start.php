@@ -9,7 +9,6 @@ require_once(dirname(__FILE__) . '/lib/functions.php');
 
 // register default Elgg events
 elgg_register_event_handler('init', 'system', 'newsletter_init');
-elgg_register_event_handler('pagesetup', 'system', 'newsletter_pagesetup');
 
 /**
  * This function is called when the Elgg system gets initialized
@@ -52,6 +51,7 @@ function newsletter_init() {
 	elgg_register_plugin_hook_handler('register', 'menu:filter', '\ColdTrick\Newsletter\Menus::filterRegister');
 	elgg_register_plugin_hook_handler('register', 'menu:newsletter_buttons', '\ColdTrick\Newsletter\Menus::newsletterButtonsRegister');
 	elgg_register_plugin_hook_handler('register', 'menu:longtext', '\ColdTrick\Newsletter\Menus::longtextRegister');
+	elgg_register_plugin_hook_handler('register', 'menu:site', '\ColdTrick\Newsletter\Menus::siteRegister');
 	
 	elgg_register_plugin_hook_handler('usersettings:save', 'user', '\ColdTrick\Newsletter\User::convertEmailSubscriptionToUserSetting');
 	elgg_register_plugin_hook_handler('register', 'user', '\ColdTrick\Newsletter\User::subscribeToSiteNewsletter');
@@ -86,18 +86,4 @@ function newsletter_init() {
 	
 	elgg_register_action('newsletter/template/edit', dirname(__FILE__) . '/actions/template/edit.php');
 	elgg_register_action('newsletter/template/delete', dirname(__FILE__) . '/actions/template/delete.php');
-}
-
-/**
- * Page setup for newsletter
- *
- * @return void
- */
-function newsletter_pagesetup() {
-	elgg_register_menu_item('site', [
-		'name' => 'newsletter',
-		'text' => elgg_echo('newsletter:menu:site'),
-		'href' => 'newsletter/site',
-		'is_trusted' => true,
-	]);
 }
