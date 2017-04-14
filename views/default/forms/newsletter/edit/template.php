@@ -4,6 +4,10 @@ $entity = elgg_extract('entity', $vars);
 
 // get the available tempaltes for this container
 $template_options = newsletter_get_available_templates($entity->getContainerGUID());
+if (empty($template_options) || !is_array($template_options)) {
+	$template_options = [];
+}
+natcasesort($template_options);
 
 // select the correct template
 $template = 'default';
