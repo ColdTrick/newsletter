@@ -1,6 +1,5 @@
 <?php
 
-use Symfony\Component\HttpFoundation\Tests\NewRequest;
 /**
  * This file contains all supportive functions for the Newsletter plugin
  */
