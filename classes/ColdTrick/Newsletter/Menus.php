@@ -52,7 +52,13 @@ class Menus {
 		}
 
 		$page_owner = elgg_get_page_owner_entity();
-		if (!elgg_is_admin_logged_in() && (!empty($page_owner) && !$page_owner->canEdit())) {
+		if (empty($page_owner) && !elgg_is_admin_logged_in()) {
+			// site newsletters
+			return [];
+		}
+		
+		if (!empty($page_owner) && !$page_owner->canEdit()) {
+			// group newsletters
 			return [];
 		}
 			
