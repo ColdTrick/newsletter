@@ -3,7 +3,7 @@
 $entity = elgg_extract('entity', $vars);
 
 // get the available tempaltes for this container
-$template_options = newsletter_get_available_templates($entity->getContainerGUID());
+$template_options = newsletter_get_available_templates($entity->getContainerGUID(), $entity);
 if (empty($template_options) || !is_array($template_options)) {
 	$template_options = [];
 }

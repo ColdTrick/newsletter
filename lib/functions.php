@@ -1224,10 +1224,12 @@ function newsletter_include_existing_users() {
  * Other plugins/themes can provide their own template if the create a view
  * newsletter/templates/<some name>/{body|css}
  *
- * @param int $container_guid The container of the current newsletter
+ * @param int         $container_guid The container of the current newsletter
+ * @param \ElggEntity $entity         The current newsletter (optional) if editing
+ *
  * @return array The available templates
  */
-function newsletter_get_available_templates($container_guid) {
+function newsletter_get_available_templates($container_guid, $entity = null) {
 	$result = [];
 	
 	// detect templates provided by themes/plugins
@@ -1272,7 +1274,10 @@ function newsletter_get_available_templates($container_guid) {
 	unset($result['custom']); // make sure custom is last in the list (shouldn't be provided by a plugin/theme)
 	$result['custom'] = elgg_echo('newsletter:edit:template:select:custom');
 		
-	return elgg_trigger_plugin_hook('templates', 'newsletter', ['container_guid' => $container_guid], $result);
+	return elgg_trigger_plugin_hook('templates', 'newsletter', [
+		'container_guid' => $container_guid,
+		'entity' => $entity,
+	], $result);
 }
 
 /**
