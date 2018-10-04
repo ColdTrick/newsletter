@@ -1,6 +1,11 @@
 Version history
 ===============
 
+4.1 (2018-10-04):
+
+- added: german translation
+- changed: newsletter entity is now passed on to the templates hook
+
 4.0.5 (2017-05-11):
 
 - fixed: only show filter tabs when a user can create newsletters
