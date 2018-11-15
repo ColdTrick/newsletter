@@ -3,19 +3,19 @@
 	"description": "Allows the creation and management of a newsletter to site/group members",
 	"type": "elgg-plugin",
 	"keywords": ["elgg", "plugin", "tools", "communication"],
-	"license": "GPL-2.0",
-	"homepage": "https://community.elgg.org/plugins/1564847",
+	"license": "GPL-2.0-only",
 	"support": {
 		"source": "https://github.com/ColdTrick/newsletter",
 		"issues": "https://github.com/ColdTrick/newsletter/issues"
 	},
 	"require": {
-		"php": ">=5.2.4",
-		"ext-json": "*",
 		"composer/installers": "^1.0.8"
 	},
 	"require-dev": {
 		"coldtrick/sniffs": "dev-master",
 		"coldtrick/releases": "dev-master"
+	},
+	"conflict": {
+		"elgg/elgg": "<3.0"
 	}
 }

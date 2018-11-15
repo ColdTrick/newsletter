@@ -3,38 +3,27 @@
 	<name>Newsletter</name>
 	<id>newsletter</id>
 	<author>ColdTrick IT Solutions</author>
-	<version>4.1</version>
+	<version>5.0-beta</version>
 	<description>Allows the creation and management of a newletter to site/group members</description>
 	<website>http://www.coldtrick.com/</website>
 	<repository>https://github.com/ColdTrick/newsletter</repository>
 	<bugtracker>https://github.com/ColdTrick/newsletter/issues</bugtracker>
-	<copyright>(C) ColdTrick IT Solutions 2013 - 2016</copyright>
+	<copyright>(C) ColdTrick IT Solutions 2013 - 2018</copyright>
 	<license>GNU General Public License version 2</license>
  	
  	<requires>
 		<type>elgg_release</type>
-		<version>2.0</version>
-	</requires>
-	
-	<requires>
-		<type>php_version</type>
-		<version>5.2.4</version>
-	</requires>
-	
-	<requires>
-		<type>plugin</type>
-		<name>html_email_handler</name>
 		<version>3.0</version>
 	</requires>
 	
 	<requires>
 		<type>plugin</type>
-		<name>ckeditor</name>
+		<name>html_email_handler</name>
 	</requires>
 	
 	<requires>
-		<type>php_extension</type>
-		<name>json</name>
+		<type>plugin</type>
+		<name>ckeditor</name>
 	</requires>
 	
 	<category>ColdTrick</category>

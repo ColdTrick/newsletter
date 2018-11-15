@@ -1,6 +1,7 @@
 Newsletter
 ==========
 
+![Elgg 3.0](https://img.shields.io/badge/Elgg-3.0-green.svg)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/ColdTrick/newsletter/badges/quality-score.png?s=6086ad5aac5e7c11988c2d92d3680834a286a08c)](https://scrutinizer-ci.com/g/ColdTrick/newsletter/)
 [![Build Status](https://scrutinizer-ci.com/g/ColdTrick/newsletter/badges/build.png?b=master)](https://scrutinizer-ci.com/g/ColdTrick/newsletter/build-status/master)
 [![Latest Stable Version](https://poser.pugx.org/coldtrick/newsletter/v/stable.svg)](https://packagist.org/packages/coldtrick/newsletter)
@@ -31,8 +32,3 @@ Configuration
 You can configure if newsletters can be send by group owners.
 
 You can configure if the current userbase of your community is receiving the newsletter by default or that they have to opt-in.
-
-Upgrading from pre 3.1
-----------------------
-
-The URL postfix plugin setting has been changed. Please run upgrade.php in order to save your current setting to the new format.
