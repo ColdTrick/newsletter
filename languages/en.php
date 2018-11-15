@@ -161,7 +161,6 @@ return array(
 	
 	'newsletter:settings:url_postfix' => "URL postfix settings",
 	'newsletter:settings:url_postfix:description' => "You can configure one or more postfix name/value pairs that will be placed in all (internal) links that go out in the Newsletter. You can configure one name/value pair per line in the format 'name=value' (eg source=newsletter). This will allow tracking systems to see that your users came from the Newsletter.",
-	'newsletter:settings:url_postfix:upgrade' => "You need to run upgrade.php in order to convert some old plugin settings to the new values.",
 	'newsletter:settings:url_postfix:setting' => "Postfix settings",
 	'newsletter:settings:url_postfix:setting:description' => "There are certain placeholders you can use in your postfix values: %s",
 	

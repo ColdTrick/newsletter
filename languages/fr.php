@@ -161,7 +161,6 @@ return array(
 	
 	'newsletter:settings:url_postfix' => "Paramètres d'URL postfix",
 	'newsletter:settings:url_postfix:description' => "Vous pouvez configurer un ou plusieurs couple no/valeur pour postfix, qui seront placées dans tous les liens (internes) de la lettre d'information. Vous pouvez configurer un couple nom/valeur par ligne dans le format 'nom=valeur' (par ex.: source=newsletter). Ceci permettra aux systèmes de suivi d'identifier que les visiteurs provenaient de la lettre d'information.",
-	'newsletter:settings:url_postfix:upgrade' => "Vous devez exécuter upgrade.php pour convertir quelques vieux paramètres du plugin vers les nouvelles valeurs.",
 	'newsletter:settings:url_postfix:setting' => "Paramètres Postfix",
 	'newsletter:settings:url_postfix:setting:description' => "Il y a certain placeholders que vous pouvez utiliser dans vos valeurs postfix : %s",
 	

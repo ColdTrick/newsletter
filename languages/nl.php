@@ -8,7 +8,6 @@ return array (
   'newsletter:unsubscribe:error:invalid_user' => 'De link om je uit te schrijven is niet geldig voor jouw gebruikersaccount',
   'newsletter:cli:error:secret' => 'Ongeldige geheime sleutel voor gebruik in de CLI',
   'newsletter:edit:from:description' => 'Standaard worden de nieuwsbrieven verstuurd vanaf %s. Je kunt een aangepast e-mail adres opgeven. Dit e-mail adres zal ook alle non-delivery reports ontvangen.',
-  'newsletter:settings:url_postfix:upgrade' => 'Je moet upgrade.php draaien om een aantal oude plugin instellingen te migreren naar de nieuwe instellingen.',
   'newsletter:settings:url_postfix:setting' => 'Postfix instellingen',
   'newsletter:settings:url_postfix:setting:description' => 'Er zijn bepaalde placeholders welke je kunt gebruiken in de postfix waardes: %s',
   'newsletter:settings:url_postfix:description' => 'Je kunt een of meerdere postfix naam/waarde combinaties opgeven welke toegevoegd zal worden aan alle (interne) links die zich in de Nieuwsbrief bevinden. Je kunt één naam/waarde combinatie per regel configureren in het formaat \'naam=waarde\' (bijv bron=nieuwsbrief) Dit maakt het mogelijk om het gebruik van de nieuwsbrief te volgen.',

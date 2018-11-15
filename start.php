@@ -1,12 +1,5 @@
 <?php
 
-// some subtype defines
-define('NEWSLETTER_CONTENT_SUBTYPE', 'newsletter_content');
-define('NEWSLETTER_TEMPLATE', 'newsletter_template');
-
-// load library files
-require_once(dirname(__FILE__) . '/lib/functions.php');
-
 // register default Elgg events
 elgg_register_event_handler('init', 'system', 'newsletter_init');
 
@@ -19,9 +12,6 @@ function newsletter_init() {
 	
 	// register page handler
 	elgg_register_page_handler('newsletter', '\ColdTrick\Newsletter\PageHandler::newsletter');
-	
-	// Register entity_type for search
-	elgg_register_entity_type('object', 'newsletter');
 	
 	// CSS & JS
 	elgg_extend_view('css/elgg', 'css/newsletter.css');
@@ -65,7 +55,6 @@ function newsletter_init() {
 	elgg_register_plugin_hook_handler('public_pages', 'walled_garden', '\ColdTrick\Newsletter\Site::publicPages');
 	
 	// register event handlers
-	elgg_register_event_handler('upgrade', 'system', '\ColdTrick\Newsletter\Upgrade::urlPostfix');
 	elgg_register_event_handler('create', 'relationship', '\ColdTrick\Newsletter\Site::join');
 	
 	// register actions

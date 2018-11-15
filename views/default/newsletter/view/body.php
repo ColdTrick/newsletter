@@ -11,7 +11,7 @@ if (is_numeric($template)) {
 	// probably a custom template, lets check
 	$template_entity = get_entity($template);
 	
-	if ($template_entity && ($template_entity->getSubtype() == NEWSLETTER_TEMPLATE)) {
+	if ($template_entity instanceof NewsletterTemplate) {
 		$content = $template_entity->html;
 	} else {
 		// something wrong, reset to default

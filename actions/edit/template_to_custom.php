@@ -19,7 +19,7 @@ $entity->template = 'custom';
 
 if (is_numeric($template)) {
 	$template_entity = get_entity($template);
-	if (!empty($template_entity) && elgg_instanceof($template_entity, 'object', NEWSLETTER_TEMPLATE)) {
+	if ($template_entity instanceof NewsletterTemplate) {
 		$entity->html = $template_entity->html;
 		$entity->css = $template_entity->css;
 	}

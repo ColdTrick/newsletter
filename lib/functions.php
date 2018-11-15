@@ -1259,7 +1259,7 @@ function newsletter_get_available_templates($container_guid, $entity = null) {
 	if (!empty($container_guid)) {
 		$templates = elgg_get_entities([
 			'type' => 'object',
-			'subtype' => NEWSLETTER_TEMPLATE,
+			'subtype' => NewsletterTemplate::SUBTYPE,
 			'container_guid' => $container_guid,
 			'limit' => false,
 		]);

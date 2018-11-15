@@ -16,11 +16,9 @@ if (empty($guid) && empty($newsletter_guid)) {
 if (!empty($guid)) {
 	$template = get_entity($guid);
 	
-	if (!empty($template) && $template->canEdit()) {
-		if (!elgg_instanceof($template, 'object', NEWSLETTER_TEMPLATE)) {
-			unset($template);
-			register_error(elgg_echo('error:missing_data'));
-		}
+	if (!$template instanceof NewsletterTemplate && $template->canEdit()) {
+		unset($template);
+		register_error(elgg_echo('error:missing_data'));
 	} else {
 		unset($template);
 		register_error(elgg_echo('actionunauthorized'));
@@ -30,8 +28,7 @@ if (!empty($guid)) {
 	
 	if (!empty($newsletter) && $newsletter->canEdit()) {
 		if (elgg_instanceof($newsletter, 'object', Newsletter::SUBTYPE)) {
-			$template = new ElggObject();
-			$template->subtype = NEWSLETTER_TEMPLATE;
+			$template = new NewsletterTemplate();
 			$template->owner_guid = $newsletter->owner_guid;
 			$template->container_guid = $newsletter->container_guid;
 			$template->access_id = ACCESS_PUBLIC;

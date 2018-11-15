@@ -49,11 +49,6 @@ echo elgg_format_element('div', [], $setting);
 
 // url postfix
 $url_postfix = elgg_view('output/longtext', ['value' => elgg_echo('newsletter:settings:url_postfix:description')]);
-
-if ($plugin->url_postfix_name || $plugin->url_postfix_value) {
-	$url_postfix .= elgg_format_element('div', ['class' => 'elgg-message elgg-state-error'], elgg_echo('newsletter:settings:url_postfix:upgrade'));
-}
-
 $url_postfix .= '<div>';
 $url_postfix .= elgg_echo('newsletter:settings:url_postfix:setting');
 $url_postfix .= elgg_view('input/plaintext', [
