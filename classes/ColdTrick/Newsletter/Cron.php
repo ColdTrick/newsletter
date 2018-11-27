@@ -35,7 +35,7 @@ class Cron {
 		// ignore access
 		$ia = elgg_set_ignore_access(true);
 
-		$newsletters = new \ElggBatch('elgg_get_entities_from_metadata', [
+		$newsletters = elgg_get_entities([
 			'type' => 'object',
 			'subtype' => \Newsletter::SUBTYPE,
 			'limit' => false,
@@ -43,6 +43,7 @@ class Cron {
 				'name' => 'scheduled',
 				'value' => $newsletter_ts,
 			],
+			'batch' => true,
 		]);
 	
 		foreach ($newsletters as $newsletter) {
