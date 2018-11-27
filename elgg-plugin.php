@@ -24,4 +24,27 @@ return [
 			'class' => NewsletterTemplate::class,
 		],
 	],
+	'actions' => [
+		'newsletter/edit' => [],
+		'newsletter/edit/schedule' => [],
+		'newsletter/edit/content' => [],
+		'newsletter/edit/template' => [],
+		'newsletter/edit/template_to_custom' => [],
+		'newsletter/edit/recipients' => [],
+		
+		'newsletter/delete' => [],
+		'newsletter/send' => [],
+		'newsletter/subscribe' => [
+			'access' => 'public',
+		],
+		'newsletter/unsubscribe' => [
+			'access' => 'public',
+		],
+		'newsletter/subscriptions' => [],
+		'newsletter/duplicate' => [],
+		'newsletter/preview_mail' => [],
+		
+		'newsletter/template/edit' => [],
+		'newsletter/template/delete' => [],
+	],
 ];
