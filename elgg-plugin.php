@@ -7,6 +7,11 @@ require_once(__DIR__ . '/lib/functions.php');
 
 return [
 	'bootstrap' => Bootstrap::class,
+	'settings' => [
+		'allow_groups' => 'no',
+		'custom_from' => 'no',
+		'include_existing_users' => 'yes',
+	],
 	'entities' => [
 		[
 			'type' => 'object',

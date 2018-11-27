@@ -1,5 +1,6 @@
 <?php
 
+/* @var $plugin ElggPlugin */
 $plugin = elgg_extract('entity', $vars);
 
 $noyes_options = [
@@ -9,53 +10,55 @@ $noyes_options = [
 
 $url_postfix_replacements = ['{guid}'];
 
-$setting = elgg_echo('newsletter:settings:allow_groups');
-$setting .= elgg_view('input/select', [
+echo elgg_view_field([
+	'#type' => 'checkbox',
+	'#label' => elgg_echo('newsletter:settings:allow_groups'),
+	'#help' => elgg_echo('newsletter:settings:allow_groups:description'),
 	'name' => 'params[allow_groups]',
-	'value' => $plugin->allow_groups,
-	'options_values' => $noyes_options,
-	'class' => 'mls',
+	'default' => 'no',
+	'value' => 'yes',
+	'checked' => $plugin->allow_groups === 'yes',
+	'switch' => true,
 ]);
-$setting .= elgg_format_element('div', ['class' => 'elgg-subtext'], elgg_echo('newsletter:settings:allow_groups:description'));
-echo elgg_format_element('div', [], $setting);
 
-$setting = elgg_echo('newsletter:settings:include_existing_users');
-$setting .= elgg_view('input/select', [
+echo elgg_view_field([
+	'#type' => 'checkbox',
+	'#label' => elgg_echo('newsletter:settings:include_existing_users'),
+	'#help' => elgg_echo('newsletter:settings:include_existing_users:description'),
 	'name' => 'params[include_existing_users]',
-	'value' => $plugin->include_existing_users,
-	'options_values' => array_reverse($noyes_options),
-	'class' => 'mls',
+	'default' => 'no',
+	'value' => 'yes',
+	'checked' => $plugin->include_existing_users === 'yes',
+	'switch' => true,
 ]);
-$setting .= elgg_format_element('div', ['class' => 'elgg-subtext'], elgg_echo('newsletter:settings:include_existing_users:description'));
-echo elgg_format_element('div', [], $setting);
 
-$setting = elgg_echo('newsletter:settings:custom_from');
-$setting .= elgg_view('input/select', [
+echo elgg_view_field([
+	'#type' => 'checkbox',
+	'#label' => elgg_echo('newsletter:settings:custom_from'),
+	'#help' => elgg_echo('newsletter:settings:custom_from:description'),
 	'name' => 'params[custom_from]',
-	'value' => $plugin->custom_from,
-	'options_values' => $noyes_options,
-	'class' => 'mls',
+	'default' => 'no',
+	'value' => 'yes',
+	'checked' => $plugin->custom_from === 'yes',
+	'switch' => true,
 ]);
-$setting .= elgg_format_element('div', ['class' => 'elgg-subtext'], elgg_echo('newsletter:settings:custom_from:description'));
-echo elgg_format_element('div', [], $setting);
 
-$setting = elgg_echo('newsletter:settings:custom_from:domains');
-$setting .= elgg_view('input/text', [
+echo elgg_view_field([
+	'#type' => 'text',
+	'#label' => elgg_echo('newsletter:settings:custom_from:domains'),
+	'#help' => elgg_echo('newsletter:settings:custom_from:domains:description'),
 	'name' => 'params[custom_from_domains]',
 	'value' => $plugin->custom_from_domains,
 ]);
-$setting .= elgg_format_element('div', ['class' => 'elgg-subtext'], elgg_echo('newsletter:settings:custom_from:domains:description'));
-echo elgg_format_element('div', [], $setting);
 
 // url postfix
 $url_postfix = elgg_view('output/longtext', ['value' => elgg_echo('newsletter:settings:url_postfix:description')]);
-$url_postfix .= '<div>';
-$url_postfix .= elgg_echo('newsletter:settings:url_postfix:setting');
-$url_postfix .= elgg_view('input/plaintext', [
+$url_postfix .= elgg_view_field([
+	'#type' => 'plaintext',
+	'#label' => elgg_echo('newsletter:settings:url_postfix:setting'),
+	'#help' => elgg_echo('newsletter:settings:url_postfix:setting:description', [implode(' ', $url_postfix_replacements)]),
 	'name' => 'params[url_postfix]',
 	'value' => $plugin->url_postfix,
 ]);
-$url_postfix .= elgg_format_element('div', ['class' => 'elgg-subtext'], elgg_echo('newsletter:settings:url_postfix:setting:description', [implode(' ', $url_postfix_replacements)]));
-$url_postfix .= '</div>';
 
-echo elgg_view_module('inline', elgg_echo('newsletter:settings:url_postfix'), $url_postfix);
+echo elgg_view_module('info', elgg_echo('newsletter:settings:url_postfix'), $url_postfix);
