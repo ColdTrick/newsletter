@@ -7,15 +7,23 @@ class Widgets {
 	/**
 	 * Provide an URL for a widget title
 	 *
-	 * @param string $hook_name    'widget_url'
-	 * @param string $entity_type  'widget_manager'
-	 * @param string $return_value the current url (if any)
-	 * @param mixed  $params       provided params
+	 * @param \Elgg\Hook $hook 'entity:url', 'object'
 	 *
 	 * @return string
 	 */
-	public static function widgetURL($hook_name, $entity_type, $return_value, $params) {
-		if (!empty($return_value)) {
+	public static function widgetURL(\Elgg\Hook $hook) {
+		
+		$widget = $hook->getEntityParam();
+		if (!$widget instanceof \ElggWidget) {
+			return;
+		}
+		
+		if ($widget->handler !== 'newsletter_subscribe') {
+			return;
+		}
+		
+		$return = $hook->getValue();
+		if (!empty($return)) {
 			return;
 		}
 		
@@ -24,14 +32,6 @@ class Widgets {
 			return;
 		}
 		
-		$widget = elgg_extract('entity', $params);
-
-		if (!elgg_instanceof($widget, 'object', 'widget')) {
-			return;
-		}
-		
-		if ($widget->handler == 'newsletter_subscribe') {
-			return elgg_normalize_url("newsletter/subscriptions/{$user->username}");
-		}
+		return elgg_generate_url('collection:object:newsletter:subscriptions', ['username' => $user->username]);
 	}
 }
