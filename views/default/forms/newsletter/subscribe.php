@@ -8,7 +8,7 @@
 $entity = elgg_extract('entity', $vars);
 $user = elgg_get_logged_in_user_entity();
 
-if (!empty($user)) {
+if ($user instanceof \ElggUser) {
 	// check if the user is subscribed to container
 	if (newsletter_check_user_subscription($user, $entity)) {
 		// already subscribed, so offer unsubscibe
