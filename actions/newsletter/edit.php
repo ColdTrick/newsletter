@@ -20,7 +20,7 @@ if (empty($title)) {
 	forward(REFERER);
 }
 
-if (newsletter_custom_from_enabled() && !newsletter_validate_custom_from($from)) {
+if ((elgg_get_plugin_setting('custom_from', 'newsletter') === 'yes') && !newsletter_validate_custom_from($from)) {
 	register_error(elgg_echo('newsletter:action:edit:error:from'));
 	forward(REFERER);
 }
@@ -68,7 +68,7 @@ if (!empty($subject)) {
 	unset($entity->subject);
 }
 
-if (newsletter_custom_from_enabled()) {
+if (elgg_get_plugin_setting('custom_from', 'newsletter') === 'yes') {
 	if (!empty($from)) {
 		$entity->from = $from;
 	} else {

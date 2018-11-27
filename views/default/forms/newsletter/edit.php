@@ -42,7 +42,7 @@ $field .= elgg_view('input/text', [
 ]);
 echo elgg_format_element('div', [], $field);
 
-if (newsletter_custom_from_enabled()) {
+if (elgg_get_plugin_setting('custom_from', 'newsletter') === 'yes') {
 	$field = elgg_format_element('label', ['for' => 'newsletter-from'], elgg_echo('newsletter:edit:from'));
 	$field .= elgg_view('input/email', ['name' => 'from', 'value' => $from, 'id' => 'newsletter-from']);
 	$field .= elgg_format_element('div', ['class' => 'elgg-subtext'], elgg_echo('newsletter:edit:from:description', [elgg_format_element('strong', [], elgg_get_site_entity()->email)]));

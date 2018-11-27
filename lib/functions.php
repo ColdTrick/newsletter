@@ -138,7 +138,7 @@ function newsletter_process($entity_guid) {
 		'callback' => 'newsletter_user_row_to_subscriber_info',
 	];
 	// include users without settings
-	if (newsletter_include_existing_users()) {
+	if (elgg_get_plugin_setting('include_existing_users', 'newsletter') === 'yes') {
 		// yes, so exclude blocked
 		$basic_user_options['wheres'] = [
 			"(e.guid NOT IN (SELECT guid_one
@@ -339,7 +339,7 @@ function newsletter_process($entity_guid) {
 	$message_html_content = html_email_handler_css_inliner($message_html_content);
 	
 	// proccess all recipients
-	if (newsletter_custom_from_enabled() && !empty($entity->from)) {
+	if ((elgg_get_plugin_setting('custom_from', 'newsletter') === 'yes') && !empty($entity->from)) {
 		// from is validated to a valid email address in the newsletter save action
 		$from = $entity->from;
 	} else {
@@ -597,21 +597,17 @@ function newsletter_get_subscribers(ElggEntity $container, $count = false) {
  */
 function newsletter_check_user_subscription(ElggUser $user, ElggEntity $entity) {
 	
-	if (!elgg_instanceof($user, 'user')) {
-		return false;
-	}
-	
-	if (!elgg_instanceof($entity, 'site') && !elgg_instanceof($entity, 'group')) {
+	if (!$entity instanceof \ElggSite && !$entity instanceof \ElggGroup) {
 		return false;
 	}
 	
 	// include all users
-	if (newsletter_include_existing_users()) {
+	if (elgg_get_plugin_setting('include_existing_users', 'newsletter') === 'yes') {
 		// exclude if blocked
-		return !((bool) check_entity_relationship($user->getGUID(), NewsletterSubscription::BLACKLIST, $entity->getGUID()));
+		return !((bool) check_entity_relationship($user->guid, NewsletterSubscription::BLACKLIST, $entity->guid));
 	} else {
 		// only if opt-in
-		return (bool) check_entity_relationship($user->getGUID(), NewsletterSubscription::SUBSCRIPTION, $entity->getGUID());
+		return (bool) check_entity_relationship($user->guid, NewsletterSubscription::SUBSCRIPTION, $entity->guid);
 	}
 }
 
@@ -1176,26 +1172,6 @@ function newsletter_send_preview(Newsletter $entity, $email) {
 }
 
 /**
- * Check a plugin setting to force existing users to opt-in for newsletters
- *
- * @return bool true if opt-in is required
- */
-function newsletter_include_existing_users() {
-	static $result;
-	
-	if (isset($result)) {
-		return $result;
-	}
-	
-	$result = true;
-	if (elgg_get_plugin_setting('include_existing_users', 'newsletter') == 'no') {
-		$result = false;
-	}
-	
-	return $result;
-}
-
-/**
  * Returns all the available templates, these include those provided by themes
  * and the saved templates
  *
@@ -1531,26 +1507,6 @@ function newsletter_view_embed_content(ElggEntity $entity, $vars = array()) {
 	}
 	
 	return false;
-}
-
-/**
- * Check the plugin setting for custom from addresses
- *
- * @return bool
- */
-function newsletter_custom_from_enabled() {
-	static $result;
-	
-	if (isset($result)) {
-		return $result;
-	}
-	
-	$result = false;
-	if (elgg_get_plugin_setting('custom_from', 'newsletter') === 'yes') {
-		$result = true;
-	}
-	
-	return $result;
 }
 
 /**

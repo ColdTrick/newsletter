@@ -62,7 +62,7 @@ class Bootstrap extends DefaultPluginBootstrap {
 		$hooks->registerHandler('register', 'menu:site', __NAMESPACE__ . '\Menus::siteRegister');
 		$hooks->registerHandler('register', 'user', __NAMESPACE__ . '\User::subscribeToSiteNewsletter');
 		$hooks->registerHandler('usersettings:save', 'user', __NAMESPACE__ . '\User::convertEmailSubscriptionToUserSetting');
-		$hooks->registerHandler('widget_url', 'widget_manager', __NAMESPACE__ . '\Widgets::widgetURL');
+		$hooks->registerHandler('entity:url', 'object', __NAMESPACE__ . '\Widgets::widgetURL');
 	}
 	
 	/**
