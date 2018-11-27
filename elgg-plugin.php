@@ -47,4 +47,9 @@ return [
 		'newsletter/template/edit' => [],
 		'newsletter/template/delete' => [],
 	],
+	'widgets' => [
+		'newsletter_subscribe' => [
+			'context' => ['index','groups'],
+		],
+	],
 ];

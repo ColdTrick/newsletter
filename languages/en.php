@@ -248,7 +248,8 @@ To view the newsletter click here:
 	'newsletter:group:title' => "%s's newsletters",
 	
 	// widget
-	'newsletter:widget:subscribe:description' => "Show a quick widget to subscribe to the newsletter",
+	'widgets:newsletter_subscribe:name' => "Newsletter subscription",
+	'widgets:newsletter_subscribe:description' => "Show a quick widget to subscribe to the newsletter",
 	
 	// actions
 	// edit
