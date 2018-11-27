@@ -1,9 +1,10 @@
 <?php
-
 /**
  * Procedure to find recipients for the newsletter
  *
  * Should return a JSON result
+ *
+ * @todo rework!!!!!
  */
 
 $result = [];

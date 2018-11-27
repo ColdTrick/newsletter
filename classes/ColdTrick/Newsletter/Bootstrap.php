@@ -12,9 +12,6 @@ class Bootstrap extends DefaultPluginBootstrap {
 	 */
 	public function init() {
 		
-		// register page handler
-		elgg_register_page_handler('newsletter', __NAMESPACE__ . '\PageHandler::newsletter');
-		
 		// create group setting
 		if (newsletter_is_group_enabled()) {
 			$this->elgg()->group_tools->register('newsletter', [
