@@ -27,7 +27,8 @@ if ($user->getGUID() == elgg_get_logged_in_user_guid()) {
 	$title_text = elgg_echo('newsletter:received:title', [$user->name]);
 }
 
-$options = [
+$ia = elgg_set_ignore_access(true);
+$content = elgg_list_entities([
 	'type' => 'object',
 	'subtype' => Newsletter::SUBTYPE,
 	'full_view' => false,
@@ -45,17 +46,9 @@ $options = [
 		'as' => 'integer',
 		'direction' => 'DESC',
 	],
-];
-
-$ia = elgg_set_ignore_access(true);
-$entities = elgg_get_entities_from_relationship($options);
+	'notfound' => true,
+]);
 elgg_set_ignore_access($ia);
-
-if (!empty($entities)) {
-	$content = elgg_view_entity_list($entities, $options);
-} else {
-	$content = elgg_view('output/longtext', ['value' => elgg_echo('notfound')]);
-}
 
 // build page
 $page_data = elgg_view_layout('content', [

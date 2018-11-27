@@ -238,7 +238,7 @@ function newsletter_process($entity_guid) {
 		$options['relationship_guid'] = $container->getGUID();
 		$options['inverse_relationship'] = true;
 		
-		$users = elgg_get_entities_from_relationship($options);
+		$users = elgg_get_entities($options);
 		if (!empty($users)) {
 			$new_users = [];
 			foreach ($users as $user) {
@@ -531,7 +531,7 @@ function newsletter_get_subscribers(ElggEntity $container, $count = false) {
 		
 		// get all subscribed community members
 		// @todo make this easier????
-		$tmp_users = elgg_get_entities_from_relationship([
+		$tmp_users = elgg_get_entities([
 			'type' => 'user',
 			'selects' => ['ue.email'],
 			'site_guids' => false,
@@ -549,7 +549,7 @@ function newsletter_get_subscribers(ElggEntity $container, $count = false) {
 		}
 		
 		// check the email subscriptions
-		$result['emails'] = elgg_get_entities_from_relationship([
+		$result['emails'] = elgg_get_entities([
 			'type' => 'object',
 			'subtype' => NewsletterSubscription::SUBTYPE,
 			'selects' => ['oe.title'],
@@ -558,11 +558,13 @@ function newsletter_get_subscribers(ElggEntity $container, $count = false) {
 			'relationship_guid' => $container->getGUID(),
 			'inverse_relationship' => true,
 			'joins' => ['JOIN ' . elgg_get_config('dbprefix') . 'objects_entity oe ON e.guid = oe.guid'],
-			'callback' => 'newsletter_subscription_row_to_subscriber_info',
+			'callback' => function($row) {
+				return $row->title;
+			},
 		]);
 	} else {
 		// get all subscribed community members
-		$result = elgg_get_entities_from_relationship([
+		$result = elgg_get_entities([
 			'type' => 'user',
 			'site_guids' => false,
 			'count' => true,
@@ -572,7 +574,7 @@ function newsletter_get_subscribers(ElggEntity $container, $count = false) {
 		]);
 		
 		// check the email subscriptions
-		$result += elgg_get_entities_from_relationship([
+		$result += elgg_get_entities([
 			'type' => 'object',
 			'subtype' => NewsletterSubscription::SUBTYPE,
 			'count' => true,
@@ -803,32 +805,6 @@ function newsletter_user_row_to_subscriber_info($row) {
 }
 
 /**
- * Custom callback for elgg_get_* function to return the email address of a subscriber
- *
- * @param stdObj $row A database row
- *
- * @return string the email address of the subscriber
- *
- * @see elgg_get_entities()
- */
-function newsletter_subscription_row_to_subscriber_info($row) {
-	return $row->title;
-}
-
-/**
- * Custom callback for elgg_get_* function to return the GUID of an entity
- *
- * @param stdObj $row A database row
- *
- * @return int The GUID of the entity
- *
- * @see elgg_get_entities()
- */
-function newsletter_row_to_guid($row) {
-	return (int) $row->guid;
-}
-
-/**
  * A different interpretation of is_email_address()
  * because PHP doesn't always correctly verify email addresses
  *
@@ -1004,12 +980,14 @@ function newsletter_unsubscribe_all_user(ElggUser $user) {
 	remove_entity_relationship($user->getGUID(), NewsletterSubscription::SUBSCRIPTION, $site->getGUID());
 	
 	// remove all subscriptions
-	$entities = elgg_get_entities_from_relationship([
+	$entities = elgg_get_entities([
 		'type' => 'group',
 		'limit' => false,
 		'relationship' => NewsletterSubscription::SUBSCRIPTION,
 		'relationship_guid' => $user->getGUID(),
-		'callback' => 'newsletter_row_to_guid',
+		'callback' => function($row) {
+			return (int) $row->guid;
+		},
 	]);
 	
 	if (!empty($entities)) {

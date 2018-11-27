@@ -30,7 +30,7 @@ if (!empty($query) && !empty($guid)) {
 		$filtered_query = sanitise_string($query);
 		
 		// search for individual users
-		$users = elgg_get_entities_from_relationship([
+		$users = elgg_get_entities([
 			'type' => 'user',
 			'site_guids' => false,
 			'limit' => $limit,

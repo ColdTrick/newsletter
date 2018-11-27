@@ -76,7 +76,7 @@ if (newsletter_is_group_enabled()) {
 }
 
 // other group subscriptions
-$subscriptions = elgg_get_entities_from_relationship([
+$subscriptions = elgg_get_entities([
 	'types' => ['site', 'group'],
 	'relationship' => NewsletterSubscription::SUBSCRIPTION,
 	'relationship_guid' => $entity->getGUID(),
