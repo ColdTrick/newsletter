@@ -83,10 +83,12 @@ if (!($content = elgg_list_entities_from_metadata($options))) {
 $sidebar = elgg_view('newsletter/sidebar/subscribe', ['entity' => elgg_get_site_entity()]);
 
 // build page
-$page_data = elgg_view_layout('content', [
+$page_data = elgg_view_layout('default', [
 	'title' => $title_text,
 	'content' => $content,
 	'sidebar' => $sidebar,
+	'filter_id' => 'newsletter',
+	'filter_value' => $filter,
 ]);
 
 // draw page

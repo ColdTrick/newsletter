@@ -17,7 +17,7 @@ class Menus {
 	public static function ownerBlockRegister($hook, $type, $returnvalue, $params) {
 
 		$entity = elgg_extract('entity', $params);
-		if (!elgg_instanceof($entity, 'group')) {
+		if (!$entity instanceof \ElggGroup) {
 			return;
 		}
 		
@@ -28,7 +28,9 @@ class Menus {
 		$returnvalue[] = \ElggMenuItem::factory([
 			'name' => 'newsletter',
 			'text' => elgg_echo('newsletter:menu:owner_block:group'),
-			'href' => 'newsletter/group/' . $entity->getGUID(),
+			'href' => elgg_generate_url('collection:object:newsletter:group', [
+				'guid' => $entity->guid,
+			]),
 			'is_trusted' => true,
 		]);
 		
@@ -47,33 +49,23 @@ class Menus {
 	 */
 	public static function filterRegister($hook, $type, $returnvalue, $params) {
 		
-		if (!elgg_in_context('newsletter')) {
-			return;
-		}
-
 		$page_owner = elgg_get_page_owner_entity();
-		if (empty($page_owner) && !elgg_is_admin_logged_in()) {
-			// site newsletters
-			return [];
+		
+		$base_url = elgg_generate_url('collection:object:newsletter:site');
+		if ($page_owner instanceof \ElggGroup) {
+			$base_url = elgg_generate_url('collection:object:newsletter:group', [
+				'guid' => $page_owner->guid,
+			]);
 		}
 		
-		if (!empty($page_owner) && !$page_owner->canEdit()) {
-			// group newsletters
-			return [];
-		}
-			
-		$returnvalue = [];
-		
-		$base_url = 'newsletter/site';
-		if (elgg_instanceof($page_owner, 'group')) {
-			$base_url = 'newsletter/group/' . $page_owner->getGUID();
-		}
-		$current_filter = get_input('filter', 'sent');
+		$current_filter = elgg_extract('filter_value', $params, 'sent');
 			
 		$returnvalue[] = \ElggMenuItem::factory([
 			'name' => 'concept',
 			'text' => elgg_echo('newsletter:menu:filter:concept'),
-			'href' => $base_url . '?filter=concept',
+			'href' => elgg_http_add_url_query_elements($base_url, [
+				'filter' => 'concept',
+			]),
 			'is_trusted' => true,
 			'selected' => ($current_filter == 'concept'),
 		]);
@@ -81,7 +73,9 @@ class Menus {
 		$returnvalue[] = \ElggMenuItem::factory([
 			'name' => 'scheduled',
 			'text' => elgg_echo('newsletter:menu:filter:scheduled'),
-			'href' => $base_url . '?filter=scheduled',
+			'href' => elgg_http_add_url_query_elements($base_url, [
+				'filter' => 'scheduled',
+			]),
 			'is_trusted' => true,
 			'selected' => ($current_filter == 'scheduled'),
 		]);
@@ -89,7 +83,9 @@ class Menus {
 		$returnvalue[] = \ElggMenuItem::factory([
 			'name' => 'sending',
 			'text' => elgg_echo('newsletter:menu:filter:sending'),
-			'href' => $base_url . '?filter=sending',
+			'href' => elgg_http_add_url_query_elements($base_url, [
+				'filter' => 'sending',
+			]),
 			'is_trusted' => true,
 			'selected' => ($current_filter == 'sending'),
 		]);
@@ -97,7 +93,9 @@ class Menus {
 		$returnvalue[] = \ElggMenuItem::factory([
 			'name' => 'sent',
 			'text' => elgg_echo('newsletter:menu:filter:sent'),
-			'href' => $base_url . '?filter=sent',
+			'href' => elgg_http_add_url_query_elements($base_url, [
+				'filter' => 'sent',
+			]),
 			'is_trusted' => true,
 			'selected' => ($current_filter == 'sent'),
 		]);
@@ -130,15 +128,16 @@ class Menus {
 
 		$returnvalue[] = \ElggMenuItem::factory([
 			'name' => 'newsletter-embed-content',
-			'href' => "newsletter/embed/{$guid}",
 			'text' => elgg_echo('newsletter:menu:longtext:embed_content'),
+			'href' => elgg_generate_url('default:object:newsletter:embed', [
+				'guid' => $guid,
+			]),
 			'link_class' => 'elgg-longtext-control elgg-lightbox',
 			'priority' => 5,
+			'deps' => [
+				'newsletter/embed',
+			],
 		]);
-
-		elgg_load_js('lightbox');
-		elgg_load_css('lightbox');
-		elgg_require_js('newsletter/embed');
 	
 		return $returnvalue;
 	}
@@ -156,15 +155,17 @@ class Menus {
 	public static function newsletterButtonsRegister($hook, $type, $returnvalue, $params) {
 		
 		$entity = elgg_extract('entity', $params);
-		if (!elgg_instanceof($entity, 'object', \Newsletter::SUBTYPE)) {
+		if (!$entity instanceof \Newsletter) {
 			return;
 		}
 		
 		$container = $entity->getContainerEntity();
 		if ($container instanceof \ElggGroup) {
-			$href = 'newsletter/group/' . $container->getGUID();
+			$href = elgg_generate_url('collection:object:newsletter:group', [
+				'guid' => $container->guid,
+			]);
 		} else {
-			$href = 'newsletter/site';
+			$href = elgg_generate_url('collection:object:newsletter:site');
 		}
 			
 		$referer = elgg_extract('HTTP_REFERER', $_SERVER);
@@ -172,36 +173,38 @@ class Menus {
 			// there is history to this site, so add a back button
 			$returnvalue[] = \ElggMenuItem::factory([
 				'name' => 'back',
-				'href' => $referer,
+				'icon' => 'arrow-left',
 				'text' => elgg_echo('back'),
+				'href' => $referer,
 				'target' => '_self',
 			]);
 		}
 			
 		$returnvalue[] = \ElggMenuItem::factory([
 			'name' => 'more',
-			'href' => $href,
 			'text' => elgg_echo('newsletter:menu:site'),
+			'href' => $href,
 			'target' => '_self',
 		]);
 			
 		if ($entity->canEdit()) {
 			$returnvalue[] = \ElggMenuItem::factory([
 				'name' => 'edit',
-				'href' => 'newsletter/edit/' . $entity->getGUID(),
+				'icon' => 'edit',
 				'text' => elgg_echo('edit'),
+				'href' => elgg_generate_entity_url($entity, 'edit'),
 				'target' => '_self',
 			]);
 
 			if (elgg_extract('type', $params) == 'preview') {
 				$returnvalue[] = \ElggMenuItem::factory([
 					'name' => 'mail',
-					'href' => false,
 					'text' => elgg_view_form('newsletter/preview_mail', ['target' => '_self'], ['entity' => $entity]),
+					'href' => false,
 				]);
 			}
 		}
-	
+		
 		return $returnvalue;
 	}
 	
@@ -218,27 +221,26 @@ class Menus {
 	public static function entityRegister($hook, $type, $returnvalue, $params) {
 		
 		$entity = elgg_extract('entity', $params);
-		if (!elgg_instanceof($entity, 'object', \Newsletter::SUBTYPE)) {
-			return;
-		}
-		
-		if (!$entity->canEdit()) {
+		if (!$entity instanceof \Newsletter || !$entity->canEdit()) {
 			return;
 		}
 
 		if (($entity->status == 'sent') || $entity->getLogging()) {
 			$returnvalue[] = \ElggMenuItem::factory([
 				'name' => 'log',
-				'href' => 'newsletter/log/' . $entity->getGUID(),
+				'icon' => 'file-alt',
 				'text' => elgg_echo('newsletter:menu:entity:log'),
+				'href' => elgg_generate_entity_url($entity, 'log'),
 			]);
 		}
 
 		$returnvalue[] = \ElggMenuItem::factory([
 			'name' => 'duplicate',
-			'href' => 'action/newsletter/duplicate?guid=' . $entity->getGUID(),
+			'icon' => 'copy',
 			'text' => elgg_echo('newsletter:menu:entity:duplicate'),
-			'is_action' => true,
+			'href' => elgg_generate_action_url('newsletter/duplicate', [
+				'guid' => $entity->guid,
+			]),
 			'is_trusted' => true,
 		]);
 	
@@ -256,105 +258,107 @@ class Menus {
 	 * @return array Menu items
 	 */
 	public static function newsletterSteps($hook, $type, $returnvalue, $params) {
-	
+		
 		$entity = elgg_extract('entity', $params);
-	
-		if (elgg_instanceof($entity, 'object', \Newsletter::SUBTYPE)) {
+		
+		if ($entity instanceof \Newsletter) {
 			// basic info
 			$returnvalue[] = \ElggMenuItem::factory([
 				'name' => 'basic',
-				'href' => 'newsletter/edit/' . $entity->getGUID(),
-				'text' => elgg_view_icon('checkmark', 'mrs') . elgg_echo('newsletter:menu:steps:entity'),
+				'icon' => 'checkmark',
+				'text' => elgg_echo('newsletter:menu:steps:entity'),
+				'href' => elgg_generate_entity_url($entity, 'edit'),
 			]);
-	
+			
 			// template
 			$item = \ElggMenuItem::factory([
 				'name' => 'template',
-				'href' => 'newsletter/edit/' . $entity->getGUID() . '/template',
 				'text' => elgg_echo('newsletter:menu:steps:template'),
+				'href' => elgg_generate_entity_url($entity, 'edit', null, ['subpage' => 'template']),
 			]);
-	
+			
 			if ($entity->template) {
-				$item->setText(elgg_view_icon('checkmark', 'mrs') . $item->getText());
+				$item->icon = 'checkmark';
 			}
-	
+			
 			$returnvalue[] = $item;
-	
+			
 			// content
 			$item = \ElggMenuItem::factory([
 				'name' => 'content',
-				'href' => 'newsletter/edit/' . $entity->getGUID() . '/content',
 				'text' => elgg_echo('newsletter:menu:steps:content'),
+				'href' => elgg_generate_entity_url($entity, 'edit', null, ['subpage' => 'content']),
 			]);
-	
+			
 			if ($entity->content) {
-				$item->setText(elgg_view_icon('checkmark', 'mrs') . $item->getText());
+				$item->icon = 'checkmark';
 			}
-	
+			
 			$returnvalue[] = $item;
-	
+			
 			// recipients
 			$item = \ElggMenuItem::factory([
 				'name' => 'recipients',
-				'href' => 'newsletter/edit/' . $entity->getGUID() . '/recipients',
 				'text' => elgg_echo('newsletter:menu:steps:recipients'),
+				'href' => elgg_generate_entity_url($entity, 'edit', null, ['subpage' => 'recipients']),
 			]);
-	
+			
 			if ($entity->getRecipients()) {
-				$item->setText(elgg_view_icon('checkmark', 'mrs') . $item->getText());
+				$item->icon = 'checkmark';
 			}
-				
+			
 			$returnvalue[] = $item;
-				
+			
 			// schedule
 			$item = \ElggMenuItem::factory([
 				'name' => 'schedule',
-				'href' => 'newsletter/edit/' . $entity->getGUID() . '/schedule',
 				'text' => elgg_echo('newsletter:menu:steps:schedule'),
+				'href' => elgg_generate_entity_url($entity, 'edit', null, ['subpage' => 'schedule']),
 			]);
-	
+			
 			if ($entity->scheduled) {
-				$item->setText(elgg_view_icon('checkmark', 'mrs') . $item->getText());
+				$item->icon = 'checkmark';
 			}
-	
+			
 			$returnvalue[] = $item;
 		} else {
 			// basic info
 			$returnvalue[] = \ElggMenuItem::factory([
 				'name' => 'basic',
-				'href' => 'javascript:void(0);',
 				'text' => elgg_echo('newsletter:menu:steps:entity'),
+				'href' => false,
 				'selected' => true,
 			]);
-	
+			
 			// template
 			$returnvalue[] = \ElggMenuItem::factory([
 				'name' => 'template',
-				'href' => 'javascript:void(0);',
 				'text' => elgg_echo('newsletter:menu:steps:template'),
+				'href' => false,
 			]);
-	
+			
 			// content
 			$returnvalue[] = \ElggMenuItem::factory([
 				'name' => 'content',
-				'href' => 'javascript:void(0);',
 				'text' => elgg_echo('newsletter:menu:steps:content'),
+				'href' => false,
 			]);
+			
 			// recipients
 			$returnvalue[] = \ElggMenuItem::factory([
 				'name' => 'recipients',
-				'href' => 'javascript:void(0);',
 				'text' => elgg_echo('newsletter:menu:steps:recipients'),
+				'href' => false,
 			]);
-	
+			
 			// schedule
 			$returnvalue[] = \ElggMenuItem::factory([
 				'name' => 'schedule',
-				'href' => 'javascript:void(0);',
 				'text' => elgg_echo('newsletter:menu:steps:schedule'),
+				'href' => false,
 			]);
 		}
-	
+		
 		return $returnvalue;
 	}
 	
@@ -379,26 +383,32 @@ class Menus {
 			// link to your subscriptions
 			$returnvalue[] = \ElggMenuItem::factory([
 				'name' => 'newsletter_suscriptions',
-				'href' => "newsletter/subscriptions/{$user->username}",
 				'text' => elgg_echo('newsletter:menu:page:subscriptions'),
+				'href' => elgg_generate_url('collection:object:newsletter:subscriptions', [
+					'username' => $user->username,
+				]),
 				'is_trusted' => true,
 			]);
 			$returnvalue[] = \ElggMenuItem::factory([
 				'name' => 'newsletter_received',
-				'href' => "newsletter/received/{$user->username}",
+				'href' => elgg_generate_url('collection:object:newsletter:received', [
+					'username' => $user->username,
+				]),
 				'text' => elgg_echo('newsletter:menu:page:received'),
 				'is_trusted' => true,
 			]);
 		}
-	
+		
 		// settings pages
 		$page_owner = elgg_get_page_owner_entity();
-		if (elgg_in_context('settings') && elgg_instanceof($page_owner, 'user')) {
+		if (elgg_in_context('settings') && $page_owner instanceof \ElggUser) {
 			if ($page_owner->canEdit()) {
 				$returnvalue[] = \ElggMenuItem::factory([
 					'name' => 'edit',
-					'href' => "newsletter/subscriptions/{$page_owner->username}",
 					'text' => elgg_echo('newsletter:menu:page:settings'),
+					'href' => elgg_generate_url('collection:object:newsletter:subscriptions', [
+						'username' => $user->username,
+					]),
 					'is_trusted' => true,
 				]);
 			}
@@ -422,8 +432,8 @@ class Menus {
 		// link to your subscriptions
 		$returnvalue[] = \ElggMenuItem::factory([
 			'name' => 'newsletter',
-			'href' => 'newsletter/site',
 			'text' => elgg_echo('newsletter:menu:site'),
+			'href' => elgg_generate_url('collection:object:newsletter:site'),
 			'is_trusted' => true,
 		]);
 
