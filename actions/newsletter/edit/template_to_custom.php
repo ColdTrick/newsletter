@@ -3,16 +3,14 @@ $guid = (int) get_input('guid');
 $template = get_input('template');
 
 if (empty($guid) || empty($template)) {
-	register_error(elgg_echo('error:missing_data'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('error:missing_data'));
 }
 
 elgg_entity_gatekeeper($guid, 'object', Newsletter::SUBTYPE);
 $entity = get_entity($guid);
 
 if (!$entity->canEdit()) {
-	register_error(elgg_echo('actionunauthorized'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('actionunauthorized'));
 }
 	
 $entity->template = 'custom';
@@ -40,6 +38,4 @@ if (is_numeric($template)) {
 	}
 }
 
-system_message(elgg_echo('newsletter:action:template_to_custom:success'));
-
-forward(REFERER);
+return elgg_ok_response('', elgg_echo('newsletter:action:template_to_custom:success'));

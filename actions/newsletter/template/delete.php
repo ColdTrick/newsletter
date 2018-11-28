@@ -2,24 +2,21 @@
 $guid = (int) get_input('guid');
 
 if (empty($guid)) {
-	register_error(elgg_echo('error:missing_data'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('error:missing_data'));
 }
 
 elgg_entity_gatekeeper($guid, 'object', Newsletter::SUBTYPE);
 $entity = get_entity($guid);
 
 if (!$entity->canEdit()) {
-	register_error(elgg_echo('actionunauthorized'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('actionunauthorized'));
 }
 
 $entity_url = $entity->getURL();
 $container = $entity->getContainerEntity();
 
 if (!$entity->delete()) {
-	register_error(elgg_echo('newsletter:action:template:delete:error:delete'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('newsletter:action:template:delete:error:delete'));
 }
 
 $forward_url = REFERER;
@@ -32,6 +29,4 @@ if ($_SERVER['HTTP_REFERER'] == $entity_url) {
 	}
 }
 
-system_message(elgg_echo('newsletter:action:template:delete:success'));
-
-forward($forward_url);
+return elgg_ok_response('', elgg_echo('newsletter:action:template:delete:success'), $forward_url);

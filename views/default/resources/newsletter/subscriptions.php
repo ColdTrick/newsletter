@@ -1,7 +1,5 @@
 <?php
 
-gatekeeper();
-
 $page_owner = elgg_get_page_owner_entity();
 if (empty($page_owner) || !elgg_instanceof($page_owner, 'user') || !$page_owner->canEdit()) {
 	register_error(elgg_echo('noaccess'));

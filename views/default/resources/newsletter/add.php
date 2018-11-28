@@ -6,8 +6,6 @@
  * @uses elgg_get_page_owner_entity() the container in which to create the newsletter
  */
 
-elgg_gatekeeper();
-
 elgg_require_js('newsletter/edit');
 
 $page_owner = elgg_get_page_owner_entity();

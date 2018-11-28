@@ -6,24 +6,20 @@
 $guid = (int) get_input('guid');
 
 if (empty($guid)) {
-	register_error(elgg_echo('error:missing_data'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('error:missing_data'));
 }
 
 elgg_entity_gatekeeper($guid, 'object', Newsletter::SUBTYPE);
 $entity = get_entity($guid);
 
 if (!$entity->canEdit()) {
-	register_error(elgg_echo('actionunauthorized'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('actionunauthorized'));
 }
 			
 $clone = clone $entity;
 if (!$clone->save()) {
-	register_error(elgg_echo('newsletter:action:duplicate:error'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('newsletter:action:duplicate:error'));
 }
 
-system_message(elgg_echo('newsletter:action:duplicate:success'));
 // forward to the edit page so you can start working with the clone
-forward('newsletter/edit/' . $clone->getGUID());
+return elgg_ok_response('', elgg_echo('newsletter:action:duplicate:success'), ('newsletter/edit/' . $clone->guid));

@@ -5,15 +5,7 @@
  * @uses get_input("guid") the GUID of the newsletter to view
  */
 
-gatekeeper();
-
 $guid = (int) get_input('guid');
-
-// validate input
-if (empty($guid)) {
-	register_error(elgg_echo('error:missing_data'));
-	forward(REFERER);
-}
 
 elgg_entity_gatekeeper($guid, 'object', Newsletter::SUBTYPE);
 $entity = get_entity($guid);

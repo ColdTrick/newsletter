@@ -6,8 +6,6 @@
  * @uses get_input("guid") the guid of the newsletter to edit
  */
 
-elgg_gatekeeper();
-
 elgg_require_js('newsletter/edit');
 
 $guid = (int) get_input('guid');
