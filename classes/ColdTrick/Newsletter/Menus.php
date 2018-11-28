@@ -432,6 +432,7 @@ class Menus {
 		// link to your subscriptions
 		$returnvalue[] = \ElggMenuItem::factory([
 			'name' => 'newsletter',
+			'icon' => 'mail-bulk',
 			'text' => elgg_echo('newsletter:menu:site'),
 			'href' => elgg_generate_url('collection:object:newsletter:site'),
 			'is_trusted' => true,
