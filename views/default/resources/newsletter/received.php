@@ -3,8 +3,6 @@
  * Shows all the newsletters the user received
  */
 
-gatekeeper();
-
 $user = elgg_get_page_owner_entity();
 if (empty($user) || !elgg_instanceof($user, 'user')) {
 	register_error(elgg_echo('pageownerunavailable', [elgg_get_page_owner_guid()]));
