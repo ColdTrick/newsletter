@@ -63,6 +63,10 @@ return [
 			'path' => 'newsletter/view/{guid}/{code?}',
 			'resource' => 'newsletter/view',
 		],
+		'collection:object:newsletter:all' => [
+			'path' => 'newsletter/site',
+			'resource' => 'newsletter/site',
+		],
 		'collection:object:newsletter:group' => [
 			'path' => 'newsletter/group/{guid}',
 			'resource' => 'newsletter/group',

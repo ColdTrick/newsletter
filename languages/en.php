@@ -5,7 +5,10 @@ return array(
 	'item:object:newsletter' => "Newsletter",
 	'item:object:newsletter_template' => "Newsletter template",
 	'item:object:newsletter_subscription' => "Newsletter subscription",
-	'newsletter:add' => "New newsletter",
+	
+	'collection:object:newsletter' => "Newsletters",
+	
+	'add:object:newsletter' => "New newsletter",
 	'newsletter:subscribe' => "Subscribe",
 	'newsletter:unsubscribe' => "Unsubscribe",
 	'newsletter:duplicate_of' => "Duplicate of",

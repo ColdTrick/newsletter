@@ -3,22 +3,16 @@
  * View all the site newsletters
  */
 
-$filter = false;
+$filter = 'sent';
 
 // breadcrumb
-elgg_push_breadcrumb(elgg_echo('newsletter:breadcrumb:site'));
+elgg_push_collection_breadcrumbs('object', Newsletter::SUBTYPE);
 
 // register title button
 if (elgg_is_admin_logged_in()) {
-	elgg_register_title_button();
+	elgg_register_title_button('newsletter', 'add', 'object', Newsletter::SUBTYPE);
 	
-	$filter = get_input('filter');
-	
-	if (empty($filter)) {
-		$filter = 'concept';
-		// input is used in filter tabs also
-		set_input('filter', $filter);
-	}
+	$filter = get_input('filter', 'concept');
 }
 
 // build page elements
@@ -27,8 +21,8 @@ $title_text = elgg_echo('newsletter:site:title');
 $options = [
 	'type' => 'object',
 	'subtype' => Newsletter::SUBTYPE,
-	'container_guid' => elgg_get_site_entity()->getGUID(),
-	'full_view' => false,
+	'container_guid' => elgg_get_site_entity()->guid,
+	'no_results' => true,
 ];
 
 switch ($filter) {
@@ -46,6 +40,7 @@ switch ($filter) {
 		$options['order_by_metadata'] = [
 			'name' => 'scheduled',
 			'as' => 'integer',
+			'direction' => 'ASC',
 		];
 		break;
 	case 'sending':
@@ -76,9 +71,7 @@ switch ($filter) {
 		break;
 }
 
-if (!($content = elgg_list_entities_from_metadata($options))) {
-	$content = elgg_view('output/longtext', ['value' => elgg_echo('notfound')]);
-}
+$content = elgg_list_entities($options);
 
 $sidebar = elgg_view('newsletter/sidebar/subscribe', ['entity' => elgg_get_site_entity()]);
 

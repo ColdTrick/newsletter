@@ -2,6 +2,8 @@
 
 namespace ColdTrick\Newsletter;
 
+use Elgg\Menu\MenuItems;
+
 class Menus {
 	
 	/**
@@ -12,7 +14,7 @@ class Menus {
 	 * @param array  $returnvalue Default menu items
 	 * @param array  $params      params for the hook
 	 *
-	 * @return array Menu items
+	 * @return MenuItems
 	 */
 	public static function ownerBlockRegister($hook, $type, $returnvalue, $params) {
 
@@ -45,11 +47,19 @@ class Menus {
 	 * @param array  $returnvalue Default menu items
 	 * @param array  $params      params for the hook
 	 *
-	 * @return array Menu items
+	 * @return MenuItems
 	 */
 	public static function filterRegister($hook, $type, $returnvalue, $params) {
 		
 		$page_owner = elgg_get_page_owner_entity();
+		
+		if ($page_owner instanceof \ElggGroup && !$page_owner->canEdit()) {
+			return;
+		}
+		
+		if (empty($page_owner) && !elgg_is_admin_logged_in()) {
+			return;
+		}
 		
 		$base_url = elgg_generate_url('collection:object:newsletter:site');
 		if ($page_owner instanceof \ElggGroup) {
@@ -111,7 +121,7 @@ class Menus {
 	 * @param array  $returnvalue Default menu items
 	 * @param array  $params      params for the hook
 	 *
-	 * @return array Menu items
+	 * @return MenuItems
 	 */
 	public static function longtextRegister($hook, $type, $returnvalue, $params) {
 	
@@ -150,7 +160,7 @@ class Menus {
 	 * @param array  $returnvalue Default menu items
 	 * @param array  $params      params for the hook
 	 *
-	 * @return array Menu items
+	 * @return MenuItems
 	 */
 	public static function newsletterButtonsRegister($hook, $type, $returnvalue, $params) {
 		
@@ -216,7 +226,7 @@ class Menus {
 	 * @param array  $returnvalue Default menu items
 	 * @param array  $params      params for the hook
 	 *
-	 * @return array Menu items
+	 * @return MenuItems
 	 */
 	public static function entityRegister($hook, $type, $returnvalue, $params) {
 		
@@ -255,7 +265,7 @@ class Menus {
 	 * @param array  $returnvalue Default menu items
 	 * @param array  $params      params for the hook
 	 *
-	 * @return array Menu items
+	 * @return MenuItems
 	 */
 	public static function newsletterSteps($hook, $type, $returnvalue, $params) {
 		
@@ -370,7 +380,7 @@ class Menus {
 	 * @param array  $returnvalue Default menu items
 	 * @param array  $params      params for the hook
 	 *
-	 * @return array Menu items
+	 * @return MenuItems
 	 */
 	public static function pageRegister($hook, $type, $returnvalue, $params) {
 
@@ -425,7 +435,7 @@ class Menus {
 	 * @param array  $returnvalue Default menu items
 	 * @param array  $params      params for the hook
 	 *
-	 * @return array Menu items
+	 * @return MenuItems
 	 */
 	public static function siteRegister($hook, $type, $returnvalue, $params) {
 
