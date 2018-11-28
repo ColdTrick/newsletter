@@ -113,6 +113,7 @@ return array(
 	'newsletter:edit:template:select:default' => "Default template",
 	'newsletter:edit:template:select:default2' => "Default template (with sidebar)",
 	'newsletter:edit:template:select:custom' => "Custom template",
+	'newsletter:edit:template:custom:label' => "Custom template configuration",
 	'newsletter:edit:template:html' => "HTML",
 	'newsletter:edit:template:css' => "CSS",
 	'newsletter:edit:template:name' => "Name for the custom template (only needed for saving template)",

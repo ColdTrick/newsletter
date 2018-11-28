@@ -1,6 +1,9 @@
-.elgg-form-newsletter-edit-template .elgg-input-radios label {
-	font-size: 100%;
-	font-weight: normal;
+.elgg-form-newsletter-edit-template { 
+	.elgg-input-radios {
+		> li:hover > label > a {
+			display: inline-block;
+		}
+	}
 }
 
 .elgg-form-newsletter-edit-template .elgg-discover:hover .elgg-discoverable {

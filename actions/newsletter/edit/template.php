@@ -10,16 +10,14 @@ if (empty($guid)) {
 	return elgg_error_response(elgg_echo('error:missing_data'));
 }
 
-elgg_entity_gatekeeper($guid, 'object', Newsletter::SUBTYPE);
 $entity = get_entity($guid);
-
-if (!$entity->canEdit()) {
+if (!$entity instanceof Newsletter || !$entity->canEdit()) {
 	return elgg_error_response(elgg_echo('actionunauthorized'));
 }
 
 $forward_url = REFERER;
 if (empty($entity->template)) {
-	$forward_url = 'newsletter/edit/' . $entity->getGUID() . '/content';
+	$forward_url = elgg_generate_entity_url($entity, 'edit', 'content');
 }
 
 $entity->html = $html;

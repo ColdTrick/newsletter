@@ -1,57 +1,51 @@
 <?php
-
 /**
  * Create a new newsletter
  *
  * @uses elgg_get_page_owner_entity() the container in which to create the newsletter
  */
 
-elgg_require_js('newsletter/edit');
+use Elgg\EntityPermissionsException;
+use ColdTrick\Newsletter\EditForm;
 
 $page_owner = elgg_get_page_owner_entity();
 $container_guid = 0;
 
 // check if we have access
-if (elgg_instanceof($page_owner, 'user')) {
+if ($page_owner instanceof ElggUser) {
 	// access to site newsletters is only for admins
 	if ($page_owner->isAdmin()) {
-		$container_guid = elgg_get_site_entity()->getGUID();
+		$container_guid = elgg_get_site_entity()->guid;
 	} else {
-		forward(REFERER);
+		throw new EntityPermissionsException();
 	}
-} elseif (elgg_instanceof($page_owner, 'group')) {
+} elseif ($page_owner instanceof ElggGroup) {
 	// only for group owners/admins
 	if (newsletter_is_group_enabled($page_owner) && $page_owner->canEdit()) {
-		$container_guid = $page_owner->getGUID();
+		$container_guid = $page_owner->guid;
 	} else {
-		forward(REFERER);
+		throw new EntityPermissionsException();
 	}
 } else {
-	forward(REFERER);
+	throw new EntityPermissionsException();
 }
 
 // breadcrumb
-elgg_push_breadcrumb(elgg_echo('newsletter:breadcrumb:site'), 'newsletter/site');
-if (elgg_instanceof($page_owner, 'group')) {
-	elgg_push_breadcrumb($page_owner->name, 'newsletter/group/' . $page_owner->getGUID());
-}
-elgg_push_breadcrumb(elgg_echo('add'));
+elgg_push_collection_breadcrumbs('object', Newsletter::SUBTYPE, $page_owner instanceof ElggGroup ? $page_owner : null);
 
 // build page elements
 $title_text = elgg_echo('newsletter:add:title');
 
-$form = elgg_view_form('newsletter/edit', [], ['container_guid' => $container_guid]);
+$form = new EditForm(null, $container_guid);
 
-$filter_tabs = elgg_view_menu('newsletter_steps', [
-	'class' => 'elgg-tabs',
-	'sort_by' => 'register',
-]);
+$content = elgg_view_form('newsletter/edit', [], $form('basic'));
 
 // build page
-$page_data = elgg_view_layout('content', [
+$page_data = elgg_view_layout('default', [
 	'title' => $title_text,
-	'content' => $form,
-	'filter' => $filter_tabs,
+	'content' => $content,
+	'filter_id' => 'newsletter_steps',
+	'filter_value' => 'basic',
 ]);
 
 // draw page

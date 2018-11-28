@@ -1,6 +1,6 @@
 <?php
 
-elgg_make_sticky_form('newsletter_edit');
+elgg_make_sticky_form('newsletter/edit');
 
 $guid = (int) get_input('guid');
 $container_guid = (int) get_input('container_guid');
@@ -23,12 +23,7 @@ if ((elgg_get_plugin_setting('custom_from', 'newsletter') === 'yes') && !newslet
 
 if (!empty($guid)) {
 	$entity = get_entity($guid);
-	
-	if (!empty($entity) && $entity->canEdit()) {
-		if (!elgg_instanceof($entity, 'object', Newsletter::SUBTYPE)) {
-			return elgg_error_response(elgg_echo('error:missing_data'));
-		}
-	} else {
+	if (!$entity instanceof Newsletter || !$entity->canEdit()) {
 		return elgg_error_response(elgg_echo('actionunauthorized'));
 	}
 } else {
@@ -37,17 +32,11 @@ if (!empty($guid)) {
 	$entity->container_guid = $container_guid;
 	$entity->access_id = $access_id;
 	
-	$entity->status = 'concept';
-	
 	$new_entity = true;
 	
 	if (!$entity->save()) {
 		return elgg_error_response(elgg_echo('save:fail'));
 	}
-}
-
-if (empty($entity)) {
-	return elgg_error_response(elgg_echo('actionunauthorized'));
 }
 
 $entity->title = $title;
@@ -74,11 +63,11 @@ if (!$entity->save()) {
 	return elgg_error_response(elgg_echo('newsletter:action:edit:error:save'));
 }
 
-elgg_clear_sticky_form('newsletter_edit');
+elgg_clear_sticky_form('newsletter/edit');
 
 $forward_url = REFERRER;
 if ($new_entity) {
-	$forward_url = 'newsletter/edit/' . $entity->getGUID() . '/template';
+	$forward_url = elgg_generate_entity_url($entity, 'edit', 'template');
 }
 
 return elgg_ok_response('', elgg_echo('newsletter:action:edit:success'), $forward_url);

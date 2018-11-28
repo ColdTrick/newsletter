@@ -1,5 +1,7 @@
 <?php
 
+use Elgg\Values;
+
 $entity = elgg_extract('entity', $vars);
 $full_view = (bool) elgg_extract('full_view', $vars, false);
 
@@ -30,7 +32,8 @@ $subtitle = '';
 switch ($entity->status) {
 	case 'scheduled':
 		$subtitle = elgg_format_element('strong', [], elgg_echo('newsletter:entity:scheduled') . ': ');
-		$subtitle .= date(elgg_echo('friendlytime:date_format'), $entity->scheduled);
+		$date = Values::normalizeTime($entity->scheduled);
+		$subtitle .= $date->format(elgg_echo('friendlytime:date_format'));
 		break;
 	case 'sent':
 		$subtitle = elgg_format_element('strong', [], elgg_echo('newsletter:entity:sent') . ': ');

@@ -45,6 +45,46 @@ return [
 				Gatekeeper::class,
 			],
 		],
+		'edit:object:newsletter:template' => [
+			'path' => 'newsletter/edit/{guid}/template',
+			'resource' => 'newsletter/edit',
+			'defaults' => [
+				'subpage' => 'template',
+			],
+			'middleware' => [
+				Gatekeeper::class,
+			],
+		],
+		'edit:object:newsletter:content' => [
+			'path' => 'newsletter/edit/{guid}/content',
+			'resource' => 'newsletter/edit',
+			'defaults' => [
+				'subpage' => 'content',
+			],
+			'middleware' => [
+				Gatekeeper::class,
+			],
+		],
+		'edit:object:newsletter:recipients' => [
+			'path' => 'newsletter/edit/{guid}/recipients',
+			'resource' => 'newsletter/edit',
+			'defaults' => [
+				'subpage' => 'recipients',
+			],
+			'middleware' => [
+				Gatekeeper::class,
+			],
+		],
+		'edit:object:newsletter:schedule' => [
+			'path' => 'newsletter/edit/{guid}/schedule',
+			'resource' => 'newsletter/edit',
+			'defaults' => [
+				'subpage' => 'schedule',
+			],
+			'middleware' => [
+				Gatekeeper::class,
+			],
+		],
 		'log:object:newsletter' => [
 			'path' => 'newsletter/log/{guid}',
 			'resource' => 'newsletter/log',
@@ -118,7 +158,6 @@ return [
 		'newsletter/edit/recipients' => [],
 		
 		'newsletter/delete' => [],
-		'newsletter/send' => [],
 		'newsletter/subscribe' => [
 			'access' => 'public',
 		],

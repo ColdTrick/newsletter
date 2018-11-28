@@ -18,10 +18,9 @@ $replacements = [
 
 echo elgg_echo('newsletter:placeholders:info');
 
-$list_items = '';
+$list_items = [];
 foreach ($replacements as $replacement => $info) {
-	$list_items .= elgg_format_element('li', ['title' => $info], $replacement);
+	$list_items[] = elgg_format_element('li', ['title' => $info], $replacement);
 }
 
-
-echo elgg_format_element('ul', ['class' => 'newsletter-placeholders elgg-subtext'], $list_items);
+echo elgg_format_element('ul', ['class' => 'newsletter-placeholders'], implode(PHP_EOL, $list_items));

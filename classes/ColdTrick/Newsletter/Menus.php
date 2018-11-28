@@ -269,22 +269,26 @@ class Menus {
 	 */
 	public static function newsletterSteps($hook, $type, $returnvalue, $params) {
 		
-		$entity = elgg_extract('entity', $params);
+		$entity = elgg_extract('filter_entity', $params, elgg_extract('entity', $params));
 		
 		if ($entity instanceof \Newsletter) {
+			$current_step = elgg_extract('filter_value', $params);
+			
 			// basic info
 			$returnvalue[] = \ElggMenuItem::factory([
 				'name' => 'basic',
 				'icon' => 'checkmark',
 				'text' => elgg_echo('newsletter:menu:steps:entity'),
 				'href' => elgg_generate_entity_url($entity, 'edit'),
+				'selected' => $current_step === 'basic',
 			]);
 			
 			// template
 			$item = \ElggMenuItem::factory([
 				'name' => 'template',
 				'text' => elgg_echo('newsletter:menu:steps:template'),
-				'href' => elgg_generate_entity_url($entity, 'edit', null, ['subpage' => 'template']),
+				'href' => elgg_generate_entity_url($entity, 'edit', 'template'),
+				'selected' => $current_step === 'template',
 			]);
 			
 			if ($entity->template) {
@@ -297,7 +301,8 @@ class Menus {
 			$item = \ElggMenuItem::factory([
 				'name' => 'content',
 				'text' => elgg_echo('newsletter:menu:steps:content'),
-				'href' => elgg_generate_entity_url($entity, 'edit', null, ['subpage' => 'content']),
+				'href' => elgg_generate_entity_url($entity, 'edit', 'content'),
+				'selected' => $current_step === 'content',
 			]);
 			
 			if ($entity->content) {
@@ -310,7 +315,8 @@ class Menus {
 			$item = \ElggMenuItem::factory([
 				'name' => 'recipients',
 				'text' => elgg_echo('newsletter:menu:steps:recipients'),
-				'href' => elgg_generate_entity_url($entity, 'edit', null, ['subpage' => 'recipients']),
+				'href' => elgg_generate_entity_url($entity, 'edit', 'recipients'),
+				'selected' => $current_step === 'recipients',
 			]);
 			
 			if ($entity->getRecipients()) {
@@ -323,7 +329,8 @@ class Menus {
 			$item = \ElggMenuItem::factory([
 				'name' => 'schedule',
 				'text' => elgg_echo('newsletter:menu:steps:schedule'),
-				'href' => elgg_generate_entity_url($entity, 'edit', null, ['subpage' => 'schedule']),
+				'href' => elgg_generate_entity_url($entity, 'edit', 'schedule'),
+				'selected' => $current_step === 'schedule',
 			]);
 			
 			if ($entity->scheduled) {

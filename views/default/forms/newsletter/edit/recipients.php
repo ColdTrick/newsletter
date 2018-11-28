@@ -1,168 +1,180 @@
 <?php
 
 $entity = elgg_extract('entity', $vars);
-$container = $entity->getContainerEntity();
-
-$recipients = $entity->getRecipients();
-if (!empty($recipients)) {
-	
-	$user_guids = elgg_get_sticky_value('newsletter_recipients', 'user_guids', elgg_extract('user_guids', $recipients));
-	$group_guids = elgg_get_sticky_value('newsletter_recipients', 'group_guids', elgg_extract('group_guids', $recipients));
-	$emails = elgg_get_sticky_value('newsletter_recipients', 'emails', elgg_extract('emails', $recipients));
-	
-	$subscribers = (int) elgg_get_sticky_value('newsletter_recipients', 'subscribers', elgg_extract('subscribers', $recipients));
-	$members = (int) elgg_get_sticky_value('newsletter_recipients', 'members', elgg_extract('members', $recipients));
-} else {
-	$user_guids = elgg_get_sticky_value('newsletter_recipients', 'user_guids');
-	$group_guids = elgg_get_sticky_value('newsletter_recipients', 'group_guids');
-	$emails = elgg_get_sticky_value('newsletter_recipients', 'emails');
-	
-	$subscribers = (int) elgg_get_sticky_value('newsletter_recipients', 'subscribers');
-	$members = (int) elgg_get_sticky_value('newsletter_recipients', 'members');
+if (!$entity instanceof Newsletter) {
+	return;
 }
 
+echo elgg_view_field([
+	'#type' => 'hidden',
+	'name' => 'guid',
+	'value' => $entity->guid,
+]);
+
+$container = $entity->getContainerEntity();
 elgg_require_js('newsletter/recipients');
 
-echo elgg_format_element('div', [], elgg_view('output/longtext', ['value' => elgg_echo('newsletter:recipients:description')]));
+echo elgg_view('output/longtext', [
+	'value' => elgg_echo('newsletter:recipients:description'),
+]);
 
-$file = elgg_format_element('label', ['for' => 'newsletter-recipients-csv'], elgg_echo('newsletter:recipients:csv'));
-$file .= elgg_view('input/file', ['name' => 'csv', 'id' => 'newsletter-recipients-csv']);
-$file .= elgg_format_element('div', ['class' => 'elgg-subtext'], elgg_echo('newsletter:recipients:csv:description'));
-echo elgg_format_element('div', [], $file);
+echo elgg_view_field([
+	'#type' => 'file',
+	'#label' => elgg_echo('newsletter:recipients:csv'),
+	'#help' => elgg_echo('newsletter:recipients:csv:description'),
+	'name' => 'csv',
+]);
 
-$autocomplete = elgg_format_element('label', ['for' => 'newsletter-recipients-autocomplete'], elgg_echo('newsletter:recipients:recipient'));
-$autocomplete .= elgg_view('input/text', ['name' => 'q', 'id' => 'newsletter-recipients-autocomplete', 'class' => 'elgg-input-autocomplete']);
-$autocomplete .= elgg_format_element('div', ['class' => 'elgg-subtext'], elgg_echo('newsletter:recipients:recipient:description'));
-echo elgg_format_element('div', [], $autocomplete);
+echo elgg_view_field([
+	'#type' => 'text',
+	'#label' => elgg_echo('newsletter:recipients:recipient'),
+	'#help' => elgg_echo('newsletter:recipients:recipient:description'),
+	'name' => 'q',
+	'class' => 'elgg-input-autocomplete',
+]);
 
 // recipient wrapper
 // add subscribers
 
 $subscriber_count = newsletter_get_subscribers($container, true);
 
-$checkbox_subscribers = elgg_view('input/checkbox', [
+echo elgg_view_field([
+	'#type' => 'checkbox',
+	'#label' => elgg_echo('newsletter:recipients:subscribers') . elgg_format_element('span', ['class' => 'mls'], "({$subscriber_count})"),
 	'name' => 'subscribers',
-	'value' => '1',
-	'id' => 'newsletter-recipients-subscribers',
-	'checked' => !empty($subscribers),
+	'value' => 1,
+	'checked' => !empty(elgg_extract('subscribers', $vars)),
+	'switch' => true,
 ]);
-$checkbox_subscribers_label = elgg_echo('newsletter:recipients:subscribers') . elgg_format_element('span', ['class' => 'mls'], "({$subscriber_count})");
-$checkbox_subscribers .= elgg_format_element('label', ['for' => 'newsletter-recipients-subscribers'], $checkbox_subscribers_label);
-
-$checkboxes = elgg_format_element('div', [], $checkbox_subscribers);
 
 // add members
 $member_count = 0;
-if (elgg_instanceof($container, 'site')) {
-	$member_count = $container->getEntities([
-		'site_guids' => false,
-		'count' => true,
+if (!$container instanceof ElggGroup) {
+	$member_count = elgg_get_entities([
 		'type' => 'user',
+		'count' => true,
 	]);
 	
 	$member_count .= ' ' . elgg_echo('newsletter:recipients:members:site');
-} elseif (elgg_instanceof($container, 'group')) {
-	$member_count = $container->getMembers(0, 0, true);
+} else {
+	$member_count = $container->getMembers([
+		'count' => true,
+	]);
 	
 	$member_count .= ' ' . elgg_echo('newsletter:recipients:members:group');
 }
 
-$checkbox_members = elgg_view('input/checkbox', [
+echo elgg_view_field([
+	'#type' => 'checkbox',
+	'#label' => elgg_echo('newsletter:recipients:members') . elgg_format_element('span', ['class' => 'mls'], "({$member_count})"),
 	'name' => 'members',
-	'value' => '1',
-	'id' => 'newsletter-recipients-members',
-	'checked' => !empty($members),
+	'value' => 1,
+	'checked' => !empty(elgg_extract('members', $vars)),
+	'switch' => true,
 ]);
-$checkbox_members_label = elgg_echo('newsletter:recipients:members') . elgg_format_element('span', ['class' => 'mls'], "({$member_count})");
-$checkbox_members .= elgg_format_element('label', ['for' => 'newsletter-recipients-members'], $checkbox_members_label);
-
-$checkboxes .= elgg_format_element('div', [], $checkbox_members);
 
 // add specific users
 $users_content = '';
+$user_counter = '';
 $class = 'hidden';
-$counter = '';
 
+$user_guids = elgg_extract('user_guids', $vars);
 if (!empty($user_guids)) {
 	$counter = 0;
 	
-	foreach ($user_guids as $user_guid) {
-		$user = get_user($user_guid);
+	$users = elgg_get_entities([
+		'type' => 'user',
+		'guids' => $user_guids,
+		'limit' => false,
+		'batch' => true,
+		'order_by_metadata' => [
+			'name' => 'name',
+		],
+	]);
+	
+	/* @var $user ElggUser */
+	foreach ($users as $user) {
+		$class = '';
+		$counter++;
 		
-		if (!empty($user)) {
-			$class = '';
-			$counter++;
-			
-			$user_listing = newsletter_format_recipient($user);
-			
-			$users_content .= elgg_extract('content', $user_listing);
-		}
+		$user_listing = newsletter_format_recipient($user);
+		
+		$users_content .= elgg_extract('content', $user_listing);
 	}
 	
 	if (!empty($counter)) {
-		$counter = "({$counter})";
-	} else {
-		$counter = '';
+		$user_counter = "({$counter})";
 	}
 }
 
-$users_title = elgg_echo('item:user') . elgg_format_element('span', ['class' => 'newsletter-counter mls'], $counter);
+$users_title = elgg_echo('item:user:user') . elgg_format_element('span', ['class' => 'newsletter-counter mls'], $user_counter);
 $users = elgg_view_module('newsletter-recipients', $users_title, $users_content, ['class' => $class, 'id' => 'newsletter-recipients-users']);
 
 // add specific groups
 $groups_content = '';
+$group_counter = '';
 $class = 'hidden';
+
+$group_guids = elgg_extract('group_guids', $vars);
 if (!empty($group_guids)) {
 	$counter = 0;
 	
-	foreach ($group_guids as $group_guid) {
-		$group = get_entity($group_guid);
-			
-		if (!empty($group) && elgg_instanceof($group, 'group')) {
-			$class = '';
-			$counter++;
-			
-			$group_listing = newsletter_format_recipient($group);
+	$groups = elgg_get_entities([
+		'type' => 'group',
+		'guids' => $group_guids,
+		'limit' => false,
+		'batch' => true,
+		'order_by_metadata' => [
+			'name' => 'name',
+		],
+	]);
+	
+	/* @var $group ElggGroup */
+	foreach ($groups as $group) {
+		$class = '';
+		$counter++;
+		
+		$group_listing = newsletter_format_recipient($group);
 
-			$groups_content .= elgg_extract('content', $group_listing);
-		}
+		$groups_content .= elgg_extract('content', $group_listing);
 	}
 	
 	if (!empty($counter)) {
-		$counter = "({$counter})";
-	} else {
-		$counter = '';
+		$group_counter = "({$counter})";
 	}
 }
 
-$groups_title = elgg_echo('groups') . elgg_format_element('span', ['class' => 'newsletter-counter mls'], $counter);
+$groups_title = elgg_echo('item:group:group') . elgg_format_element('span', ['class' => 'newsletter-counter mls'], $group_counter);
 $groups = elgg_view_module('newsletter-recipients', $groups_title, $groups_content, ['class' => $class, 'id' => 'newsletter-recipients-groups']);
 
 // add specific emails
 $email_content = '';
+$email_counter = '';
 $class = 'hidden';
+
+$emails = elgg_extract('emails', $vars);
 if (!empty($emails)) {
 	$counter = 0;
 	
 	foreach ($emails as $email) {
 		$email_listing = newsletter_format_recipient($email);
 
-		if (!empty($email_listing)) {
-			$class = '';
-			$counter++;
-			
-			$email_content .= elgg_extract('content', $email_listing);
+		if (empty($email_listing)) {
+			continue;
 		}
+		
+		$class = '';
+		$counter++;
+		
+		$email_content .= elgg_extract('content', $email_listing);
 	}
 	
 	if (!empty($counter)) {
-		$counter = "({$counter})";
-	} else {
-		$counter = '';
+		$email_counter = "({$counter})";
 	}
 }
 
-$emails_title = elgg_echo('newsletter:recipients:email') . elgg_format_element('span', ['class' => 'newsletter-counter mls'], $counter);
+$emails_title = elgg_echo('newsletter:recipients:email') . elgg_format_element('span', ['class' => 'newsletter-counter mls'], $email_counter);
 $emails = elgg_view_module('newsletter-recipients', $emails_title, $email_content, ['class' => $class, 'id' => 'newsletter-recipients-emails']);
 
 $icon_options = [
@@ -174,6 +186,9 @@ $wrapper_title = elgg_echo('newsletter:recipients') . elgg_view('output/icon', $
 
 echo elgg_view_module('newsletter-recipients-wrapper', $wrapper_title, $checkboxes . $users . $groups . $emails, ['id' => 'newsletter-recipients-wrapper']);
 
-$foot = elgg_view('input/hidden', ['name' => 'guid', 'value' => $entity->getGUID()]);
-$foot .= elgg_view('input/submit', ['value' => elgg_echo('save')]);
-echo elgg_format_element('div', ['class' => 'elgg-foot'], $foot);
+// footer
+$footer = elgg_view_field([
+	'#type' => 'submit',
+	'value' => elgg_echo('save'),
+]);
+elgg_set_form_footer($footer);

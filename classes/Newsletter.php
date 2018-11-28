@@ -1,13 +1,7 @@
 <?php
-/**
- * Custom class for Newsletters
- *
- * @var SUBTYPE		The subtype of the newsletters
- * @var SEND_TO		A relationship to link users to this newsletter
- *
- * @package Newsletter
- */
+
 class Newsletter extends ElggObject {
+	
 	const SUBTYPE = 'newsletter';
 	const SEND_TO = 'send_to';
 	
@@ -23,6 +17,7 @@ class Newsletter extends ElggObject {
 		
 		$this->title = elgg_echo('newsletter:duplicate_of') . ' ' . $this->title;
 		$this->status = 'concept';
+		
 		unset($this->temp_metadata['scheduled']);
 		unset($this->temp_metadata['start_time']);
 	}
@@ -38,6 +33,8 @@ class Newsletter extends ElggObject {
 		parent::initializeAttributes();
 		
 		$this->attributes['subtype'] = self::SUBTYPE;
+		
+		$this->status = 'concept';
 	}
 	
 	/**
@@ -55,7 +52,7 @@ class Newsletter extends ElggObject {
 	 *
 	 * @param string $logging data to be saved
 	 *
-	 * @return Ambigous <boolean, number>
+	 * @return false|int
 	 */
 	public function saveLogging($logging) {
 		if (empty($logging)) {
@@ -76,7 +73,7 @@ class Newsletter extends ElggObject {
 	/**
 	 * Returns logging from a file
 	 *
-	 * @return Ambigous <boolean, string>
+	 * @return false|string
 	 */
 	public function getLogging() {
 		
@@ -102,7 +99,7 @@ class Newsletter extends ElggObject {
 	 *
 	 * @param array $recipients the recipients config
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function setRecipients($recipients) {
 		$result = false;

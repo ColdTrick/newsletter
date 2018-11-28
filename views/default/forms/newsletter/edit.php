@@ -2,79 +2,71 @@
 
 $entity = elgg_extract('entity', $vars);
 
-if (!empty($entity)) {
-	$title = elgg_get_sticky_value('newsletter_edit', 'title', $entity->title);
-	$subject = elgg_get_sticky_value('newsletter_edit', 'subject', $entity->subject);
-	$from = elgg_get_sticky_value('newsletter_edit', 'from', $entity->from);
-	$description = elgg_get_sticky_value('newsletter_edit', 'description', $entity->description);
-	$access_id = (int) elgg_get_sticky_value('newsletter_edit', 'access_id', $entity->access_id);
-	$tags = elgg_get_sticky_value('newsletter_edit', 'tags', $entity->tags);
-	
-	echo elgg_view('input/hidden', ['name' => 'guid', 'value' => $entity->getGUID()]);
-	
-	$container_guid = $entity->container_guid;
-} else {
-	$title = elgg_get_sticky_value('newsletter_edit', 'title');
-	$subject = elgg_get_sticky_value('newsletter_edit', 'subject');
-	$from = elgg_get_sticky_value('newsletter_edit', 'from');
-	$description = elgg_get_sticky_value('newsletter_edit', 'description');
-	$access_id = (int) elgg_get_sticky_value('newsletter_edit', 'access_id', get_default_access());
-	$tags = elgg_get_sticky_value('newsletter_edit', 'tags');
-	
-	$container_guid = (int) elgg_extract('container_guid', $vars);
+if ($entity instanceof Newsletter) {
+	echo elgg_view_field([
+		'#type' => 'hidden',
+		'name' => 'guid',
+		'value' => $entity->guid,
+	]);
 }
 
-elgg_clear_sticky_form('newsletter_edit');
+echo elgg_view_field([
+	'#type' => 'hidden',
+	'name' => 'container_guid',
+	'value' => elgg_extract('container_guid', $vars),
+]);
 
-$field = elgg_format_element('label', ['for' => 'newsletter-title'], elgg_echo('title'));
-$field .= elgg_view('input/text', [
+echo elgg_view_field([
+	'#type' => 'text',
+	'#label' => elgg_echo('title'),
 	'name' => 'title',
-	'value' => $title,
-	'id' => 'newsletter-title',
+	'value' => elgg_extract('title', $vars),
+	'required' => true,
 ]);
-echo elgg_format_element('div', [], $field);
 
-$field = elgg_format_element('label', ['for' => 'newsletter-subject'], elgg_echo('newsletter:edit:subject'));
-$field .= elgg_view('input/text', [
+echo elgg_view_field([
+	'#type' => 'text',
+	'#label' => elgg_echo('newsletter:edit:subject'),
 	'name' => 'subject',
-	'value' => $subject,
-	'id' => 'newsletter-subject',
+	'value' => elgg_extract('subject', $vars),
+	'required' => true,
 ]);
-echo elgg_format_element('div', [], $field);
 
 if (elgg_get_plugin_setting('custom_from', 'newsletter') === 'yes') {
-	$field = elgg_format_element('label', ['for' => 'newsletter-from'], elgg_echo('newsletter:edit:from'));
-	$field .= elgg_view('input/email', ['name' => 'from', 'value' => $from, 'id' => 'newsletter-from']);
-	$field .= elgg_format_element('div', ['class' => 'elgg-subtext'], elgg_echo('newsletter:edit:from:description', [elgg_format_element('strong', [], elgg_get_site_entity()->email)]));
-	echo elgg_format_element('div', [], $field);
+	echo elgg_view_field([
+		'#type' => 'email',
+		'#label' => elgg_echo('newsletter:edit:from'),
+		'#help' => elgg_echo('newsletter:edit:from:description', [elgg_format_element('strong', [], elgg_get_site_entity()->getEmailAddress())]),
+		'name' => 'from',
+		'value' => elgg_extract('form', $vars),
+	]);
 }
 
-$field = elgg_format_element('label', ['for' => 'newsletter-description'], elgg_echo('description'));
-$field .= elgg_view('input/text', [
+echo elgg_view_field([
+	'#type' => 'text',
+	'#label' => elgg_echo('description'),
+	'#help' => elgg_echo('newsletter:edit:description:description'),
 	'name' => 'description',
-	'value' => $description,
-	'id' => 'newsletter-description',
+	'value' => elgg_extract('description', $vars),
 ]);
-$field .= elgg_format_element('div', ['class' => 'elgg-subtext'], elgg_echo('newsletter:edit:description:description'));
-echo elgg_format_element('div', [], $field);
 
-$field = elgg_format_element('label', ['for' => 'newsletter-tags'], elgg_echo('tags'));
-$field .= elgg_view('input/tags', [
+echo elgg_view_field([
+	'#type' => 'tags',
+	'#label' => elgg_echo('tags'),
 	'name' => 'tags',
-	'value' => $tags,
-	'id' => 'newsletter-tags',
+	'value' => elgg_extract('tags', $vars),
 ]);
-echo elgg_format_element('div', [], $field);
 
-$field = elgg_format_element('label', ['for' => 'newsletter-access-id'], elgg_echo('access'));
-$field .= elgg_view('input/access', [
+echo elgg_view_field([
+	'#type' => 'access',
+	'#label' => elgg_echo('access'),
 	'name' => 'access_id',
-	'value' => $access_id,
-	'id' => 'newsletter-access-id',
-	'class' => 'mls',
+	'value' => elgg_extract('access_id', $vars),
 ]);
-echo elgg_format_element('div', [], $field);
 
-$foot = elgg_view('input/hidden', ['name' => 'container_guid', 'value' => $container_guid]);
-$foot .= elgg_view('input/submit', ['value' => elgg_echo('save')]);
-echo elgg_format_element('div', ['class' => 'elgg-foot'], $foot);
+// footer
+$footer = elgg_view_field([
+	'#type' => 'submit',
+	'value' => elgg_echo('save'),
+]);
+elgg_set_form_footer($footer);

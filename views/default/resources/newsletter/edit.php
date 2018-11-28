@@ -1,78 +1,76 @@
 <?php
-
 /**
  * Edit an existing newsletter
- *
- * @uses get_input("guid") the guid of the newsletter to edit
  */
 
-elgg_require_js('newsletter/edit');
+use Elgg\EntityPermissionsException;
+use ColdTrick\Newsletter\EditForm;
 
-$guid = (int) get_input('guid');
-$subpage = get_input('subpage');
+$guid = (int) elgg_extract('guid', $vars);
 
 // validate input
 elgg_entity_gatekeeper($guid, 'object', Newsletter::SUBTYPE);
+
+/* @var $entity Newsletter */
 $entity = get_entity($guid);
 if (!$entity->canEdit()) {
-	register_error(elgg_echo('limited_access'));
-	forward(REFERER);
+	throw new EntityPermissionsException();
 }
+
+$subpage = elgg_extract('subpage', $vars, 'basic');
 
 // set page owner
 $container = $entity->getContainerEntity();
-if (elgg_instanceof($container, 'group')) {
-	elgg_set_page_owner_guid($entity->getContainerGUID());
-} else {
+if (!$container instanceof ElggGroup) {
 	elgg_set_page_owner_guid(elgg_get_logged_in_user_guid());
+	
+	$container = null;
 }
 
 // breadcrumb
-elgg_push_breadcrumb(elgg_echo('newsletter:breadcrumb:site'), 'newsletter/site');
-if (elgg_instanceof($container, 'group')) {
-	elgg_push_breadcrumb($container->name, 'newsletter/group/' . $container->getGUID());
-}
-elgg_push_breadcrumb($entity->title, $entity->getURL());
-elgg_push_breadcrumb(elgg_echo('edit'));
+elgg_push_collection_breadcrumbs('object', Newsletter::SUBTYPE, $container);
+elgg_push_breadcrumb($entity->getDisplayName(), $entity->getURL());
 
 // build page elements
-$title_text = elgg_echo('newsletter:edit:title', [$entity->title]);
+$title_text = elgg_echo('newsletter:edit:title', [$entity->getDisplayName()]);
 
-$vars = ['entity' => $entity];
+$form = new EditForm($entity);
 
-if ($subpage) {
-	$form_vars = ['id' => 'newsletter-form-' . $subpage];
-	
-	if ($entity->content) {
-		// only show preview if content available
-		elgg_register_menu_item('title', ElggMenuItem::factory([
-			'name' => 'preview',
-			'text' => elgg_echo('preview'),
-			'href' => 'newsletter/preview/' . $guid,
-			'link_class' => 'elgg-button elgg-button-action',
-		]));
-	}
+switch ($subpage) {
+	case 'template':
+	case 'content':
+	case 'recipients':
+	case 'schedule':
+		$form_vars = ['id' => "newsletter-form-{$subpage}"];
 		
-	if ($subpage == 'recipients') {
-		$form_vars['enctype'] = 'multipart/form-data';
-	}
-	
-	$content = elgg_view_form('newsletter/edit/' . $subpage, $form_vars, $vars);
-} else {
-	$content = elgg_view('newsletter/edit', $vars);
+		$content = elgg_view_form("newsletter/edit/{$subpage}", $form_vars, $form($subpage));
+		break;
+	case 'basic':
+	default:
+		$subpage = 'basic';
+		
+		$content = elgg_view_form('newsletter/edit', [], $form($subpage));
+		break;
 }
 
-$filter_tabs = elgg_view_menu('newsletter_steps', [
-	'entity' => $entity,
-	'class' => 'elgg-tabs',
-	'sort_by' => 'register',
-]);
+if (!empty($entity->content)) {
+	// only show preview if content available
+	elgg_register_menu_item('title', ElggMenuItem::factory([
+		'name' => 'preview',
+		'icon' => 'eye',
+		'text' => elgg_echo('preview'),
+		'href' => elgg_generate_entity_url($entity, 'preview'),
+		'link_class' => 'elgg-button elgg-button-action',
+	]));
+}
 
 // build page
-$page_data = elgg_view_layout('content', [
+$page_data = elgg_view_layout('default', [
 	'title' => $title_text,
 	'content' => $content,
-	'filter' => $filter_tabs,
+	'filter_id' => 'newsletter_steps',
+	'filter_value' => $subpage,
+	'filter_entity' => $entity,
 ]);
 
 // draw page

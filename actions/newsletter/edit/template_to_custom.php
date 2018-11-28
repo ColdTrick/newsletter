@@ -1,4 +1,5 @@
 <?php
+
 $guid = (int) get_input('guid');
 $template = get_input('template');
 
@@ -6,13 +7,11 @@ if (empty($guid) || empty($template)) {
 	return elgg_error_response(elgg_echo('error:missing_data'));
 }
 
-elgg_entity_gatekeeper($guid, 'object', Newsletter::SUBTYPE);
 $entity = get_entity($guid);
-
-if (!$entity->canEdit()) {
+if (!$entity instanceof Newsletter || !$entity->canEdit()) {
 	return elgg_error_response(elgg_echo('actionunauthorized'));
 }
-	
+
 $entity->template = 'custom';
 
 if (is_numeric($template)) {

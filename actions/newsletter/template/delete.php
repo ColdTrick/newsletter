@@ -1,14 +1,12 @@
 <?php
-$guid = (int) get_input('guid');
 
+$guid = (int) get_input('guid');
 if (empty($guid)) {
 	return elgg_error_response(elgg_echo('error:missing_data'));
 }
 
-elgg_entity_gatekeeper($guid, 'object', Newsletter::SUBTYPE);
 $entity = get_entity($guid);
-
-if (!$entity->canEdit()) {
+if (!$entity instanceof NewsletterTemplate || !$entity->canDelete()) {
 	return elgg_error_response(elgg_echo('actionunauthorized'));
 }
 
@@ -22,10 +20,12 @@ if (!$entity->delete()) {
 $forward_url = REFERER;
 // check if we don't forward to the entity url
 if ($_SERVER['HTTP_REFERER'] == $entity_url) {
-	if (elgg_instanceof($container, 'group')) {
-		$forward_url = 'newsletter/group/' . $container->getGUID();
+	if ($container instanceof ElggGroup) {
+		$forward_url = elgg_generate_url('collection:object:newsletter:group', [
+			'guid' => $container->guid,
+		]);
 	} else {
-		$forward_url = 'newsletter/site';
+		$forward_url = elgg_generate_url('collection:object:newsletter:site');
 	}
 }
 
