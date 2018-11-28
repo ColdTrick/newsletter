@@ -11,18 +11,14 @@ $description = get_input('description');
 $access_id = (int) get_input('access_id');
 $tags = string_to_tag_array(get_input('tags'));
 
-$forward_url = REFERER;
-
 $new_entity = false;
 
 if (empty($title)) {
-	register_error(elgg_echo('newsletter:action:edit:error:title'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('newsletter:action:edit:error:title'));
 }
 
 if ((elgg_get_plugin_setting('custom_from', 'newsletter') === 'yes') && !newsletter_validate_custom_from($from)) {
-	register_error(elgg_echo('newsletter:action:edit:error:from'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('newsletter:action:edit:error:from'));
 }
 
 if (!empty($guid)) {
@@ -30,12 +26,10 @@ if (!empty($guid)) {
 	
 	if (!empty($entity) && $entity->canEdit()) {
 		if (!elgg_instanceof($entity, 'object', Newsletter::SUBTYPE)) {
-			register_error(elgg_echo('error:missing_data'));
-			forward(REFERER);
+			return elgg_error_response(elgg_echo('error:missing_data'));
 		}
 	} else {
-		register_error(elgg_echo('actionunauthorized'));
-		forward(REFERER);
+		return elgg_error_response(elgg_echo('actionunauthorized'));
 	}
 } else {
 	$entity = new Newsletter();
@@ -48,14 +42,12 @@ if (!empty($guid)) {
 	$new_entity = true;
 	
 	if (!$entity->save()) {
-		register_error(elgg_echo('save:fail'));
-		forward(REFERER);
+		return elgg_error_response(elgg_echo('save:fail'));
 	}
 }
 
 if (empty($entity)) {
-	register_error(elgg_echo('actionunauthorized'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('actionunauthorized'));
 }
 
 $entity->title = $title;
@@ -78,16 +70,15 @@ if (elgg_get_plugin_setting('custom_from', 'newsletter') === 'yes') {
 
 $entity->tags = $tags;
 
-if ($entity->save()) {
-	elgg_clear_sticky_form('newsletter_edit');
-	
-	if ($new_entity) {
-		$forward_url = 'newsletter/edit/' . $entity->getGUID() . '/template';
-	}
-	
-	system_message(elgg_echo('newsletter:action:edit:success'));
-} else {
-	register_error(elgg_echo('newsletter:action:edit:error:save'));
+if (!$entity->save()) {
+	return elgg_error_response(elgg_echo('newsletter:action:edit:error:save'));
 }
 
-forward($forward_url);
+elgg_clear_sticky_form('newsletter_edit');
+
+$forward_url = REFERRER;
+if ($new_entity) {
+	$forward_url = 'newsletter/edit/' . $entity->getGUID() . '/template';
+}
+
+return elgg_ok_response('', elgg_echo('newsletter:action:edit:success'), $forward_url);

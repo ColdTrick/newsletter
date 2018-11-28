@@ -9,25 +9,22 @@ $css = strip_tags(get_input('css'));
 $name = get_input('name');
 
 if (empty($guid) && empty($newsletter_guid)) {
-	register_error(elgg_echo('error:missing_data'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('error:missing_data'));
 }
 
 if (!empty($guid)) {
 	$template = get_entity($guid);
 	
-	if (!$template instanceof NewsletterTemplate && $template->canEdit()) {
-		unset($template);
-		register_error(elgg_echo('error:missing_data'));
-	} else {
-		unset($template);
-		register_error(elgg_echo('actionunauthorized'));
+	if (!$template instanceof NewsletterTemplate) {
+		return elgg_error_response(elgg_echo('error:missing_data'));
+	} elseif(!$template->canEdit()) {
+		return elgg_error_response(elgg_echo('actionunauthorized'));
 	}
 } elseif (!empty($newsletter_guid)) {
 	$newsletter = get_entity($newsletter_guid);
 	
 	if (!empty($newsletter) && $newsletter->canEdit()) {
-		if (elgg_instanceof($newsletter, 'object', Newsletter::SUBTYPE)) {
+		if ($newsletter instanceof \Newsletter) {
 			$template = new NewsletterTemplate();
 			$template->owner_guid = $newsletter->owner_guid;
 			$template->container_guid = $newsletter->container_guid;
@@ -36,14 +33,13 @@ if (!empty($guid)) {
 			if ($template->save()) {
 				$newsletter->template = $template->getGUID();
 			} else {
-				unset($template);
-				register_error(elgg_echo('save:fail'));
+				return elgg_error_response(elgg_echo('save:fail'));
 			}
 		} else {
-			register_error(elgg_echo('error:missing_data'));
+			return elgg_error_response(elgg_echo('error:missing_data'));
 		}
 	} else {
-		register_error(elgg_echo('actionunauthorized'));
+		return elgg_error_response(elgg_echo('actionunauthorized'));
 	}
 }
 
@@ -68,9 +64,9 @@ if (!empty($template)) {
 		if (!empty($newsletter)) {
 			$forward_url = 'newsletter/edit/' . $newsletter->getGUID() . '/template';
 		}
-		system_message(elgg_echo('newsletter:action:template:edit:success'));
+		
+		return elgg_ok_response('', elgg_echo('newsletter:action:template:edit:success'), $forward_url);
 	} else {
-		register_error(elgg_echo('newsletter:action:template:edit:error'));
+		return elgg_error_response(elgg_echo('newsletter:action:template:edit:error'));
 	}
 }
-forward($forward_url);

@@ -6,18 +6,15 @@ $html = get_input('html', '', false);
 $css = strip_tags(get_input('css'));
 $template = get_input('template');
 
-
 if (empty($guid)) {
-	register_error(elgg_echo('error:missing_data'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('error:missing_data'));
 }
 
 elgg_entity_gatekeeper($guid, 'object', Newsletter::SUBTYPE);
 $entity = get_entity($guid);
 
 if (!$entity->canEdit()) {
-	register_error(elgg_echo('actionunauthorized'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('actionunauthorized'));
 }
 
 $forward_url = REFERER;
@@ -29,6 +26,4 @@ $entity->html = $html;
 $entity->css = $css;
 $entity->template = $template;
 
-system_message(elgg_echo('newsletter:action:template:success'));
-
-forward($forward_url);
+return elgg_ok_response('', elgg_echo('newsletter:action:template:success'), $forward_url);

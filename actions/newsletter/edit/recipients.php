@@ -23,16 +23,14 @@ $subscribers = (int) get_input('subscribers');
 $members = (int) get_input('members');
 
 if (empty($guid)) {
-	register_error(elgg_echo('error:missing_data'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('error:missing_data'));
 }
 
 elgg_entity_gatekeeper($guid, 'object', Newsletter::SUBTYPE);
 $entity = get_entity($guid);
 
 if (!$entity->canEdit()) {
-	register_error(elgg_echo('actionunauthorized'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('actionunauthorized'));
 }
 
 $forward_url = REFERER;
@@ -84,8 +82,6 @@ if (get_uploaded_file('csv')) {
 // save results
 $entity->setRecipients($tmp);
 
-system_message(elgg_echo('newsletter:action:recipients:success'));
-
 elgg_clear_sticky_form('newsletter_recipients');
 
-forward($forward_url);
+return elgg_ok_response('', elgg_echo('newsletter:action:recipients:success'), $forward_url);

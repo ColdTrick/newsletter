@@ -8,16 +8,14 @@ $status_notification = get_input('status_notification');
 $show_in_archive = (int) get_input('show_in_archive');
 
 if (empty($guid)) {
-	register_error(elgg_echo('error:missing_data'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('error:missing_data'));
 }
 
 elgg_entity_gatekeeper($guid, 'object', Newsletter::SUBTYPE);
 $entity = get_entity($guid);
 
 if (!$entity->canEdit()) {
-	register_error(elgg_echo('actionunauthorized'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('actionunauthorized'));
 }
 
 $entity->scheduled = mktime(date('G'), 0, 1, date('n'), date('j'), date('Y'));
@@ -35,5 +33,4 @@ newsletter_start_commandline_sending($entity);
 // sleep to make sure the log page has content
 sleep(2);
 
-system_message(elgg_echo('newsletter:action:send:success'));
-forward('newsletter/log/' . $entity->getGUID());
+return elgg_ok_response('', elgg_echo('newsletter:action:send:success'), elgg_generate_entity_url($entity, 'log'));

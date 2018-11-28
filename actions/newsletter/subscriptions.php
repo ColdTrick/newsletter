@@ -8,14 +8,12 @@ $subscriptions = get_input('subscriptions');
 $block_all = (int) get_input('block_all');
 
 if (empty($user_guid) || empty($subscriptions) || !is_array($subscriptions)) {
-	register_error(elgg_echo('error:missing_data'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('error:missing_data'));
 }
 	
 $user = get_user($user_guid);
 if (empty($user) || !$user->canEdit()) {
-	register_error(elgg_echo('actionunauthorized'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('actionunauthorized'));
 }
 
 $result = true;
@@ -45,10 +43,8 @@ if (!empty($block_all)) {
 	}
 }
 
-if ($result) {
-	system_message(elgg_echo('newsletter:action:subscriptions:success'));
-} else {
-	register_error(elgg_echo('newsletter:action:subscriptions:error'));
+if (!$result) {
+	return elgg_error_response(elgg_echo('newsletter:action:subscriptions:error'));
 }
 
-forward(REFERER);
+return elgg_ok_response('', elgg_echo('newsletter:action:subscriptions:success'));
