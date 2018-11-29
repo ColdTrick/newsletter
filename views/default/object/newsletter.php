@@ -1,54 +1,56 @@
 <?php
 
-use Elgg\Values;
-
 $entity = elgg_extract('entity', $vars);
-$full_view = (bool) elgg_extract('full_view', $vars, false);
+if (!$entity instanceof Newsletter) {
+	return;
+}
 
-if ($full_view) {
+if ((bool) elgg_extract('full_view', $vars, false)) {
 	// only handle listing view
 	return;
 }
 
-$entity_menu = '';
-if (!elgg_in_context('widgets')) {
-	$entity_menu = elgg_view_menu('entity', [
-		'entity' => $entity,
-		'handler' => 'newsletter',
-		'sort_by' => 'priority',
-		'class' => 'elgg-menu-hz',
-	]);
-}
-
 // listing view
-$icon = elgg_view_entity_icon($entity, 'small');
-
 $excerpt = '';
 if ($entity->description) {
 	$excerpt = elgg_get_excerpt($entity->description);
 }
 
-$subtitle = '';
+$imprint = [];
 switch ($entity->status) {
 	case 'scheduled':
-		$subtitle = elgg_format_element('strong', [], elgg_echo('newsletter:entity:scheduled') . ': ');
-		$date = Values::normalizeTime($entity->scheduled);
-		$subtitle .= $date->format(elgg_echo('friendlytime:date_format'));
+		
+		$content = elgg_echo('newsletter:entity:scheduled') . ': ';
+		$content .= elgg_view('output/date', [
+			'value' => $entity->scheduled,
+			'format' => elgg_echo('friendlytime:date_format'),
+		]);
+		
+		$imprint[] = [
+			'icon_name' => 'clock',
+			'content' => $content,
+		];
 		break;
 	case 'sent':
-		$subtitle = elgg_format_element('strong', [], elgg_echo('newsletter:entity:sent') . ': ');
-		$subtitle .= elgg_view_friendly_time($entity->start_time);
+		
+		$content = elgg_echo('newsletter:entity:sent') . ': ';
+		$content .= elgg_view_friendly_time($entity->start_time);
+		
+		$imprint[] = [
+			'icon_name' => 'check',
+			'content' => $content,
+		];
 		break;
 }
 
 $params = [
+	'icon' => false,
 	'entity' => $entity,
-	'metadata' => $entity_menu,
-	'subtitle' => $subtitle,
 	'content' => $excerpt,
+	'byline' => false,
+	'time' => false,
+	'imprint' => $imprint,
 ];
 
 $params = $params + $vars;
-$list_body = elgg_view('object/elements/summary', $params);
-
-echo elgg_view_image_block($icon, $list_body);
+echo elgg_view('object/elements/summary', $params);
