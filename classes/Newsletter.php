@@ -23,11 +23,8 @@ class Newsletter extends ElggObject {
 	}
 	
 	/**
-	 * Initializes attributes for this class
-	 *
-	 * @return void
-	 *
-	 * @see ElggObject::initializeAttributes()
+	 * {@inheritDoc}
+	 * @see ElggEntity::initializeAttributes()
 	 */
 	protected function initializeAttributes() {
 		parent::initializeAttributes();
@@ -38,13 +35,19 @@ class Newsletter extends ElggObject {
 	}
 	
 	/**
-	 * Returns the url to the newsletter
-	 *
-	 * @return string url to the newsletter
+	 * {@inheritDoc}
 	 * @see ElggEntity::getURL()
 	 */
 	public function getURL() {
 		return elgg_normalize_url('newsletter/view/' . $this->getGUID() . '/' . newsletter_generate_commanline_secret($this->getGUID()));
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * @see ElggObject::canComment()
+	 */
+	public function canComment($user_guid = 0, $default = null) {
+		return false;
 	}
 	
 	/**
