@@ -4,30 +4,12 @@
 			display: inline-block;
 		}
 	}
-}
-
-.elgg-form-newsletter-edit-template .elgg-discover:hover .elgg-discoverable {
-	display: inline;
-}
-
-#newsletter-edit-template-select .elgg-icon-delete-alt {
-	position: absolute;
-}
-
-.elgg-form-newsletter-edit-content .elgg-input-longtext {
-	min-height: 500px;
-}
-
-.elgg-form-newsletter-edit-content .elgg-menu-longtext {
-	float: none;
-	text-align: right;
-}
-
-.elgg-form-newsletter-edit-schedule .elgg-input-date {
-	width: 100px;
-	text-align: center;
-	height: 22px;
-	padding: 0px;
+	
+	.elgg-discover:hover {
+		.elgg-discoverable {
+			display: inline;
+		}
+	}
 }
 
 #newsletter-recipients-wrapper .elgg-icon-delete-alt {
@@ -72,15 +54,6 @@
 #newsletter-recipients-emails > .elgg-body {
 	padding-left: 5px;
 	border-left: 1px solid #CCCCCC;
-}
-
-#newsletter-settings-form .newsletter-settings-small {
-	width: 25px;
-	text-align: center;
-}
-
-.newsletter-input-error {
-	border: 1px solid red;
 }
 
 #newsletter-embed-list {
