@@ -23,23 +23,24 @@ if (!empty($block_all)) {
 	$result = newsletter_unsubscribe_all_user($user);
 } else {
 	// remove block all
-	remove_entity_relationship($user->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, elgg_get_site_entity()->getGUID());
+	remove_entity_relationship($user->guid, NewsletterSubscription::GENERAL_BLACKLIST, elgg_get_site_entity()->guid);
+}
+
+// go through all the subscriptions
+foreach ($subscriptions as $guid => $value) {
+	// value is stored
+	// 1 => subscribe
+	// 0 => unsubscribe
+	$value = (bool) $value;
+	$entity = get_entity($guid);
+	if (!$entity instanceof ElggEntity) {
+		continue;
+	}
 	
-	// go through all the subscriptions
-	foreach ($subscriptions as $guid => $value) {
-		// value is stored
-		// 1 => subscribe
-		// 0 => unsubscribe
-		$value = (bool) $value;
-		$entity = get_entity($guid);
-		
-		if (!empty($entity)) {
-			if ($value) {
-				$result = $result && newsletter_subscribe_user($user, $entity);
-			} else {
-				$result = $result && newsletter_unsubscribe_user($user, $entity);
-			}
-		}
+	if ($value) {
+		$result = $result && newsletter_subscribe_user($user, $entity, false);
+	} else {
+		$result = $result && newsletter_unsubscribe_user($user, $entity);
 	}
 }
 

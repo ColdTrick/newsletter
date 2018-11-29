@@ -615,35 +615,34 @@ function newsletter_check_user_subscription(ElggUser $user, ElggEntity $entity) 
 /**
  * Add a subscription for an user to a container
  *
- * @param ElggUser   $user   The user to subscribe
- * @param ElggEntity $entity The container entity to subscribe to
+ * @param ElggUser   $user                  The user to subscribe
+ * @param ElggEntity $entity                The container entity to subscribe to
+ * @param bool       $cleanup_general_block Remove the generic block all (default: true)
  *
  * @return boolean true on success else false
  */
-function newsletter_subscribe_user(ElggUser $user, ElggEntity $entity) {
+function newsletter_subscribe_user(ElggUser $user, ElggEntity $entity, $cleanup_general_block = true) {
 	
-	if (!elgg_instanceof($user, 'user')) {
-		return false;
-	}
-	
-	if (!elgg_instanceof($entity, 'site') && !elgg_instanceof($entity, 'group')) {
+	if (!$entity instanceof ElggSite && !$entity instanceof ElggGroup) {
 		return false;
 	}
 	
 	// check if subscribed
-	if (!check_entity_relationship($user->getGUID(), NewsletterSubscription::SUBSCRIPTION, $entity->getGUID())) {
+	if (!check_entity_relationship($user->guid, NewsletterSubscription::SUBSCRIPTION, $entity->guid)) {
 		// not yet, so add
-		$result = add_entity_relationship($user->getGUID(), NewsletterSubscription::SUBSCRIPTION, $entity->getGUID());
+		$result = add_entity_relationship($user->guid, NewsletterSubscription::SUBSCRIPTION, $entity->guid);
 	} else {
 		$result = true;
 	}
 	
 	// remove blocklist relation
-	remove_entity_relationship($user->getGUID(), NewsletterSubscription::BLACKLIST, $entity->getGUID());
+	remove_entity_relationship($user->guid, NewsletterSubscription::BLACKLIST, $entity->guid);
 	
 	// remove general blocklist
-	$site = elgg_get_site_entity();
-	remove_entity_relationship($user->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID());
+	if ($cleanup_general_block) {
+		$site = elgg_get_site_entity();
+		remove_entity_relationship($user->guid, NewsletterSubscription::GENERAL_BLACKLIST, $site->guid);
+	}
 	
 	// check if on email blacklist
 	$subscription = newsletter_get_subscription($user->email);
@@ -669,7 +668,7 @@ function newsletter_subscribe_email($email, ElggEntity $entity) {
 		return false;
 	}
 	
-	if (!elgg_instanceof($entity, 'site') && !elgg_instanceof($entity, 'group')) {
+	if (!$entity instanceof ElggSite && !$entity instanceof ElggGroup) {
 		return false;
 	}
 	
@@ -692,14 +691,14 @@ function newsletter_subscribe_email($email, ElggEntity $entity) {
 	}
 	
 	// subscribe
-	$result = (bool) $subscription->addRelationship($entity->getGUID(), NewsletterSubscription::SUBSCRIPTION);
+	$result = (bool) $subscription->addRelationship($entity->guid, NewsletterSubscription::SUBSCRIPTION);
 	
 	// remove blocklist relation
-	remove_entity_relationship($subscription->getGUID(), NewsletterSubscription::BLACKLIST, $entity->getGUID());
+	remove_entity_relationship($subscription->guid, NewsletterSubscription::BLACKLIST, $entity->guid);
 	
 	// remove general blocklist
 	$site = elgg_get_site_entity();
-	remove_entity_relationship($subscription->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID());
+	remove_entity_relationship($subscription->guid, NewsletterSubscription::GENERAL_BLACKLIST, $site->guid);
 	
 	return $result;
 }
@@ -714,28 +713,24 @@ function newsletter_subscribe_email($email, ElggEntity $entity) {
  */
 function newsletter_unsubscribe_user(ElggUser $user, ElggEntity $entity) {
 	
-	if (!elgg_instanceof($user, 'user')) {
-		return false;
-	}
-	
-	if (!elgg_instanceof($entity, 'site') && !elgg_instanceof($entity, 'group')) {
+	if (!$entity instanceof ElggSite && !$entity instanceof ElggGroup) {
 		return false;
 	}
 	
 	// remove subscription
-	remove_entity_relationship($user->getGUID(), NewsletterSubscription::SUBSCRIPTION, $entity->getGUID());
+	remove_entity_relationship($user->guid, NewsletterSubscription::SUBSCRIPTION, $entity->guid);
 	
 	// check if on email subscriptionlist
 	$subscription = newsletter_get_subscription($user->email);
 	
 	if (!empty($subscription)) {
-		$subscription->removeRelationship($entity->getGUID(), NewsletterSubscription::SUBSCRIPTION);
+		$subscription->removeRelationship($entity->guid, NewsletterSubscription::SUBSCRIPTION);
 	}
-
+	
 	// check if blocked
-	if (!check_entity_relationship($user->getGUID(), NewsletterSubscription::BLACKLIST, $entity->getGUID())) {
+	if (!check_entity_relationship($user->guid, NewsletterSubscription::BLACKLIST, $entity->guid)) {
 		// not yet, so add
-		return add_entity_relationship($user->getGUID(), NewsletterSubscription::BLACKLIST, $entity->getGUID());
+		return add_entity_relationship($user->guid, NewsletterSubscription::BLACKLIST, $entity->guid);
 	}
 	
 	return true;
@@ -939,18 +934,17 @@ function newsletter_get_subscription($email) {
 	}
 	
 	// ignore access
-	$ia = elgg_set_ignore_access(true);
-	
-	$entities = elgg_get_entities([
-		'type' => 'object',
-		'subtype' => NewsletterSubscription::SUBTYPE,
-		'limit' => 1,
-		'joins' => ['JOIN ' . elgg_get_config('dbprefix') . 'objects_entity oe ON e.guid = oe.guid'],
-		'wheres' => ["(oe.title = '" . sanitise_string($email) . "')"],
-	]);
-	
-	// restore access
-	elgg_set_ignore_access($ia);
+	$entities = elgg_call(ELGG_IGNORE_ACCESS, function() use ($email) {
+		return elgg_get_entities([
+			'type' => 'object',
+			'subtype' => NewsletterSubscription::SUBTYPE,
+			'limit' => 1,
+			'metadata_name_value_pairs' => [
+				'name' => 'title',
+				'value' => $email,
+			],
+		]);
+	});
 	
 	if (!empty($entities)) {
 		return $entities[0];
@@ -968,20 +962,17 @@ function newsletter_get_subscription($email) {
  */
 function newsletter_unsubscribe_all_user(ElggUser $user) {
 	
-	if (!elgg_instanceof($user, 'user')) {
-		return false;
-	}
-	
 	$site = elgg_get_site_entity();
+	
 	// remove site subscription
-	remove_entity_relationship($user->getGUID(), NewsletterSubscription::SUBSCRIPTION, $site->getGUID());
+	remove_entity_relationship($user->guid, NewsletterSubscription::SUBSCRIPTION, $site->guid);
 	
 	// remove all subscriptions
 	$entities = elgg_get_entities([
 		'type' => 'group',
 		'limit' => false,
 		'relationship' => NewsletterSubscription::SUBSCRIPTION,
-		'relationship_guid' => $user->getGUID(),
+		'relationship_guid' => $user->guid,
 		'callback' => function($row) {
 			return (int) $row->guid;
 		},
@@ -989,12 +980,16 @@ function newsletter_unsubscribe_all_user(ElggUser $user) {
 	
 	if (!empty($entities)) {
 		foreach ($entities as $entity_guid) {
-			remove_entity_relationship($user->getGUID(), NewsletterSubscription::SUBSCRIPTION, $entity_guid);
+			remove_entity_relationship($user->guid, NewsletterSubscription::SUBSCRIPTION, $entity_guid);
 		}
 	}
 	
 	// add to general blacklist
-	$result = (bool) add_entity_relationship($user->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID());
+	if (!check_entity_relationship($user->guid, NewsletterSubscription::GENERAL_BLACKLIST, $site->guid)) {
+		$result = (bool) add_entity_relationship($user->guid, NewsletterSubscription::GENERAL_BLACKLIST, $site->guid);
+	} else {
+		$result = true;
+	}
 	
 	// remove email subscriptions (if any)
 	$subscription = newsletter_get_subscription($user->email);
@@ -1033,12 +1028,17 @@ function newsletter_unsubscribe_all_email($email) {
 	}
 	
 	// remove all existing subscriptions
-	remove_entity_relationships($subscription->getGUID(), NewsletterSubscription::SUBSCRIPTION);
+	remove_entity_relationships($subscription->guid, NewsletterSubscription::SUBSCRIPTION);
 	
 	// add to general blacklist
 	$site = elgg_get_site_entity();
-		
-	return (bool) add_entity_relationship($subscription->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID());
+	
+	if (check_entity_relationship($subscription->guid, NewsletterSubscription::GENERAL_BLACKLIST, $site->guid)) {
+		// already blocked
+		return true;
+	}
+	
+	return (bool) add_entity_relationship($subscription->guid, NewsletterSubscription::GENERAL_BLACKLIST, $site->guid);
 }
 
 /**
@@ -1051,32 +1051,32 @@ function newsletter_unsubscribe_all_email($email) {
  */
 function newsletter_convert_subscription_to_user_setting(NewsletterSubscription $subscription, ElggUser $user) {
 	
-	if (!elgg_instanceof($subscription, 'object', NewsletterSubscription::SUBTYPE) || !elgg_instanceof($user, 'user')) {
-		return false;
-	}
-	
 	// check global block list
 	$site = elgg_get_site_entity();
-	if (check_entity_relationship($subscription->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID())) {
+	if (check_entity_relationship($subscription->guid, NewsletterSubscription::GENERAL_BLACKLIST, $site->guid)) {
 		// copy the block all
-		add_entity_relationship($user->getGUID(), NewsletterSubscription::GENERAL_BLACKLIST, $site->getGUID());
+		add_entity_relationship($user->guid, NewsletterSubscription::GENERAL_BLACKLIST, $site->guid);
 	} else {
 		// check for subscriptions
-		$subscriptions = $subscription->getEntitiesFromRelationship(NewsletterSubscription::SUBSCRIPTION, false, false);
-			
-		if (!empty($subscriptions)) {
-			foreach ($subscriptions as $entity) {
-				newsletter_subscribe_user($user, $entity);
-			}
+		$subscriptions = $subscription->getEntitiesFromRelationship([
+			'relationship' => NewsletterSubscription::SUBSCRIPTION,
+			'limit' => false,
+			'batch' => true,
+		]);
+		
+		foreach ($subscriptions as $entity) {
+			newsletter_subscribe_user($user, $entity);
 		}
 			
 		// check for blocks
-		$blocked = $subscription->getEntitiesFromRelationship(NewsletterSubscription::BLACKLIST, false, false);
+		$blocked = $subscription->getEntitiesFromRelationship([
+			'relationship' => NewsletterSubscription::BLACKLIST,
+			'limit' => false,
+			'batch' =>true,
+		]);
 			
-		if (!empty ($blocked)) {
-			foreach ($blocked as $entity) {
-				newsletter_unsubscribe_user($user, $entity);
-			}
+		foreach ($blocked as $entity) {
+			newsletter_unsubscribe_user($user, $entity);
 		}
 	}
 	

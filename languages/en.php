@@ -175,8 +175,7 @@ return array(
 	
 	// my subscriptions
 	'newsletter:subscriptions:description' => "Below you can manage all your newsletter subscriptions as once.",
-	'newsletter:subscriptions:site:title' => "Site newsletter",
-	'newsletter:subscriptions:site:description' => "Do you wish to receive a newsletter from the communty.",
+	'newsletter:subscriptions:site' => "I wish to receive the site newsletter",
 	'newsletter:subscriptions:groups:title' => "My group newsletters",
 	'newsletter:subscriptions:groups:description' => "All the groups you're a member of are listed, so you can easily change your newsletter subscription.",
 	'newsletter:subscriptions:other:title' => "Other subscription",
