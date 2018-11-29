@@ -18,8 +18,8 @@ class Newsletter extends ElggObject {
 		$this->title = elgg_echo('newsletter:duplicate_of') . ' ' . $this->title;
 		$this->status = 'concept';
 		
-		unset($this->temp_metadata['scheduled']);
-		unset($this->temp_metadata['start_time']);
+		unset($this->scheduled);
+		unset($this->start_time);
 	}
 	
 	/**
@@ -39,7 +39,9 @@ class Newsletter extends ElggObject {
 	 * @see ElggEntity::getURL()
 	 */
 	public function getURL() {
-		return elgg_normalize_url('newsletter/view/' . $this->getGUID() . '/' . newsletter_generate_commanline_secret($this->getGUID()));
+		return elgg_generate_entity_url($this, 'view', null, [
+			'code' => newsletter_generate_commanline_secret($this->guid),
+		]);
 	}
 	
 	/**
@@ -53,7 +55,7 @@ class Newsletter extends ElggObject {
 	/**
 	 * Writes logging data to a file
 	 *
-	 * @param string $logging data to be saved
+	 * @param array $logging data to be saved
 	 *
 	 * @return false|int
 	 */
@@ -102,13 +104,12 @@ class Newsletter extends ElggObject {
 	 *
 	 * @param array $recipients the recipients config
 	 *
-	 * @return bool
+	 * @return false|int
 	 */
 	public function setRecipients($recipients) {
-		$result = false;
 		
 		if (!is_array($recipients)) {
-			return $result;
+			return false;
 		}
 		
 		// check for previous DB recipients
@@ -130,10 +131,9 @@ class Newsletter extends ElggObject {
 	/**
 	 * Get the recipients
 	 *
-	 * @return bool|array
+	 * @return false|array
 	 */
 	public function getRecipients() {
-		$result = false;
 		
 		// check for previous DB recipients
 		if ($this->recipients) {
@@ -145,12 +145,12 @@ class Newsletter extends ElggObject {
 		$fh->owner_guid = $this->getGUID();
 		$fh->setFilename('recipients.json');
 		
-		if ($fh->exists()) {
-			$raw = $fh->grabFile();
-			
-			$result = json_decode($raw, true);
+		if (!$fh->exists()) {
+			return false;
 		}
 		
-		return $result;
+		$raw = $fh->grabFile();
+		
+		return json_decode($raw, true);
 	}
 }
