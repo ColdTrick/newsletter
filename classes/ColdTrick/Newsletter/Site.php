@@ -33,26 +33,4 @@ class Site {
 			newsletter_convert_subscription_to_user_setting($subscription, $user);
 		}
 	}
-
-	/**
-	 * Extend public pages
-	 *
-	 * @param string   $hook_name    'public_pages'
-	 * @param string   $entity_type  'walled_garden'
-	 * @param string[] $return_value array of public pages
-	 * @param mixed    $params       unused
-	 *
-	 * @return string[]
-	 */
-	public static function publicPages($hook_name, $entity_type, $return_value, $params) {
-		if (!is_array($return_value)) {
-			return;
-		}
-
-		$return_value[] = 'newsletter/view/.*';
-		$return_value[] = 'newsletter/unsubscribe/.*';
-		$return_value[] = 'action/newsletter/unsubscribe';
-
-		return $return_value;
-	}
 }

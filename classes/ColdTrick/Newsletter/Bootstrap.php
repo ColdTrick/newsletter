@@ -51,7 +51,6 @@ class Bootstrap extends DefaultPluginBootstrap {
 		$hooks->registerHandler('cron', 'hourly', __NAMESPACE__ . '\Cron::sendNewsletters');
 		$hooks->registerHandler('likes:is_likable', 'object:' . \Newsletter::SUBTYPE, '\Elgg\Values::getTrue');
 		$hooks->registerHandler('notification_type_subtype', 'tag_tools', __NAMESPACE__ . '\TagTools::notificationTypeSubtype');
-		$hooks->registerHandler('public_pages', 'walled_garden', __NAMESPACE__ . '\Site::publicPages');
 		$hooks->registerHandler('register', 'menu:page', __NAMESPACE__ . '\Menus::pageRegister');
 		$hooks->registerHandler('register', 'menu:entity', __NAMESPACE__ . '\Menus::entityRegister');
 		$hooks->registerHandler('register', 'menu:owner_block', __NAMESPACE__ . '\Menus::ownerBlockRegister');

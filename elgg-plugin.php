@@ -102,6 +102,7 @@ return [
 		'view:object:newsletter' => [
 			'path' => 'newsletter/view/{guid}/{code?}',
 			'resource' => 'newsletter/view',
+			'walled' => false,
 		],
 		'collection:object:newsletter:all' => [
 			'path' => 'newsletter/site',
@@ -143,6 +144,7 @@ return [
 		'default:object:newsletter:unsubscribe' => [
 			'path' => 'newsletter/unsubscribe/{guid}',
 			'resource' => 'newsletter/unsubscribe',
+			'walled' => false,
 		],
 		'default:object:newsletter' => [
 			'path' => 'newsletter',
