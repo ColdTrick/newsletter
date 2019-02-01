@@ -29,7 +29,6 @@ echo elgg_view_field([
 	'#label' => elgg_echo('newsletter:edit:subject'),
 	'name' => 'subject',
 	'value' => elgg_extract('subject', $vars),
-	'required' => true,
 ]);
 
 if (elgg_get_plugin_setting('custom_from', 'newsletter') === 'yes') {

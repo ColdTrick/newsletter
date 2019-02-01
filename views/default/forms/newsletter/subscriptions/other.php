@@ -1,11 +1,11 @@
 <?php
-use Elgg\Database\QueryBuilder;
-
 /**
  * List subscriptions to groups the user is not a member of
  *
  * @uses $vars['user'] The user to check for
  */
+
+use Elgg\Database\QueryBuilder;
 
 $entity = elgg_extract('entity', $vars);
 if (!$entity instanceof ElggUser) {

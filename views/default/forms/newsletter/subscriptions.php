@@ -17,7 +17,10 @@ echo elgg_view_field([
 ]);
 
 // description
-echo elgg_view('output/longtext', ['value' => elgg_echo('newsletter:subscriptions:description'), 'class' => 'mtn']);
+echo elgg_view('output/longtext', [
+	'value' => elgg_echo('newsletter:subscriptions:description'),
+	'class' => 'mtn'
+]);
 
 // site subscription
 echo elgg_view('forms/newsletter/subscriptions/site', $vars);

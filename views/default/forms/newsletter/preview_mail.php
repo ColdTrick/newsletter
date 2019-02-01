@@ -2,13 +2,29 @@
 
 $entity = elgg_extract('entity', $vars);
 $user = elgg_get_logged_in_user_entity();
-if (empty($user) || empty($entity)) {
+if (!$entity instanceof Newsletter || !$user instanceof ElggUser) {
 	return;
 }
-echo elgg_view('input/email', [
-	'name' => 'email',
-	'value' => $user->email,
-	'placeholder' => elgg_echo('newsletter:recipients:email'),
+
+echo elgg_view_field([
+	'#type' => 'hidden',
+	'name' => 'guid',
+	'value' => $entity->guid,
 ]);
-echo elgg_view('input/hidden', ['name' => 'guid', 'value' => $entity->getGUID()]);
-echo elgg_view('input/submit', ['value' => elgg_echo('send')]);
+
+echo elgg_view_field([
+	'#type' => 'fieldset',
+	'align' => 'horizontal',
+	'fields' => [
+		[
+			'#type' => 'email',
+			'name' => 'email',
+			'value' => $user->email,
+			'placeholder' => elgg_echo('newsletter:recipients:email'),
+		],
+		[
+			'#type' => 'submit',
+			'value' => elgg_echo('send'),
+		],
+	],
+]);
