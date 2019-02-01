@@ -159,7 +159,6 @@ return [
 		'newsletter/edit/template_to_custom' => [],
 		'newsletter/edit/recipients' => [],
 		
-		'newsletter/delete' => [],
 		'newsletter/subscribe' => [
 			'access' => 'public',
 		],

@@ -261,10 +261,6 @@ To view the newsletter click here:
 	'newsletter:action:edit:error:save' => "An unknown error occured while saving the newsletter, please try again",
 	'newsletter:action:edit:success' => "The newsletter was saved",
 	
-	// delete
-	'newsletter:action:delete:error:delete' => "An unknown error occured while deleting the newsletter, please try again",
-	'newsletter:action:delete:success' => "The newsletter was deleted",
-	
 	// schedule
 	'newsletter:action:schedule:success' => "Schedule saved",
 	
