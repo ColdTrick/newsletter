@@ -4,6 +4,7 @@
  */
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Elgg\Email;
 
 /**
  * Start the commandline to send a newsletter
@@ -1132,7 +1133,7 @@ function newsletter_is_group_enabled(ElggGroup $group = null) {
  */
 function newsletter_send_preview(Newsletter $entity, $email) {
 	
-	if (!elgg_instanceof($entity, "object", Newsletter::SUBTYPE) || empty($email)) {
+	if (empty($email)) {
 		return false;
 	}
 	
@@ -1142,15 +1143,13 @@ function newsletter_send_preview(Newsletter $entity, $email) {
 	if ($entity->subject) {
 		$message_subject = $entity->subject;
 	} else {
-		$message_subject = elgg_echo('newsletter:subject', [$container->name, $entity->title]);
+		$message_subject = elgg_echo('newsletter:subject', [$container->getDisplayName(), $entity->getDisplayName()]);
 	}
 	//  plaintext message
 	$message_plaintext_content = elgg_echo('newsletter:plain_message', [$entity->getURL()]);
 	
 	// html content
 	$message_html_content = elgg_view_layout('newsletter', ['entity' => $entity]);
-	// convert to inline CSS for email clients
-	$message_html_content = html_email_handler_css_inliner($message_html_content);
 	
 	// add unsubscribe link
 	$unsubscribe_link = newsletter_generate_unsubscribe_link($container, $email);
@@ -1162,14 +1161,19 @@ function newsletter_send_preview(Newsletter $entity, $email) {
 	
 	$message_html_content = str_ireplace($online_link, $new_online_link, $message_html_content);
 	
-	// send preview
-	return html_email_handler_send_email([
-		'from' => html_email_handler_make_rfc822_address($container),
-		'subject' => $message_subject,
-		'plaintext_message' => $message_plaintext_content,
+	// make email
+	$email = Email::factory([
 		'to' => $email,
-		'html_message' => $message_html_content,
+		'from' => $container,
+		'subject' => $message_subject,
+		'body' => $message_plaintext_content,
+		'params' => [
+			'html_message' => $message_html_content,
+		],
 	]);
+	
+	// send preview
+	return elgg_send_email($email);
 }
 
 /**

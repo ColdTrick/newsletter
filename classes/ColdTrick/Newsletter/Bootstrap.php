@@ -62,6 +62,8 @@ class Bootstrap extends DefaultPluginBootstrap {
 		$hooks->registerHandler('register', 'user', __NAMESPACE__ . '\User::subscribeToSiteNewsletter');
 		$hooks->registerHandler('usersettings:save', 'user', __NAMESPACE__ . '\User::convertEmailSubscriptionToUserSetting');
 		$hooks->registerHandler('entity:url', 'object', __NAMESPACE__ . '\Widgets::widgetURL');
+		$hooks->registerHandler('view', 'page/layouts/newsletter', __NAMESPACE__ . '\DeveloperTools::reenableLogOutput');
+		$hooks->registerHandler('view_vars', 'page/layouts/newsletter', __NAMESPACE__ . '\DeveloperTools::preventLogOutput');
 	}
 	
 	/**
