@@ -1,4 +1,6 @@
 <?php
+use Elgg\EntityPermissionsException;
+
 /**
  * View the logging of a newsletter
  *
@@ -8,39 +10,34 @@
 $guid = (int) get_input('guid');
 
 elgg_entity_gatekeeper($guid, 'object', Newsletter::SUBTYPE);
+/* @var $entity Newsletter */
 $entity = get_entity($guid);
 
 if (!$entity->canEdit()) {
-	register_error(elgg_echo('actionunauthorized'));
-	forward(REFERER);
+	throw new EntityPermissionsException();
 }
 
 // set page owner
 $container = $entity->getContainerEntity();
-if (elgg_instanceof($container, 'group')) {
-	elgg_set_page_owner_guid($entity->getContainerGUID());
-} else {
-	elgg_set_page_owner_guid(elgg_get_logged_in_user_guid());
+if ($container instanceof ElggGroup) {
+	elgg_set_page_owner_guid($entity->container_guid);
 }
 
 // breadcrumb
-elgg_push_breadcrumb(elgg_echo('newsletter:breadcrumb:site'), 'newsletter/site');
-if (elgg_instanceof($container, 'group')) {
-	elgg_push_breadcrumb($container->name, 'newsletter/group/' . $container->getGUID());
-}
-elgg_push_breadcrumb($entity->title, $entity->getURL());
-elgg_push_breadcrumb(elgg_echo('newsletter:breadcrumb:log'));
+elgg_push_collection_breadcrumbs('object', Newsletter::SUBTYPE, $container instanceof ElggGroup ? $container : null);
+elgg_push_breadcrumb($entity->getDisplayName(), $entity->getURL());
 
 // build page elements
-$title_text = elgg_echo('newsletter:log:title', [$entity->title]);
+$title_text = elgg_echo('newsletter:log:title', [$entity->getDisplayName()]);
 
-$content = elgg_view('newsletter/log', ['entity' => $entity]);
+$content = elgg_view('newsletter/log', [
+	'entity' => $entity,
+]);
 
 // build page
-$page_data = elgg_view_layout('content', [
+$page_data = elgg_view_layout('default', [
 	'title' => $title_text,
 	'content' => $content,
-	'filter' => '',
 ]);
 
 // draw page

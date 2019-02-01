@@ -3,56 +3,53 @@
  * Shows all the newsletters the user received
  */
 
+use Elgg\EntityNotFoundException;
+use Elgg\EntityPermissionsException;
+
 $user = elgg_get_page_owner_entity();
-if (empty($user) || !elgg_instanceof($user, 'user')) {
-	register_error(elgg_echo('pageownerunavailable', [elgg_get_page_owner_guid()]));
-	forward(REFERER);
+if (!$user instanceof ElggUser) {
+	throw new EntityNotFoundException();
 }
 
 if (!$user->canEdit()) {
-	register_error(elgg_echo('actionunauthorized'));
-	forward(REFERER);
+	throw new EntityPermissionsException();
 }
 
 // breadcrumb
-elgg_push_breadcrumb(elgg_echo('newsletter:breadcrumb:site'), 'newsletter/site');
-elgg_push_breadcrumb(elgg_echo('newsletter:breadcrumb:received'));
+elgg_push_collection_breadcrumbs('object', Newsletter::SUBTYPE);
 
 // build page elements
 if ($user->getGUID() == elgg_get_logged_in_user_guid()) {
 	$title_text = elgg_echo('newsletter:received:title:mine');
 } else {
-	$title_text = elgg_echo('newsletter:received:title', [$user->name]);
+	$title_text = elgg_echo('newsletter:received:title', [$user->getDisplayName()]);
 }
 
-$ia = elgg_set_ignore_access(true);
-$content = elgg_list_entities([
-	'type' => 'object',
-	'subtype' => Newsletter::SUBTYPE,
-	'full_view' => false,
-	'metadata_name_value_pairs' => [
-		'name' => 'status',
-		'value' => 'sent',
-	],
-	'relationship' => Newsletter::SEND_TO,
-	'relationship_guid' => $user->getGUID(),
-	'inverse_relationship' => true,
-	'limit' => max(0, (int) get_input('limit', 10)),
-	'offset' => max(0, (int) get_input('offset', 0)),
-	'order_by_metadata' => [
-		'name' => 'start_time',
-		'as' => 'integer',
-		'direction' => 'DESC',
-	],
-	'notfound' => true,
-]);
-elgg_set_ignore_access($ia);
+$content = elgg_call(ELGG_IGNORE_ACCESS, function() use ($user) {
+	return elgg_list_entities([
+		'type' => 'object',
+		'subtype' => Newsletter::SUBTYPE,
+		'full_view' => false,
+		'metadata_name_value_pairs' => [
+			'name' => 'status',
+			'value' => 'sent',
+		],
+		'relationship' => Newsletter::SEND_TO,
+		'relationship_guid' => $user->guid,
+		'inverse_relationship' => true,
+		'order_by_metadata' => [
+			'name' => 'start_time',
+			'as' => 'integer',
+			'direction' => 'DESC',
+		],
+		'no_results' => true,
+	]);
+});
 
 // build page
-$page_data = elgg_view_layout('content', [
+$page_data = elgg_view_layout('default', [
 	'title' => $title_text,
 	'content' => $content,
-	'filter' => '',
 ]);
 
 // draw page

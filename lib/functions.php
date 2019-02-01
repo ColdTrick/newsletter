@@ -1097,12 +1097,7 @@ function newsletter_is_group_enabled(ElggGroup $group = null) {
 	
 	// make sure we only get the plugin setting once
 	if (!isset($plugin_setting)) {
-		$plugin_setting = false;
-		
-		$setting = elgg_get_plugin_setting('allow_groups', 'newsletter');
-		if ($setting == 'yes') {
-			$plugin_setting = true;
-		}
+		$plugin_setting = elgg_get_plugin_setting('allow_groups', 'newsletter') === 'yes';
 	}
 	
 	// check the setting of the group (if any)
@@ -1110,17 +1105,13 @@ function newsletter_is_group_enabled(ElggGroup $group = null) {
 		return false;
 	}
 	
-	if (!elgg_instanceof($group, 'group')) {
+	if (!$group instanceof ElggGroup) {
 		// no group just checking plugin setting
 		return true;
 	}
 	
 	// check the setting of the group
-	if ($group->newsletter_enable != 'no') {
-		return true;
-	}
-		
-	return false;
+	return $group->isToolEnabled('newsletter');
 }
 
 /**

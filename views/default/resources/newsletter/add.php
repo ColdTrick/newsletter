@@ -16,6 +16,7 @@ if ($page_owner instanceof ElggUser) {
 	// access to site newsletters is only for admins
 	if ($page_owner->isAdmin()) {
 		$container_guid = elgg_get_site_entity()->guid;
+		elgg_set_page_owner_guid(false);
 	} else {
 		throw new EntityPermissionsException();
 	}

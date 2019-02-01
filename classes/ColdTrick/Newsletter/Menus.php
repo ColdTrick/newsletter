@@ -61,11 +61,11 @@ class Menus {
 			return;
 		}
 		
-		$base_url = elgg_generate_url('collection:object:newsletter:site');
+		$route_name = 'collection:object:newsletter:site';
+		$route_params = [];
 		if ($page_owner instanceof \ElggGroup) {
-			$base_url = elgg_generate_url('collection:object:newsletter:group', [
-				'guid' => $page_owner->guid,
-			]);
+			$route_name = 'collection:object:newsletter:group';
+			$route_params['guid'] = $page_owner->guid;
 		}
 		
 		$current_filter = elgg_extract('filter_value', $params, 'sent');
@@ -73,7 +73,7 @@ class Menus {
 		$returnvalue[] = \ElggMenuItem::factory([
 			'name' => 'concept',
 			'text' => elgg_echo('newsletter:menu:filter:concept'),
-			'href' => elgg_http_add_url_query_elements($base_url, [
+			'href' => elgg_generate_url($route_name, $route_params + [
 				'filter' => 'concept',
 			]),
 			'is_trusted' => true,
@@ -83,7 +83,7 @@ class Menus {
 		$returnvalue[] = \ElggMenuItem::factory([
 			'name' => 'scheduled',
 			'text' => elgg_echo('newsletter:menu:filter:scheduled'),
-			'href' => elgg_http_add_url_query_elements($base_url, [
+			'href' => elgg_generate_url($route_name, $route_params + [
 				'filter' => 'scheduled',
 			]),
 			'is_trusted' => true,
@@ -93,7 +93,7 @@ class Menus {
 		$returnvalue[] = \ElggMenuItem::factory([
 			'name' => 'sending',
 			'text' => elgg_echo('newsletter:menu:filter:sending'),
-			'href' => elgg_http_add_url_query_elements($base_url, [
+			'href' => elgg_generate_url($route_name, $route_params + [
 				'filter' => 'sending',
 			]),
 			'is_trusted' => true,
@@ -103,7 +103,7 @@ class Menus {
 		$returnvalue[] = \ElggMenuItem::factory([
 			'name' => 'sent',
 			'text' => elgg_echo('newsletter:menu:filter:sent'),
-			'href' => elgg_http_add_url_query_elements($base_url, [
+			'href' => elgg_generate_url($route_name, $route_params + [
 				'filter' => 'sent',
 			]),
 			'is_trusted' => true,

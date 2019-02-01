@@ -5,50 +5,41 @@
  * @uses get_input('guid') the guid of the newsletter
  */
 
+use Elgg\BadRequestException;
+use Elgg\EntityNotFoundException;
+use Elgg\ValidationException;
+use Elgg\EntityPermissionsException;
+
 $guid = (int) get_input('guid');
 $code = get_input('code');
 
 // validate input
 if (empty($guid)) {
-	register_error(elgg_echo('error:missing_data'));
-	forward(REFERER);
+	throw new BadRequestException();
 }
 
-$ia = elgg_get_ignore_access();
-$entity = get_entity($guid);
-if (empty($entity)) {
-	// does the entity exist
-	if (!elgg_entity_exists($guid)) {
-		register_error(elgg_echo('actionunauthorized'));
-		forward(REFERER);
-	}
-	
-	// validate code
-	if (empty($code) || !newsletter_validate_commandline_secret($guid, $code)) {
-		register_error(elgg_echo('newsletter:entity:error:code'));
-		forward(REFERER);
-	}
-	
-	// code is valid, so get the entity
-	$ia = elgg_set_ignore_access(true);
-	$entity = get_entity($guid);
+if (!elgg_entity_exists($guid)) {
+	throw new EntityNotFoundException();
+}
+
+// validate code
+if (empty($code) || !newsletter_validate_commandline_secret($guid, $code)) {
+	throw new ValidationException(elgg_echo('newsletter:entity:error:code'));
 }
 
 // validate entity
-if (empty($entity) || !elgg_instanceof($entity, 'object', Newsletter::SUBTYPE)) {
-	register_error(elgg_echo('error:missing_data'));
-	
-	// restore access
-	elgg_set_ignore_access($ia);
-	
-	forward(REFERER);
+$entity = get_entity($guid);
+if (!$entity instanceof Newsletter) {
+	throw new EntityPermissionsException();
 }
 
 // view the newsletter
-echo elgg_view_layout('newsletter', ['entity' => $entity]);
-
-// restore access
-elgg_set_ignore_access($ia);
+echo elgg_view_layout('newsletter', [
+	'entity' => $entity,
+]);
 
 // add some helper buttons
-echo elgg_view('newsletter/buttons', ['entity' => $entity, 'type' => 'view']);
+echo elgg_view('newsletter/buttons', [
+	'entity' => $entity,
+	'type' => 'view',
+]);

@@ -12,7 +12,7 @@ elgg_push_collection_breadcrumbs('object', Newsletter::SUBTYPE);
 if (elgg_is_admin_logged_in()) {
 	elgg_register_title_button('newsletter', 'add', 'object', Newsletter::SUBTYPE);
 	
-	$filter = get_input('filter', 'concept');
+	$filter = elgg_extract('filter', $vars, $filter, false);
 }
 
 // build page elements

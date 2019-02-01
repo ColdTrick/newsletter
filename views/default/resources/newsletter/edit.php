@@ -22,7 +22,7 @@ $subpage = elgg_extract('subpage', $vars, 'basic');
 // set page owner
 $container = $entity->getContainerEntity();
 if (!$container instanceof ElggGroup) {
-	elgg_set_page_owner_guid(elgg_get_logged_in_user_guid());
+	elgg_set_page_owner_guid(false);
 	
 	$container = null;
 }

@@ -109,7 +109,7 @@ return [
 			'resource' => 'newsletter/site',
 		],
 		'collection:object:newsletter:group' => [
-			'path' => 'newsletter/group/{guid}',
+			'path' => 'newsletter/group/{guid}/{filter?}',
 			'resource' => 'newsletter/group',
 		],
 		'collection:object:newsletter:received' => [
@@ -120,7 +120,7 @@ return [
 			],
 		],
 		'collection:object:newsletter:site' => [
-			'path' => 'newsletter/site',
+			'path' => 'newsletter/site/{filter?}',
 			'resource' => 'newsletter/site',
 		],
 		'collection:object:newsletter:subscriptions' => [

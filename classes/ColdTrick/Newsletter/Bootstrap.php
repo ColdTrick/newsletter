@@ -55,6 +55,7 @@ class Bootstrap extends DefaultPluginBootstrap {
 		$hooks->registerHandler('register', 'menu:entity', __NAMESPACE__ . '\Menus::entityRegister');
 		$hooks->registerHandler('register', 'menu:owner_block', __NAMESPACE__ . '\Menus::ownerBlockRegister');
 		$hooks->registerHandler('register', 'menu:filter:newsletter', __NAMESPACE__ . '\Menus::filterRegister');
+		$hooks->registerHandler('register', 'menu:filter:newsletter/group', __NAMESPACE__ . '\Menus::filterRegister');
 		$hooks->registerHandler('register', 'menu:filter:newsletter_steps', __NAMESPACE__ . '\Menus::newsletterSteps');
 		$hooks->registerHandler('register', 'menu:newsletter_buttons', __NAMESPACE__ . '\Menus::newsletterButtonsRegister');
 		$hooks->registerHandler('register', 'menu:longtext', __NAMESPACE__ . '\Menus::longtextRegister');
