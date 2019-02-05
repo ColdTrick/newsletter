@@ -47,6 +47,8 @@ return array(
 	'newsletter:menu:steps:template' => "Template",
 	'newsletter:menu:steps:recipients' => "Recipients",
 	'newsletter:menu:steps:schedule' => "Schedule",
+	
+	'newsletter:menu:preview_by_mail' => "Preview by mail",
 		
 	// long text menu
 	'newsletter:menu:longtext:embed_content' => "Embed content",

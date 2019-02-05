@@ -37,9 +37,3 @@ if (!$entity instanceof Newsletter) {
 echo elgg_view_layout('newsletter', [
 	'entity' => $entity,
 ]);
-
-// add some helper buttons
-echo elgg_view('newsletter/buttons', [
-	'entity' => $entity,
-	'type' => 'view',
-]);
