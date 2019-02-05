@@ -12,6 +12,11 @@
 	}
 }
 
+iframe.newsletter-preview {
+	width: 100%;
+	height: 2000px;
+}
+
 #newsletter-recipients-wrapper .elgg-icon-delete-alt {
 	display: none;
 }

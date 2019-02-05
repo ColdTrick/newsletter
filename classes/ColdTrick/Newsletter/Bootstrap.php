@@ -37,6 +37,8 @@ class Bootstrap extends DefaultPluginBootstrap {
 		elgg_extend_view('register/extend', 'newsletter/register');
 		
 		elgg_register_simplecache_view('js/newsletter/embed.js');
+		
+		elgg_register_ajax_view('forms/newsletter/preview_mail');
 	}
 	
 	/**
@@ -57,7 +59,6 @@ class Bootstrap extends DefaultPluginBootstrap {
 		$hooks->registerHandler('register', 'menu:filter:newsletter', __NAMESPACE__ . '\Menus::filterRegister');
 		$hooks->registerHandler('register', 'menu:filter:newsletter/group', __NAMESPACE__ . '\Menus::filterRegister');
 		$hooks->registerHandler('register', 'menu:filter:newsletter_steps', __NAMESPACE__ . '\Menus::newsletterSteps');
-		$hooks->registerHandler('register', 'menu:newsletter_buttons', __NAMESPACE__ . '\Menus::newsletterButtonsRegister');
 		$hooks->registerHandler('register', 'menu:longtext', __NAMESPACE__ . '\Menus::longtextRegister');
 		$hooks->registerHandler('register', 'menu:site', __NAMESPACE__ . '\Menus::siteRegister');
 		$hooks->registerHandler('register', 'user', __NAMESPACE__ . '\User::subscribeToSiteNewsletter');

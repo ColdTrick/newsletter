@@ -151,73 +151,7 @@ class Menus {
 	
 		return $returnvalue;
 	}
-	
-	/**
-	 * Add a menu item in the buttons menu of the online/preview view
-	 *
-	 * @param string $hook        name of the hook
-	 * @param string $type        type of the hook
-	 * @param array  $returnvalue Default menu items
-	 * @param array  $params      params for the hook
-	 *
-	 * @return MenuItems
-	 */
-	public static function newsletterButtonsRegister($hook, $type, $returnvalue, $params) {
 		
-		$entity = elgg_extract('entity', $params);
-		if (!$entity instanceof \Newsletter) {
-			return;
-		}
-		
-		$container = $entity->getContainerEntity();
-		if ($container instanceof \ElggGroup) {
-			$href = elgg_generate_url('collection:object:newsletter:group', [
-				'guid' => $container->guid,
-			]);
-		} else {
-			$href = elgg_generate_url('collection:object:newsletter:site');
-		}
-			
-		$referer = elgg_extract('HTTP_REFERER', $_SERVER);
-		if (!empty($referer) && stristr($referer, elgg_get_site_url())) {
-			// there is history to this site, so add a back button
-			$returnvalue[] = \ElggMenuItem::factory([
-				'name' => 'back',
-				'icon' => 'arrow-left',
-				'text' => elgg_echo('back'),
-				'href' => $referer,
-				'target' => '_self',
-			]);
-		}
-			
-		$returnvalue[] = \ElggMenuItem::factory([
-			'name' => 'more',
-			'text' => elgg_echo('newsletter:menu:site'),
-			'href' => $href,
-			'target' => '_self',
-		]);
-			
-		if ($entity->canEdit()) {
-			$returnvalue[] = \ElggMenuItem::factory([
-				'name' => 'edit',
-				'icon' => 'edit',
-				'text' => elgg_echo('edit'),
-				'href' => elgg_generate_entity_url($entity, 'edit'),
-				'target' => '_self',
-			]);
-
-			if (elgg_extract('type', $params) == 'preview') {
-				$returnvalue[] = \ElggMenuItem::factory([
-					'name' => 'mail',
-					'text' => elgg_view_form('newsletter/preview_mail', ['target' => '_self'], ['entity' => $entity]),
-					'href' => false,
-				]);
-			}
-		}
-		
-		return $returnvalue;
-	}
-	
 	/**
 	 * Add a menu item in the entity's menu
 	 *
