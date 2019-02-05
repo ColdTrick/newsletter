@@ -124,7 +124,6 @@ function newsletter_process($entity_guid) {
 	
 	$site = elgg_get_site_entity();
 	$container = $entity->getContainerEntity();
-	$dbprefix = elgg_get_config('dbprefix');
 	
 	// set newsletter status to sending
 	$entity->status = 'sending';
