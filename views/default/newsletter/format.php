@@ -30,9 +30,8 @@ $format_icon = elgg_format_element('div', [], $format_icon);
 $result = elgg_format_element('fieldset', [], $format_description . $format_icon);
 
 $result .= elgg_view('input/button', [
-	'class' => 'elgg-button-submit mvl',
+	'class' => 'elgg-button-submit mvl newsletter-embed-format',
 	'value' => elgg_echo('newsletter:embed:format:add_to_newsletter'),
-	'onclick' => 'elgg.newsletter.embed_format_submit()',
 ]);
 
 $preview_title = elgg_echo('newsletter:embed:format:preview:title');

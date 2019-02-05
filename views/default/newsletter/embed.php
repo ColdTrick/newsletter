@@ -29,7 +29,7 @@ $options = [
 	'limit' => $limit,
 	'offset' => $offset,
 	'count' => true,
-	'wheres' => [],
+	'query' => $query,
 ];
 
 $container = $newsletter->getContainerEntity();
@@ -37,32 +37,40 @@ if (empty($show_all) && $container instanceof ElggGroup) {
 	$options['container_guid'] = $newsletter->container_guid;
 }
 
-if (!empty($query)) {
-	$options['metadata_name_value_pairs'] = [
-		[
-			'name' => 'title',
-			'value' => "%{$query}%",
-			'operand' => 'LIKE',
-		],
-	];
+if (empty($query)) {
+	$count = elgg_get_entities($options);
+} else {
+	$count = elgg_search($options);
 }
-
-$count = elgg_get_entities($options);
 unset($options['count']);
 
 // search form
-$form_data = elgg_view('input/text', ['name' => 'q', 'value' => $query]);
-$form_data .= elgg_view('input/submit', ['value' => elgg_echo('search'), 'class' => 'elgg-button-action']);
+$form_data = elgg_view_field([
+	'#type' => 'fieldset',
+	'align' => 'horizontal',
+	'fields' => [
+		[
+			'#type' => 'text',
+			'name' => 'q',
+			'value' => $query,
+		],
+		[
+			'#type' => 'submit',
+			'value' => elgg_echo('search'),
+		],
+	],
+]);
 
 if ($container instanceof ElggGroup) {
-	$show_all_checkbox = elgg_view('input/checkbox', [
+	$form_data .= elgg_view_field([
+		'#type' => 'checkbox',
+		'#label' => elgg_echo('newsletter:embed:show_all'),
 		'name' => 'show_all',
 		'value' => '1',
 		'checked' => $show_all,
 		'default' => false,
+		'switch' => true,
 	]);
-	$show_all_checkbox .= elgg_echo('newsletter:embed:show_all');
-	$form_data .= elgg_format_element('div', ['class' => 'mts'], $show_all_checkbox);
 }
 
 $embed_wrapper = elgg_view('input/form', [
@@ -75,7 +83,11 @@ $embed_wrapper = elgg_view('input/form', [
 ]);
 
 if ($count > 0) {
-	$entities = elgg_get_entities($options);
+	if (empty($query)) {
+		$entities = elgg_get_entities($options);
+	} else {
+		$entities = elgg_search($options);
+	}
 	
 	$embed_list = [];
 	foreach ($entities as $entity) {
