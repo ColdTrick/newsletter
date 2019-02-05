@@ -36,8 +36,6 @@ class Bootstrap extends DefaultPluginBootstrap {
 		elgg_extend_view('groups/sidebar/my_status', 'newsletter/sidebar/subscribe');
 		elgg_extend_view('register/extend', 'newsletter/register');
 		
-		elgg_register_simplecache_view('js/newsletter/embed.js');
-		
 		elgg_register_ajax_view('forms/newsletter/preview_mail');
 	}
 	

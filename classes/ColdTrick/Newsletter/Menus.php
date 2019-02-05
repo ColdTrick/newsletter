@@ -125,7 +125,7 @@ class Menus {
 	 */
 	public static function longtextRegister($hook, $type, $returnvalue, $params) {
 	
-		$id = elgg_extract('id', $params);
+		$id = elgg_extract('textarea_id', $params);
 		if (strpos($id, 'newsletter-edit-content-') !== 0) {
 			return;
 		}

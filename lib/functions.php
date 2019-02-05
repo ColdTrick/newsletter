@@ -1407,21 +1407,14 @@ function newsletter_apply_url_postfix($html_content, Newsletter $newsletter) {
  * @return bool
  */
 function newsletter_embed_available() {
-	static $result;
-	
-	if (isset($result)) {
-		return $result;
-	}
-	
-	$result = false;
 	
 	if (elgg_is_active_plugin('blog')) {
-		$result = true;
+		return true;
 	} elseif (elgg_is_active_plugin('static')) {
-		$result = true;
+		return true;
 	}
 	
-	return $result;
+	return false;
 }
 
 /**
