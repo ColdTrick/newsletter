@@ -426,6 +426,7 @@ class Menus {
 					'href' => elgg_generate_url('collection:object:newsletter:subscriptions', [
 						'username' => $user->username,
 					]),
+					'section' => 'notifications',
 					'is_trusted' => true,
 				]);
 			}
