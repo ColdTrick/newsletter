@@ -396,7 +396,7 @@ class Menus {
 			return;
 		}
 		
-		if (elgg_in_context('newsletter')) {
+		if (elgg_in_context('newsletter') && !elgg_in_context('settings')) {
 			// link to your subscriptions
 			$returnvalue[] = \ElggMenuItem::factory([
 				'name' => 'newsletter_suscriptions',
