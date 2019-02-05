@@ -160,9 +160,9 @@ return array(
 	'newsletter:settings:allow_groups' => "Allow group admins to send newsletters",
 	'newsletter:settings:allow_groups:description' => "Group administrators can create a newsletter for their group members.",
 	'newsletter:settings:include_existing_users' => "Include users without subscription settings",
-	'newsletter:settings:include_existing_users:description' => "When this setting is set to 'no', all existing users without subscription settings will no longer receive newsletters.",
+	'newsletter:settings:include_existing_users:description' => "When enabled all user will be included, except those who have unsubscribed.",
 	'newsletter:settings:custom_from' => "Allow newsletters to be send from a custom e-mail address",
-	'newsletter:settings:custom_from:description' => "When this setting is set to 'yes', users are allowed to enter a custom e-mail address which will be used to as the from adress of the newsleter. Please keep in mind that this could allow abuse and could make newsletter end up in the spam folders more often.",
+	'newsletter:settings:custom_from:description' => "When enabled users are allowed to enter a custom e-mail address which will be used to as the from adress of the newsleter. Please keep in mind that this could allow abuse and could make newsletter end up in the spam folders more often.",
 	'newsletter:settings:custom_from:domains' => "Limit the custom e-mail addresses to the following domains",
 	'newsletter:settings:custom_from:domains:description' => "Enter a comma seperated list of domains to limit the custom e-mail addresses to. For example: example.com, this will allow user@example.com but not user@example2.com or user2@sub.example.com",
 	
