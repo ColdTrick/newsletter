@@ -21,6 +21,7 @@ echo elgg_view_field([
 	'name' => 'date',
 	'value' => elgg_extract('date', $vars, elgg_extract('scheduled', $vars)),
 	'timestamp' => true,
+	'required' => true,
 ]);
 
 echo elgg_view_field([
