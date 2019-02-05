@@ -330,7 +330,7 @@ class Menus {
 			return;
 		}
 		
-		if (elgg_in_context('newsletter')) {
+		if (elgg_in_context('newsletter') && !elgg_in_context('settings')) {
 			// link to your subscriptions
 			$returnvalue[] = \ElggMenuItem::factory([
 				'name' => 'newsletter_suscriptions',
@@ -360,6 +360,7 @@ class Menus {
 					'href' => elgg_generate_url('collection:object:newsletter:subscriptions', [
 						'username' => $user->username,
 					]),
+					'section' => 'notifications',
 					'is_trusted' => true,
 				]);
 			}
