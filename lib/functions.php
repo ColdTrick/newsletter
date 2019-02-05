@@ -437,81 +437,42 @@ function newsletter_process($entity_guid) {
 }
 
 /**
- * Format a recipient to be listed in the recipient autocomplete or listing
+ * Format an e-mail recipient to be listed in the recipient autocomplete or listing
  *
- * @param mixed $recipient Can be an ElggUser, ElggGroup or email address
+ * @param string $recipient email address
  *
  * @return array Contains, of false on failure
- * 					- type : user, group or email
+ * 					- type : email
  * 					- label: used in the autocomplete dropdown
- * 					- content: used in the listing view
- * 					- value: eighter a guid of email address
+ * 					- html: used in the listing view
+ * 					- value: email address
  */
-function newsletter_format_recipient($recipient) {
+function newsletter_format_email_recipient($recipient) {
 	
-	if (empty($recipient)) {
+	if (!newsletter_is_email_address($recipient)) {
 		return false;
 	}
 	
-	if (elgg_instanceof($recipient, 'user')) {
-		$icon = elgg_view_entity_icon($recipient, 'tiny', [
-			'use_hover' => false,
-			'use_link' => false,
-		]);
-		
-		// label for autoselect listing
-		$label = elgg_view_image_block($icon, $recipient->name, ['class' => 'elgg-autocomplete-item']);
-		
-		// content for if selected
-		$content = elgg_view('input/hidden', ['name' => 'user_guids[]', 'value' => $recipient->getGUID()]);
-		$content .= elgg_view_image_block($icon, $recipient->name, ['image_alt' => elgg_view_icon('delete-alt')]);
-		
-		return [
-			'type' => 'user',
-			'value' => $recipient->getGUID(),
-			'label' => $label,
-			'content' => elgg_format_element('div', ['class' => 'newsletter-recipient-result phs'], $content),
-		];
-	} elseif (elgg_instanceof($recipient, 'group')) {
-		$icon = elgg_view_entity_icon($recipient, 'tiny', [
-			'use_hover' => false,
-			'href' => false,
-		]);
-		
-		// label for autoselect listing
-		$name = elgg_format_element('span', [], elgg_echo('groups:group') . ': ') . $recipient->name;
-		$name .= elgg_format_element('span', ['class' => 'elgg-quiet'], ' (' . $recipient->getMembers(0, 0, true) . ' ' . elgg_echo('groups:member') . ')');
-		
-		$label = elgg_view_image_block($icon, $name, ['class' => 'elgg-autocomplete-item newsletter-recipient-autocomplete-group']);
-		
-		// content for if selected
-		$name = $recipient->name;
-		$name .= elgg_format_element('span', ['class' => 'elgg-quiet'], ' (' . $recipient->getMembers(0, 0, true) . ' ' . elgg_echo('groups:member') . ')');
-		
-		$content = elgg_view('input/hidden', ['name' => 'group_guids[]', 'value' => $recipient->getGUID()]);
-		$content .= elgg_view_image_block($icon, $name, ['image_alt' => elgg_view_icon('delete-alt')]);
-		
-		return [
-			'type' => 'group',
-			'value' => $recipient->getGUID(),
-			'label' => $label,
-			'content' => elgg_format_element('div', ['class' => 'newsletter-recipient-result phs'], $content),
-		];
-	} elseif (newsletter_is_email_address($recipient)) {
-		$name = elgg_format_element('span', [], elgg_echo('newsletter:recipients:email') . ': ') . $recipient;
-		$label = elgg_view_image_block('', $name, ['class' => 'elgg-autocomplete-item newsletter-recipient-autocomplete-email']);
-			
-		$content = elgg_view('input/hidden', ['name' => 'emails[]', 'value' => $recipient]);
-		$content .= elgg_view_image_block('', $recipient, ['image_alt' => elgg_view_icon('delete-alt')]);
-			
-		return [
-			'type' => 'email',
-			'label' => $label,
-			'content' => elgg_format_element('div', ['class' => 'newsletter-recipient-result phs'], $content),
-		];
-	}
+	// switch viewtype
+	$view_type = elgg_get_viewtype();
+	elgg_set_viewtype('default');
 	
-	return false;
+	$name = elgg_format_element('span', [], elgg_echo('newsletter:recipients:email') . ': ') . $recipient;
+	$label = elgg_view_image_block('', $name, ['class' => 'elgg-autocomplete-item']);
+	
+	$delete_icon = elgg_view_icon('delete', ['class' => 'elgg-autocomplete-item-remove']);
+	
+	$content = elgg_view('input/hidden', ['name' => 'emails[]', 'value' => $recipient]);
+	$content .= elgg_view_image_block('', $recipient, ['image_alt' => $delete_icon]);
+	
+	// restore viewtype
+	elgg_set_viewtype($view_type);
+	
+	return [
+		'type' => 'email',
+		'label' => $label,
+		'html' => elgg_format_element('li', ['class' => 'elgg-item'], $content),
+	];
 }
 
 /**

@@ -1,51 +1,49 @@
 <?php
 /**
  * Procedure to find recipients for the newsletter
- *
- * Should return a JSON result
- *
- * @todo rework!!!!!
  */
 
-$result = [];
-
-header('Content-Type: application/json');
-
 // only loggedin users can access this page
-if (!elgg_is_logged_in()) {
-	echo json_encode($result);
-	exit();
-}
+elgg_gatekeeper();
 
 $query = get_input('term');
 $limit = (int) get_input('limit', 5);
 $guid = (int) get_input('guid');
 
+$result = [];
+
+$return = function() use (&$result) {
+	echo elgg_view_page('', json_encode(array_values($result)));
+};
+
 if (empty($query) || empty($guid)) {
-	echo json_encode($result);
-	exit();
+	echo $return();
+	return;
 }
 
 $entity = get_entity($guid);
 // do we have a newsletter
 if (!$entity instanceof Newsletter || !$entity->canEdit()) {
-	echo json_encode($result);
-	exit();
+	echo $return();
+	return;
 }
 
 // search for individual users
 $users = elgg_search([
 	'query' => $query,
 	'type' => 'user',
+	'search_type' => 'entities',
 	'limit' => $limit,
 ]);
 
 if (!empty($users)) {
 	foreach ($users as $user) {
-		
 		$key = strtolower($user->name) . $user->guid;
 		
-		$result[$key] = newsletter_format_recipient($user);
+		$result[$key] = json_decode(elgg_view('search/entity', [
+			'entity' => $user,
+			'input_name' => 'user_guids',
+		]));
 	}
 }
 
@@ -54,6 +52,7 @@ if (!$entity->getContainerEntity() instanceof ElggGroup) {
 	$groups = elgg_search([
 		'query' => $query,
 		'type' => 'group',
+		'search_type' => 'entities',
 		'limit' => $limit,
 	]);
 	
@@ -61,7 +60,10 @@ if (!$entity->getContainerEntity() instanceof ElggGroup) {
 		foreach ($groups as $group) {
 			$key = strtolower($group->name) . $group->guid;
 			
-			$result[$key] = newsletter_format_recipient($group);
+			$result[$key] = json_decode(elgg_view('search/entity', [
+				'entity' => $group,
+				'input_name' => 'group_guids',
+			]));
 		}
 	}
 }
@@ -72,12 +74,15 @@ if (newsletter_is_email_address($query)) {
 		// found a user with this email address
 		$key = strtolower($users[0]->name) . $users[0]->guid;
 		
-		$result[$key] = newsletter_format_recipient($users[0]);
+		$result[$key] = json_decode(elgg_view('search/entity', [
+			'entity' => $users[0],
+			'input_name' => 'user_guids',
+		]));
 	} else {
 		// no user found
-		$result[$query] = newsletter_format_recipient($query);
+		$result[$query] = newsletter_format_email_recipient($query);
 	}
 }
 
 ksort($result);
-echo json_encode(array_values($result));
+echo $return();
