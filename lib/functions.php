@@ -5,6 +5,7 @@
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Elgg\Email;
+use Elgg\Database\QueryBuilder;
 
 /**
  * Start the commandline to send a newsletter
@@ -523,7 +524,7 @@ function newsletter_format_recipient($recipient) {
  */
 function newsletter_get_subscribers(ElggEntity $container, $count = false) {
 	
-	if (!elgg_instanceof($container, 'site') && !elgg_instanceof($container, 'group')) {
+	if (!$container instanceof ElggSite && !$container instanceof ElggGroup) {
 		return false;
 	}
 	
@@ -532,34 +533,35 @@ function newsletter_get_subscribers(ElggEntity $container, $count = false) {
 		$result = ['users' => [], 'emails' => []];
 		
 		// get all subscribed community members
-		// @todo make this easier????
-		$tmp_users = elgg_get_entities([
+		$user_emails = elgg_get_metadata([
 			'type' => 'user',
-			'selects' => ['ue.email'],
-			'site_guids' => false,
+			'metadata_names' => ['email'],
 			'limit' => false,
+			'batch' => true,
 			'relationship' => NewsletterSubscription::SUBSCRIPTION,
-			'relationship_guid' => $container->getGUID(),
+			'relationship_guid' => $container->guid,
 			'inverse_relationship' => true,
-			'joins' => ['JOIN ' . elgg_get_config('dbprefix') . 'users_entity ue ON e.guid = ue.guid'],
-			'callback' => 'newsletter_user_row_to_subscriber_info',
 		]);
-		if (!empty($tmp_users)) {
-			foreach ($tmp_users as $tmp_user) {
-				$result['users'][$tmp_user['guid']] = $tmp_user['email'];
-			}
+		/* @var $user_email ElggMetadata */
+		foreach ($user_emails as $user_email) {
+			$result['users'][$user_email->entity_guid] = $user_email->value;
 		}
 		
 		// check the email subscriptions
 		$result['emails'] = elgg_get_entities([
 			'type' => 'object',
 			'subtype' => NewsletterSubscription::SUBTYPE,
-			'selects' => ['oe.title'],
+			'selects' => [
+				function (QueryBuilder $qb, $main_alias) {
+					$metadata = $qb->joinMetadataTable($main_alias, 'guid', 'title');
+					
+					return "{$metadata}.value AS title";
+				},
+			],
 			'limit' => false,
 			'relationship' => NewsletterSubscription::SUBSCRIPTION,
-			'relationship_guid' => $container->getGUID(),
+			'relationship_guid' => $container->guid,
 			'inverse_relationship' => true,
-			'joins' => ['JOIN ' . elgg_get_config('dbprefix') . 'objects_entity oe ON e.guid = oe.guid'],
 			'callback' => function($row) {
 				return $row->title;
 			},
@@ -568,10 +570,9 @@ function newsletter_get_subscribers(ElggEntity $container, $count = false) {
 		// get all subscribed community members
 		$result = elgg_get_entities([
 			'type' => 'user',
-			'site_guids' => false,
 			'count' => true,
 			'relationship' => NewsletterSubscription::SUBSCRIPTION,
-			'relationship_guid' => $container->getGUID(),
+			'relationship_guid' => $container->guid,
 			'inverse_relationship' => true,
 		]);
 		
@@ -581,7 +582,7 @@ function newsletter_get_subscribers(ElggEntity $container, $count = false) {
 			'subtype' => NewsletterSubscription::SUBTYPE,
 			'count' => true,
 			'relationship' => NewsletterSubscription::SUBSCRIPTION,
-			'relationship_guid' => $container->getGUID(),
+			'relationship_guid' => $container->guid,
 			'inverse_relationship' => true,
 		]);
 	}
@@ -784,7 +785,7 @@ function newsletter_unsubscribe_email($email, ElggEntity $entity) {
 /**
  * Custom callback for elgg_get_* function to return a subset of information about an user
  *
- * @param stdObj $row A database row
+ * @param stdClass $row A database row
  *
  * @return array contains [guid] => email
  *
