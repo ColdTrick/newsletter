@@ -1,11 +1,11 @@
 <?php
-use Elgg\EntityPermissionsException;
-
 /**
  * View the logging of a newsletter
  *
  * @uses get_input("guid") the GUID of the newsletter to view
  */
+
+use Elgg\EntityPermissionsException;
 
 $guid = (int) get_input('guid');
 

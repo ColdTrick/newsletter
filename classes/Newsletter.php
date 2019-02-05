@@ -69,7 +69,7 @@ class Newsletter extends ElggObject {
 		$fh->setFilename('logging.json');
 		
 		$fh->open('write');
-		$result = $fh->write(json_encode($logging));
+		$result = $fh->write(json_encode($logging, JSON_PRETTY_PRINT));
 		$fh->close();
 		
 		return $result;

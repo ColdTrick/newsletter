@@ -1,9 +1,8 @@
 <?php
-
 /**
  * Show the logging of the newsletter
  *
- * @uses $vars['entity']	The newsletter the view
+ * @uses $vars['entity'] The newsletter the view
  */
 
 $entity = elgg_extract('entity', $vars);
@@ -17,17 +16,26 @@ if (empty($log)) {
 // general info
 $table_data = '<tr>';
 $table_data .= elgg_format_element('td', [], elgg_echo('newsletter:log:general:scheduled'));
-$table_data .= elgg_format_element('td', [], date(elgg_echo('friendlytime:date_format'), $entity->scheduled));
+$table_data .= elgg_format_element('td', [], elgg_view('output/date', [
+	'value' => $entity->scheduled,
+	'format' => elgg_echo('friendlytime:date_format'),
+]));
 $table_data .= '</tr>';
 $table_data .= '<tr>';
 $table_data .= elgg_format_element('td', [], elgg_echo('newsletter:log:general:starttime'));
-$table_data .= elgg_format_element('td', [], date(elgg_echo('friendlytime:date_format'), elgg_extract('start_time', $log)));
+$table_data .= elgg_format_element('td', [], elgg_view('output/date', [
+	'value' => elgg_extract('start_time', $log),
+	'format' => elgg_echo('friendlytime:date_format'),
+]));
 $table_data .= '</tr>';
 $table_data .= '<tr>';
 $table_data .= elgg_format_element('td', [], elgg_echo('newsletter:log:general:endtime'));
 $table_data .= '<td>';
 if ($entity->status == 'sent') {
-	$table_data .= date(elgg_echo('friendlytime:date_format'), elgg_extract('end_time', $log));
+	$table_data .= elgg_format_element('td', [], elgg_view('output/date', [
+		'value' => elgg_extract('end_time', $log),
+		'format' => elgg_echo('friendlytime:date_format'),
+	]));
 } else {
 	$table_data .= elgg_echo('newsletter:status:' . $entity->status);
 }

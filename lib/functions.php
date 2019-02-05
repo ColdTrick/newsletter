@@ -17,16 +17,12 @@ use Elgg\Database\QueryBuilder;
  */
 function newsletter_start_commandline_sending(Newsletter $entity) {
 	
-	if (!elgg_instanceof($entity, 'object', Newsletter::SUBTYPE)) {
-		return;
-	}
-	
 	// prepare commandline settings
 	$settings = [
-		'entity_guid' => $entity->getGUID(),
+		'entity_guid' => $entity->guid,
 		'host' => $_SERVER['HTTP_HOST'],
 		'memory_limit' => ini_get('memory_limit'),
-		'secret' => newsletter_generate_commanline_secret($entity->getGUID()),
+		'secret' => newsletter_generate_commanline_secret($entity->guid),
 	];
 	if (isset($_SERVER['HTTPS'])) {
 		$settings['https'] = $_SERVER['HTTPS'];
@@ -62,13 +58,18 @@ function newsletter_start_commandline_sending(Newsletter $entity) {
  */
 function newsletter_generate_commanline_secret($entity_guid) {
 	
-	$entity_guid = sanitise_int($entity_guid, false);
-	if (empty($entity_guid)) {
+	$entity_guid = (int) $entity_guid;
+	if ($entity_guid < 1) {
 		return false;
 	}
 	
 	$plugin = elgg_get_plugin_from_id('newsletter');
-	$hmac = elgg_build_hmac([$plugin->getGUID(), $entity_guid, $plugin->time_created]);
+	
+	$hmac = elgg_build_hmac([
+		$plugin->guid,
+		$entity_guid,
+		$plugin->time_created,
+	]);
 	return $hmac->getToken();
 }
 
@@ -82,18 +83,17 @@ function newsletter_generate_commanline_secret($entity_guid) {
  */
 function newsletter_validate_commandline_secret($entity_guid, $secret) {
 	
-	$entity_guid = sanitise_int($entity_guid, false);
-	if (empty($entity_guid) || empty($secret)) {
+	$entity_guid = (int) $entity_guid;
+	if ($entity_guid < 1 || empty($secret)) {
 		return false;
 	}
 	
 	$correct_secret = newsletter_generate_commanline_secret($entity_guid);
-	
-	if (!empty($correct_secret) && ($correct_secret === $secret)) {
-		return true;
+	if (empty($correct_secret) || $correct_secret !== $secret) {
+		return false;
 	}
 	
-	return false;
+	return true;
 }
 
 /**
@@ -105,8 +105,8 @@ function newsletter_validate_commandline_secret($entity_guid, $secret) {
  */
 function newsletter_process($entity_guid) {
 	
-	$entity_guid = sanitise_int($entity_guid, false);
-	if (empty($entity_guid)) {
+	$entity_guid = (int) $entity_guid;
+	if ($entity_guid < 1) {
 		return;
 	}
 	
@@ -115,7 +115,7 @@ function newsletter_process($entity_guid) {
 	
 	$entity = get_entity($entity_guid);
 	// is this a Newsletter
-	if (!elgg_instanceof($entity, 'object', Newsletter::SUBTYPE)) {
+	if (!$entity instanceof Newsletter) {
 		elgg_set_ignore_access($ia);
 		return;
 	}
@@ -136,37 +136,60 @@ function newsletter_process($entity_guid) {
 	$basic_user_options = [
 		'type' => 'user',
 		'limit' => false,
-		'selects' => ['ue.email'],
-		'joins' => ['JOIN ' . $dbprefix . 'users_entity ue ON e.guid = ue.guid'],
-		'callback' => 'newsletter_user_row_to_subscriber_info',
+		'batch' => true,
+		'selects' => [
+			function (QueryBuilder $qb, $main_alias) {
+				$metadata = $qb->joinMetadataTable($main_alias, 'guid', 'email');
+				
+				return "{$metadata}.value AS email";
+			},
+		],
+		'callback' => false,
+		'wheres' => [],
+		'metadata_name_value_pairs' => [
+			[
+				'name' => 'banned',
+				'value' => 'no',
+			],
+		],
 	];
 	// include users without settings
 	if (elgg_get_plugin_setting('include_existing_users', 'newsletter') === 'yes') {
 		// yes, so exclude blocked
-		$basic_user_options['wheres'] = [
-			"(e.guid NOT IN (SELECT guid_one
-				FROM " . $dbprefix . "entity_relationships
-				WHERE relationship = '" . NewsletterSubscription::GENERAL_BLACKLIST . "'
-				AND guid_two = " . $site->getGUID() . ")
-			)",
-			"(e.guid NOT IN (SELECT guid_one
-				FROM " . $dbprefix . "entity_relationships
-				WHERE relationship = '" . NewsletterSubscription::BLACKLIST . "'
-				AND guid_two = " . $container->getGUID() . ")
-			)",
-		];
+		$basic_user_options['wheres'][] = function(QueryBuilder $qb, $main_alias) use ($site) {
+			// general blacklist
+			$blocked = $qb->subquery('entity_relationships');
+			$blocked->select('guid_one')
+				->where($qb->compare('relationship', '=', NewsletterSubscription::GENERAL_BLACKLIST, ELGG_VALUE_STRING))
+				->andWhere($qb->compare('guid_two', '=', $site->guid, ELGG_VALUE_GUID));
+			
+			return $qb->compare("{$main_alias}.guid", 'not in', $blocked->getSQL());
+		};
+		$basic_user_options['wheres'][] = function(QueryBuilder $qb, $main_alias) use ($container) {
+			// blacklist / unsubscribed
+			$blocked = $qb->subquery('entity_relationships');
+			$blocked->select('guid_one')
+				->where($qb->compare('relationship', '=', NewsletterSubscription::BLACKLIST, ELGG_VALUE_STRING))
+				->andWhere($qb->compare('guid_two', '=', $container->guid, ELGG_VALUE_GUID));
+			
+			return $qb->compare("{$main_alias}.guid", 'not in', $blocked->getSQL());
+		};
 	} else {
 		// no, so subscription is required
-		$basic_user_options['wheres'] = [
-			"(e.guid IN (SELECT guid_one
-				FROM " . $dbprefix . "entity_relationships
-				WHERE relationship = '" . NewsletterSubscription::SUBSCRIPTION . "'
-				AND guid_two = " . $container->getGUID() . ")
-			)",
-		];
+		$basic_user_options['wheres'][] = function(QueryBuilder $qb, $main_alias) use ($container) {
+			$subbed = $qb->subquery('entity_relationships');
+			$subbed->select('guid_one')
+				->where($qb->compare('relationship', '=', NewsletterSubscription::SUBSCRIPTION, ELGG_VALUE_STRING))
+				->andWhere($qb->compare('guid_two', '=', $container->guid, ELGG_VALUE_GUID));
+			
+			return $qb->compare("{$main_alias}.guid", 'in', $subbed->getSQL());
+		};
 	}
 	
-	$filtered_recipients = ['users' => [],	'emails' => []];
+	$filtered_recipients = [
+		'users' => [],
+		'emails' => [],
+	];
 	$recipients = $entity->getRecipients();
 	if (empty($recipients)) {
 		// no recipients so report error
@@ -189,15 +212,14 @@ function newsletter_process($entity_guid) {
 		
 		// convert to a format we can use
 		$options = $basic_user_options;
-		$options['wheres'][] = '(e.guid IN (' . implode(',', $user_guids) . '))';
+		$options['wheres'][] = function(QueryBuilder $qb, $main_alias) use ($user_guids) {
+			return $qb->compare("{$main_alias}.guid", 'in', $user_guids, ELGG_VALUE_GUID);
+		};
 		
 		$users = elgg_get_entities($options);
-		if (!empty($users)) {
-			$new_users = [];
-			foreach ($users as $user) {
-				$new_users[$user['guid']] = $user['email'];
-			}
-			$filtered_recipients['users'] += $new_users;
+		/* @var $row \stdClass */
+		foreach ($users as $row) {
+			$filtered_recipients['users'][(int) $row->guid] = $row->email;
 		}
 	}
 	
@@ -208,16 +230,15 @@ function newsletter_process($entity_guid) {
 		}
 		
 		$options = $basic_user_options;
-		$options['joins'][] = 'JOIN ' . $dbprefix . 'entity_relationships r ON e.guid = r.guid_one';
-		$options['wheres'][] = '(r.guid_two IN (' . implode(',', $group_guids) . ') AND r.relationship = "member")';
+		
+		$options['relationship_guid'] = $group_guids;
+		$options['relationship'] = 'member';
+		$options['inverse_relationship'] = true;
 		
 		$users = elgg_get_entities($options);
-		if (!empty($users)) {
-			$new_users = [];
-			foreach ($users as $user) {
-				$new_users[$user['guid']] = $user['email'];
-			}
-			$filtered_recipients['users'] += $new_users;
+		/* @var $row \stdClass */
+		foreach ($users as $row) {
+			$filtered_recipients['users'][(int) $row->guid] = $row->email;
 		}
 	}
 	
@@ -231,23 +252,18 @@ function newsletter_process($entity_guid) {
 	
 	$members = elgg_extract('members', $recipients);
 	if (!empty($members)) {
-		$relationship = 'member';
-		if (elgg_instanceof($container, 'site')) {
-			$relationship = 'member_of_site';
+		$options = $basic_user_options;
+		
+		if ($container instanceof ElggGroup) {
+			$options['relationship'] = 'member';
+			$options['relationship_guid'] = $container->guid;
+			$options['inverse_relationship'] = true;
 		}
 		
-		$options = $basic_user_options;
-		$options['relationship'] = $relationship;
-		$options['relationship_guid'] = $container->getGUID();
-		$options['inverse_relationship'] = true;
-		
 		$users = elgg_get_entities($options);
-		if (!empty($users)) {
-			$new_users = [];
-			foreach ($users as $user) {
-				$new_users[$user['guid']] = $user['email'];
-			}
-			$filtered_recipients['users'] += $new_users;
+		/* @var $row \stdClass */
+		foreach ($users as $row) {
+			$filtered_recipients['users'][(int) $row->guid] = $row->email;
 		}
 	}
 	
@@ -261,33 +277,60 @@ function newsletter_process($entity_guid) {
 		$options = [
 			'type' => 'user',
 			'limit' => false,
-			'selects' => ['ue.email'],
-			'joins' => ['JOIN ' . $dbprefix . 'users_entity ue ON e.guid = ue.guid'],
-			'wheres' => [
-				"(ue.email IN ('" . implode("','", $emails) . "'))",
-				"(e.guid IN (SELECT guid_one
-					FROM " . $dbprefix . "entity_relationships
-					WHERE relationship = '" . NewsletterSubscription::GENERAL_BLACKLIST . "'
-					AND guid_two = " . $site->getGUID() . ")
-				OR
-				e.guid IN (SELECT guid_one
-					FROM " . $dbprefix . "entity_relationships
-					WHERE relationship = '" . NewsletterSubscription::BLACKLIST . "'
-					AND guid_two = " . $container->getGUID() . ")
-				)",
+			'batch' => true,
+			'selects' => [
+				function (QueryBuilder $qb, $main_alias) {
+					$metadata = $qb->joinMetadataTable($main_alias, 'guid', 'email');
+					
+					return "{$metadata}.value AS email";
+				},
 			],
-			'callback' => 'newsletter_user_row_to_subscriber_info',
+			'metadata_name_value_pairs' => [
+				[
+					'name' => 'email',
+					'value' => $emails,
+					'case_sensitive' => false,
+				],
+				[
+					'name' => 'banned',
+					'value' => 'no',
+				],
+			],
+			'wheres' => [
+				function (QueryBuilder $qb, $main_alias) use ($site, $container) {
+					$wheres = [];
+					
+					// general blacklist
+					$general = $qb->subquery('entity_relationships');
+					$general->select('guid_one')
+						->where($qb->compare('relationship', '=', NewsletterSubscription::GENERAL_BLACKLIST, ELGG_VALUE_STRING))
+						->andWhere($qb->compare('guid_two', '=', $site->guid, ELGG_VALUE_GUID));
+					
+					$wheres[] = $qb->compare("{$main_alias}.guid", 'in', $general->getSQL());
+					
+					// blacklist / unsubscribed
+					$blacklist = $qb->subquery('entity_relationships');
+					$blacklist->select('guid_one')
+						->where($qb->compare('relationship', '=', NewsletterSubscription::BLACKLIST, ELGG_VALUE_STRING))
+						->andWhere($qb->compare('guid_two', '=', $container->guid, ELGG_VALUE_GUID));
+					
+					$wheres[] = $qb->compare("{$main_alias}.guid", 'in', $blacklist->getSQL());
+					
+					return $qb->merge($wheres, 'OR');
+				},
+			],
+			'callback' => false,
 		];
 		
+		$blocked_emails = [];
+		
 		$users = elgg_get_entities($options);
-		if (!empty($users)) {
-			$blocked_emails = [];
-			foreach ($users as $user) {
-				$blocked_emails[] = $user['email'];
-			}
-			
-			$emails = array_diff($emails, $blocked_emails);
+		/* @var $row \stdClass */
+		foreach ($users as $row) {
+			$blocked_emails[] = $row->email;
 		}
+		
+		$emails = array_diff($emails, $blocked_emails);
 		
 		if (!empty($emails)) {
 			// get blocked emails
@@ -295,33 +338,56 @@ function newsletter_process($entity_guid) {
 				'type' => 'object',
 				'subtype' => NewsletterSubscription::SUBTYPE,
 				'limit' => false,
-				'selects' => ['oe.title AS email'],
-				'joins' => ['JOIN ' . $dbprefix . 'objects_entity oe ON e.guid = oe.guid'],
-				'wheres' => [
-					"(oe.title IN ('" . implode("','", $emails) . "'))",
-					"(e.guid IN (SELECT guid_one
-						FROM " . $dbprefix . "entity_relationships
-						WHERE relationship = '" . NewsletterSubscription::GENERAL_BLACKLIST . "'
-						AND guid_two = " . $site->getGUID() . ")
-					OR
-					e.guid IN (SELECT guid_one
-						FROM " . $dbprefix . "entity_relationships
-						WHERE relationship = '" . NewsletterSubscription::BLACKLIST . "'
-						AND guid_two = " . $container->getGUID() . ")
-					)"
+				'batch' => true,
+				'selects' => [
+					function (QueryBuilder $qb, $main_alias) {
+						$metadata = $qb->joinMetadataTable($main_alias, 'guid', 'title');
+						
+						return "{$metadata}.value AS email";
+					},
 				],
-				'callback' => 'newsletter_user_row_to_subscriber_info',
+				'metadata_name_value_pairs' => [
+					[
+						'name' => 'title',
+						'value' => $emails,
+						'case_sensitive' => false,
+					],
+				],
+				'wheres' => [
+					function (QueryBuilder $qb, $main_alias) use ($site, $container) {
+						$wheres = [];
+						
+						// general blacklist
+						$general = $qb->subquery('entity_relationships');
+						$general->select('guid_one')
+							->where($qb->compare('relationship', '=', NewsletterSubscription::GENERAL_BLACKLIST, ELGG_VALUE_STRING))
+							->andWhere($qb->compare('guid_two', '=', $site->guid, ELGG_VALUE_GUID));
+						
+						$wheres[] = $qb->compare("{$main_alias}.guid", 'in', $general->getSQL());
+						
+						// blacklist / unsubscribed
+						$blacklist = $qb->subquery('entity_relationships');
+						$blacklist->select('guid_one')
+							->where($qb->compare('relationship', '=', NewsletterSubscription::BLACKLIST, ELGG_VALUE_STRING))
+							->andWhere($qb->compare('guid_two', '=', $container->guid, ELGG_VALUE_GUID));
+						
+						$wheres[] = $qb->compare("{$main_alias}.guid", 'in', $blacklist->getSQL());
+						
+						return $qb->merge($wheres, 'OR');
+					},
+				],
+				'callback' => false,
 			];
 			
+			$blocked_emails = [];
+			
 			$subscriptions = elgg_get_entities($options);
-			if (!empty($subscriptions)) {
-				$blocked_emails = [];
-				foreach ($subscriptions as $subscription) {
-					$blocked_emails[] = $subscription['email'];
-				}
-				
-				$emails = array_diff($emails, $blocked_emails);
+			/* @var $row \stdClass */
+			foreach ($subscriptions as $row) {
+				$blocked_emails[] = $row->email;
 			}
+			
+			$emails = array_diff($emails, $blocked_emails);
 			
 			if (!empty($emails)) {
 				$filtered_recipients['emails'] = array_merge($filtered_recipients['emails'], $emails);
@@ -333,13 +399,11 @@ function newsletter_process($entity_guid) {
 	if ($entity->subject) {
 		$message_subject = $entity->subject;
 	} else {
-		$message_subject = elgg_echo('newsletter:subject', [$container->name, $entity->title]);
+		$message_subject = elgg_echo('newsletter:subject', [$container->getDisplayName(), $entity->getDisplayName()]);
 	}
-	$message_plaintext_content = elgg_echo('newsletter:plain_message', [elgg_normalize_url($entity->getURL())]);
+	$message_plaintext_content = elgg_echo('newsletter:plain_message', [$entity->getURL()]);
 	
 	$message_html_content = elgg_view_layout('newsletter', ['entity' => $entity]);
-	// convert to inline CSS for email clients
-	$message_html_content = html_email_handler_css_inliner($message_html_content);
 	
 	// proccess all recipients
 	if ((elgg_get_plugin_setting('custom_from', 'newsletter') === 'yes') && !empty($entity->from)) {
@@ -347,18 +411,17 @@ function newsletter_process($entity_guid) {
 		$from = $entity->from;
 	} else {
 		// default to the container email address
-		$from = html_email_handler_make_rfc822_address($container);
+		$from = $container;
 	}
 	
 	// set default send options
 	$send_options = [
 		'from' => $from,
 		'subject' => $message_subject,
-		'plaintext_message' => $message_plaintext_content,
+		'body' => $message_plaintext_content,
 	];
 	
 	foreach ($filtered_recipients as $type => $recipients) {
-		
 		if (empty($recipients)) {
 			continue;
 		}
@@ -398,9 +461,15 @@ function newsletter_process($entity_guid) {
 			
 			// send mail
 			$send_options['to'] = $recipient;
-			$send_options['html_message'] = $message_html_content_user;
+			$send_options['params']['html_message'] = $message_html_content_user;
 			
-			$recipient_log['status'] = html_email_handler_send_email($send_options);
+			$email = Email::factory($send_options);
+			
+			try {
+				$recipient_log['status'] = elgg_send_email($email);
+			} catch (Exception $e) {
+				// some error during sending
+			}
 			
 			if ($recipient_log['status'] && !empty($recipient_log['guid'])) {
 				$entity->addRelationship($recipient_log['guid'], Newsletter::SEND_TO);
@@ -425,11 +494,16 @@ function newsletter_process($entity_guid) {
 	
 	// send status notification
 	if (newsletter_is_email_address($entity->status_notification)) {
-		$from = html_email_handler_make_rfc822_address($site);
-		$subject = elgg_echo('newsletter:status_notification:subject');
-		$message = elgg_echo('newsletter:status_notification:message', [$entity->title, $entity->getURL()]);
+		$email = Email::factory([
+			'to' => $entity->status_notification,
+			'subject' => elgg_echo('newsletter:status_notification:subject'),
+			'body' => elgg_echo('newsletter:status_notification:message', [
+				$entity->getDisplayName(),
+				$entity->getURL(),
+			]),
+		]);
 		
-		elgg_send_email($from, $entity->status_notification, $subject, $message);
+		elgg_send_email($email);
 	}
 	
 	// restore access
@@ -481,7 +555,7 @@ function newsletter_format_email_recipient($recipient) {
  * @param ElggEntity $container Which container
  * @param bool       $count	    Return just a count, not the actual subscribers
  *
- * @return array | int On success or false on failure
+ * @return false|int|array
  */
 function newsletter_get_subscribers(ElggEntity $container, $count = false) {
 	
@@ -491,7 +565,10 @@ function newsletter_get_subscribers(ElggEntity $container, $count = false) {
 	
 	// get the subscribers
 	if (!$count) {
-		$result = ['users' => [], 'emails' => []];
+		$result = [
+			'users' => [],
+			'emails' => [],
+		];
 		
 		// get all subscribed community members
 		$user_emails = elgg_get_metadata([

@@ -2,55 +2,55 @@
 
 namespace ColdTrick\Newsletter;
 
+use Elgg\Values;
+
 class Cron {
 
 	/**
 	 * The cron hook will take care of sending all the scheduled newsletters
 	 *
-	 * @param string $hook        name of the hook
-	 * @param string $type        type of the hook
-	 * @param string $returnvalue returnvalue of the hook
-	 * @param array  $params      params of the hook
+	 * @param \Elgg\Hook $hook 'cron', 'hourly'
 	 *
 	 * @return void
 	 */
-	public static function sendNewsletters($hook, $type, $returnvalue, $params) {
-	
-		if (empty($params) || !is_array($params)) {
-			return;
-		}
+	public static function sendNewsletters(\Elgg\Hook $hook) {
 		
-		$cron_ts = elgg_extract('time', $params, time());
-
+		echo 'Starting newsletter processing' . PHP_EOL;
+		elgg_log('Starting newsletter processing', 'NOTICE');
+		
+		$cron_ts = $hook->getParam('time', time());
+		
+		$ts = Values::normalizeTime($cron_ts);
+		
 		// check for time drift
-		if (date('i', $cron_ts) >= 30) {
+		if ((int) $ts->format('i') >= 30) {
 			// example of the time: 14:59:56
 			// which should be the hourly cron for 15:00:00
-			$cron_ts = $cron_ts + (30 * 60);
-		}
-
-		// make the timestamp to an hour
-		$newsletter_ts = mktime(date('H', $cron_ts), 0, 0, date('n', $cron_ts), date('j', $cron_ts), date('Y', $cron_ts));
-
-		// ignore access
-		$ia = elgg_set_ignore_access(true);
-
-		$newsletters = elgg_get_entities([
-			'type' => 'object',
-			'subtype' => \Newsletter::SUBTYPE,
-			'limit' => false,
-			'metadata_name_value_pairs' => [
-				'name' => 'scheduled',
-				'value' => $newsletter_ts,
-			],
-			'batch' => true,
-		]);
-	
-		foreach ($newsletters as $newsletter) {
-			newsletter_start_commandline_sending($newsletter);
+			$ts->modify('+30 minutes');
 		}
 		
-		// retore access
-		elgg_set_ignore_access($ia);
+		// make the timestamp to an hour
+		$ts = Values::normalizeTime($ts->format('Y-m-d H:00:00'));
+		
+		// ignore access
+		elgg_call(ELGG_IGNORE_ACCESS, function() use ($ts) {
+			$newsletters = elgg_get_entities([
+				'type' => 'object',
+				'subtype' => \Newsletter::SUBTYPE,
+				'limit' => false,
+				'metadata_name_value_pairs' => [
+					'name' => 'scheduled',
+					'value' => $ts->getTimestamp(),
+				],
+				'batch' => true,
+			]);
+			
+			foreach ($newsletters as $newsletter) {
+				newsletter_start_commandline_sending($newsletter);
+			}
+		});
+		
+		echo 'Done with newsletter processing' . PHP_EOL;
+		elgg_log('Done with newsletter processing', 'NOTICE');
 	}
 }
