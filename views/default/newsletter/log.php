@@ -32,10 +32,10 @@ $table_data .= '<tr>';
 $table_data .= elgg_format_element('td', [], elgg_echo('newsletter:log:general:endtime'));
 $table_data .= '<td>';
 if ($entity->status == 'sent') {
-	$table_data .= elgg_format_element('td', [], elgg_view('output/date', [
+	$table_data .= elgg_view('output/date', [
 		'value' => elgg_extract('end_time', $log),
 		'format' => elgg_echo('friendlytime:date_format'),
-	]));
+	]);
 } else {
 	$table_data .= elgg_echo('newsletter:status:' . $entity->status);
 }
