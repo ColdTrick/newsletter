@@ -30,7 +30,7 @@ class Cron {
 		}
 		
 		// make the timestamp to an hour
-		$ts = Values::normalizeTime($ts->format('Y-m-d H:00:00'));
+		$ts = Values::normalizeTime($ts->format('Y-m-d H:00:00 e'));
 		
 		// ignore access
 		elgg_call(ELGG_IGNORE_ACCESS, function() use ($ts) {
