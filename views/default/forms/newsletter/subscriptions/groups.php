@@ -5,17 +5,40 @@
  * @uses $vars['entity'] the user to manage for
  */
 
+use Elgg\Database\QueryBuilder;
+
 $entity = elgg_extract('entity', $vars);
 if (!$entity instanceof ElggUser) {
 	return;
 }
 
-$group_count = $entity->getGroups([
+$group_options = [
 	'count' => true,
-]);
+	'limit' => false,
+	'batch' => true,
+	'order_by_metadata' => [
+		'name' => 'name',
+		'direction' => 'ASC',
+	],
+	'wheres' => [
+		function (QueryBuilder $qb, $main_alias) {
+			$group_tool = elgg()->group_tools->get('newsletter');
+			
+			$tool_disabled = $qb->subquery('metadata');
+			$tool_disabled->select('entity_guid')
+				->where($qb->compare('name', '=', $group_tool->mapMetadataName(), ELGG_VALUE_STRING))
+				->andWhere($qb->compare('value', '=', 'no', ELGG_VALUE_STRING));
+			
+			return $qb->compare("{$main_alias}.guid", 'not in', $tool_disabled->getSQL());
+		},
+	],
+];
+
+$group_count = $entity->getGroups($group_options);
 if (empty($group_count)) {
 	return;
 }
+unset($group_options['count']);
 
 $content = [];
 
@@ -23,14 +46,7 @@ $content[] = elgg_view('output/longtext', [
 	'value' => elgg_echo('newsletter:subscriptions:groups:description'),
 ]);
 
-$my_groups = $entity->getGroups([
-	'limit' => false,
-	'batch' => true,
-	'order_by_metadata' => [
-		'name' => 'name',
-		'direction' => 'ASC',
-	],
-]);
+$my_groups = $entity->getGroups($group_options);
 
 /* @var $group ElggGroup */
 foreach ($my_groups as $group) {
