@@ -56,12 +56,10 @@ $save_and_send_now_options = [
 	'#type' => 'submit',
 	'name' => 'send',
 	'value' => elgg_echo('newsletter:schedule:send'),
-	'class' => ['elgg-button-action'],
 ];
 $save_and_schedule_options = [
 	'#type' => 'submit',
 	'value' => elgg_echo('newsletter:schedule:save'),
-	'class' => ['elgg-button-submit'],
 ];
 
 if (!$entity->getRecipients()) {
