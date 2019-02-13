@@ -13,7 +13,7 @@ echo elgg_view_field([
 	'value' => $entity->guid,
 ]);
 
-// get the available tempaltes for this container
+// get the available templates for this container
 $template_options = newsletter_get_available_templates($entity->container_guid, $entity);
 if (empty($template_options) || !is_array($template_options)) {
 	$template_options = [];
