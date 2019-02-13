@@ -6,6 +6,7 @@
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Elgg\Email;
 use Elgg\Database\QueryBuilder;
+use Elgg\Email\Address;
 
 /**
  * Start the commandline to send a newsletter
@@ -407,10 +408,10 @@ function newsletter_process($entity_guid) {
 	// proccess all recipients
 	if ((elgg_get_plugin_setting('custom_from', 'newsletter') === 'yes') && !empty($entity->from)) {
 		// from is validated to a valid email address in the newsletter save action
-		$from = $entity->from;
+		$from = new Address($entity->from, $container->getDisplayName());
 	} else {
 		// default to the container email address
-		$from = $container;
+		$from = new Address($site->getEmailAddress(), $container->getDisplayName());
 	}
 	
 	// set default send options
@@ -495,6 +496,7 @@ function newsletter_process($entity_guid) {
 	if (newsletter_is_email_address($entity->status_notification)) {
 		$email = Email::factory([
 			'to' => $entity->status_notification,
+			'from' => $from,
 			'subject' => elgg_echo('newsletter:status_notification:subject'),
 			'body' => elgg_echo('newsletter:status_notification:message', [
 				$entity->getDisplayName(),
@@ -1166,6 +1168,7 @@ function newsletter_send_preview(Newsletter $entity, $email) {
 		return false;
 	}
 	
+	$site = elgg_get_site_entity();
 	$container = $entity->getContainerEntity();
 	
 	// build correct subject
@@ -1190,10 +1193,18 @@ function newsletter_send_preview(Newsletter $entity, $email) {
 	
 	$message_html_content = str_ireplace($online_link, $new_online_link, $message_html_content);
 	
+	if ((elgg_get_plugin_setting('custom_from', 'newsletter') === 'yes') && !empty($entity->from)) {
+		// from is validated to a valid email address in the newsletter save action
+		$from = new Address($entity->from, $container->getDisplayName());
+	} else {
+		// default to the container email address
+		$from = new Address($site->getEmailAddress(), $container->getDisplayName());
+	}
+	
 	// make email
 	$email = Email::factory([
 		'to' => $email,
-		'from' => $container,
+		'from' => $from,
 		'subject' => $message_subject,
 		'body' => $message_plaintext_content,
 		'params' => [
