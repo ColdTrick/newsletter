@@ -13,18 +13,17 @@ echo elgg_view_field([
 ]);
 
 echo elgg_view_field([
-	'#type' => 'fieldset',
-	'align' => 'horizontal',
-	'fields' => [
-		[
-			'#type' => 'email',
-			'name' => 'email',
-			'value' => $user->email,
-			'placeholder' => elgg_echo('newsletter:recipients:email'),
-		],
-		[
-			'#type' => 'submit',
-			'value' => elgg_echo('send'),
-		],
-	],
+	'#type' => 'email',
+	'#label' => elgg_echo('newsletter:recipients:email'),
+	'name' => 'email',
+	'value' => $user->email,
+	'placeholder' => elgg_echo('newsletter:recipients:email'),
+	'required' => true,
 ]);
+
+// footer
+$footer = elgg_view_field([
+	'#type' => 'submit',
+	'value' => elgg_echo('send'),
+]);
+elgg_set_form_footer($footer);
