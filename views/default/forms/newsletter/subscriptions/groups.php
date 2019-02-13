@@ -24,12 +24,15 @@ $group_options = [
 		function (QueryBuilder $qb, $main_alias) {
 			$group_tool = elgg()->group_tools->get('newsletter');
 			
+			$tool_value = $group_tool->isEnabledByDefault() ? 'no' : 'yes';
+			$tool_compare = $group_tool->isEnabledByDefault() ? 'not in' : 'in';
+			
 			$tool_disabled = $qb->subquery('metadata');
 			$tool_disabled->select('entity_guid')
 				->where($qb->compare('name', '=', $group_tool->mapMetadataName(), ELGG_VALUE_STRING))
-				->andWhere($qb->compare('value', '=', 'no', ELGG_VALUE_STRING));
+				->andWhere($qb->compare('value', '=', $tool_value, ELGG_VALUE_STRING));
 			
-			return $qb->compare("{$main_alias}.guid", 'not in', $tool_disabled->getSQL());
+			return $qb->compare("{$main_alias}.guid", $tool_compare, $tool_disabled->getSQL());
 		},
 	],
 ];
