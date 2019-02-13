@@ -35,7 +35,8 @@ echo elgg_view('output/longtext', [
 	'value' => elgg_echo('newsletter:edit:template:description'),
 ]);
 
-$selector2 = [
+$allow_copy_template = (bool) elgg_extract('allow_copy_template', $vars, true);
+$template_selector = [
 	'#type' => 'radio',
 	'#label' => elgg_echo('newsletter:edit:template:select'),
 	'id' => 'newsletter-edit-template-select',
@@ -64,13 +65,17 @@ foreach ($template_options as $name => $label) {
 	];
 	
 	if ($name !== 'custom') {
-		$confirm_options['href'] = elgg_generate_action_url('newsletter/edit/template_to_custom', [
-			'guid' => $entity->guid,
-			'template' => $name
-		]);
-		$options['text'] .= elgg_view('output/url', $confirm_options);
+		if ($allow_copy_template) {
+			// copy this template to a new custom template
+			$confirm_options['href'] = elgg_generate_action_url('newsletter/edit/template_to_custom', [
+				'guid' => $entity->guid,
+				'template' => $name
+			]);
+			$options['text'] .= elgg_view('output/url', $confirm_options);
+		}
 		
 		if (is_numeric($name)) {
+			// custom template can be removed
 			$delete_options['href'] = elgg_generate_action_url('newsletter/template/delete', [
 				'guid' => $name,
 			]);
@@ -78,10 +83,10 @@ foreach ($template_options as $name => $label) {
 		}
 	}
 	
-	$selector2['options_values'][] = $options;
+	$template_selector['options_values'][] = $options;
 }
 
-echo elgg_view_field($selector2);
+echo elgg_view_field($template_selector);
 
 $using_custom_template = $template === 'custom';
 $custom_template_class = ['newsletter-edit-template-custom'];
