@@ -33,10 +33,10 @@ class Bootstrap extends DefaultPluginBootstrap {
 	protected function extendViews() {
 		
 		elgg_extend_view('css/elgg', 'css/newsletter.css');
-		elgg_extend_view('groups/sidebar/my_status', 'newsletter/sidebar/subscribe');
 		elgg_extend_view('register/extend', 'newsletter/register');
 		
 		elgg_register_ajax_view('forms/newsletter/preview_mail');
+		elgg_register_ajax_view('forms/newsletter/subscribe');
 	}
 	
 	/**

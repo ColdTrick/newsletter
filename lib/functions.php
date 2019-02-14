@@ -1582,3 +1582,75 @@ function newsletter_validate_custom_from($from_email) {
 	// trigger a plugin hook so others are allowed to validate
 	return (bool) elgg_trigger_plugin_hook('from_email', 'newsletter', ['email' => $from_email], $result);
 }
+
+/**
+ * Register newsletter subscription items to the title menu
+ *
+ * @param ElggEntity $container_entity for which container entity to check subscriptions
+ *
+ * @return void
+ */
+function newsletter_register_title_menu_items(ElggEntity $container_entity) {
+	
+	if (!$container_entity instanceof ElggSite && !$container_entity instanceof ElggGroup) {
+		return;
+	}
+	
+	if ($container_entity instanceof ElggGroup && !$container_entity->isToolEnabled('newsletter')) {
+		return;
+	}
+	
+	$user = elgg_get_logged_in_user_entity();
+	if ($user instanceof ElggUser) {
+		$subscribed = newsletter_check_user_subscription($user, $container_entity);
+		
+		elgg_register_menu_item('title', [
+			'name' => 'newsletter_subscribe',
+			'icon' => 'envelope-open-text',
+			'text' => elgg_echo("newsletter:subscribe:{$container_entity->type}"),
+			'title' => elgg_echo('newsletter:subscribe:user:description:subscribe', [$container_entity->getDisplayName()]),
+			'href' => elgg_generate_action_url('newsletter/subscribe', [
+				'guid' => $container_entity->guid,
+				'user_guid' => $user->guid,
+			]),
+			'link_class' => [
+				'elgg-button',
+				'elgg-button-action',
+			],
+			'item_class' => $subscribed ? 'hidden' : null,
+			'data-toggle' => 'newsletter_unsubscribe',
+		]);
+		elgg_register_menu_item('title', [
+			'name' => 'newsletter_unsubscribe',
+			'icon' => 'envelope',
+			'text' => elgg_echo("newsletter:unsubscribe:{$container_entity->type}"),
+			'title' => elgg_echo('newsletter:subscribe:user:description:unsubscribe', [$container_entity->getDisplayName()]),
+			'href' => elgg_generate_action_url('newsletter/subscribe', [
+				'guid' => $container_entity->guid,
+				'user_guid' => $user->guid,
+			]),
+			'link_class' => [
+				'elgg-button',
+				'elgg-button-action',
+			],
+			'item_class' => $subscribed ? null : 'hidden',
+			'data-toggle' => 'newsletter_subscribe',
+		]);
+	} else {
+		// logged out user
+		elgg_register_menu_item('title', [
+			'name' => 'newsletter_subscribe',
+			'icon' => 'envelope-open-text',
+			'text' => elgg_echo("newsletter:subscribe:{$container_entity->type}"),
+			'title' => elgg_echo('newsletter:subscribe:user:description:subscribe', [$container_entity->getDisplayName()]),
+			'href' => elgg_http_add_url_query_elements('ajax/form/newsletter/subscribe', [
+				'guid' => $container_entity->guid,
+			]),
+			'link_class' => [
+				'elgg-button',
+				'elgg-button-action',
+				'elgg-lightbox',
+			],
+		]);
+	}
+}

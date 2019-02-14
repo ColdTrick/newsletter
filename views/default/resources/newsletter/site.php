@@ -9,6 +9,8 @@ $filter = 'sent';
 elgg_push_collection_breadcrumbs('object', Newsletter::SUBTYPE);
 
 // register title button
+newsletter_register_title_menu_items(elgg_get_site_entity());
+
 if (elgg_is_admin_logged_in()) {
 	elgg_register_title_button('newsletter', 'add', 'object', Newsletter::SUBTYPE);
 	
@@ -73,13 +75,10 @@ switch ($filter) {
 
 $content = elgg_list_entities($options);
 
-$sidebar = elgg_view('newsletter/sidebar/subscribe', ['entity' => elgg_get_site_entity()]);
-
 // build page
 $page_data = elgg_view_layout('default', [
 	'title' => $title_text,
 	'content' => $content,
-	'sidebar' => $sidebar,
 	'filter_id' => 'newsletter',
 	'filter_value' => $filter,
 ]);

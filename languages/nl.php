@@ -1,10 +1,23 @@
 <?php
 /**
- * This file was created by Translation Editor v5.1
- * On 2016-09-09 16:45
+ * This file was created by Translation Editor v7.0-beta
+ * On 2019-02-14 15:00
  */
 
 return array (
+  'collection:object:newsletter' => 'Nieuwsbrieven',
+  'add:object:newsletter' => 'Nieuwe nieuwsbrief',
+  'newsletter:menu:preview_by_mail' => 'Voorbeeld naar e-mail',
+  'newsletter:edit:template:custom:label' => 'Aangepaste template configuratie',
+  'newsletter:recipients:subscribers:help' => 'Alle abonnees die niet noodzakelijk lid zijn van de groep, maar die hebben aangegeven de nieuwsbrief te willen ontvangen. Als het nummer achter de abonnees (0) is, zijn er geen abonnees op deze nieuwsbrief.',
+  'newsletter:recipients:members:help' => 'Verstuur de nieuwsbrief naar alle leden van de groep (behalve de leden welke hebben aangegeven de nieuwsbrief niet te willen ontvangen).',
+  'newsletter:subscriptions:site' => 'Ik wil de site nieuwsbrief ontvangen',
+  'newsletter:subscribe:site' => 'Abonneer op de site nieuwsbrief',
+  'newsletter:unsubscribe:site' => 'Uitschrijven van de site nieuwsbrief',
+  'newsletter:subscribe:group' => 'Abonneer op de groep nieuwsbrief',
+  'newsletter:unsubscribe:group' => 'Uitschrijven van de groep nieuwsbrief',
+  'widgets:newsletter_subscribe:name' => 'Nieuwsbrief abonnement',
+  'widgets:newsletter_subscribe:description' => 'Toon een widget om te kunnen abonneren op de nieuwsbrief',
   'newsletter:unsubscribe:error:invalid_user' => 'De link om je uit te schrijven is niet geldig voor jouw gebruikersaccount',
   'newsletter:cli:error:secret' => 'Ongeldige geheime sleutel voor gebruik in de CLI',
   'newsletter:edit:from:description' => 'Standaard worden de nieuwsbrieven verstuurd vanaf %s. Je kunt een aangepast e-mail adres opgeven. Dit e-mail adres zal ook alle non-delivery reports ontvangen.',
@@ -22,7 +35,6 @@ return array (
   'newsletter:edit:description:description' => 'Deze omschrijving wordt gebruikt in de lijstweergave van de nieuwsbrieven en is standaard géén onderdeel van inhoud van de nieuwsbrief.',
   'newsletter:menu:longtext:embed_content' => 'Content invoegen',
   'newsletter:settings:url_postfix' => 'URL postfix instellingen',
-  'newsletter:widget:subscribe:description' => 'Toon een widget om je snel aan te kunnen melden voor de nieuwsbrief',
   'newsletter:csv:no_email' => 'Er kon geen e-mail kolom worden gevonden in de eerste 2 regels van het CSV-bestand',
   'newsletter:csv:added' => '%s e-mail adressen toegevoegd vanuit het CSV-bestand',
   'newsletter:recipients:csv' => 'Upload een CSV-bestand met e-mail adressen van ontvangers',
@@ -30,7 +42,6 @@ return array (
   'item:object:newsletter' => 'Nieuwsbrief',
   'item:object:newsletter_template' => 'Nieuwsbrief template',
   'item:object:newsletter_subscription' => 'Nieuwsbrief inschrijving',
-  'newsletter:add' => 'Nieuwe nieuwsbrief',
   'newsletter:subscribe' => 'Inschrijven',
   'newsletter:unsubscribe' => 'Uitschrijven',
   'newsletter:duplicate_of' => 'Kopie van',
@@ -103,7 +114,6 @@ return array (
   'newsletter:schedule:save' => 'Opslaan en inplannen',
   'newsletter:schedule:no_recipients' => 'Je hebt geen ontvangers geselecteerd. Wil je toch doorgaan?',
   'newsletter:recipients:title' => 'Selecteer ontvangers',
-  'newsletter:recipients:tooltip' => 'Vink je alle leden aan? Dan verstuur je de nieuwsbrief naar alle leden van de groep (behalve degenen die hebben aangegeven dat ze de nieuwsbrief niet willen ontvangen). Met alle abonnees wordt bedoeld alle gebruikers die niet per se lid zijn van jouw groep maar die wel een abonnement op de nieuwsbrief hebben. Als er achter abonnees een (0) staat, dan heeft deze nieuwsbrief geen abonnees. ',
   'newsletter:recipients:description' => 'Hieronder kun je aangeven wie de nieuwsbrief moet ontvangen.',
   'newsletter:recipients:recipient' => 'Zoek een ontvanger',
   'newsletter:recipients:recipient:description' => 'Je kunt zoeken op naam, e-mail en gebruikersnaam. Selecteer de ontvanger uit de lijst om toe te voegen.',
@@ -121,8 +131,6 @@ return array (
   'newsletter:entity:sent' => 'Verzonden',
   'newsletter:entity:error:code' => 'Ongeldige of ontbrekende code om de nieuwsbrief online te bekijken',
   'newsletter:subscriptions:description' => 'Beheer hier al je nieuwsbrief abonnementen in een keer.',
-  'newsletter:subscriptions:site:title' => 'Site nieuwsbrief',
-  'newsletter:subscriptions:site:description' => 'Wil je een nieuwsbrief van de community ontvangen',
   'newsletter:subscriptions:groups:title' => 'Mijn groep nieuwsbrieven',
   'newsletter:subscriptions:groups:description' => 'Alle groepen die nieuwsbrieven hebben geconfigureerd en waar je lid van bent staan hier, zo kun je eenvoudig je abonnementen beheren.',
   'newsletter:subscriptions:other:title' => 'Andere abonnementen',
@@ -137,7 +145,6 @@ controleer de twee instellingen hieronder en klik op uitschrijven om het het pro
   'newsletter:unsubscribe:email:empty' => 'Voer het emailadres in wat u wilt uitschrijven.',
   'newsletter:unsubscribe:entity' => 'Ik wil de \'%s\' nieuwsbrief niet langen ontvangen',
   'newsletter:unsubscribe:all' => 'Ik wil geen enkele nieuwsbrief van de %s community ontvangen',
-  'newsletter:sidebar:subscribe:title' => 'Nieuwsbrief abonnementen',
   'newsletter:subscribe:email:description' => 'Abonneer u op de %s nieuwsbrief',
   'newsletter:subscribe:user:description:subscribe' => 'Abonneer u op de %s nieuwsbrief',
   'newsletter:subscribe:user:description:unsubscribe' => 'Uitschrijven van de %s nieuwsbrief',
@@ -180,8 +187,6 @@ Om de nieuwsbrief te bekijken klik hier:
   'newsletter:action:edit:error:title' => 'Geef een titel op voor de nieuwsbrief',
   'newsletter:action:edit:error:save' => 'Er is een onbekende fout opgetreden tijdens het opslaan van de nieuwsbrief, probeer het nogmaals',
   'newsletter:action:edit:success' => 'De nieuwsbrief is opgeslagen',
-  'newsletter:action:delete:error:delete' => 'Er is een onbekende fout opgetreden tijdens het verwijderen van de nieuwsbrief, probeer het nogmaals',
-  'newsletter:action:delete:success' => 'De  nieuwsbrief is verwijderd',
   'newsletter:action:schedule:success' => 'Planning opgeslagen',
   'newsletter:action:recipients:success' => 'Ontvangers opgeslagen',
   'newsletter:action:content:success' => 'Inhoud opgeslagen',

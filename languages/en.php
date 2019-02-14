@@ -197,8 +197,11 @@ Check the two settings below and click unsubscribe in order to complete the proc
 	'newsletter:unsubscribe:entity' => "I no longer wish to receive the '%s' newsletter",
 	'newsletter:unsubscribe:all' => "I don't want to receive any newsletters from the %s community",
 	
-	// sidebar - subscribe
-	'newsletter:sidebar:subscribe:title' => "Newsletter subscription",
+	// subscribe
+	'newsletter:subscribe:site' => "Subscribe to site newsletter",
+	'newsletter:unsubscribe:site' => "Unsubscribe from site newsletter",
+	'newsletter:subscribe:group' => "Subscribe to group newsletter",
+	'newsletter:unsubscribe:group' => "Unsubscribe from group newsletter",
 	'newsletter:subscribe:email:description' => "Subscribe to the %s newsletter",
 	'newsletter:subscribe:user:description:subscribe' => "Subscribe to the %s newsletter",
 	'newsletter:subscribe:user:description:unsubscribe' => "Unsubscribe from the %s newsletter",
