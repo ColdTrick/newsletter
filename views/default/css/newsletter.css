@@ -75,3 +75,12 @@ iframe.newsletter-preview {
 	padding-right: 5px;
 	cursor: help;
 }
+
+#newsletter-embed-format {
+	> .elgg-module-info {
+		> .elgg-body {
+			max-height: 200px;
+			overflow: auto;
+		}
+	}
+}
