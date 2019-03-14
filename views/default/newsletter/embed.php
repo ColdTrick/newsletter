@@ -114,7 +114,6 @@ if ($count > 0) {
 	$embed_wrapper .= elgg_echo('notfound');
 }
 
-echo elgg_format_element('div', ['id' => 'newsletter-embed-wrapper'], $embed_wrapper);
-if ($count > 0) {
-	echo elgg_view('newsletter/format');
-}
+$formatter = ($count > 0) ? elgg_view('newsletter/format') : '';
+
+echo elgg_format_element('div', ['id' => 'newsletter-embed-wrapper'], $embed_wrapper . $formatter);

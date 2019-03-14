@@ -61,7 +61,7 @@ define(function(require) {
 			$("#newsletter-embed-format-icon").parent().show();
 		}
 			
-		$("#newsletter-embed-wrapper, #newsletter-embed-format").toggleClass("hidden");
+		$("#newsletter-embed-search, #newsletter-embed-list, #newsletter-embed-pagination, #newsletter-embed-format").toggleClass("hidden");
 		
 		$("#newsletter-embed-format-preview").data(data);
 	
