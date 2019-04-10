@@ -25,7 +25,10 @@ if (!empty($excerpt)) {
 
 // icon support
 if ($entity->icontime) {
-	$data['data-icon-url'] = $entity->getIconURL('medium');
+	$data['data-icon-url'] = $entity->getIconURL([
+		'size' => 'medium',
+		'use_cookie' => false,
+	]);
 }
 
 // build listing view
