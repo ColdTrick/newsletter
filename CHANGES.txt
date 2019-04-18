@@ -1,6 +1,10 @@
 Version history
 ===============
 
+5.0.1 (2019-04-18):
+
+- several small chores/fixes
+
 5.0 (2019-04-17):
 
 - added: option to block copying of template
