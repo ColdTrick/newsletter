@@ -1,6 +1,27 @@
 Version history
 ===============
 
+5.0.1 (2019-04-18):
+
+- several small chores/fixes
+
+5.0 (2019-04-17):
+
+- added: option to block copying of template
+- changed: increased minimal Elgg version requirement to 3.0
+- changed: moved public pages to route config
+- changed: moved subscription to title menu
+- changed: newsletter preview is now shown in an iframe
+- changed: updated widget url hook to run via entity url hook
+- fixed: don't list groups with disabled newsletter tool
+- fixed: don't use cookies for embedded icons
+- fixed: embedding will not show multiple format forms
+- fixed: newsletter sender uses correct sender displayname
+- fixed: preview e-mail form layout
+- fixed: preview including mail feature
+- fixed: return a normalized url in getURL()
+- removed: custom delete action
+
 4.1 (2018-10-04):
 
 - added: german translation
