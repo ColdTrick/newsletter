@@ -20,16 +20,16 @@ class Access {
 			return;
 		}
 		
+		$allowed_keys = [ACCESS_LOGGED_IN, ACCESS_PUBLIC];
+		
 		$page_owner = elgg_get_page_owner_entity();
-		if (empty($page_owner)) {
-			return;
+		if ($page_owner instanceof \ElggGroup) {
+			$acl = $page_owner->getOwnedAccessCollection('group_acl');
+			if (!empty($acl)) {
+				$allowed_keys[] = $acl->id;
+			}
 		}
 		
-		$allowed_keys = [ACCESS_LOGGED_IN, ACCESS_PUBLIC];
-		if (elgg_instanceof($page_owner, 'group')) {
-			$allowed_keys[] = $page_owner->group_acl;
-		}
-			
 		foreach ($returnvalue as $access_id => $label) {
 			if (!in_array($access_id, $allowed_keys)) {
 				unset($returnvalue[$access_id]);

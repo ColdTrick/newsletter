@@ -47,7 +47,7 @@ class Bootstrap extends DefaultPluginBootstrap {
 	protected function registerHooks() {
 		$hooks = $this->elgg()->hooks;
 		
-		$hooks->registerHandler('access:collections:write', 'all', __NAMESPACE__ . '\Access::writeAccessCollections', 600); // needs to be after groups
+		$hooks->registerHandler('access:collections:write', 'all', __NAMESPACE__ . '\Access::writeAccessCollections', 700); // needs to be after groups
 		$hooks->registerHandler('cron', 'hourly', __NAMESPACE__ . '\Cron::sendNewsletters');
 		$hooks->registerHandler('likes:is_likable', 'object:' . \Newsletter::SUBTYPE, '\Elgg\Values::getTrue');
 		$hooks->registerHandler('notification_type_subtype', 'tag_tools', __NAMESPACE__ . '\TagTools::notificationTypeSubtype');
