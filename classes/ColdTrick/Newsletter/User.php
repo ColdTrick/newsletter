@@ -44,7 +44,7 @@ class User {
 	public static function subscribeToSiteNewsletter($hook, $type, $returnvalue, $params) {
 	
 		$user = elgg_extract('user', $params);
-		if (!elgg_instanceof($user, 'user')) {
+		if (!$user instanceof \ElggUser) {
 			return;
 		}
 		

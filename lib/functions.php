@@ -791,7 +791,7 @@ function newsletter_unsubscribe_email($email, ElggEntity $entity) {
 		return false;
 	}
 	
-	if (!elgg_instanceof($entity, 'site') && !elgg_instanceof($entity, 'group')) {
+	if ((!$entity instanceof \ElggSite) && (!$entity instanceof \ElggGroup)) {
 		return false;
 	}
 	
@@ -869,7 +869,7 @@ function newsletter_is_email_address($address) {
  */
 function newsletter_generate_unsubscribe_link(ElggEntity $container, $recipient) {
 
-	if (!elgg_instanceof($container, 'site') && !elgg_instanceof($container, 'group')) {
+	if ((!$entity instanceof \ElggSite) && (!$entity instanceof \ElggGroup)) {
 		return false;
 	}
 	
@@ -900,7 +900,7 @@ function newsletter_generate_unsubscribe_link(ElggEntity $container, $recipient)
  */
 function newsletter_generate_unsubscribe_code(ElggEntity $container, $recipient) {
 	
-	if (!elgg_instanceof($container, 'site') && !elgg_instanceof($container, 'group')) {
+	if ((!$entity instanceof \ElggSite) && (!$entity instanceof \ElggGroup)) {
 		return false;
 	}
 	
@@ -937,7 +937,7 @@ function newsletter_generate_unsubscribe_code(ElggEntity $container, $recipient)
  */
 function newsletter_validate_unsubscribe_code(ElggEntity $container, $recipient, $code) {
 	
-	if (!elgg_instanceof($container, 'site') && !elgg_instanceof($container, 'group')) {
+	if ((!$entity instanceof \ElggSite) && (!$entity instanceof \ElggGroup)) {
 		return false;
 	}
 	
@@ -1514,7 +1514,7 @@ function newsletter_embed_available() {
  */
 function newsletter_view_embed_content(ElggEntity $entity, $vars = array()) {
 	
-	if (!elgg_instanceof($entity)) {
+	if (!$entity instanceof \ElggEntity) {
 		return false;
 	}
 	
