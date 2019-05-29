@@ -1,6 +1,10 @@
 Version history
 ===============
 
+5.0.2 (2019-05-29):
+
+- fixed: correctly limit access write array
+
 5.0.1 (2019-04-18):
 
 - several small chores/fixes
