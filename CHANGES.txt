@@ -1,6 +1,10 @@
 Version history
 ===============
 
+5.0.3 (2019-06-12):
+
+- fixed: no longer find banned users for newsletter recipients
+
 5.0.2 (2019-05-29):
 
 - fixed: correctly limit access write array
