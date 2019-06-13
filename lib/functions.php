@@ -446,7 +446,7 @@ function newsletter_process($entity_guid) {
 			
 			// place the unsubscribe link in the message
 			$unsubscribe_link = elgg_normalize_url($unsubscribe_link);
-			$message_html_content_user = str_ireplace(urlencode("{unsublink}"), $unsubscribe_link, $message_html_content);
+			$message_html_content_user = str_ireplace("{unsublink}", $unsubscribe_link, $message_html_content);
 			
 			// replace the online link for logged out users to add an emailadres
 			if ($type !== 'users') {
@@ -869,23 +869,29 @@ function newsletter_is_email_address($address) {
  */
 function newsletter_generate_unsubscribe_link(ElggEntity $container, $recipient) {
 
-	if ((!$entity instanceof \ElggSite) && (!$entity instanceof \ElggGroup)) {
+	if (!$container instanceof \ElggSite && !$container instanceof \ElggGroup) {
 		return false;
 	}
 	
-	$result = 'newsletter/unsubscribe/' . $container->getGUID();
+	$params = [
+		'guid' => $container->guid,
+	];
 	
 	if (!empty($recipient)) {
 		$code = newsletter_generate_unsubscribe_code($container, $recipient);
 		
 		if (is_numeric($recipient)) {
 			// recipient is an user_guid
-			$result .= '?u=' . $recipient . '&c=' . $code;
+			$params['u'] = $recipient;
+			$params['c'] = $code;
 		} elseif (newsletter_is_email_address($recipient)) {
 			// recipient is an email address
-			$result .= '?e=' . $recipient . '&c=' . $code;
+			$params['e'] = $recipient;
+			$params['c'] = $code;
 		}
 	}
+	
+	$result = elgg_generate_url('default:object:newsletter:unsubscribe', $params);
 	
 	return elgg_normalize_url($result);
 }
