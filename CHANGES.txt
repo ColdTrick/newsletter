@@ -1,6 +1,10 @@
 Version history
 ===============
 
+5.0.4 (2019-07-11):
+
+- fixed: correctly replace unsubscribe link during processing
+
 5.0.3 (2019-06-12):
 
 - fixed: no longer find banned users for newsletter recipients
