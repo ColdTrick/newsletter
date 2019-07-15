@@ -48,6 +48,13 @@ class User {
 			return;
 		}
 		
+		// convert potential e-maul subscription to user subscription
+		$subscription = newsletter_get_subscription($user->email);
+		if (!empty($subscription)) {
+			newsletter_convert_subscription_to_user_setting($subscription, $user);
+		}
+		
+		// check for site subscription
 		if (elgg_get_plugin_setting('allow_site', 'newsletter') !== 'yes') {
 			return;
 		}

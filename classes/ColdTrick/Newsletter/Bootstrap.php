@@ -21,7 +21,6 @@ class Bootstrap extends DefaultPluginBootstrap {
 		}
 		
 		$this->extendViews();
-		$this->registerEvents();
 		$this->registerHooks();
 	}
 	
@@ -65,16 +64,5 @@ class Bootstrap extends DefaultPluginBootstrap {
 		$hooks->registerHandler('entity:url', 'object', __NAMESPACE__ . '\Widgets::widgetURL');
 		$hooks->registerHandler('view', 'page/layouts/newsletter', __NAMESPACE__ . '\DeveloperTools::reenableLogOutput');
 		$hooks->registerHandler('view_vars', 'page/layouts/newsletter', __NAMESPACE__ . '\DeveloperTools::preventLogOutput');
-	}
-	
-	/**
-	 * Register event handlers
-	 *
-	 * @return void
-	 */
-	protected function registerEvents() {
-		$events = $this->elgg()->events;
-		
-		$events->registerHandler('create', 'relationship', __NAMESPACE__ . '\Site::join');
 	}
 }
