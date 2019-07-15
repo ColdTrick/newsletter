@@ -3,10 +3,14 @@
  * Extends the registration form with a subscription question
  */
 
-$output = elgg_view('input/checkbox', [
+if (elgg_get_plugin_setting('allow_site', 'newsletter') !== 'yes') {
+	return;
+}
+
+echo elgg_view_field([
+	'#type' => 'checkbox',
+	'#label' => elgg_echo('newsletter:registration'),
 	'name' => 'newsletter_subscription',
 	'value' => '1',
-	'id' => 'newsletter-registration-subscription',
+	'switch' => true,
 ]);
-$output .= elgg_format_element('label', ['for' => 'newsletter-registration-subscription'], elgg_echo('newsletter:registration'));
-echo elgg_format_element('div', ['class' => 'mtl'], $output);

@@ -8,6 +8,7 @@ require_once(__DIR__ . '/lib/functions.php');
 return [
 	'bootstrap' => Bootstrap::class,
 	'settings' => [
+		'allow_site' => 'yes',
 		'allow_groups' => 'no',
 		'custom_from' => 'no',
 		'include_existing_users' => 'yes',

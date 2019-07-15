@@ -8,10 +8,13 @@ $filter = 'sent';
 // breadcrumb
 elgg_push_collection_breadcrumbs('object', Newsletter::SUBTYPE);
 
-// register title button
-newsletter_register_title_menu_items(elgg_get_site_entity());
+$site = elgg_get_site_entity();
+elgg_set_page_owner_guid($site->guid);
 
-if (elgg_is_admin_logged_in()) {
+// register title button
+newsletter_register_title_menu_items($site);
+
+if ($site->canWriteToContainer(0, 'object', Newsletter::SUBTYPE)) {
 	elgg_register_title_button('newsletter', 'add', 'object', Newsletter::SUBTYPE);
 	
 	$filter = elgg_extract('filter', $vars, $filter, false);
@@ -23,7 +26,7 @@ $title_text = elgg_echo('newsletter:site:title');
 $options = [
 	'type' => 'object',
 	'subtype' => Newsletter::SUBTYPE,
-	'container_guid' => elgg_get_site_entity()->guid,
+	'container_guid' => $site->guid,
 	'no_results' => true,
 ];
 

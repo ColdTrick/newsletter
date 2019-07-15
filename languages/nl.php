@@ -1,10 +1,12 @@
 <?php
 /**
- * This file was created by Translation Editor v7.0-beta
- * On 2019-02-14 15:00
+ * This file was created by Translation Editor v7.0.3
+ * On 2019-07-15 11:27
  */
 
 return array (
+  'newsletter:settings:allow_site' => 'Schakel site nieuwsbrieven in',
+  'newsletter:settings:allow_site:description' => 'Site nieuwsbrieven kunnen alleen worden aangemaakt door site beheerders.',
   'collection:object:newsletter' => 'Nieuwsbrieven',
   'add:object:newsletter' => 'Nieuwe nieuwsbrief',
   'newsletter:menu:preview_by_mail' => 'Voorbeeld naar e-mail',

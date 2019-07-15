@@ -157,6 +157,8 @@ return array(
 	'newsletter:recipients:email' => "E-mail address",
 	
 	// plugin settings
+	'newsletter:settings:allow_site' => "Enable site newsletters",
+	'newsletter:settings:allow_site:description' => "Site newsletters can only be created by site administrators.",
 	'newsletter:settings:allow_groups' => "Allow group admins to send newsletters",
 	'newsletter:settings:allow_groups:description' => "Group administrators can create a newsletter for their group members.",
 	'newsletter:settings:include_existing_users' => "Include users without subscription settings",

@@ -48,6 +48,10 @@ class User {
 			return;
 		}
 		
+		if (elgg_get_plugin_setting('allow_site', 'newsletter') !== 'yes') {
+			return;
+		}
+		
 		$site = elgg_get_site_entity();
 		$subscribe = (int) get_input('newsletter_subscription');
 			

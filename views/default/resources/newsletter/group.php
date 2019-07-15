@@ -22,7 +22,7 @@ elgg_push_collection_breadcrumbs('object', Newsletter::SUBTYPE, $page_owner);
 newsletter_register_title_menu_items($page_owner);
 
 $filter = 'sent';
-if ($page_owner->canEdit()) {
+if ($page_owner->canWriteToContainer(0, 'object', Newsletter::SUBTYPE)) {
 	elgg_register_title_button('newsletter', 'add', 'object', Newsletter::SUBTYPE);
 	
 	$filter = elgg_extract('filter', $vars, $filter, false);

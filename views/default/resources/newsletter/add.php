@@ -7,37 +7,34 @@
 
 use Elgg\EntityPermissionsException;
 use ColdTrick\Newsletter\EditForm;
+use Elgg\BadRequestException;
 
-$page_owner = elgg_get_page_owner_entity();
-$container_guid = 0;
+$container = elgg_get_page_owner_entity();
 
 // check if we have access
-if ($page_owner instanceof ElggUser) {
+if ($container instanceof ElggUser) {
 	// access to site newsletters is only for admins
-	if ($page_owner->isAdmin()) {
-		$container_guid = elgg_get_site_entity()->guid;
+	if ($container->isAdmin()) {
+		$container = elgg_get_site_entity();
 		elgg_set_page_owner_guid(false);
-	} else {
-		throw new EntityPermissionsException();
 	}
-} elseif ($page_owner instanceof ElggGroup) {
-	// only for group owners/admins
-	if (newsletter_is_group_enabled($page_owner) && $page_owner->canEdit()) {
-		$container_guid = $page_owner->guid;
-	} else {
-		throw new EntityPermissionsException();
-	}
-} else {
+}
+
+if (!$container instanceof ElggEntity) {
+	throw new BadRequestException();
+}
+
+if (!$container->canWriteToContainer(0, 'object', Newsletter::SUBTYPE)) {
 	throw new EntityPermissionsException();
 }
 
 // breadcrumb
-elgg_push_collection_breadcrumbs('object', Newsletter::SUBTYPE, $page_owner instanceof ElggGroup ? $page_owner : null);
+elgg_push_collection_breadcrumbs('object', Newsletter::SUBTYPE, $container instanceof ElggGroup ? $container : null);
 
 // build page elements
 $title_text = elgg_echo('newsletter:add:title');
 
-$form = new EditForm(null, $container_guid);
+$form = new EditForm(null, $container->guid);
 
 $content = elgg_view_form('newsletter/edit', [], $form('basic'));
 

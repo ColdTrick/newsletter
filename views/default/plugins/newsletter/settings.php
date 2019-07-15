@@ -3,12 +3,18 @@
 /* @var $plugin ElggPlugin */
 $plugin = elgg_extract('entity', $vars);
 
-$noyes_options = [
-	'no' => elgg_echo('option:no'),
-	'yes' => elgg_echo('option:yes'),
-];
-
 $url_postfix_replacements = ['{guid}'];
+
+echo elgg_view_field([
+	'#type' => 'checkbox',
+	'#label' => elgg_echo('newsletter:settings:allow_site'),
+	'#help' => elgg_echo('newsletter:settings:allow_site:description'),
+	'name' => 'params[allow_site]',
+	'default' => 'no',
+	'value' => 'yes',
+	'checked' => $plugin->allow_site === 'yes',
+	'switch' => true,
+]);
 
 echo elgg_view_field([
 	'#type' => 'checkbox',
