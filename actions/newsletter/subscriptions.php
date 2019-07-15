@@ -20,11 +20,15 @@ $result = true;
 
 if (!empty($block_all)) {
 	// block all newsletters
-	$result = newsletter_unsubscribe_all_user($user);
-} else {
-	// remove block all
-	remove_entity_relationship($user->guid, NewsletterSubscription::GENERAL_BLACKLIST, elgg_get_site_entity()->guid);
+	if (newsletter_unsubscribe_all_user($user)) {
+		return elgg_ok_response('', elgg_echo('newsletter:action:subscriptions:success'));
+	}
+	
+	return elgg_error_response(elgg_echo('newsletter:action:subscriptions:error'));
 }
+
+// remove block all
+remove_entity_relationship($user->guid, NewsletterSubscription::GENERAL_BLACKLIST, elgg_get_site_entity()->guid);
 
 // go through all the subscriptions
 foreach ($subscriptions as $guid => $value) {
