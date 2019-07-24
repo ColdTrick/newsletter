@@ -1,6 +1,13 @@
 Version history
 ===============
 
+5.1 (2019-07-24):
+
+- added: plugin settings to enable/disable site newsletters
+- fixed: unable to unsubscribre from all newsletters
+- fixed: unsubscribe to all newsletter from settings page
+- removed: site membership event listener
+
 5.0.4 (2019-07-11):
 
 - fixed: correctly replace unsubscribe link during processing
