@@ -38,13 +38,8 @@ class NewsletterSubscription extends ElggObject {
 	 */
 	public function save() {
 		// ignore access restrictions
-		$ia = elgg_set_ignore_access(true);
-		
-		$result = parent::save();
-		
-		// restore access
-		elgg_set_ignore_access($ia);
-		
-		return $result;
+		return elgg_call(ELGG_IGNORE_ACCESS, function() {
+			return parent::save();
+		});
 	}
 }
