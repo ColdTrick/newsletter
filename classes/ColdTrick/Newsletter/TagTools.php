@@ -7,15 +7,12 @@ class TagTools {
 	/**
 	 * Modify the tag_tools type/subtypes for notifications
 	 *
-	 * @param string $hook_name    the name of the hook
-	 * @param string $entity_type  the type of the hook
-	 * @param array  $return_value current return value
-	 * @param array  $params       supplied params
+	 * @param \Elgg\Hook $hook 'notification_type_subtype', 'tag_tools'
 	 *
 	 * @return array|void
 	 */
-	public static function notificationTypeSubtype($hook_name, $entity_type, $return_value, $params) {
-	
+	public static function notificationTypeSubtype(\Elgg\Hook $hook) {
+		$return_value = $hook->getValue();
 		$object_subtypes = elgg_extract('object', $return_value);
 		if (empty($object_subtypes) || !is_array($object_subtypes)) {
 			return;

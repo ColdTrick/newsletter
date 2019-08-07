@@ -8,14 +8,11 @@ class User {
 	 * Check if there is a email subscription for the user's email address
 	 * If so, convert the settings to the user and remove the email subscription
 	 *
-	 * @param string $hook        Which hook was triggered
-	 * @param string $type        What was the type of hook
-	 * @param array  $returnvalue null
-	 * @param array  $params      null
+	 * @param \Elgg\Hook $hook 'usersettings:save', 'user'
 	 *
-	 * @return 	void
+	 * @return void
 	 */
-	public static function convertEmailSubscriptionToUserSetting($hook, $type, $returnvalue, $params) {
+	public static function convertEmailSubscriptionToUserSetting(\Elgg\Hook $hook) {
 		$user_guid = (int) get_input('guid');
 	
 		$user = get_user($user_guid);
@@ -34,16 +31,13 @@ class User {
 	 * A hook fired during the registration proccess of the user
 	 * Check if the user wants to receive site newsletters
 	 *
-	 * @param string $hook        Which hook was triggered
-	 * @param string $type        What was the type of hook
-	 * @param bool   $returnvalue you can stop the registration proccess
-	 * @param array  $params      different variables, including the new user
+	 * @param \Elgg\Hook $hook 'register', 'user'
 	 *
 	 * @return void
 	 */
-	public static function subscribeToSiteNewsletter($hook, $type, $returnvalue, $params) {
+	public static function subscribeToSiteNewsletter(\Elgg\Hook $hook) {
 	
-		$user = elgg_extract('user', $params);
+		$user = $hook->getUserParam();
 		if (!$user instanceof \ElggUser) {
 			return;
 		}

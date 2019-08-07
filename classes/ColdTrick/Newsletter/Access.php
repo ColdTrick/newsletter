@@ -7,14 +7,11 @@ class Access {
 	/**
 	 * Remove some options from the write access array if it's a newsletter
 	 *
-	 * @param string $hook        name of the hook
-	 * @param string $type        type of the hook
-	 * @param array  $returnvalue returnvalue of the hook
-	 * @param array  $params      params of the hook
+	 * @param \Elgg\Hook $hook 'access:collections:write', 'all'
 	 *
 	 * @return array write access array
 	 */
-	public static function writeAccessCollections($hook, $type, $returnvalue, $params) {
+	public static function writeAccessCollections(\Elgg\Hook $hook) {
 		
 		if (!elgg_is_logged_in() || !elgg_in_context('newsletter')) {
 			return;
@@ -30,6 +27,7 @@ class Access {
 			}
 		}
 		
+		$returnvalue = $hook->getValue();
 		foreach ($returnvalue as $access_id => $label) {
 			if (!in_array($access_id, $allowed_keys)) {
 				unset($returnvalue[$access_id]);
