@@ -1,6 +1,10 @@
 Version history
 ===============
 
+5.1.1 (2019-08-22):
+
+- several small chores/fixes
+
 5.1 (2019-07-24):
 
 - added: plugin settings to enable/disable site newsletters
