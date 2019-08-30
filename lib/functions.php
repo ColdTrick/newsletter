@@ -906,7 +906,7 @@ function newsletter_generate_unsubscribe_link(ElggEntity $container, $recipient)
  */
 function newsletter_generate_unsubscribe_code(ElggEntity $container, $recipient) {
 	
-	if ((!$entity instanceof \ElggSite) && (!$entity instanceof \ElggGroup)) {
+	if (!$container instanceof \ElggSite && !$container instanceof \ElggGroup) {
 		return false;
 	}
 	
@@ -943,7 +943,7 @@ function newsletter_generate_unsubscribe_code(ElggEntity $container, $recipient)
  */
 function newsletter_validate_unsubscribe_code(ElggEntity $container, $recipient, $code) {
 	
-	if ((!$entity instanceof \ElggSite) && (!$entity instanceof \ElggGroup)) {
+	if (!$container instanceof \ElggSite && !$container instanceof \ElggGroup) {
 		return false;
 	}
 	
