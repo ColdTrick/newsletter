@@ -1304,6 +1304,9 @@ function newsletter_process_csv_upload(array $recipients) {
 		return $recipients;
 	}
 	
+	// this could take a while (for big csv files)
+	set_time_limit(0);
+	
 	// open the file as CSV
 	$fh = $csv->openFile('r');
 	
