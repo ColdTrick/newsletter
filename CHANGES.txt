@@ -1,6 +1,11 @@
 Version history
 ===============
 
+5.1.2 (2019-09-04):
+
+- fixed: check correct function param
+- fixed: prevent timeout when processing large csv files
+
 5.1.1 (2019-08-22):
 
 - several small chores/fixes
