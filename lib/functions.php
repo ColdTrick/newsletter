@@ -1342,7 +1342,9 @@ function newsletter_process_csv_upload(array $recipients) {
 	// start at the beginning
 	$fh->rewind();
 	
-	while (($row = $fh->fgetcsv(';', '\'')) !== false) {
+	while (!$fh->eof()) {
+		$row = $fh->fgetcsv(';');
+		
 		// get the email address
 		$email = elgg_extract($email_column, $row);
 		
@@ -1369,7 +1371,6 @@ function newsletter_process_csv_upload(array $recipients) {
 				}
 			}
 		}
-		
 		
 		// email address wasn't added yet
 		// so add to the list
