@@ -21,6 +21,13 @@ if (empty($entity->content)) {
 
 $entity->content = $content;
 
+if (get_input('icon_remove')) {
+	// remove existing icons
+	$entity->deleteIcon();
+} else {
+	$entity->saveIconFromUploadedFile('icon');
+}
+
 elgg_clear_sticky_form('newsletter/edit/content');
 
 return elgg_ok_response('', elgg_echo('newsletter:action:content:success'), $forward_url);

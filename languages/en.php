@@ -106,6 +106,7 @@ return array(
 		
 	// content
 	'newsletter:edit:content:description' => "Add the content to your newsletter here. Add free text or import an existing blog as content into your newsletter.",
+	'newsletter:edit:content:header' => "Below you can upload a header image that can be used by the template (if the template supports it).",
 				
 	// template
 	'newsletter:edit:template:description' => "Here you can control the newsletter layout by changing the html and control the styling by changing the css. Do not forget to preview you newsletter to see if it looks as expected.",
