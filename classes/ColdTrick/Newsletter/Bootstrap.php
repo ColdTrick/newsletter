@@ -49,6 +49,7 @@ class Bootstrap extends DefaultPluginBootstrap {
 		$hooks->registerHandler('access:collections:write', 'all', __NAMESPACE__ . '\Access::writeAccessCollections', 700); // needs to be after groups
 		$hooks->registerHandler('container_logic_check', 'object', __NAMESPACE__ . '\Permissions::containerLogic');
 		$hooks->registerHandler('cron', 'hourly', __NAMESPACE__ . '\Cron::sendNewsletters');
+		$hooks->registerHandler('entity:icon:sizes', 'object', __NAMESPACE__ . '\Icons::extendIconSizes');
 		$hooks->registerHandler('likes:is_likable', 'object:' . \Newsletter::SUBTYPE, '\Elgg\Values::getTrue');
 		$hooks->registerHandler('notification_type_subtype', 'tag_tools', __NAMESPACE__ . '\TagTools::notificationTypeSubtype');
 		$hooks->registerHandler('register', 'menu:page', __NAMESPACE__ . '\Menus::pageRegister');

@@ -28,6 +28,7 @@ if (elgg_extract('upload_header', $vars, true)) {
 		'entity' => $entity,
 		'entity_type' => 'object',
 		'entity_subtype' => 'newsletter',
+		'cropper_aspect_ratio_size' => 'newsletter_header',
 	]);
 }
 

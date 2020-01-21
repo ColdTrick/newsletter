@@ -6,10 +6,10 @@ if (!$entity instanceof Newsletter) {
 }
 
 $header = '';
-if ($entity->hasIcon('master')) {
+if ($entity->hasIcon('newsletter_header')) {
 	$header = elgg_format_element('img', [
 		'src' => elgg_normalize_url($entity->getIconURL([
-			'size' => 'master',
+			'size' => 'newsletter_header',
 		])),
 		'style' => 'display:block;',
 		'width' => '100%',
