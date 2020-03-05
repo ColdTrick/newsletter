@@ -37,7 +37,7 @@ if (elgg_get_plugin_setting('custom_from', 'newsletter') === 'yes') {
 		'#label' => elgg_echo('newsletter:edit:from'),
 		'#help' => elgg_echo('newsletter:edit:from:description', [elgg_format_element('strong', [], elgg_get_site_entity()->getEmailAddress())]),
 		'name' => 'from',
-		'value' => elgg_extract('form', $vars),
+		'value' => elgg_extract('from', $vars),
 	]);
 }
 
