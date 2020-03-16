@@ -1,6 +1,10 @@
 Version history
 ===============
 
+5.2.1 (2020-03-16):
+
+- fixed: show correct value for custom from
+
 5.2 (2020-01-21):
 
 - added: option to upload a header image that belongs to the newsletter
