@@ -121,6 +121,9 @@ function newsletter_process($entity_guid) {
 		return;
 	}
 	
+	// sending could take a while
+	set_time_limit(0);
+	
 	elgg_call(ELGG_IGNORE_ACCESS, function() use ($entity) {
 		
 		$logging = ['start_time' => time()];
