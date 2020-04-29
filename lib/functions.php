@@ -456,7 +456,9 @@ function newsletter_process($entity_guid) {
 				// replace the online link for logged out users to add an emailadres
 				if ($type !== 'users') {
 					$online_link = $entity->getURL();
-					$new_online_link = $online_link . '?e=' . $recipient;
+					$new_online_link = elgg_http_add_url_query_elements($online_link, [
+						'e' => $recipient,
+					]);
 					
 					$message_html_content_user = str_ireplace($online_link, $new_online_link, $message_html_content_user);
 				}
