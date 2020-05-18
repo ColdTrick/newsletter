@@ -1243,7 +1243,7 @@ function newsletter_get_available_templates($container_guid, $entity = null) {
 	$result = [];
 	
 	// detect templates provided by themes/plugins
-	$locations = elgg_list_views();
+	$locations = _elgg_services()->views->listViews();
 	$pattern = '/^newsletter\/templates\/(?P<name>\w+)\/(body|css)$/';
 	
 	foreach ($locations as $view) {
