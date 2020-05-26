@@ -1,6 +1,10 @@
 Version history
 ===============
 
+5.2.2 (2020-05-26):
+
+- several small chores/fixes
+
 5.2.1 (2020-03-16):
 
 - fixed: show correct value for custom from
