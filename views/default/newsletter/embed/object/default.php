@@ -5,8 +5,6 @@ if (!$entity instanceof \ElggObject) {
 	return;
 }
 
-$container = $entity->getContainerEntity();
-
 // data for embedding
 $data = [
 	'data-title' => $entity->getDisplayName(),
@@ -24,19 +22,24 @@ if (!empty($excerpt)) {
 }
 
 // icon support
-if ($entity->icontime) {
+$icon_size = elgg_extract('icon_size', $vars, 'medium');
+unset($vars['icon_size']);
+if ($entity->hasIcon($icon_size)) {
 	$data['data-icon-url'] = $entity->getIconURL([
-		'size' => 'medium',
+		'size' => $icon_size,
 		'use_cookie' => false,
 	]);
 }
 
 // build listing view
-echo elgg_format_element('div', $data, elgg_view('object/elements/summary', [
+$params = [
 	'entity' => $entity,
 	'title' => $entity->getDisplayName(),
 	'access' => false,
 	'tags' => false,
 	'metadata' => false,
 	'content' => $excerpt,
-]));
+];
+$params = $params + $vars;
+
+echo elgg_format_element('div', $data, elgg_view('object/elements/summary', $params));
