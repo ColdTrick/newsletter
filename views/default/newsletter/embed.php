@@ -50,6 +50,7 @@ $form_data = elgg_view_field([
 			'#type' => 'text',
 			'name' => 'q',
 			'value' => $query,
+			'placeholder' => elgg_echo('search'),
 		],
 		[
 			'#type' => 'submit',
