@@ -1527,25 +1527,17 @@ function newsletter_embed_available() {
  *
  * @return bool|string
  */
-function newsletter_view_embed_content(ElggEntity $entity, $vars = array()) {
-	
-	if (!$entity instanceof \ElggEntity) {
-		return false;
-	}
-	
-	if (!is_array($vars)) {
-		$vars = [];
-	}
+function newsletter_view_embed_content(ElggEntity $entity, array $vars = []) {
 	
 	$vars['entity'] = $entity;
 	
 	$type = $entity->getType();
 	$subtype = $entity->getSubtype();
 	
-	if (!empty($subtype) && elgg_view_exists("newsletter/embed/" . $type . "/" . $subtype)) {
-		return elgg_view("newsletter/embed/" . $type . "/" . $subtype, $vars);
-	} elseif (elgg_view_exists("newsletter/embed/" . $type . "/default")) {
-		return elgg_view("newsletter/embed/" . $type . "/default", $vars);
+	if (elgg_view_exists("newsletter/embed/{$type}/{$subtype}")) {
+		return elgg_view("newsletter/embed/{$type}/{$subtype}", $vars);
+	} elseif (elgg_view_exists("newsletter/embed/{$type}/default")) {
+		return elgg_view("newsletter/embed/{$type}/default", $vars);
 	} elseif (elgg_view_exists("newsletter/embed/default")) {
 		return elgg_view("newsletter/embed/default", $vars);
 	}

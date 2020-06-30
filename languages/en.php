@@ -174,6 +174,9 @@ return array(
 	'newsletter:settings:url_postfix:setting' => "Postfix settings",
 	'newsletter:settings:url_postfix:setting:description' => "There are certain placeholders you can use in your postfix values: %s",
 	
+	'newsletter:settings:embed' => "Content embed settings",
+	'newsletter:settings:embed:description' => "Below you can configure which content types can be embedded in a newsletter.",
+	
 	// entity view
 	'newsletter:entity:scheduled' => "Scheduled",
 	'newsletter:entity:sent' => "Sent",

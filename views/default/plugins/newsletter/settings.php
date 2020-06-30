@@ -68,3 +68,21 @@ $url_postfix .= elgg_view_field([
 ]);
 
 echo elgg_view_module('info', elgg_echo('newsletter:settings:url_postfix'), $url_postfix);
+
+// embed content
+$embed = elgg_view('output/longtext', [
+	'value' => elgg_echo('newsletter:settings:embed:description'),
+]);
+
+$subtypes = get_registered_entity_types('object');
+foreach ($subtypes as $subtype) {
+	$embed .= elgg_view_field([
+		'#type' => 'checkbox',
+		'#label' => elgg_echo("item:object:{$subtype}"),
+		'name' => "params[embed_enable_object_{$subtype}]",
+		'checked' => (bool) $plugin->getSetting("embed_enable_object_{$subtype}", 1),
+		'switch' => true,
+	]);
+}
+
+echo elgg_view_module('info', elgg_echo('newsletter:settings:embed'), $embed);

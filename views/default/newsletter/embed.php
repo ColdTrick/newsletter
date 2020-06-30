@@ -10,13 +10,10 @@ $query = sanitise_string($query);
 
 $show_all = (bool) get_input('show_all', false);
 
-$subtypes = [];
-if (elgg_is_active_plugin('blog')) {
-	$subtypes[] = 'blog';
-}
-if (elgg_is_active_plugin('static')) {
-	$subtypes[] = 'static';
-}
+$subtypes = get_registered_entity_types('object');
+$subtypes = array_filter($subtypes, function ($subtype) {
+	return (bool) elgg_get_plugin_setting("embed_enable_object_{$subtype}", 'newsletter', 1);
+});
 
 if (empty($subtypes)) {
 	return;
