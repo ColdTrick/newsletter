@@ -6,22 +6,29 @@ $offset = (int) max(get_input('offset', 0), 0);
 $limit = 6;
 
 $query = get_input('q');
-$query = sanitise_string($query);
+$subtype_filter = get_input('subtype_filter');
 
 $show_all = (bool) get_input('show_all', false);
 
-$subtypes = get_registered_entity_types('object');
-$subtypes = array_filter($subtypes, function ($subtype) {
+$allowed_subtypes = get_registered_entity_types('object');
+$allowed_subtypes = array_filter($allowed_subtypes, function ($subtype) {
 	return (bool) elgg_get_plugin_setting("embed_enable_object_{$subtype}", 'newsletter', 1);
 });
 
-if (empty($subtypes)) {
+	if (empty($allowed_subtypes)) {
 	return;
+}
+
+$subtype_options = [
+	'' => elgg_echo('filter'),
+];
+foreach ($allowed_subtypes as $subtype) {
+	$subtype_options[$subtype] = elgg_echo("item:object:{$subtype}");
 }
 
 $options = [
 	'type' => 'object',
-	'subtypes' => $subtypes,
+	'subtypes' => $subtype_filter ?: $allowed_subtypes,
 	'full_view' => false,
 	'limit' => $limit,
 	'offset' => $offset,
@@ -51,6 +58,12 @@ $form_data = elgg_view_field([
 			'name' => 'q',
 			'value' => $query,
 			'placeholder' => elgg_echo('search'),
+		],
+		[
+			'#type' => 'select',
+			'name' => 'subtype_filter',
+			'value' => $subtype_filter,
+			'options_values' => $subtype_options,
 		],
 		[
 			'#type' => 'submit',

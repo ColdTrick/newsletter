@@ -66,6 +66,7 @@ return array(
 	'newsletter:received:title:mine' => "My received newsletters",
 	
 	// embed
+	'newsletter:embed:subtype_filter:all' => "Filter embedded content",
 	'newsletter:embed:show_all' => "Show all content, not just group content",
 	'newsletter:embed:format:description:title' => "Show description",
 	'newsletter:embed:format:description:option:full' => "Full",
