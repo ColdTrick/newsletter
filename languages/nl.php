@@ -1,10 +1,13 @@
 <?php
 /**
- * This file was created by Translation Editor v7.0.3
- * On 2019-07-15 11:27
+ * This file was created by Translation Editor v8.0
+ * On 2020-07-01 10:09
  */
 
 return array (
+  'newsletter:embed:subtype_filter:all' => 'Filter geëmbedde content',
+  'newsletter:settings:embed' => 'Instellingen voor content embedding',
+  'newsletter:settings:embed:description' => 'Hieronder is te configureren welke content types er kunnen worden geëmbed in een nieuwsbrief.',
   'newsletter:settings:allow_site' => 'Schakel site nieuwsbrieven in',
   'newsletter:settings:allow_site:description' => 'Site nieuwsbrieven kunnen alleen worden aangemaakt door site beheerders.',
   'collection:object:newsletter' => 'Nieuwsbrieven',
@@ -92,7 +95,7 @@ return array (
   'newsletter:placeholders:container_name' => 'Container_name zal worden vervangen door de naam van de container (dit kan de groep of site zijn)',
   'newsletter:placeholders:container_url' => 'Container_url zal worden vervangen door de url van de container (dit kan de groep of site zijn)',
   'newsletter:edit:content:description' => 'Voeg hier de inhoud van de nieuwsbrief toe. Dit kan vrije tekst zijn of importeer een blog in je nieuwsbrief.',
-  'newsletter:edit:content:header' => "Hieronder kun je een afbeelding uploaden die gebruikt wordt in de nieuwsbrief template, indien de template dat ondersteund.",
+  'newsletter:edit:content:header' => 'Hieronder kun je een afbeelding uploaden die gebruikt wordt in de nieuwsbrief template, indien de template dat ondersteund.',
   'newsletter:edit:template:description' => 'Hier kun je de layout van de nieuwsbrief aanpassen door de HTML aan te passen. Ook is de styling aan te passen door de CSS te wijzigen. Vergeet niet om naar het voorbeeld te kijken om de controleren of alles er uit zien zoals je wilt.',
   'newsletter:edit:template:copy_to_custom' => 'Kopieer naar aangepast sjabloon',
   'newsletter:edit:template:copy_to_custom:confirm' => 'Deze actie zal de huidige aangepaste sjabloon instellingen overschrijven. Weet je zeker dat je dit sjabloon wilt kopiëren naar je eigen aangepaste sjabloon',
