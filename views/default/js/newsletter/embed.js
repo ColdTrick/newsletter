@@ -92,21 +92,21 @@ define(function(require) {
 			}
 	 	}
 	 	
-	 	content += "<table class='newsletter-embed-item'><tr>";
+	 	content += "<table class='newsletter-embed-item newsletter-widget'><tr>";
 	
 	 	if (content_icon) {
 			if (icon_option === "left") {
-				content += "<td class='newsletter-embed-item-icon'>" + content_icon + "</td>";
+				content += "<td><div class='newsletter-embed-item-icon'>" + content_icon + "</div></td>";
 			}
 	 	}
 	
-	 	content += "<td class='newsletter-embed-item-title'>";
-	 	content += "<table><tr><td><h3><a href='" + data.url + "'>" + data.title + "</a></h3></td></tr><tr><td class='newsletter-embed-item-description'>" + content_description + "</td></tr></table>";
+	 	content += "<td>";
+	 	content += "<table><tr><td><h3 class='newsletter-embed-item-title'><a href='" + data.url + "'>" + data.title + "</a></h3></td></tr><tr><td><div class='newsletter-embed-item-description'>" + content_description + "</div></td></tr></table>";
 	 	content += "</td>";
 	
 	 	if (content_icon) {
 			if (icon_option === "right") {
-				content += "<td class='newsletter-embed-item-icon'>" + content_icon + "</td>";
+				content += "<td><div class='newsletter-embed-item-icon'>" + content_icon + "</div></td>";
 			}
 	 	}
 	 	
