@@ -1658,7 +1658,7 @@ function newsletter_register_title_menu_items(ElggEntity $container_entity) {
 				'elgg-button-action',
 				'elgg-lightbox',
 			],
-			'data-colorbox-opts' => json_encode(['minWidth' => '500px','maxWidth' => '1000px']),
+			'data-colorbox-opts' => json_encode(['initialWidth' => '500px','maxWidth' => '1000px']),
 		]);
 	}
 }
