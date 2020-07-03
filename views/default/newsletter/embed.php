@@ -115,6 +115,7 @@ if ($count > 0) {
 			'guid' => $newsletter->guid,
 			'q' => $query,
 			'show_all' => $show_all_value,
+			'subtype_filter' => $subtype_filter,
 		]),
 		'offset' => $offset,
 		'limit' => $limit,
