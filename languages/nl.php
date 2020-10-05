@@ -1,10 +1,16 @@
 <?php
 /**
  * This file was created by Translation Editor v8.0
- * On 2020-07-01 10:09
+ * On 2020-10-05 11:58
  */
 
 return array (
+  'newsletter:csv_exporter:from' => 'Afzender e-mail adres',
+  'newsletter:csv_exporter:status' => 'Status',
+  'newsletter:csv_exporter:scheduled' => 'Gepland aflever tijdstip',
+  'newsletter:csv_exporter:scheduled:readable' => 'Gepland aflever tijdstip (leesbaar)',
+  'newsletter:csv_exporter:endtime' => 'Aflevering afgerond tijdstip',
+  'newsletter:csv_exporter:endtime:readable' => 'Aflevering afgerond tijdstip (leesbaar)',
   'newsletter:embed:subtype_filter:all' => 'Filter geëmbedde content',
   'newsletter:settings:embed' => 'Instellingen voor content embedding',
   'newsletter:settings:embed:description' => 'Hieronder is te configureren welke content types er kunnen worden geëmbed in een nieuwsbrief.',

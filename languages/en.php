@@ -267,6 +267,14 @@ To view the newsletter click here:
 	'widgets:newsletter_subscribe:name' => "Newsletter subscription",
 	'widgets:newsletter_subscribe:description' => "Show a quick widget to subscribe to the newsletter",
 	
+	// CSV Exporter
+	'newsletter:csv_exporter:from' => "Sending e-mail address",
+	'newsletter:csv_exporter:status' => "Status",
+	'newsletter:csv_exporter:scheduled' => "Scheduled delivery time",
+	'newsletter:csv_exporter:scheduled:readable' => "Scheduled delivery time (readable)",
+	'newsletter:csv_exporter:endtime' => "Proccessing finished time",
+	'newsletter:csv_exporter:endtime:readable' => "Proccessing finished time (readable)",
+	
 	// actions
 	// edit
 	'newsletter:action:edit:error:title' => "Please provide a title for the newsletter",
