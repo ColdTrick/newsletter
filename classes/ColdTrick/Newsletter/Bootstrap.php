@@ -51,7 +51,7 @@ class Bootstrap extends DefaultPluginBootstrap {
 		$hooks->registerHandler('cron', 'hourly', __NAMESPACE__ . '\Cron::sendNewsletters');
 		$hooks->registerHandler('entity:icon:sizes', 'object', __NAMESPACE__ . '\Icons::extendIconSizes');
 		$hooks->registerHandler('likes:is_likable', 'object:' . \Newsletter::SUBTYPE, '\Elgg\Values::getTrue');
-		$hooks->registerHandler('notification_type_subtype', 'tag_tools', __NAMESPACE__ . '\TagTools::notificationTypeSubtype');
+		$hooks->registerHandler('notification_type_subtype', 'tag_tools', __NAMESPACE__ . '\Plugins\TagTools::notificationTypeSubtype');
 		$hooks->registerHandler('register', 'menu:page', __NAMESPACE__ . '\Menus::pageRegister');
 		$hooks->registerHandler('register', 'menu:entity', __NAMESPACE__ . '\Menus::entityRegister');
 		$hooks->registerHandler('register', 'menu:owner_block', __NAMESPACE__ . '\Menus::ownerBlockRegister');
@@ -63,7 +63,7 @@ class Bootstrap extends DefaultPluginBootstrap {
 		$hooks->registerHandler('register', 'user', __NAMESPACE__ . '\User::subscribeToSiteNewsletter');
 		$hooks->registerHandler('usersettings:save', 'user', __NAMESPACE__ . '\User::convertEmailSubscriptionToUserSetting');
 		$hooks->registerHandler('entity:url', 'object', __NAMESPACE__ . '\Widgets::widgetURL');
-		$hooks->registerHandler('view', 'page/layouts/newsletter', __NAMESPACE__ . '\DeveloperTools::reenableLogOutput');
-		$hooks->registerHandler('view_vars', 'page/layouts/newsletter', __NAMESPACE__ . '\DeveloperTools::preventLogOutput');
+		$hooks->registerHandler('view', 'page/layouts/newsletter', __NAMESPACE__ . '\Plugins\DeveloperTools::reenableLogOutput');
+		$hooks->registerHandler('view_vars', 'page/layouts/newsletter', __NAMESPACE__ . '\Plugins\DeveloperTools::preventLogOutput');
 	}
 }

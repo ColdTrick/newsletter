@@ -1,6 +1,6 @@
 <?php
 
-namespace ColdTrick\Newsletter;
+namespace ColdTrick\Newsletter\Plugins;
 
 use Elgg\ViewsService;
 
