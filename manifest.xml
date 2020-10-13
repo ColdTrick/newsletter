@@ -3,7 +3,7 @@
 	<name>Newsletter</name>
 	<id>newsletter</id>
 	<author>ColdTrick IT Solutions</author>
-	<version>5.3</version>
+	<version>5.4</version>
 	<description>Allows the creation and management of a newletter to site/group members</description>
 	<website>http://www.coldtrick.com/</website>
 	<repository>https://github.com/ColdTrick/newsletter</repository>
