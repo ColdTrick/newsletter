@@ -40,6 +40,17 @@ echo elgg_view_field([
 
 echo elgg_view_field([
 	'#type' => 'checkbox',
+	'#label' => elgg_echo('newsletter:settings:include_banned_users'),
+	'#help' => elgg_echo('newsletter:settings:include_banned_users:help'),
+	'name' => 'params[include_banned_users]',
+	'default' => 0,
+	'value' => 1,
+	'checked' => (bool) $plugin->include_banned_users,
+	'switch' => true,
+]);
+
+echo elgg_view_field([
+	'#type' => 'checkbox',
 	'#label' => elgg_echo('newsletter:settings:custom_from'),
 	'#help' => elgg_echo('newsletter:settings:custom_from:description'),
 	'name' => 'params[custom_from]',

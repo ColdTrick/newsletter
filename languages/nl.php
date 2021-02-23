@@ -1,10 +1,12 @@
 <?php
 /**
  * This file was created by Translation Editor v8.0
- * On 2020-10-05 11:58
+ * On 2021-02-23 11:20
  */
 
 return array (
+  'newsletter:settings:include_banned_users' => 'Geblokkeerde gebruikers meenemen in het versturen van de nieuwsbrieven',
+  'newsletter:settings:include_banned_users:help' => 'Indien dit is ingeschakeld zullen geblokkeerde gebruikers ook de nieuwsbrieven ontvangen',
   'newsletter:csv_exporter:from' => 'Afzender e-mailadres',
   'newsletter:csv_exporter:status' => 'Status',
   'newsletter:csv_exporter:scheduled' => 'Gepland aflever tijdstip',

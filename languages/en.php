@@ -165,6 +165,8 @@ return array(
 	'newsletter:settings:allow_groups:description' => "Group administrators can create a newsletter for their group members.",
 	'newsletter:settings:include_existing_users' => "Include users without subscription settings",
 	'newsletter:settings:include_existing_users:description' => "When enabled all user will be included, except those who have unsubscribed.",
+	'newsletter:settings:include_banned_users' => "Include banned users in the newsletter sending",
+	'newsletter:settings:include_banned_users:help' => "When enabled banned users can also recieve newsletters",
 	'newsletter:settings:custom_from' => "Allow newsletters to be send from a custom e-mail address",
 	'newsletter:settings:custom_from:description' => "When enabled users are allowed to enter a custom e-mail address which will be used to as the from adress of the newsleter. Please keep in mind that this could allow abuse and could make newsletter end up in the spam folders more often.",
 	'newsletter:settings:custom_from:domains' => "Limit the custom e-mail addresses to the following domains",

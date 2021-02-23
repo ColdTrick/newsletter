@@ -12,6 +12,7 @@ return [
 		'allow_groups' => 'no',
 		'custom_from' => 'no',
 		'include_existing_users' => 'yes',
+		'include_banned_users' => 0,
 	],
 	'entities' => [
 		[
