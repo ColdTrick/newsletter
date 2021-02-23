@@ -452,7 +452,6 @@ function newsletter_process($entity_guid) {
 				$cache = elgg_get_metadata([
 					'type' => 'user',
 					'guids' => array_keys($filtered_recipients['users']),
-					'count' => true,
 					'metadata_name_value_pairs' => [
 						[
 							'name' => 'banned',
