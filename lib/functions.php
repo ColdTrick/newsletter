@@ -440,23 +440,32 @@ function newsletter_process($entity_guid) {
 			$entity->saveLogging($logging);
 		};
 		
-		$is_banned = function (int $guid) {
+		$is_banned = function (int $guid) use ($filtered_recipients) {
+			static $cache;
+			
 			if (elgg_get_plugin_setting('include_banned_users', 'newsletter')) {
 				// banned users are allowed
 				return false;
 			}
 			
-			return elgg_get_metadata([
-				'type' => 'user',
-				'guid' => $guid,
-				'count' => true,
-				'metadata_name_value_pairs' => [
-					[
-						'name' => 'banned',
-						'value' => 'yes',
+			if (!isset($cache)) {
+				$cache = elgg_get_metadata([
+					'type' => 'user',
+					'guids' => array_keys($filtered_recipients['users']),
+					'count' => true,
+					'metadata_name_value_pairs' => [
+						[
+							'name' => 'banned',
+							'value' => 'yes',
+						],
 					],
-				],
-			]);
+					'callback' => function($row) {
+						return (int) $row->entity_guid;
+					},
+				]);
+			}
+			
+			return in_array($guid, $cache);
 		};
 		
 		foreach ($filtered_recipients as $type => $recipients) {
