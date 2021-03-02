@@ -1,6 +1,10 @@
 Version history
 ===============
 
+5.5 (2021-03-02):
+
+- added: plugin setting to include banned users is newsletter sending
+
 5.4 (2020-10-13):
 
 - added: CSV exported custom values
