@@ -24,8 +24,8 @@ class NewsletterSubscription extends ElggObject {
 		$site = elgg_get_site_entity();
 		
 		$this->attributes['subtype'] = self::SUBTYPE;
-		$this->attributes['owner_guid'] = $site->getGUID();
-		$this->attributes['container_guid'] = $site->getGUID();
+		$this->attributes['owner_guid'] = $site->guid;
+		$this->attributes['container_guid'] = $site->guid;
 		$this->attributes['access_id'] = ACCESS_PRIVATE;
 	}
 	
@@ -36,7 +36,7 @@ class NewsletterSubscription extends ElggObject {
 	 *
 	 * @see ElggObject::save()
 	 */
-	public function save() {
+	public function save(): bool {
 		// ignore access restrictions
 		return elgg_call(ELGG_IGNORE_ACCESS, function() {
 			return parent::save();

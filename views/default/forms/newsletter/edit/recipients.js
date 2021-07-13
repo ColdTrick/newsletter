@@ -1,9 +1,4 @@
-define(function(require) {
-	
-	var $ = require('jquery');
-	var Ajax = require('elgg/Ajax');
-	
-	require(['jquery.ui.autocomplete.html']);
+define(['jquery', 'elgg/Ajax', 'jquery-ui/widgets/autocomplete', 'jquery.ui.autocomplete.html'], function($, Ajax) {
 	
 	$("#newsletter-recipients-autocomplete").autocomplete({
 		source: function(request, response) {

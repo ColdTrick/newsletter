@@ -1,6 +1,6 @@
 <?php
 
-use Elgg\EntityPermissionsException;
+use Elgg\Exceptions\Http\EntityPermissionsException;
 
 $guid = (int) get_input('guid');
 
@@ -27,16 +27,12 @@ elgg_register_menu_item('title', [
 	'class' => ['elgg-lightbox', 'elgg-button', 'elgg-button-action'],
 ]);
 
-$title_text = elgg_echo('preview');
-
-$body = elgg_view_layout('default', [
-	'title' => $title_text,
+echo elgg_view_page(elgg_echo('preview'), [
 	'content' => elgg_format_element('iframe', [
 		'src' => $entity->getURL(),
 		'class' => 'newsletter-preview',
 	]),
 	'sidebar' => false,
+	'filter' => false,
 	'entity' => $entity,
 ]);
-
-echo elgg_view_page($title_text, $body);

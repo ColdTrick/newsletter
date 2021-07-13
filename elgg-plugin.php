@@ -1,12 +1,16 @@
 <?php
 
-use ColdTrick\Newsletter\Bootstrap;
 use Elgg\Router\Middleware\Gatekeeper;
 
 require_once(__DIR__ . '/lib/functions.php');
 
 return [
-	'bootstrap' => Bootstrap::class,
+	'plugin' => [
+		'version' => '5.5',
+		'dependencies' => [
+			'ckeditor' => [],
+		],
+	],
 	'settings' => [
 		'allow_site' => 'yes',
 		'allow_groups' => 'no',
@@ -18,18 +22,18 @@ return [
 		[
 			'type' => 'object',
 			'subtype' => 'newsletter',
-			'class' => Newsletter::class,
+			'class' => \Newsletter::class,
 			'searchable' => true,
 		],
 		[
 			'type' => 'object',
 			'subtype' => 'newsletter_subscription',
-			'class' => NewsletterSubscription::class,
+			'class' => \NewsletterSubscription::class,
 		],
 		[
 			'type' => 'object',
 			'subtype' => 'newsletter_template',
-			'class' => NewsletterTemplate::class,
+			'class' => \NewsletterTemplate::class,
 		],
 	],
 	'routes' => [
@@ -152,6 +156,114 @@ return [
 			'path' => 'newsletter',
 			'resource' => 'newsletter/site',
 		],
+	],
+	'hooks' => [
+		'access:collections:write' => [
+			'all' => [
+				'ColdTrick\Newsletter\Access::writeAccessCollections' => ['priority' => 700], // needs to be after groups
+			],
+		],
+		'container_logic_check' => [
+			'object' => [
+				'ColdTrick\Newsletter\Permissions::containerLogic' => [],
+			],
+		],
+		'cron' => [
+			'hourly' => [
+				'ColdTrick\Newsletter\Cron::sendNewsletters' => [],
+			],
+		],
+		'entity:icon:sizes' => [
+			'object' => [
+				'ColdTrick\Newsletter\Icons::extendIconSizes' => [],
+			],
+		],
+		'entity:url' => [
+			'object' => [
+				'ColdTrick\Newsletter\Widgets::widgetURL' => [],
+			],
+		],
+		'export_value' => [
+			'csv_exporter' => [
+				'ColdTrick\Newsletter\Plugins\CSVExporter::exportValue' => [],
+			],
+		],
+		'get_exportable_values' => [
+			'csv_exporter' => [
+				'ColdTrick\Newsletter\Plugins\CSVExporter::exportableValues' => [],
+			],
+		],
+		'likes:is_likable' => [
+			'object:newsletter' => [
+				'\Elgg\Values::getTrue' => [],
+			],
+		],
+		'notification_type_subtype' => [
+			'tag_tools' => [
+				'ColdTrick\Newsletter\Plugins\TagTools::notificationTypeSubtype' => [],
+			],
+		],
+		'register' => [
+			'menu:entity' => [
+				'ColdTrick\Newsletter\Menus::entityRegister' => [],
+			],
+			'menu:filter:newsletter' => [
+				'ColdTrick\Newsletter\Menus::filterRegister' => [],
+			],
+			'menu:filter:newsletter/group' => [
+				'ColdTrick\Newsletter\Menus::filterRegister' => [],
+			],
+			'menu:filter:newsletter_steps' => [
+				'ColdTrick\Newsletter\Menus::newsletterSteps' => [],
+			],
+			'menu:longtext' => [
+				'ColdTrick\Newsletter\Menus::longtextRegister' => [],
+			],
+			'menu:owner_block' => [
+				'ColdTrick\Newsletter\Menus::ownerBlockRegister' => [],
+			],
+			'menu:page' => [
+				'ColdTrick\Newsletter\Menus::pageRegister' => [],
+			],
+			'menu:site' => [
+				'ColdTrick\Newsletter\Menus::siteRegister' => [],
+			],
+			'user' => [
+				'ColdTrick\Newsletter\User::subscribeToSiteNewsletter' => [],
+			],
+		],
+		'tool_options' => [
+			'group' => [
+				'\ColdTrick\Newsletter\Groups::registerGroupNewsletterTool' => [],
+			],
+		],
+		'usersettings:save' => [
+			'user' => [
+				'ColdTrick\Newsletter\User::convertEmailSubscriptionToUserSetting' => [],
+			],
+		],
+		'view' => [
+			'page/layouts/newsletter' => [
+				'ColdTrick\Newsletter\Plugins\DeveloperTools::reenableLogOutput' => [],
+			],
+		],
+		'view_vars' => [
+			'page/layouts/newsletter' => [
+				'ColdTrick\Newsletter\Plugins\DeveloperTools::preventLogOutput' =>[],
+			],
+		],
+	],
+	'view_extensions' => [
+		'css/elgg' => [
+			'css/newsletter.css' => [],
+		],
+		'register/extend' => [
+			'newsletter/register' => [],
+		],
+	],
+	'view_options' => [
+		'forms/newsletter/preview_mail' => ['ajax' => true],
+		'forms/newsletter/subscribe' => ['ajax' => true],
 	],
 	'actions' => [
 		'newsletter/edit' => [],

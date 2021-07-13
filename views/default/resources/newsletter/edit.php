@@ -3,8 +3,8 @@
  * Edit an existing newsletter
  */
 
-use Elgg\EntityPermissionsException;
 use ColdTrick\Newsletter\EditForm;
+use Elgg\Exceptions\Http\EntityPermissionsException;
 
 $guid = (int) elgg_extract('guid', $vars);
 
@@ -31,9 +31,6 @@ if (!$container instanceof ElggGroup) {
 elgg_push_collection_breadcrumbs('object', Newsletter::SUBTYPE, $container);
 elgg_push_breadcrumb($entity->getDisplayName(), $entity->getURL());
 
-// build page elements
-$title_text = elgg_echo('newsletter:edit:title', [$entity->getDisplayName()]);
-
 $form = new EditForm($entity);
 
 switch ($subpage) {
@@ -41,7 +38,10 @@ switch ($subpage) {
 	case 'content':
 	case 'recipients':
 	case 'schedule':
-		$form_vars = ['id' => "newsletter-form-{$subpage}"];
+		$form_vars = [
+			'id' => "newsletter-form-{$subpage}",
+			'prevent_double_submit' => false,
+		];
 		
 		$content = elgg_view_form("newsletter/edit/{$subpage}", $form_vars, $form($subpage));
 		break;
@@ -64,14 +64,10 @@ if (!empty($entity->content)) {
 	]));
 }
 
-// build page
-$page_data = elgg_view_layout('default', [
-	'title' => $title_text,
+// draw page
+echo elgg_view_page(elgg_echo('newsletter:edit:title', [$entity->getDisplayName()]), [
 	'content' => $content,
 	'filter_id' => 'newsletter_steps',
 	'filter_value' => $subpage,
 	'filter_entity' => $entity,
 ]);
-
-// draw page
-echo elgg_view_page($title_text, $page_data);

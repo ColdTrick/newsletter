@@ -5,7 +5,7 @@
  * @uses elgg_get_page_owner_entity() the group to list the newsletter from
  */
 
-use Elgg\EntityNotFoundException;
+use Elgg\Exceptions\Http\EntityNotFoundException;
 
 $page_owner = elgg_get_page_owner_entity();
 if (!$page_owner instanceof ElggGroup) {
@@ -27,8 +27,6 @@ if ($page_owner->canWriteToContainer(0, 'object', Newsletter::SUBTYPE)) {
 	
 	$filter = elgg_extract('filter', $vars, $filter, false);
 }
-
-$title_text = elgg_echo('newsletter:group:title', [$page_owner->getDisplayName()]);
 
 $options = [
 	'type' => 'object',
@@ -82,15 +80,9 @@ switch ($filter) {
 		break;
 }
 
-$content = elgg_list_entities($options);
-
-// build page
-$page_data = elgg_view_layout('default', [
-	'title' => $title_text,
-	'content' => $content,
+// draw page
+echo elgg_view_page(elgg_echo('newsletter:group:title', [$page_owner->getDisplayName()]), [
+	'content' => elgg_list_entities($options),
 	'filter_id' => 'newsletter/group',
 	'filter_value' => $filter,
 ]);
-
-// draw page
-echo elgg_view_page($title_text, $page_data);

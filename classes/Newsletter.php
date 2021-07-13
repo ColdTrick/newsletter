@@ -65,7 +65,7 @@ class Newsletter extends ElggObject {
 		}
 		
 		$fh = new ElggFile();
-		$fh->owner_guid = $this->getGUID();
+		$fh->owner_guid = $this->guid;
 		$fh->setFilename('logging.json');
 		
 		$fh->open('write');
@@ -83,7 +83,7 @@ class Newsletter extends ElggObject {
 	public function getLogging() {
 		
 		$fh = new ElggFile();
-		$fh->owner_guid = $this->getGUID();
+		$fh->owner_guid = $this->guid;
 		$fh->setFilename('logging.json');
 		
 		if (!$fh->exists()) {
@@ -118,7 +118,7 @@ class Newsletter extends ElggObject {
 		}
 		
 		$fh = new ElggFile();
-		$fh->owner_guid = $this->getGUID();
+		$fh->owner_guid = $this->guid;
 		$fh->setFilename('recipients.json');
 		
 		$fh->open('write');
@@ -142,7 +142,7 @@ class Newsletter extends ElggObject {
 		}
 		
 		$fh = new ElggFile();
-		$fh->owner_guid = $this->getGUID();
+		$fh->owner_guid = $this->guid;
 		$fh->setFilename('recipients.json');
 		
 		if (!$fh->exists()) {

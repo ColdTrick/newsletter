@@ -1,6 +1,4 @@
-define(function(require) {
-	
-	var $ = require('jquery');
+define(['jquery', 'elgg/Ajax'], function($, Ajax) {
 	
 	$(document).on('change', '#newsletter-edit-template-select input[type="radio"]', function(event) {
 		event.stopPropagation();
@@ -31,9 +29,7 @@ define(function(require) {
 		}
 		
 		$form.find('input[name="name"]').prop('required', false);
-		
-		var Ajax = require('elgg/Ajax');
-		
+				
 		var ajax = new Ajax();
 		ajax.action('newsletter/template/edit', {
 			data: {

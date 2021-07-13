@@ -5,9 +5,9 @@
  * @uses elgg_get_page_onwer_entity() from which container to unsubscribe primairly
  */
 
-use Elgg\BadRequestException;
-use Elgg\EntityNotFoundException;
-use Elgg\ValidationException;
+use Elgg\Exceptions\Http\BadRequestException;
+use Elgg\Exceptions\Http\EntityNotFoundException;
+use Elgg\Exceptions\Http\ValidationException;
 
 $guid = (int) elgg_extract('guid', $vars, get_input('guid'));
 $code = get_input('c');
@@ -33,7 +33,7 @@ if (!empty($user_guid)) {
 				'guid' => $entity->guid,
 			]);
 		}
-		$e = new Elgg\ValidationException(elgg_echo('newsletter:unsubscribe:error:invalid_user'));
+		$e = new ValidationException(elgg_echo('newsletter:unsubscribe:error:invalid_user'));
 		$e->setRedirectUrl($forward_url);
 		throw $e;
 	}
@@ -51,20 +51,14 @@ if ($code && !newsletter_validate_unsubscribe_code($entity, $recipient, $code)) 
 // breadcrumb
 elgg_push_collection_breadcrumbs('object', Newsletter::SUBTYPE, $entity instanceof ElggGroup ? $entity : null);
 
-// build page elements
-$title_text = elgg_echo('newsletter:unsubscribe:title');
-
 $form = elgg_view_form('newsletter/unsubscribe', [], [
 	'entity' => $entity,
 	'recipient' => $recipient,
 	'code' => $code,
 ]);
 
-// build page
-$page_data = elgg_view_layout('default', [
-	'title' => $title_text,
-	'content' => $form,
-]);
-
 // draw page
-echo elgg_view_page($title_text, $page_data);
+echo elgg_view_page(elgg_echo('newsletter:unsubscribe:title'), [
+	'content' => $form,
+	'filter' => false,
+]);

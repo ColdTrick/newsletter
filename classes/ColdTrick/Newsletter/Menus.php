@@ -200,7 +200,7 @@ class Menus {
 			// basic info
 			$returnvalue[] = \ElggMenuItem::factory([
 				'name' => 'basic',
-				'icon' => 'checkmark',
+				'icon' => 'check',
 				'text' => elgg_echo('newsletter:menu:steps:entity'),
 				'href' => elgg_generate_entity_url($entity, 'edit'),
 				'selected' => $current_step === 'basic',
@@ -215,7 +215,7 @@ class Menus {
 			]);
 			
 			if ($entity->template) {
-				$item->icon = 'checkmark';
+				$item->icon = 'check';
 			}
 			
 			$returnvalue[] = $item;
@@ -229,7 +229,7 @@ class Menus {
 			]);
 			
 			if ($entity->content) {
-				$item->icon = 'checkmark';
+				$item->icon = 'check';
 			}
 			
 			$returnvalue[] = $item;
@@ -243,7 +243,7 @@ class Menus {
 			]);
 			
 			if ($entity->getRecipients()) {
-				$item->icon = 'checkmark';
+				$item->icon = 'check';
 			}
 			
 			$returnvalue[] = $item;
@@ -257,7 +257,7 @@ class Menus {
 			]);
 			
 			if ($entity->scheduled) {
-				$item->icon = 'checkmark';
+				$item->icon = 'check';
 			}
 			
 			$returnvalue[] = $item;

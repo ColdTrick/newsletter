@@ -191,7 +191,7 @@ Om de nieuwsbrief te bekijken klik hier:
   'newsletter:log:general:scheduled' => 'Geplande aflever tijd',
   'newsletter:log:general:starttime' => 'Echte start tijd',
   'newsletter:log:general:endtime' => 'Aflevering afgerond',
-  'newsletter:log:no_contents' => 'Het logboek kon niet worden gevonden, weet je zeker dat deze nieuwsbrief al in verzonden.',
+  'newsletter:log:no_contents' => 'Het logboek kon niet worden gevonden. Weet je zeker dat deze nieuwsbrief al is verzonden?',
   'newsletter:log:no_recipients' => 'Er waren geen ontvangers voor deze nieuwsbrief',
   'newsletter:log:emails:no_recipients' => 'Er waren geen individuele e-mailadressen tijdens het verzenden van de nieuwsbrief. Als je wel enkele e-mailadressen had geselecteerd kan het zijn dat deze zich hebben uitgeschreven van de nieuwsbrief.',
   'newsletter:log:users:no_recipients' => 'Er waren geen gebruikers tijdens het verzenden van de nieuwsbrief. Als je wel enkele gebruikers had geselecteerd kan het zijn dat deze zich hebben uitgeschreven van de nieuwsbrief.',

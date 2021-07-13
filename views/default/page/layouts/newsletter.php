@@ -19,7 +19,10 @@ $head .= elgg_format_element('base', [
 ]);
 $head .= elgg_format_element('title', [], $entity->getDisplayName());
 
-$body = elgg_format_element('style', ['type' => 'text/css'], elgg_view('newsletter/view/css', $vars));
-$body .= elgg_view('newsletter/view/body', $vars);
+$css = elgg_view('newsletter/view/css', $vars);
+$body = elgg_view('newsletter/view/body', $vars);
+
+// doing this here instead of during notification as it is the same for each recipient
+$body = elgg()->html_formatter->inlineCss($body, $css);
 
 echo elgg_view('page/elements/html', ['head' => $head, 'body' => $body]);

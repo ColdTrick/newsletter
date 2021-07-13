@@ -1,6 +1,7 @@
 {
 	"name": "coldtrick/newsletter",
 	"description": "Allows the creation and management of a newsletter to site/group members",
+	"homepage": "https://www.coldtrick.com",
 	"type": "elgg-plugin",
 	"keywords": ["elgg", "plugin", "tools", "communication"],
 	"license": "GPL-2.0-only",
@@ -16,6 +17,6 @@
 		"coldtrick/releases": "dev-master"
 	},
 	"conflict": {
-		"elgg/elgg": "<3.0"
+		"elgg/elgg": "<4.0"
 	}
 }

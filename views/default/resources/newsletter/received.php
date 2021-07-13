@@ -3,8 +3,8 @@
  * Shows all the newsletters the user received
  */
 
-use Elgg\EntityNotFoundException;
-use Elgg\EntityPermissionsException;
+use Elgg\Exceptions\Http\EntityNotFoundException;
+use Elgg\Exceptions\Http\EntityPermissionsException;
 
 $user = elgg_get_page_owner_entity();
 if (!$user instanceof ElggUser) {
@@ -19,7 +19,7 @@ if (!$user->canEdit()) {
 elgg_push_collection_breadcrumbs('object', Newsletter::SUBTYPE);
 
 // build page elements
-if ($user->getGUID() == elgg_get_logged_in_user_guid()) {
+if ($user->guid == elgg_get_logged_in_user_guid()) {
 	$title_text = elgg_echo('newsletter:received:title:mine');
 } else {
 	$title_text = elgg_echo('newsletter:received:title', [$user->getDisplayName()]);
@@ -46,11 +46,8 @@ $content = elgg_call(ELGG_IGNORE_ACCESS, function() use ($user) {
 	]);
 });
 
-// build page
-$page_data = elgg_view_layout('default', [
-	'title' => $title_text,
-	'content' => $content,
-]);
-
 // draw page
-echo elgg_view_page($title_text, $page_data);
+echo elgg_view_page($title_text, [
+	'content' => $content,
+	'filter' => false,
+]);

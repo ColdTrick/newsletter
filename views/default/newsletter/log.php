@@ -112,10 +112,10 @@ foreach ($recipients as $recipient) {
 					break;
 				case 'status':
 					if ($data) {
-						$users_content_data .= elgg_format_element('td', ['class' => 'center'], elgg_view_icon('checkmark'));
+						$users_content_data .= elgg_format_element('td', ['class' => 'center'], elgg_view_icon('check'));
 					} else {
 						$users_error_counter++;
-						$users_content_data .= elgg_format_element('td', ['class' => 'center'], elgg_view_icon('attention'));
+						$users_content_data .= elgg_format_element('td', ['class' => 'center'], elgg_view_icon('exclamation-triangle'));
 					}
 					break;
 				default:

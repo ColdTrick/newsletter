@@ -1,55 +1,5 @@
-define(function(require) {
-	var $ = require('jquery');
-	var elgg = require('elgg');
-	var Ajax = require('elgg/Ajax');
-	var lightbox = require('elgg/lightbox');
+define(['jquery', 'elgg', 'elgg/Ajax', 'elgg/lightbox'], function($, elgg, Ajax, lightbox) {
 
-	var init = function() {
-	
-		$(document).on('click', '#newsletter-embed-list li', function(event) {
-			embed_format(this);
-			event.preventDefault();
-		});
-	
-		$(document).on('click', '#newsletter-embed-pagination a', function(event) {
-			event.preventDefault();
-			
-			var ajax = new Ajax();
-			var $link = $(this);
-			ajax.path($link.attr('href'), {
-				success: function(result) {
-					$link.parents('#newsletter-embed-wrapper').replaceWith(result);
-					$(window).trigger('resize.lightbox');
-				}
-			});
-		});
-	
-		$(document).on('submit', '#newsletter-embed-search', function(event) {
-			event.preventDefault();
-			
-			var ajax = new Ajax();
-			var $form = $(this);
-			
-			ajax.path($form.attr('action'), {
-				data: ajax.objectify($form),
-				success: function(result) {
-					$form.parents('#newsletter-embed-wrapper').replaceWith(result);
-					$(window).trigger('resize.lightbox');
-				}
-			});
-		});
-	
-		$(document).on('change', '#newsletter-embed-format-description, #newsletter-embed-format-icon', function() {
-			embed_format_preview();
-		});
-		
-		$(document).on('click', '.newsletter-embed-format', function(event) {
-			event.preventDefault();
-			
-			embed($("#newsletter-embed-format-preview").html());
-		});
-	}
-	
 	var embed_format = function(elem) {
 		var data = $(elem).find("> div").data();
 		if (!data) {
@@ -127,7 +77,47 @@ define(function(require) {
 		lightbox.close();
 	}
 	
-	//register init hook
-	elgg.register_hook_handler("init", "system", init);
-});
+	$(document).on('click', '#newsletter-embed-list li', function(event) {
+		event.preventDefault();
+		
+		embed_format(this);		
+	});
 
+	$(document).on('click', '#newsletter-embed-pagination a', function(event) {
+		event.preventDefault();
+		
+		var ajax = new Ajax();
+		var $link = $(this);
+		ajax.path($link.attr('href'), {
+			success: function(result) {
+				$link.parents('#newsletter-embed-wrapper').replaceWith(result);
+				$(window).trigger('resize.lightbox');
+			}
+		});
+	});
+
+	$(document).on('submit', '#newsletter-embed-search', function(event) {
+		event.preventDefault();
+		
+		var ajax = new Ajax();
+		var $form = $(this);
+		
+		ajax.path($form.attr('action'), {
+			data: ajax.objectify($form),
+			success: function(result) {
+				$form.parents('#newsletter-embed-wrapper').replaceWith(result);
+				$(window).trigger('resize.lightbox');
+			}
+		});
+	});
+
+	$(document).on('change', '#newsletter-embed-format-description, #newsletter-embed-format-icon', function() {
+		embed_format_preview();
+	});
+	
+	$(document).on('click', '.newsletter-embed-format', function(event) {
+		event.preventDefault();
+		
+		embed($("#newsletter-embed-format-preview").html());
+	});
+});

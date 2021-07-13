@@ -1,6 +1,6 @@
 <?php
 
-use Elgg\BadRequestException;
+use Elgg\Exceptions\Http\BadRequestException;
 
 $guid = (int) get_input('guid');
 elgg_entity_gatekeeper($guid, 'object', Newsletter::SUBTYPE);

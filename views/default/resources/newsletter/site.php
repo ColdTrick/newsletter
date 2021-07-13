@@ -20,9 +20,6 @@ if ($site->canWriteToContainer(0, 'object', Newsletter::SUBTYPE)) {
 	$filter = elgg_extract('filter', $vars, $filter, false);
 }
 
-// build page elements
-$title_text = elgg_echo('newsletter:site:title');
-
 $options = [
 	'type' => 'object',
 	'subtype' => Newsletter::SUBTYPE,
@@ -76,15 +73,9 @@ switch ($filter) {
 		break;
 }
 
-$content = elgg_list_entities($options);
-
-// build page
-$page_data = elgg_view_layout('default', [
-	'title' => $title_text,
-	'content' => $content,
+// draw page
+echo elgg_view_page(elgg_echo('newsletter:site:title'), [
+	'content' => elgg_list_entities($options),
 	'filter_id' => 'newsletter',
 	'filter_value' => $filter,
 ]);
-
-// draw page
-echo elgg_view_page($title_text, $page_data);
