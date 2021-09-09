@@ -492,7 +492,7 @@ function newsletter_process(int $entity_guid): void {
 				
 				// place the unsubscribe link in the message
 				$unsubscribe_link = elgg_normalize_url($unsubscribe_link);
-				$message_html_content_user = str_ireplace("{unsublink}", $unsubscribe_link, $message_html_content);
+				$message_html_content_user = str_ireplace(urlencode('{unsublink}'), $unsubscribe_link, $message_html_content);
 				
 				// replace the online link for logged out users to add an emailadres
 				if ($type !== 'users') {
@@ -1231,7 +1231,7 @@ function newsletter_send_preview(\Newsletter $entity, string $email): bool {
 	
 	// add unsubscribe link
 	$unsubscribe_link = newsletter_generate_unsubscribe_link($container, $email);
-	$message_html_content = str_ireplace(urlencode("{unsublink}"), $unsubscribe_link, $message_html_content);
+	$message_html_content = str_ireplace(urlencode('{unsublink}'), $unsubscribe_link, $message_html_content);
 	
 	// replace online link
 	$online_link = $entity->getURL();
