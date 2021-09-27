@@ -6,7 +6,7 @@ require_once(__DIR__ . '/lib/functions.php');
 
 return [
 	'plugin' => [
-		'version' => '5.5',
+		'version' => '6.0',
 		'dependencies' => [
 			'ckeditor' => [],
 		],

@@ -1,6 +1,10 @@
 Version history
 ===============
 
+6.0 (2021-09-27):
+
+- changed: updated for Elgg 4
+
 5.5 (2021-03-02):
 
 - added: plugin setting to include banned users is newsletter sending
