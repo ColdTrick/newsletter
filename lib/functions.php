@@ -892,9 +892,9 @@ function newsletter_user_row_to_subscriber_info($row): array {
  * @see is_email_address()
  * @see filter_var()
  */
-function newsletter_is_email_address(string $address): bool {
-	
-	if (empty($address)) {
+function newsletter_is_email_address($address): bool {
+	if (empty($address) || !is_string($address)) {
+		// can't use typehinting as this function is used for input validation
 		return false;
 	}
 	
