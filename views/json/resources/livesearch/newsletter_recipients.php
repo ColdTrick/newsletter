@@ -40,6 +40,9 @@ $options = [
 	'type' => 'user',
 	'search_type' => 'entities',
 	'limit' => $limit,
+	'sort' => 'name',
+	'order' => 'ASC',
+	'fields' => ['metadata' => ['name', 'username']],
 	'metadata_name_value_pairs' => [],
 ];
 if (!$include_banned) {
@@ -69,6 +72,8 @@ if (!$entity->getContainerEntity() instanceof ElggGroup) {
 		'type' => 'group',
 		'search_type' => 'entities',
 		'limit' => $limit,
+		'sort' => 'name',
+		'order' => 'ASC',
 	]);
 	
 	if (!empty($groups)) {
