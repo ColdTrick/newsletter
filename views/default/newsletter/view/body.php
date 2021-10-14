@@ -55,8 +55,11 @@ $replacements = [
 
 if (PHP_SAPI !== 'cli') {
 	// (pre)viewing online
-	if (elgg_is_logged_in()) {
-		$replacements['{unsublink}'] = elgg_normalize_url('newsletter/subscriptions/' . elgg_get_logged_in_user_entity()->username);
+	$user = elgg_get_logged_in_user_entity();
+	if ($user instanceof \ElggUser) {
+		$replacements['{unsublink}'] = elgg_generate_url('collection:object:newsletter:subscriptions', [
+			'username' => $user->username,
+		]);
 	} else {
 		$email = get_input('e');
 		if ($email) {
