@@ -39,9 +39,9 @@ class Newsletter extends ElggObject {
 	 * @see ElggEntity::getURL()
 	 */
 	public function getURL() {
-		return elgg_normalize_url(elgg_generate_entity_url($this, 'view', null, [
+		return elgg_generate_entity_url($this, 'view', null, [
 			'code' => newsletter_generate_commanline_secret($this->guid),
-		]));
+		]);
 	}
 	
 	/**
