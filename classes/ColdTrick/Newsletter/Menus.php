@@ -345,7 +345,7 @@ class Menus {
 					'name' => 'edit',
 					'text' => elgg_echo('newsletter:menu:page:settings'),
 					'href' => elgg_generate_url('collection:object:newsletter:subscriptions', [
-						'username' => $user->username,
+						'username' => $page_owner->username,
 					]),
 					'section' => 'notifications',
 					'is_trusted' => true,
