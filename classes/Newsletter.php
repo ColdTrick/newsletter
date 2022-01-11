@@ -47,14 +47,6 @@ class Newsletter extends ElggObject {
 	}
 	
 	/**
-	 * {@inheritDoc}
-	 * @see ElggObject::canComment()
-	 */
-	public function canComment($user_guid = 0, $default = null) {
-		return false;
-	}
-	
-	/**
 	 * Writes logging data to a file
 	 *
 	 * @param array $logging data to be saved

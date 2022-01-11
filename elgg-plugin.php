@@ -23,7 +23,11 @@ return [
 			'type' => 'object',
 			'subtype' => 'newsletter',
 			'class' => \Newsletter::class,
-			'searchable' => true,
+			'capabilities' => [
+				'commentable' => false,
+				'searchable' => true,
+				'likable' => true,
+			],
 		],
 		[
 			'type' => 'object',
@@ -191,11 +195,6 @@ return [
 		'get_exportable_values' => [
 			'csv_exporter' => [
 				'ColdTrick\Newsletter\Plugins\CSVExporter::exportableValues' => [],
-			],
-		],
-		'likes:is_likable' => [
-			'object:newsletter' => [
-				'\Elgg\Values::getTrue' => [],
 			],
 		],
 		'notification_type_subtype' => [
