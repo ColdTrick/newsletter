@@ -10,12 +10,12 @@ $subtype_filter = get_input('subtype_filter');
 
 $show_all = (bool) get_input('show_all', false);
 
-$allowed_subtypes = get_registered_entity_types('object');
+$allowed_subtypes = elgg_extract('object', elgg_entity_types_with_capability('searchable'), []);
 $allowed_subtypes = array_filter($allowed_subtypes, function ($subtype) {
 	return (bool) elgg_get_plugin_setting("embed_enable_object_{$subtype}", 'newsletter', 1);
 });
 
-	if (empty($allowed_subtypes)) {
+if (empty($allowed_subtypes)) {
 	return;
 }
 

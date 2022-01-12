@@ -85,7 +85,7 @@ $embed = elgg_view('output/longtext', [
 	'value' => elgg_echo('newsletter:settings:embed:description'),
 ]);
 
-$subtypes = get_registered_entity_types('object');
+$subtypes = elgg_extract('object', elgg_entity_types_with_capability('searchable'), []);
 foreach ($subtypes as $subtype) {
 	$embed .= elgg_view_field([
 		'#type' => 'checkbox',
