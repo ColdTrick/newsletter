@@ -3,7 +3,7 @@
 $guid = (int) get_input('guid');
 
 $html = get_input('html', '', false);
-$css = strip_tags(get_input('css'));
+$css = strip_tags(get_input('css', ''));
 $template = get_input('template');
 
 if (empty($guid)) {
