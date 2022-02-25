@@ -6,7 +6,7 @@
 $guid = (int) get_input('guid');
 $newsletter_guid = (int) get_input('newsletter_guid');
 $html = get_input('html', '', false);
-$css = strip_tags(get_input('css'));
+$css = strip_tags(get_input('css', ''));
 $name = get_input('name');
 
 if (empty($guid) && empty($newsletter_guid)) {
