@@ -21,10 +21,12 @@ function newsletter_start_commandline_sending(Newsletter $entity): void {
 	// prepare commandline settings
 	$settings = [
 		'entity_guid' => $entity->guid,
-		'host' => $_SERVER['HTTP_HOST'],
 		'memory_limit' => ini_get('memory_limit'),
 		'secret' => newsletter_generate_commanline_secret($entity->guid),
 	];
+	if (isset($_SERVER['HTTP_HOST'])) {
+		$settings['host'] = $_SERVER['HTTP_HOST'];
+	}
 	if (isset($_SERVER['HTTPS'])) {
 		$settings['https'] = $_SERVER['HTTPS'];
 	}
