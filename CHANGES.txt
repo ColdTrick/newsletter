@@ -1,6 +1,10 @@
 Version history
 ===============
 
+7.0.1 (2022-03-11):
+
+- fixed: PHP undefined array key
+
 7.0 (2022-02-16):
 
 - changed: updated entity configuration for new capabilities
