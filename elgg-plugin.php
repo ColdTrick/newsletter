@@ -33,11 +33,19 @@ return [
 			'type' => 'object',
 			'subtype' => 'newsletter_subscription',
 			'class' => \NewsletterSubscription::class,
+			'capabilities' => [
+				'commentable' => false,
+				'searchable' => false,
+			],
 		],
 		[
 			'type' => 'object',
 			'subtype' => 'newsletter_template',
 			'class' => \NewsletterTemplate::class,
+			'capabilities' => [
+				'commentable' => false,
+				'searchable' => false,
+			],
 		],
 	],
 	'routes' => [
