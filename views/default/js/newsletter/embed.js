@@ -1,4 +1,4 @@
-define(['jquery', 'elgg', 'elgg/Ajax', 'elgg/lightbox'], function($, elgg, Ajax, lightbox) {
+define(['jquery', 'elgg/i18n', 'elgg/Ajax', 'elgg/lightbox'], function($, i18n, Ajax, lightbox) {
 
 	var embed_format = function(elem) {
 		var data = $(elem).find("> div").data();
@@ -33,7 +33,7 @@ define(['jquery', 'elgg', 'elgg/Ajax', 'elgg/lightbox'], function($, elgg, Ajax,
 	 	 	content_description += data.description;
 	 	} else if (description_option === "excerpt") {
 	 		content_description += data.excerpt;
-	 		content_description += "<p class='newsletter-embed-item-read-more'><a href='" + data.url + "'>" + elgg.echo("newsletter:embed:read_more") + " ></a></p>";
+	 		content_description += "<p class='newsletter-embed-item-read-more'><a href='" + data.url + "'>" + i18n.echo("newsletter:embed:read_more") + " ></a></p>";
 	 	}
 	
 	 	if (data.iconUrl) {
