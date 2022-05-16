@@ -5,6 +5,7 @@ return array(
 	'item:object:newsletter' => "Newsletter",
 	'item:object:newsletter_template' => "Newsletter template",
 	'item:object:newsletter_subscription' => "Newsletter subscription",
+	'input:container_guid:object:newsletter:info' => "The newsletter will be posted in %s",
 	
 	'collection:object:newsletter' => "Newsletters",
 	

@@ -11,12 +11,6 @@ if ($entity instanceof Newsletter) {
 }
 
 echo elgg_view_field([
-	'#type' => 'hidden',
-	'name' => 'container_guid',
-	'value' => elgg_extract('container_guid', $vars),
-]);
-
-echo elgg_view_field([
 	'#type' => 'text',
 	'#label' => elgg_echo('title'),
 	'name' => 'title',
@@ -61,6 +55,13 @@ echo elgg_view_field([
 	'#label' => elgg_echo('access'),
 	'name' => 'access_id',
 	'value' => elgg_extract('access_id', $vars),
+]);
+
+echo elgg_view_field([
+	'#type' => 'container_guid',
+	'entity_type' => 'object',
+	'entity_subtype' => \Newsletter::SUBTYPE,
+	'value' => elgg_extract('container_guid', $vars),
 ]);
 
 // footer
