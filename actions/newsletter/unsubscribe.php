@@ -27,21 +27,21 @@ if (!empty($guid)) {
 	// unsubscribe one newsletter
 	if (is_numeric($recipient) && ($user = get_user($recipient))) {
 		if (newsletter_unsubscribe_user($user, $entity)) {
-			system_message(elgg_echo('newsletter:action:unsubscribe:success:entity', [$entity->getDisplayName()]));
+			elgg_register_success_message(elgg_echo('newsletter:action:unsubscribe:success:entity', [$entity->getDisplayName()]));
 		} else {
 			$error = true;
-			register_error(elgg_echo('newsletter:action:unsubscribe:error:entity', [$entity->getDisplayName()]));
+			elgg_register_error_message(elgg_echo('newsletter:action:unsubscribe:error:entity', [$entity->getDisplayName()]));
 		}
 	} elseif (newsletter_is_email_address($recipient)) {
 		if (newsletter_unsubscribe_email($recipient, $entity)) {
-			system_message(elgg_echo('newsletter:action:unsubscribe:success:entity', [$entity->getDisplayName()]));
+			elgg_register_success_message(elgg_echo('newsletter:action:unsubscribe:success:entity', [$entity->getDisplayName()]));
 		} else {
 			$error = true;
-			register_error(elgg_echo('newsletter:action:unsubscribe:error:entity', [$entity->getDisplayName()]));
+			elgg_register_error_message(elgg_echo('newsletter:action:unsubscribe:error:entity', [$entity->getDisplayName()]));
 		}
 	} else {
 		$error = true;
-		register_error(elgg_echo('newsletter:action:unsubscribe:error:recipient', [$recipient]));
+		elgg_register_error_message(elgg_echo('newsletter:action:unsubscribe:error:recipient', [$recipient]));
 	}
 }
 
@@ -49,21 +49,21 @@ if (!empty($guid)) {
 if (!empty($all)) {
 	if (is_numeric($recipient) && ($user = get_user($recipient))) {
 		if (newsletter_unsubscribe_all_user($user)) {
-			system_message(elgg_echo('newsletter:action:unsubscribe:success:all'));
+			elgg_register_success_message(elgg_echo('newsletter:action:unsubscribe:success:all'));
 		} else {
 			$error = true;
-			register_error(elgg_echo('newsletter:action:unsubscribe:error:all'));
+			elgg_register_error_message(elgg_echo('newsletter:action:unsubscribe:error:all'));
 		}
 	} elseif (newsletter_is_email_address($recipient)) {
 		if (newsletter_unsubscribe_all_email($recipient)) {
-			system_message(elgg_echo('newsletter:action:unsubscribe:success:all'));
+			elgg_register_success_message(elgg_echo('newsletter:action:unsubscribe:success:all'));
 		} else {
 			$error = true;
-			register_error(elgg_echo('newsletter:action:unsubscribe:error:all'));
+			elgg_register_error_message(elgg_echo('newsletter:action:unsubscribe:error:all'));
 		}
 	} else {
 		$error = true;
-		register_error(elgg_echo('newsletter:action:unsubscribe:error:recipient', [$recipient]));
+		elgg_register_error_message(elgg_echo('newsletter:action:unsubscribe:error:recipient', [$recipient]));
 	}
 }
 

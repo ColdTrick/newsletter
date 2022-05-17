@@ -1374,7 +1374,7 @@ function newsletter_process_csv_upload(array $recipients): array {
 	// found an email column
 	if ($email_column === false) {
 		// no email column found, report this
-		system_message(elgg_echo('newsletter:csv:no_email'));
+		elgg_register_success_message(elgg_echo('newsletter:csv:no_email'));
 		
 		return $recipients;
 	}
@@ -1427,7 +1427,7 @@ function newsletter_process_csv_upload(array $recipients): array {
 	}
 	
 	// done, report the added emails
-	system_message(elgg_echo('newsletter:csv:added', [$counter]));
+	elgg_register_success_message(elgg_echo('newsletter:csv:added', [$counter]));
 	
 	return $recipients;
 }
