@@ -35,7 +35,7 @@ echo elgg_view('output/longtext', [
 	'value' => elgg_echo('newsletter:edit:template:description'),
 ]);
 
-$allow_copy_template = (bool) elgg_extract('allow_copy_template', $vars, true);
+$allow_copy_template = (bool) elgg_extract('allow_copy_template', $vars, elgg_get_plugin_setting('allow_copy_template', 'newsletter'));
 $template_selector = [
 	'#type' => 'radio',
 	'#label' => elgg_echo('newsletter:edit:template:select'),

@@ -17,6 +17,7 @@ return [
 		'custom_from' => 'no',
 		'include_existing_users' => 'yes',
 		'include_banned_users' => 0,
+		'allow_copy_template' => true,
 	],
 	'entities' => [
 		[

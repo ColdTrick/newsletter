@@ -166,6 +166,8 @@ return array(
 	'newsletter:settings:allow_groups:description' => "Group administrators can create a newsletter for their group members.",
 	'newsletter:settings:include_existing_users' => "Include users without subscription settings",
 	'newsletter:settings:include_existing_users:description' => "When enabled all user will be included, except those who have unsubscribed.",
+	'newsletter:settings:allow_copy_template' => "Allow template copies",
+	'newsletter:settings:allow_copy_template:help' => "Allow users to copy existing templates to custom versions",
 	'newsletter:settings:include_banned_users' => "Include banned users in the newsletter sending",
 	'newsletter:settings:include_banned_users:help' => "When enabled banned users can also recieve newsletters",
 	'newsletter:settings:custom_from' => "Allow newsletters to be send from a custom e-mail address",

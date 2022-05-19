@@ -139,6 +139,8 @@ return array (
   'newsletter:recipients:email' => 'E-mailadres',
   'newsletter:settings:allow_groups' => 'Groepsbeheerders mogen nieuwsbrieven versturen',
   'newsletter:settings:allow_groups:description' => 'Groepsbeheerder mogen nieuwsbrieven maken voor hun leden.',
+  'newsletter:settings:allow_copy_template' => 'Sta template kopieën toe',
+  'newsletter:settings:allow_copy_template:help' => 'Sta gebruikers toe om bestaande templates te kopiëren',
   'newsletter:settings:include_existing_users' => 'Gebruikers toevoegen zonder abonnement instellingen',
   'newsletter:settings:include_existing_users:description' => 'Indien ingeschakeld zullen ook gebruiker worden toegevoegd die géén abonnement voorkeur hebben opgegeven.',
   'newsletter:entity:scheduled' => 'Ingepland',

@@ -40,6 +40,17 @@ echo elgg_view_field([
 
 echo elgg_view_field([
 	'#type' => 'checkbox',
+	'#label' => elgg_echo('newsletter:settings:allow_copy_template'),
+	'#help' => elgg_echo('newsletter:settings:allow_copy_template:help'),
+	'name' => 'params[allow_copy_template]',
+	'default' => 0,
+	'value' => 1,
+	'checked' => (bool) $plugin->allow_copy_template,
+	'switch' => true,
+]);
+
+echo elgg_view_field([
+	'#type' => 'checkbox',
 	'#label' => elgg_echo('newsletter:settings:include_banned_users'),
 	'#help' => elgg_echo('newsletter:settings:include_banned_users:help'),
 	'name' => 'params[include_banned_users]',
