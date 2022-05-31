@@ -1,10 +1,11 @@
 <?php
 /**
- * This file was created by Translation Editor v8.0
- * On 2021-02-23 11:20
+ * This file was created by Translation Editor v9.0.2
+ * On 2022-05-31 11:58
  */
 
 return array (
+  'input:container_guid:object:newsletter:info' => 'De nieuwsbrief zal worden geplaatst in %s',
   'newsletter:settings:include_banned_users' => 'Geblokkeerde gebruikers meenemen in het versturen van de nieuwsbrieven',
   'newsletter:settings:include_banned_users:help' => 'Indien dit is ingeschakeld zullen geblokkeerde gebruikers ook de nieuwsbrieven ontvangen',
   'newsletter:csv_exporter:from' => 'Afzender e-mailadres',
