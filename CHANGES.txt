@@ -1,6 +1,13 @@
 Version history
 ===============
 
+8.0 (2022-06-01):
+
+- added: container info on newsletter edit form
+- added: icon cropper for newsletter header
+- added: plugin setting to allow copying templates
+- changed: update for Elgg 4.2
+
 7.0.1 (2022-03-11):
 
 - fixed: PHP undefined array key
