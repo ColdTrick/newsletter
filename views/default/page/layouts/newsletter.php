@@ -5,6 +5,17 @@
  * @uses $vars['entity'] The newsletter to be viewed
  */
 
+// override image service to be able to disable the webp generation of images as that is not supported by all email clients
+$imagine = new \Imagine\Gd\Imagine();
+if (elgg_get_config('image_processor') === 'imagick' && extension_loaded('imagick')) {
+	$imagine = new \Imagine\Imagick\Imagine();
+}
+
+$image_service = new \ColdTrick\Newsletter\ImageService($imagine, _elgg_services()->config, _elgg_services()->mimetype);
+
+_elgg_services()->set('imageService', $image_service);
+_elgg_services()->reset('iconService');
+
 $language = get_current_language();
 
 /* @var $entity Newsletter */
@@ -26,3 +37,7 @@ $body = elgg_view('newsletter/view/body', $vars);
 $body = elgg()->html_formatter->inlineCss($body, $css);
 
 echo elgg_view('page/elements/html', ['head' => $head, 'body' => $body]);
+
+// reset the image service
+_elgg_services()->reset('imageService');
+_elgg_services()->reset('iconService');
