@@ -1,6 +1,10 @@
 Version history
 ===============
 
+8.0.1 (2022-07-12):
+
+- fixed: disable webp icons in newsletter as not all clients support it
+
 8.0 (2022-06-01):
 
 - added: container info on newsletter edit form
