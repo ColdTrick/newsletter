@@ -19,8 +19,8 @@ $group_options = [
 	'count' => true,
 	'limit' => false,
 	'batch' => true,
-	'order_by_metadata' => [
-		'name' => 'name',
+	'sort_by' => [
+		'property' => 'name',
 		'direction' => 'ASC',
 	],
 	'wheres' => [

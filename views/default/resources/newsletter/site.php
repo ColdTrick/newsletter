@@ -39,10 +39,10 @@ switch ($filter) {
 			'name' => 'status',
 			'value' => 'scheduled',
 		];
-		$options['order_by_metadata'] = [
-			'name' => 'scheduled',
-			'as' => 'integer',
+		$options['sort_by'] = [
+			'property' => 'scheduled',
 			'direction' => 'ASC',
+			'signed' => true,
 		];
 		break;
 	case 'sending':
@@ -65,10 +65,10 @@ switch ($filter) {
 			];
 		}
 		
-		$options['order_by_metadata'] = [
-			'name' => 'start_time',
-			'as' => 'integer',
+		$options['sort_by'] = [
+			'property' => 'start_time',
 			'direction' => 'DESC',
+			'signed' => true,
 		];
 		break;
 }

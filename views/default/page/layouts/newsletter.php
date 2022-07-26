@@ -16,8 +16,6 @@ $image_service = new \ColdTrick\Newsletter\ImageService($imagine, _elgg_services
 _elgg_services()->set('imageService', $image_service);
 _elgg_services()->reset('iconService');
 
-$language = get_current_language();
-
 /* @var $entity Newsletter */
 $entity = elgg_extract('entity', $vars);
 

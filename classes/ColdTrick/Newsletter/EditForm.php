@@ -64,7 +64,7 @@ class EditForm {
 			'description' => '',
 			'subject' => '',
 			'from' => '',
-			'access_id' => get_default_access(null, [
+			'access_id' => elgg_get_default_access(null, [
 				'entity_type' => 'object',
 				'entity_subtype' => \Newsletter::SUBTYPE,
 				'container_guid' => $this->container_guid,

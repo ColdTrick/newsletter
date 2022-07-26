@@ -37,10 +37,10 @@ $content = elgg_call(ELGG_IGNORE_ACCESS, function() use ($user) {
 		'relationship' => Newsletter::SEND_TO,
 		'relationship_guid' => $user->guid,
 		'inverse_relationship' => true,
-		'order_by_metadata' => [
-			'name' => 'start_time',
-			'as' => 'integer',
+		'sort_by' => [
+			'property' => 'start_time',
 			'direction' => 'DESC',
+			'signed' => true,
 		],
 		'no_results' => true,
 	]);

@@ -28,7 +28,7 @@ if (!empty($block_all)) {
 }
 
 // remove block all
-remove_entity_relationship($user->guid, NewsletterSubscription::GENERAL_BLACKLIST, elgg_get_site_entity()->guid);
+$user->removeRelationship(elgg_get_site_entity()->guid, NewsletterSubscription::GENERAL_BLACKLIST);
 
 // go through all the subscriptions
 foreach ($subscriptions as $guid => $value) {

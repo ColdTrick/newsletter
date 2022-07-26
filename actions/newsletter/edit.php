@@ -9,7 +9,7 @@ $subject = get_input('subject');
 $from = get_input('from');
 $description = get_input('description');
 $access_id = (int) get_input('access_id');
-$tags = string_to_tag_array(get_input('tags'));
+$tags = elgg_string_to_array((string) get_input('tags', ''));
 
 $new_entity = false;
 

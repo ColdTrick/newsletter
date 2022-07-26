@@ -692,11 +692,11 @@ function newsletter_check_user_subscription(\ElggUser $user, \ElggEntity $entity
 	// include all users
 	if (elgg_get_plugin_setting('include_existing_users', 'newsletter') === 'yes') {
 		// exclude if blocked
-		return !((bool) check_entity_relationship($user->guid, NewsletterSubscription::BLACKLIST, $entity->guid));
-	} else {
-		// only if opt-in
-		return (bool) check_entity_relationship($user->guid, NewsletterSubscription::SUBSCRIPTION, $entity->guid);
+		return !$user->hasRelationship($entity->guid, NewsletterSubscription::BLACKLIST);
 	}
+	
+	// only if opt-in
+	return $user->hasRelationship($entity->guid, NewsletterSubscription::SUBSCRIPTION);
 }
 
 /**
@@ -715,20 +715,20 @@ function newsletter_subscribe_user(\ElggUser $user, \ElggEntity $entity, bool $c
 	}
 	
 	// check if subscribed
-	if (!check_entity_relationship($user->guid, NewsletterSubscription::SUBSCRIPTION, $entity->guid)) {
+	if (!$user->hasRelationship($entity->guid, NewsletterSubscription::SUBSCRIPTION)) {
 		// not yet, so add
-		$result = add_entity_relationship($user->guid, NewsletterSubscription::SUBSCRIPTION, $entity->guid);
+		$result = $user->addRelationship($entity->guid, NewsletterSubscription::SUBSCRIPTION);
 	} else {
 		$result = true;
 	}
 	
 	// remove blocklist relation
-	remove_entity_relationship($user->guid, NewsletterSubscription::BLACKLIST, $entity->guid);
+	$user->removeRelationship($entity->guid, NewsletterSubscription::BLACKLIST);
 	
 	// remove general blocklist
 	if ($cleanup_general_block) {
 		$site = elgg_get_site_entity();
-		remove_entity_relationship($user->guid, NewsletterSubscription::GENERAL_BLACKLIST, $site->guid);
+		$user->removeRelationship($site->guid, NewsletterSubscription::GENERAL_BLACKLIST);
 	}
 	
 	// check if on email blacklist
@@ -781,11 +781,11 @@ function newsletter_subscribe_email(string $email, \ElggEntity $entity): bool {
 	$result = (bool) $subscription->addRelationship($entity->guid, NewsletterSubscription::SUBSCRIPTION);
 	
 	// remove blocklist relation
-	remove_entity_relationship($subscription->guid, NewsletterSubscription::BLACKLIST, $entity->guid);
+	$subscription->removeRelationship($entity->guid, NewsletterSubscription::BLACKLIST);
 	
 	// remove general blocklist
 	$site = elgg_get_site_entity();
-	remove_entity_relationship($subscription->guid, NewsletterSubscription::GENERAL_BLACKLIST, $site->guid);
+	$subscription->removeRelationship($site->guid, NewsletterSubscription::GENERAL_BLACKLIST);
 	
 	return $result;
 }
@@ -805,7 +805,7 @@ function newsletter_unsubscribe_user(\ElggUser $user, \ElggEntity $entity): bool
 	}
 	
 	// remove subscription
-	remove_entity_relationship($user->guid, NewsletterSubscription::SUBSCRIPTION, $entity->guid);
+	$user->removeRelationship($entity->guid, NewsletterSubscription::SUBSCRIPTION);
 	
 	// check if on email subscriptionlist
 	$subscription = newsletter_get_subscription($user->email);
@@ -815,9 +815,9 @@ function newsletter_unsubscribe_user(\ElggUser $user, \ElggEntity $entity): bool
 	}
 	
 	// check if blocked
-	if (!check_entity_relationship($user->guid, NewsletterSubscription::BLACKLIST, $entity->guid)) {
+	if (!$user->hasRelationship($entity->guid, NewsletterSubscription::BLACKLIST)) {
 		// not yet, so add
-		return add_entity_relationship($user->guid, NewsletterSubscription::BLACKLIST, $entity->guid);
+		return $user->addRelationship($entity->guid, NewsletterSubscription::BLACKLIST);
 	}
 	
 	return true;
@@ -884,14 +884,14 @@ function newsletter_user_row_to_subscriber_info($row): array {
 }
 
 /**
- * A different interpretation of is_email_address()
+ * A different interpretation of elgg_is_valid_email()
  * because PHP doesn't always correctly verify email addresses
  *
  * @param string $address The email address to check
  *
  * @return bool true if email, false otherwise
  *
- * @see is_email_address()
+ * @see elgg_is_valid_email()
  * @see filter_var()
  */
 function newsletter_is_email_address($address): bool {
@@ -1054,7 +1054,7 @@ function newsletter_unsubscribe_all_user(\ElggUser $user): bool {
 	$site = elgg_get_site_entity();
 	
 	// remove site subscription
-	remove_entity_relationship($user->guid, NewsletterSubscription::SUBSCRIPTION, $site->guid);
+	$user->removeRelationship($site->guid, NewsletterSubscription::SUBSCRIPTION);
 	
 	// remove all subscriptions
 	$entities = elgg_get_entities([
@@ -1069,13 +1069,13 @@ function newsletter_unsubscribe_all_user(\ElggUser $user): bool {
 	
 	if (!empty($entities)) {
 		foreach ($entities as $entity_guid) {
-			remove_entity_relationship($user->guid, NewsletterSubscription::SUBSCRIPTION, $entity_guid);
+			$user->removeRelationship($entity_guid, NewsletterSubscription::SUBSCRIPTION);
 		}
 	}
 	
 	// add to general blacklist
-	if (!check_entity_relationship($user->guid, NewsletterSubscription::GENERAL_BLACKLIST, $site->guid)) {
-		$result = (bool) add_entity_relationship($user->guid, NewsletterSubscription::GENERAL_BLACKLIST, $site->guid);
+	if (!$user->hasRelationship($site->guid, NewsletterSubscription::GENERAL_BLACKLIST)) {
+		$result = $user->addRelationship($site->guid, NewsletterSubscription::GENERAL_BLACKLIST);
 	} else {
 		$result = true;
 	}
@@ -1117,17 +1117,17 @@ function newsletter_unsubscribe_all_email(string $email): bool {
 	}
 	
 	// remove all existing subscriptions
-	remove_entity_relationships($subscription->guid, NewsletterSubscription::SUBSCRIPTION);
+	$subscription->removeAllRelationships(NewsletterSubscription::SUBSCRIPTION);
 	
 	// add to general blacklist
 	$site = elgg_get_site_entity();
 	
-	if (check_entity_relationship($subscription->guid, NewsletterSubscription::GENERAL_BLACKLIST, $site->guid)) {
+	if ($subscription->hasRelationship($site->guid, NewsletterSubscription::GENERAL_BLACKLIST)) {
 		// already blocked
 		return true;
 	}
 	
-	return (bool) add_entity_relationship($subscription->guid, NewsletterSubscription::GENERAL_BLACKLIST, $site->guid);
+	return $subscription->addRelationship($site->guid, NewsletterSubscription::GENERAL_BLACKLIST);
 }
 
 /**
@@ -1142,9 +1142,9 @@ function newsletter_convert_subscription_to_user_setting(\NewsletterSubscription
 	
 	// check global block list
 	$site = elgg_get_site_entity();
-	if (check_entity_relationship($subscription->guid, NewsletterSubscription::GENERAL_BLACKLIST, $site->guid)) {
+	if ($subscription->hasRelationship($site->guid, NewsletterSubscription::GENERAL_BLACKLIST)) {
 		// copy the block all
-		add_entity_relationship($user->guid, NewsletterSubscription::GENERAL_BLACKLIST, $site->guid);
+		$user->addRelationship($site->guid, NewsletterSubscription::GENERAL_BLACKLIST);
 	} else {
 		// check for subscriptions
 		$subscriptions = $subscription->getEntitiesFromRelationship([
@@ -1608,10 +1608,10 @@ function newsletter_validate_custom_from(string $from_email): bool {
 	$result = true;
 	
 	// check plugin settings domain limitations
-	$plugin_setting = elgg_get_plugin_setting('custom_from_domains', 'newsletter');
+	$plugin_setting = (string) elgg_get_plugin_setting('custom_from_domains', 'newsletter');
 	if (!empty($plugin_setting)) {
 		$result = false;
-		$plugin_setting = string_to_tag_array($plugin_setting);
+		$plugin_setting = elgg_string_to_array($plugin_setting);
 		
 		list(, $domain) = explode('@', $from_email);
 		foreach ($plugin_setting as $allowed_domain) {

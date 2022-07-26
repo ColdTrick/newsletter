@@ -88,8 +88,8 @@ if (!empty($user_guids)) {
 		'guids' => $user_guids,
 		'limit' => false,
 		'batch' => true,
-		'order_by_metadata' => [
-			'name' => 'name',
+		'sort_by' => [
+			'property' => 'name',
 		],
 	]);
 	
@@ -128,8 +128,8 @@ if (!empty($group_guids)) {
 		'guids' => $group_guids,
 		'limit' => false,
 		'batch' => true,
-		'order_by_metadata' => [
-			'name' => 'name',
+		'sort_by' => [
+			'property' => 'name',
 		],
 	]);
 	
