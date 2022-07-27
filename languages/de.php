@@ -243,7 +243,7 @@ Um den Newsletter zu sehen, klicke hier:
 	'newsletter:log:users:no_recipients' => "Bei der Abwicklung des Newsletters gab es keine registrierten Benutzer. Wenn Sie einige Benutzer ausgewählt hätten, könnten sie sich vom Newsletter abgemeldet haben.",
 	
 	// group
-	'newsletter:group:tool_option' => "Gruppen-Newsletters aktivieren",
+	'groups:tool:newsletter' => "Gruppen-Newsletters aktivieren",
 	'newsletter:group:error:not_enabled' => "Für diese Gruppe sind keine Newsletters freigegeben",
 	'newsletter:group:title' => "%s's Newsletter",
 	

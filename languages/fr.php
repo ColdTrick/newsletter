@@ -245,7 +245,7 @@ Pour afficher cette lettre d'information, cliquez sur :
 	'newsletter:log:users:no_recipients' => "Il n'y avait aucun membre enregistré lors du traitement de la lettre d'information. Si vous aviez sélectionné des membres, ils ont pu se désinscrire de la lettre d'information.",
 	
 	// group
-	'newsletter:group:tool_option' => "Activer les lettres d'information du groupe",
+	'groups:tool:newsletter' => "Activer les lettres d'information du groupe",
 	'newsletter:group:error:not_enabled' => "Les lettres d'information ne sont pas activées pour ce groupe",
 	'newsletter:group:title' => "Lettres d'information de %s",
 	

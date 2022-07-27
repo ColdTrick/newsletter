@@ -198,7 +198,7 @@ Om de nieuwsbrief te bekijken klik hier:
   'newsletter:log:no_recipients' => 'Er waren geen ontvangers voor deze nieuwsbrief',
   'newsletter:log:emails:no_recipients' => 'Er waren geen individuele e-mailadressen tijdens het verzenden van de nieuwsbrief. Als je wel enkele e-mailadressen had geselecteerd kan het zijn dat deze zich hebben uitgeschreven van de nieuwsbrief.',
   'newsletter:log:users:no_recipients' => 'Er waren geen gebruikers tijdens het verzenden van de nieuwsbrief. Als je wel enkele gebruikers had geselecteerd kan het zijn dat deze zich hebben uitgeschreven van de nieuwsbrief.',
-  'newsletter:group:tool_option' => 'Schakel groep nieuwsbrieven in',
+  'groups:tool:newsletter' => 'Schakel groep nieuwsbrieven in',
   'newsletter:group:error:not_enabled' => 'Nieuwsbrieven zijn niet ingeschakeld voor deze groep',
   'newsletter:group:title' => '%s\'s nieuwsbrieven',
   'newsletter:action:edit:error:title' => 'Geef een titel op voor de nieuwsbrief',

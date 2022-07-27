@@ -2,7 +2,6 @@
 
 namespace ColdTrick\Newsletter;
 
-use Elgg\Hook;
 use Elgg\Groups\Tool;
 
 class Groups {
@@ -23,7 +22,6 @@ class Groups {
 		$result = $hook->getValue();
 		
 		$result[] = new Tool('newsletter', [
-			'label' => elgg_echo('newsletter:group:tool_option'),
 			'default_on' => true,
 		]);
 	
