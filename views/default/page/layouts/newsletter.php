@@ -5,16 +5,9 @@
  * @uses $vars['entity'] The newsletter to be viewed
  */
 
-// override image service to be able to disable the webp generation of images as that is not supported by all email clients
-$imagine = new \Imagine\Gd\Imagine();
-if (elgg_get_config('image_processor') === 'imagick' && extension_loaded('imagick')) {
-	$imagine = new \Imagine\Imagick\Imagine();
-}
-
-$image_service = new \ColdTrick\Newsletter\ImageService($imagine, _elgg_services()->config, _elgg_services()->mimetype);
-
-_elgg_services()->set('imageService', $image_service);
-_elgg_services()->reset('iconService');
+// disable the webp generation of images as that is not supported by all email clients
+$webp_config = elgg_get_config('webp_enabled');
+elgg_set_config('webp_enabled', false);
 
 /* @var $entity Newsletter */
 $entity = elgg_extract('entity', $vars);
@@ -34,8 +27,11 @@ $body = elgg_view('newsletter/view/body', $vars);
 // doing this here instead of during notification as it is the same for each recipient
 $body = elgg()->html_formatter->inlineCss($body, $css);
 
-echo elgg_view('page/elements/html', ['head' => $head, 'body' => $body]);
+// restore webp support
+elgg_set_config('webp_enabled', $webp_config);
 
-// reset the image service
-_elgg_services()->reset('imageService');
-_elgg_services()->reset('iconService');
+// draw newsletter
+echo elgg_view('page/elements/html', [
+	'head' => $head,
+	'body' => $body,
+]);
