@@ -1,10 +1,11 @@
 <?php
 /**
- * This file was created by Translation Editor v9.0.2
- * On 2022-05-31 11:58
+ * This file was created by Translation Editor v10.1.1
+ * On 2022-08-18 12:51
  */
 
 return array (
+  'groups:tool:newsletter:description' => 'Laat de groepseigenaren nieuwsbrieven versturen naar de groepsleden.',
   'input:container_guid:object:newsletter:info' => 'De nieuwsbrief zal worden geplaatst in %s',
   'newsletter:settings:include_banned_users' => 'Geblokkeerde gebruikers meenemen in het versturen van de nieuwsbrieven',
   'newsletter:settings:include_banned_users:help' => 'Indien dit is ingeschakeld zullen geblokkeerde gebruikers ook de nieuwsbrieven ontvangen',
