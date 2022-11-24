@@ -47,7 +47,7 @@ echo elgg_view_field([
 	'#label' => elgg_echo("newsletter:schedule:show_in_archive"),
 	'name' => 'show_in_archive',
 	'value' => 1,
-	'checked' => elgg_extract('show_in_archive', $vars),
+	'checked' => (bool) elgg_extract('show_in_archive', $vars),
 	'switch' => true,
 ]);
 
