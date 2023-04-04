@@ -44,9 +44,6 @@ return array(
 	'newsletter:menu:steps:content' => "Contenu de la Lettre",
 	'newsletter:menu:steps:recipients' => "Destinataires",
 	'newsletter:menu:steps:schedule' => "Programmation de l'envoi",
-		
-	// long text menu
-	'newsletter:menu:longtext:embed_content' => "Intégrer une publication",
 	
 	'newsletter:breadcrumb:site' => "Lettres d'information",
 	'newsletter:breadcrumb:log' => "Journal d'envoi",

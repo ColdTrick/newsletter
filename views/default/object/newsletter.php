@@ -1,7 +1,7 @@
 <?php
 
 $entity = elgg_extract('entity', $vars);
-if (!$entity instanceof Newsletter) {
+if (!$entity instanceof \Newsletter) {
 	return;
 }
 
@@ -11,15 +11,11 @@ if ((bool) elgg_extract('full_view', $vars, false)) {
 }
 
 // listing view
-$excerpt = '';
-if ($entity->description) {
-	$excerpt = elgg_get_excerpt($entity->description);
-}
+$excerpt = $entity->description ? elgg_get_excerpt((string) $entity->description) : '';
 
 $imprint = [];
 switch ($entity->status) {
 	case 'scheduled':
-		
 		$content = elgg_echo('newsletter:entity:scheduled') . ': ';
 		$content .= elgg_view('output/date', [
 			'value' => $entity->scheduled,
@@ -32,7 +28,6 @@ switch ($entity->status) {
 		];
 		break;
 	case 'sent':
-		
 		$content = elgg_echo('newsletter:entity:sent') . ': ';
 		$content .= elgg_view_friendly_time($entity->start_time);
 		

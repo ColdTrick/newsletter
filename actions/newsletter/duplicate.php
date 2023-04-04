@@ -21,8 +21,10 @@ if (!$clone->save()) {
 	return elgg_error_response(elgg_echo('newsletter:action:duplicate:error'));
 }
 
-if ($entity->hasIcon('master')) {
-	$clone->saveIconFromElggFile($entity->getIcon('master'));
+if ($entity->hasIcon('master', 'header')) {
+	$coords = $entity->header_coords ? unserialize($entity->header_coords) : [];
+	
+	$clone->saveIconFromElggFile($entity->getIcon('master', 'header'), 'header', $coords);
 }
 
 // forward to the edit page so you can start working with the clone

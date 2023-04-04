@@ -8,7 +8,7 @@ if (empty($guid) || empty($template)) {
 }
 
 $entity = get_entity($guid);
-if (!$entity instanceof Newsletter || !$entity->canEdit()) {
+if (!$entity instanceof \Newsletter || !$entity->canEdit()) {
 	return elgg_error_response(elgg_echo('actionunauthorized'));
 }
 
@@ -16,7 +16,7 @@ $entity->template = 'custom';
 
 if (is_numeric($template)) {
 	$template_entity = get_entity($template);
-	if ($template_entity instanceof NewsletterTemplate) {
+	if ($template_entity instanceof \NewsletterTemplate) {
 		$entity->html = $template_entity->html;
 		$entity->css = $template_entity->css;
 	}

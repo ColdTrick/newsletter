@@ -2,24 +2,25 @@
 
 namespace ColdTrick\Newsletter\Plugins;
 
+/**
+ * CSVExporter callbacks
+ */
 class CSVExporter {
 	
 	/**
 	 * Register specific value to be exported by CSV Exporter
 	 *
-	 * @param \Elgg\Hook $hook 'get_exportable_values', 'csv_exporter'
+	 * @param \Elgg\Event $event 'get_exportable_values', 'csv_exporter'
 	 *
 	 * @return array
 	 */
-	public static function exportableValues(\Elgg\Hook $hook) {
+	public static function exportableValues(\Elgg\Event $event) {
 		
-		$type = $hook->getParam('type');
-		$subtype = $hook->getParam('subtype');
+		$type = $event->getParam('type');
+		$subtype = $event->getParam('subtype');
 		if ($type !== 'object' || $subtype !== \Newsletter::SUBTYPE) {
 			return;
 		}
-		
-		$readable = (bool) $hook->getParam('readable', false);
 		
 		$fields = [
 			elgg_echo('newsletter:csv_exporter:from') => 'newsletter_from',
@@ -30,9 +31,9 @@ class CSVExporter {
 			elgg_echo('newsletter:csv_exporter:endtime:readable') => 'newsletter_endtime_readable',
 		];
 		
-		$result = $hook->getValue();
+		$result = $event->getValue();
 		
-		if (!$readable) {
+		if (!(bool) $event->getParam('readable', false)) {
 			$fields = array_values($fields);
 		}
 		
@@ -42,18 +43,18 @@ class CSVExporter {
 	/**
 	 * Export the actual value
 	 *
-	 * @param \Elgg\Hook $hook 'export_value', 'csv_exporter'
+	 * @param \Elgg\Event $event 'export_value', 'csv_exporter'
 	 *
 	 * @return void|mixed
 	 */
-	public static function exportValue(\Elgg\Hook $hook) {
+	public static function exportValue(\Elgg\Event $event) {
 		
-		$entity = $hook->getEntityParam();
+		$entity = $event->getEntityParam();
 		if (!$entity instanceof \Newsletter) {
 			return;
 		}
 		
-		$exportable_value = $hook->getParam('exportable_value');
+		$exportable_value = $event->getParam('exportable_value');
 		switch ($exportable_value) {
 			case 'newsletter_from':
 				return $entity->from;

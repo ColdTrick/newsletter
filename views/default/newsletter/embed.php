@@ -37,7 +37,7 @@ $options = [
 ];
 
 $container = $newsletter->getContainerEntity();
-if (empty($show_all) && $container instanceof ElggGroup) {
+if (empty($show_all) && $container instanceof \ElggGroup) {
 	$options['container_guid'] = $newsletter->container_guid;
 }
 
@@ -46,6 +46,7 @@ if (empty($query)) {
 } else {
 	$count = elgg_search($options);
 }
+
 unset($options['count']);
 
 // search form
@@ -72,7 +73,7 @@ $form_data = elgg_view_field([
 	],
 ]);
 
-if ($container instanceof ElggGroup) {
+if ($container instanceof \ElggGroup) {
 	$form_data .= elgg_view_field([
 		'#type' => 'checkbox',
 		'#label' => elgg_echo('newsletter:embed:show_all'),
@@ -91,6 +92,7 @@ $embed_wrapper = elgg_view('input/form', [
 	'id' => 'newsletter-embed-search',
 	'body' => $form_data,
 	'disable_security' => true,
+	'class' => 'mbm',
 ]);
 
 if ($count > 0) {
@@ -103,7 +105,7 @@ if ($count > 0) {
 	$embed_list = [];
 	foreach ($entities as $entity) {
 		$entity_embed = newsletter_view_embed_content($entity, ['newsletter' => $newsletter]);
-		$embed_list[] = elgg_format_element('li', ['class' => 'newsletter-embed-item'], $entity_embed);
+		$embed_list[] = elgg_format_element('li', [], $entity_embed);
 	}
 	
 	$embed_wrapper .= elgg_format_element('ul', ['id' => 'newsletter-embed-list'], implode(PHP_EOL, $embed_list));

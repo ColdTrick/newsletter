@@ -6,7 +6,7 @@ if (empty($guid)) {
 }
 
 $entity = get_entity($guid);
-if (!$entity instanceof NewsletterTemplate || !$entity->canDelete()) {
+if (!$entity instanceof \NewsletterTemplate || !$entity->canDelete()) {
 	return elgg_error_response(elgg_echo('actionunauthorized'));
 }
 
@@ -17,10 +17,10 @@ if (!$entity->delete()) {
 	return elgg_error_response(elgg_echo('newsletter:action:template:delete:error:delete'));
 }
 
-$forward_url = REFERER;
+$forward_url = REFERRER;
 // check if we don't forward to the entity url
-if ($_SERVER['HTTP_REFERER'] == $entity_url) {
-	if ($container instanceof ElggGroup) {
+if ($_SERVER['HTTP_REFERER'] === $entity_url) {
+	if ($container instanceof \ElggGroup) {
 		$forward_url = elgg_generate_url('collection:object:newsletter:group', [
 			'guid' => $container->guid,
 		]);

@@ -4,18 +4,21 @@ namespace ColdTrick\Newsletter;
 
 use Elgg\Menu\MenuItems;
 
+/**
+ * Menu callbacks
+ */
 class Menus {
 	
 	/**
 	 * Add a menu item in the owner block menu of a group
 	 *
-	 * @param \Elgg\Hook $hook 'register', 'menu:owner_block'
+	 * @param \Elgg\Event $event 'register', 'menu:owner_block'
 	 *
 	 * @return MenuItems
 	 */
-	public static function ownerBlockRegister(\Elgg\Hook $hook) {
+	public static function ownerBlockRegister(\Elgg\Event $event) {
 
-		$entity = $hook->getEntityParam();
+		$entity = $event->getEntityParam();
 		if (!$entity instanceof \ElggGroup) {
 			return;
 		}
@@ -24,7 +27,7 @@ class Menus {
 			return;
 		}
 		
-		$returnvalue = $hook->getValue();
+		$returnvalue = $event->getValue();
 		$returnvalue[] = \ElggMenuItem::factory([
 			'name' => 'newsletter',
 			'text' => elgg_echo('newsletter:menu:owner_block:group'),
@@ -40,11 +43,11 @@ class Menus {
 	/**
 	 * Replace the filter menu on the newsletter pages
 	 *
-	 * @param \Elgg\Hook $hook 'register', 'menu:filter:newsletter[/group]'
+	 * @param \Elgg\Event $event 'register', 'menu:filter:newsletter[/group]'
 	 *
 	 * @return MenuItems
 	 */
-	public static function filterRegister(\Elgg\Hook $hook) {
+	public static function filterRegister(\Elgg\Event $event) {
 		
 		$page_owner = elgg_get_page_owner_entity();
 		if ($page_owner instanceof \ElggGroup && !$page_owner->canEdit()) {
@@ -62,9 +65,9 @@ class Menus {
 			$route_params['guid'] = $page_owner->guid;
 		}
 		
-		$current_filter = $hook->getParam('filter_value', 'sent');
+		$current_filter = $event->getParam('filter_value', 'sent');
 		
-		$returnvalue = $hook->getValue();
+		$returnvalue = $event->getValue();
 		$returnvalue[] = \ElggMenuItem::factory([
 			'name' => 'concept',
 			'text' => elgg_echo('newsletter:menu:filter:concept'),
@@ -107,59 +110,22 @@ class Menus {
 	
 		return $returnvalue;
 	}
-	
-	/**
-	 * Add a menu item in the long text inputs (like embed and tinymce)
-	 *
-	 * @param \Elgg\Hook $hook 'register', 'menu:longtext'
-	 *
-	 * @return MenuItems
-	 */
-	public static function longtextRegister(\Elgg\Hook $hook) {
-	
-		$id = $hook->getParam('textarea_id');
-		if (strpos($id, 'newsletter-edit-content-') !== 0) {
-			return;
-		}
-		
-		if (!newsletter_embed_available()) {
-			return;
-		}
-		
-		$guid = str_replace('newsletter-edit-content-', '', $id);
-
-		$returnvalue = $hook->getValue();
-		$returnvalue[] = \ElggMenuItem::factory([
-			'name' => 'newsletter-embed-content',
-			'text' => elgg_echo('newsletter:menu:longtext:embed_content'),
-			'href' => elgg_generate_url('default:object:newsletter:embed', [
-				'guid' => $guid,
-			]),
-			'link_class' => 'elgg-longtext-control elgg-lightbox',
-			'priority' => 5,
-			'deps' => [
-				'newsletter/embed',
-			],
-		]);
-	
-		return $returnvalue;
-	}
 		
 	/**
 	 * Add a menu item in the entity's menu
 	 *
-	 * @param \Elgg\Hook $hook 'register', 'menu:entity'
+	 * @param \Elgg\Event $event 'register', 'menu:entity'
 	 *
 	 * @return MenuItems
 	 */
-	public static function entityRegister(\Elgg\Hook $hook) {
+	public static function entityRegister(\Elgg\Event $event) {
 		
-		$entity = $hook->getEntityParam();
+		$entity = $event->getEntityParam();
 		if (!$entity instanceof \Newsletter || !$entity->canEdit()) {
 			return;
 		}
 
-		$returnvalue = $hook->getValue();
+		$returnvalue = $event->getValue();
 		if (($entity->status == 'sent') || $entity->getLogging()) {
 			$returnvalue[] = \ElggMenuItem::factory([
 				'name' => 'log',
@@ -185,17 +151,17 @@ class Menus {
 	/**
 	 * Add a menu item in the sidebar for the steps of creating a newsletter
 	 *
-	 * @param \Elgg\Hook $hook 'register', 'menu:filter:newsletter_steps'
+	 * @param \Elgg\Event $event 'register', 'menu:filter:newsletter_steps'
 	 *
 	 * @return MenuItems
 	 */
-	public static function newsletterSteps(\Elgg\Hook $hook) {
+	public static function newsletterSteps(\Elgg\Event $event) {
 		
-		$entity = $hook->getParam('filter_entity', $hook->getEntityParam());
+		$entity = $event->getParam('filter_entity', $event->getEntityParam());
 		
-		$returnvalue = $hook->getValue();
+		$returnvalue = $event->getValue();
 		if ($entity instanceof \Newsletter) {
-			$current_step = $hook->getParam('filter_value');
+			$current_step = $event->getParam('filter_value');
 			
 			// basic info
 			$returnvalue[] = \ElggMenuItem::factory([
@@ -305,18 +271,18 @@ class Menus {
 	/**
 	 * Add a menu item in the sidebar to go to the newsletter subsciptions
 	 *
-	 * @param \Elgg\Hook $hook 'register', 'menu:page'
+	 * @param \Elgg\Event $event 'register', 'menu:page'
 	 *
 	 * @return MenuItems
 	 */
-	public static function pageRegister(\Elgg\Hook $hook) {
+	public static function pageRegister(\Elgg\Event $event) {
 
 		$user = elgg_get_logged_in_user_entity();
 		if (empty($user)) {
 			return;
 		}
 		
-		$returnvalue = $hook->getValue();
+		$returnvalue = $event->getValue();
 		if (elgg_in_context('newsletter') && !elgg_in_context('settings')) {
 			// link to your subscriptions
 			$returnvalue[] = \ElggMenuItem::factory([
@@ -359,12 +325,12 @@ class Menus {
 	/**
 	 * Registers menu items to the site menu
 	 *
-	 * @param \Elgg\Hook $hook 'register', 'menu:site'
+	 * @param \Elgg\Event $event 'register', 'menu:site'
 	 *
 	 * @return MenuItems
 	 */
-	public static function siteRegister(\Elgg\Hook $hook) {
-		$returnvalue = $hook->getValue();
+	public static function siteRegister(\Elgg\Event $event) {
+		$returnvalue = $event->getValue();
 		
 		// link to your subscriptions
 		$returnvalue[] = \ElggMenuItem::factory([

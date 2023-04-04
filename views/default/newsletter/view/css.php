@@ -10,7 +10,7 @@ if (is_numeric($template)) {
 	// probably a custom template, lets check
 	$template_entity = get_entity($template);
 
-	if ($template_entity instanceof NewsletterTemplate) {
+	if ($template_entity instanceof \NewsletterTemplate) {
 		$css = $template_entity->css;
 	} else {
 		// something wrong, reset to default

@@ -1,12 +1,6 @@
 <?php
 
-use Elgg\Exceptions\Http\BadRequestException;
-
 $guid = (int) get_input('guid');
-elgg_entity_gatekeeper($guid, 'object', Newsletter::SUBTYPE);
-
-if (!newsletter_embed_available()) {
-	throw new BadRequestException();
-}
+elgg_entity_gatekeeper($guid, 'object', \Newsletter::SUBTYPE, true);
 
 echo elgg_view('newsletter/embed', ['entity' => get_entity($guid)]);

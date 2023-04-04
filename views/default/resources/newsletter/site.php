@@ -5,24 +5,22 @@
 
 $filter = 'sent';
 
-// breadcrumb
-elgg_push_collection_breadcrumbs('object', Newsletter::SUBTYPE);
+elgg_push_collection_breadcrumbs('object', \Newsletter::SUBTYPE);
 
 $site = elgg_get_site_entity();
 elgg_set_page_owner_guid($site->guid);
 
-// register title button
 newsletter_register_title_menu_items($site);
 
-if ($site->canWriteToContainer(0, 'object', Newsletter::SUBTYPE)) {
-	elgg_register_title_button('newsletter', 'add', 'object', Newsletter::SUBTYPE);
+if ($site->canWriteToContainer(0, 'object', \Newsletter::SUBTYPE)) {
+	elgg_register_title_button('add', 'object', \Newsletter::SUBTYPE);
 	
 	$filter = elgg_extract('filter', $vars, $filter, false);
 }
 
 $options = [
 	'type' => 'object',
-	'subtype' => Newsletter::SUBTYPE,
+	'subtype' => \Newsletter::SUBTYPE,
 	'container_guid' => $site->guid,
 	'no_results' => true,
 ];
@@ -73,7 +71,6 @@ switch ($filter) {
 		break;
 }
 
-// draw page
 echo elgg_view_page(elgg_echo('newsletter:site:title'), [
 	'content' => elgg_list_entities($options),
 	'filter_id' => 'newsletter',

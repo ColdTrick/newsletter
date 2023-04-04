@@ -20,7 +20,7 @@ if (empty($guid) || empty($date)) {
 }
 
 $entity = get_entity($guid);
-if (!$entity instanceof Newsletter || !$entity->canEdit()) {
+if (!$entity instanceof \Newsletter || !$entity->canEdit()) {
 	return elgg_error_response(elgg_echo('actionunauthorized'));
 }
 
@@ -43,14 +43,13 @@ elgg_clear_sticky_form('newsletter/edit/schedule');
 
 $forward_url = elgg_generate_url('collection:object:newsletter:site');
 $container = $entity->getContainerEntity();
-if ($container instanceof ElggGroup) {
+if ($container instanceof \ElggGroup) {
 	$forward_url = elgg_generate_url('collection:object:newsletter:group', [
 		'guid' => $container->guid,
 	]);
 }
 
 if (!empty($send)) {
-	
 	// adjust scheduled time to current hour
 	$date = Values::normalizeTime(time());
 	$date->modify('-' . $date->format('s') . ' seconds');

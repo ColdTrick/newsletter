@@ -2,7 +2,7 @@
 
 $entity = elgg_extract('entity', $vars);
 
-if ($entity instanceof Newsletter) {
+if ($entity instanceof \Newsletter) {
 	echo elgg_view_field([
 		'#type' => 'hidden',
 		'name' => 'guid',

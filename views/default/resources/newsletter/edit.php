@@ -8,7 +8,6 @@ use Elgg\Exceptions\Http\EntityPermissionsException;
 
 $guid = (int) elgg_extract('guid', $vars);
 
-// validate input
 elgg_entity_gatekeeper($guid, 'object', Newsletter::SUBTYPE);
 
 /* @var $entity Newsletter */
@@ -17,11 +16,13 @@ if (!$entity->canEdit()) {
 	throw new EntityPermissionsException();
 }
 
+elgg_require_css('resources/newsletter/edit');
+
 $subpage = elgg_extract('subpage', $vars, 'basic');
 
 // set page owner
 $container = $entity->getContainerEntity();
-if (!$container instanceof ElggGroup) {
+if (!$container instanceof \ElggGroup) {
 	elgg_set_page_owner_guid(false);
 	
 	$container = null;
@@ -55,7 +56,7 @@ switch ($subpage) {
 
 if (!empty($entity->content)) {
 	// only show preview if content available
-	elgg_register_menu_item('title', ElggMenuItem::factory([
+	elgg_register_menu_item('title', \ElggMenuItem::factory([
 		'name' => 'preview',
 		'icon' => 'eye',
 		'text' => elgg_echo('preview'),

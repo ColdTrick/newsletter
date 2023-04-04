@@ -1,12 +1,14 @@
 <?php
 
+/**
+ * Newsletter Template
+ */
 class NewsletterTemplate extends ElggObject {
 	
 	const SUBTYPE = 'newsletter_template';
 	
 	/**
-	 * {@inheritDoc}
-	 * @see ElggEntity::initializeAttributes()
+	 * {@inheritdoc}
 	 */
 	protected function initializeAttributes() {
 		

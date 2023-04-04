@@ -31,7 +31,7 @@ if (!$entity instanceof Newsletter || !$entity->canEdit()) {
 	return elgg_error_response(elgg_echo('actionunauthorized'));
 }
 
-$forward_url = REFERER;
+$forward_url = REFERRER;
 
 $recipients = $entity->getRecipients();
 if (empty($recipients)) {
@@ -44,6 +44,7 @@ if (empty($user_guids)) {
 } elseif (!is_array($user_guids)) {
 	$user_guids = [$user_guids];
 }
+
 // filter duplicates
 $user_guids = array_unique($user_guids);
 
@@ -52,6 +53,7 @@ if (empty($group_guids)) {
 } elseif (!is_array($group_guids)) {
 	$group_guids = [$group_guids];
 }
+
 // filter duplicates
 $group_guids = array_unique($group_guids);
 
@@ -60,6 +62,7 @@ if (empty($emails)) {
 } elseif (!is_array($emails)) {
 	$emails = [$emails];
 }
+
 // filter duplicates
 $emails = array_unique($emails);
 

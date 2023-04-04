@@ -39,7 +39,7 @@ echo elgg_view_field([
 
 // add members
 $member_count = 0;
-if (!$container instanceof ElggGroup) {
+if (!$container instanceof \ElggGroup) {
 	$member_count = elgg_get_entities([
 		'type' => 'user',
 		'count' => true,
@@ -164,7 +164,7 @@ if (!empty($emails)) {
 	$counter = 0;
 	
 	foreach ($emails as $email) {
-		$email_listing = newsletter_format_email_recipient($email);
+		$email_listing = newsletter_format_email_recipient((string) $email);
 		if (empty($email_listing)) {
 			continue;
 		}

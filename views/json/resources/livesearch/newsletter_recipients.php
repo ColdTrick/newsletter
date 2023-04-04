@@ -12,7 +12,7 @@
 elgg_gatekeeper();
 
 $limit = (int) elgg_extract('limit', $vars, elgg_get_config('default_limit'));
-$query = elgg_extract('term', $vars, elgg_extract('q', $vars));
+$query = (string) elgg_extract('term', $vars, elgg_extract('q', $vars));
 $guid = (int) elgg_extract('guid', $vars);
 $include_banned = (bool) elgg_extract('include_banned', $vars, false);
 
@@ -96,9 +96,8 @@ if (!$entity->getContainerEntity() instanceof ElggGroup) {
 
 // email input
 if (newsletter_is_email_address($query)) {
-	if ($users = get_user_by_email($query)) {
-		/* @var $user \ElggUser */
-		$user = $users[0];
+	$user = elgg_get_user_by_email($query);
+	if ($user instanceof \ElggUser) {
 		if ($include_banned || !$user->isBanned()) {
 			// found a user with this email address
 			$key = strtolower($user->getDisplayName()) . $user->guid;

@@ -19,9 +19,9 @@ $newsletter = false;
 if (!empty($guid)) {
 	$template = get_entity($guid);
 	
-	if (!$template instanceof NewsletterTemplate) {
+	if (!$template instanceof \NewsletterTemplate) {
 		return elgg_error_response(elgg_echo('error:missing_data'));
-	} elseif(!$template->canEdit()) {
+	} elseif (!$template->canEdit()) {
 		return elgg_error_response(elgg_echo('actionunauthorized'));
 	}
 } elseif (!empty($newsletter_guid)) {
@@ -29,7 +29,7 @@ if (!empty($guid)) {
 	
 	if (!empty($newsletter) && $newsletter->canEdit()) {
 		if ($newsletter instanceof \Newsletter) {
-			$template = new NewsletterTemplate();
+			$template = new \NewsletterTemplate();
 			$template->owner_guid = $newsletter->owner_guid;
 			$template->container_guid = $newsletter->container_guid;
 			$template->access_id = ACCESS_PUBLIC;
@@ -47,7 +47,7 @@ if (!empty($guid)) {
 	}
 }
 
-if (!$template instanceof NewsletterTemplate) {
+if (!$template instanceof \NewsletterTemplate) {
 	return elgg_error_response(elgg_echo('save:fail'));
 }
 
@@ -69,9 +69,6 @@ if (!$template->save()) {
 	return elgg_error_response(elgg_echo('newsletter:action:template:edit:error'));
 }
 
-$forward_url = REFERER;
-if ($newsletter instanceof Newsletter) {
-	$forward_url = elgg_generate_entity_url($newsletter, 'edit', 'template');
-}
+$forward_url = $newsletter instanceof \Newsletter ? elgg_generate_entity_url($newsletter, 'edit', 'template') : REFERRER;
 
 return elgg_ok_response('', elgg_echo('newsletter:action:template:edit:success'), $forward_url);

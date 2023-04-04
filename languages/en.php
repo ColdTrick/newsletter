@@ -21,6 +21,8 @@ return array(
 	
 	'newsletter:cli:error:secret' => "Invalid secret for use in CLI",
 	
+	'newsletter:editor:button' => "Add content to your newsletter",
+	
 	// CSV upload
 	'newsletter:csv:no_email' => "No e-mail column could be found in the first 2 rows of the CSV-file",
 	'newsletter:csv:added' => "Added %s e-mail addresses from the CSV-file",
@@ -50,9 +52,6 @@ return array(
 	'newsletter:menu:steps:schedule' => "Schedule",
 	
 	'newsletter:menu:preview_by_mail' => "Preview by mail",
-		
-	// long text menu
-	'newsletter:menu:longtext:embed_content' => "Embed content",
 	
 	'newsletter:breadcrumb:site' => "Newsletters",
 	'newsletter:breadcrumb:log' => "Delivery log",
@@ -93,6 +92,7 @@ return array(
 	// placeholders
 	'newsletter:placeholders:info' => "You can use the following placeholders in your text. They will be replaced by system text or by information about the newsletter. If you hover over them, you will get some more details.",
 	'newsletter:placeholders:content' => "Content will be replaced by the content step of the newsletter (do not use on the content page)",
+	'newsletter:placeholders:header' => "Header will be replaced by the uploaded header image from the content step",
 	'newsletter:placeholders:unsub' => "Unsub will be replaced by a default unsubcribe text containing a unsubscribe link",
 	'newsletter:placeholders:unsublink' => "Unsublink will be replaced by a unsubscribe link",
 	'newsletter:placeholders:online' => "Online will be replaced by a default text on where to view the newsletter online",
@@ -337,4 +337,7 @@ To view the newsletter click here:
 	'newsletter:action:unsubscribe:error:entity' => "An error occured while unsubscribing you from the %s newsletter, please try again",
 	'newsletter:action:unsubscribe:success:all' => "You've been unsubscribed from all newsletters",
 	'newsletter:action:unsubscribe:success:entity' => "You've been unsubscribed from the %s newsletter",
+	
+	'newsletter:upgrade:2023040400:title' => "Move newsletter icons to header images",
+	'newsletter:upgrade:2023040400:description' => "In Elgg 5 there is built in header image support. This migration moves old icons uploaded with newsletters to this new location.",
 );

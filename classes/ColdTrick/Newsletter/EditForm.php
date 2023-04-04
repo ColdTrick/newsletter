@@ -4,18 +4,21 @@ namespace ColdTrick\Newsletter;
 
 use Elgg\Values;
 
+/**
+ * Newsletter edit form helper class
+ */
 class EditForm {
 	
-	/**
-	 * @var \Newsletter
-	 */
-	protected $entity;
+	protected ?\Newsletter $entity = null;
+	
+	protected ?int $container_guid = null;
 	
 	/**
-	 * @var int
+	 * Constructor
+	 *
+	 * @param \Newsletter $entity         related newsletter
+	 * @param int         $container_guid container
 	 */
-	protected $container_guid;
-	
 	public function __construct(\Newsletter $entity = null, int $container_guid = 0) {
 		
 		if ($entity instanceof \Newsletter) {
@@ -57,7 +60,7 @@ class EditForm {
 	 *
 	 * @return array
 	 */
-	protected function prepareBasic() {
+	protected function prepareBasic(): array {
 		
 		$defaults = [
 			'title' => '',
@@ -101,7 +104,7 @@ class EditForm {
 	 *
 	 * @return array
 	 */
-	protected function prepareTemplate() {
+	protected function prepareTemplate(): array {
 		
 		$defaults = [
 			'entity' => $this->entity,
@@ -125,7 +128,7 @@ class EditForm {
 	 *
 	 * @return array
 	 */
-	protected function prepareContent() {
+	protected function prepareContent(): array {
 		
 		$defaults = [
 			'entity' => $this->entity,
@@ -150,7 +153,7 @@ class EditForm {
 	 *
 	 * @return array
 	 */
-	protected function prepareRecipients() {
+	protected function prepareRecipients(): array {
 		
 		$entity = $this->entity;
 		
@@ -183,7 +186,7 @@ class EditForm {
 	 *
 	 * @return array
 	 */
-	protected function prepareSchedule() {
+	protected function prepareSchedule(): array {
 		
 		if ($this->entity->scheduled) {
 			$date = Values::normalizeTime($this->entity->scheduled);

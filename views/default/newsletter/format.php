@@ -1,7 +1,8 @@
 <?php
 
-$format_description = elgg_format_element('label', [], elgg_echo('newsletter:embed:format:description:title'));
-$format_description .= elgg_view('input/select', [
+$format_description = elgg_view_field([
+	'#type' => 'select',
+	'#label' => elgg_echo('newsletter:embed:format:description:title'),
 	'options_values' => [
 		'full' => elgg_echo('newsletter:embed:format:description:option:full'),
 		'excerpt' => elgg_echo('newsletter:embed:format:description:option:excerpt'),
@@ -9,23 +10,17 @@ $format_description .= elgg_view('input/select', [
 	],
 	'name' => 'newsletter-embed-format-description',
 	'id' => 'newsletter-embed-format-description',
-	'class' => 'mlm',
 ]);
-$format_description = elgg_format_element('div', [], $format_description);
 
-$format_icon = elgg_format_element('label', [], elgg_echo('newsletter:embed:format:icon:title'));
-$format_icon .= elgg_view('input/select', [
-	'options_values' => [
-		'left' => elgg_echo('newsletter:embed:format:icon:option:left'),
-		'right' => elgg_echo('newsletter:embed:format:icon:option:right'),
-		'none' => elgg_echo('newsletter:embed:format:icon:option:none'),
-	],
+$format_icon = elgg_view_field([
+	'#type' => 'checkbox',
+	'#label' => elgg_echo('newsletter:embed:format:icon:title'),
 	'name' => 'newsletter-embed-format-icon',
 	'id' => 'newsletter-embed-format-icon',
-	'class' => 'mlm',
+	'value' => 1,
+	'checked' => true,
+	'switch' => true,
 ]);
-
-$format_icon = elgg_format_element('div', [], $format_icon);
 
 $result = elgg_format_element('fieldset', [], $format_description . $format_icon);
 

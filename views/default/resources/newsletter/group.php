@@ -5,32 +5,24 @@
  * @uses elgg_get_page_owner_entity() the group to list the newsletter from
  */
 
-use Elgg\Exceptions\Http\EntityNotFoundException;
-
 $page_owner = elgg_get_page_owner_entity();
-if (!$page_owner instanceof ElggGroup) {
-	throw new EntityNotFoundException();
-}
 
-elgg_entity_gatekeeper($page_owner->guid, 'group');
 elgg_group_tool_gatekeeper('newsletter');
 
-// build breadcrumb
-elgg_push_collection_breadcrumbs('object', Newsletter::SUBTYPE, $page_owner);
+elgg_push_collection_breadcrumbs('object', \Newsletter::SUBTYPE, $page_owner);
 
-// build page elements
 newsletter_register_title_menu_items($page_owner);
 
 $filter = 'sent';
-if ($page_owner->canWriteToContainer(0, 'object', Newsletter::SUBTYPE)) {
-	elgg_register_title_button('newsletter', 'add', 'object', Newsletter::SUBTYPE);
+if ($page_owner->canWriteToContainer(0, 'object', \Newsletter::SUBTYPE)) {
+	elgg_register_title_button('add', 'object', \Newsletter::SUBTYPE);
 	
 	$filter = elgg_extract('filter', $vars, $filter, false);
 }
 
 $options = [
 	'type' => 'object',
-	'subtype' => Newsletter::SUBTYPE,
+	'subtype' => \Newsletter::SUBTYPE,
 	'container_guid' => $page_owner->guid,
 	'full_view' => false,
 	'no_results' => true,
@@ -80,7 +72,6 @@ switch ($filter) {
 		break;
 }
 
-// draw page
 echo elgg_view_page(elgg_echo('newsletter:group:title', [$page_owner->getDisplayName()]), [
 	'content' => elgg_list_entities($options),
 	'filter_id' => 'newsletter/group',

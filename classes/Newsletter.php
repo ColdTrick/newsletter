@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Newsletter object class
+ */
 class Newsletter extends ElggObject {
 	
 	const SUBTYPE = 'newsletter';
@@ -23,8 +26,7 @@ class Newsletter extends ElggObject {
 	}
 	
 	/**
-	 * {@inheritDoc}
-	 * @see ElggEntity::initializeAttributes()
+	 * {@inheritdoc}
 	 */
 	protected function initializeAttributes() {
 		parent::initializeAttributes();
@@ -35,14 +37,13 @@ class Newsletter extends ElggObject {
 	}
 	
 	/**
-	 * {@inheritDoc}
-	 * @see ElggEntity::getURL()
+	 * {@inheritdoc}
 	 *
 	 * @note Casting guid to int to prevent issues with non-saved (dummy) entities
 	 */
-	public function getURL() {
+	public function getURL(): string {
 		return elgg_generate_entity_url($this, 'view', null, [
-			'code' => newsletter_generate_commanline_secret((int) $this->guid),
+			'code' => newsletter_generate_commandline_secret((int) $this->guid),
 		]);
 	}
 	
@@ -58,7 +59,7 @@ class Newsletter extends ElggObject {
 			return false;
 		}
 		
-		$fh = new ElggFile();
+		$fh = new \ElggFile();
 		$fh->owner_guid = $this->guid;
 		$fh->setFilename('logging.json');
 		
@@ -76,7 +77,7 @@ class Newsletter extends ElggObject {
 	 */
 	public function getLogging() {
 		
-		$fh = new ElggFile();
+		$fh = new \ElggFile();
 		$fh->owner_guid = $this->guid;
 		$fh->setFilename('logging.json');
 		
@@ -111,7 +112,7 @@ class Newsletter extends ElggObject {
 			unset($this->recipients);
 		}
 		
-		$fh = new ElggFile();
+		$fh = new \ElggFile();
 		$fh->owner_guid = $this->guid;
 		$fh->setFilename('recipients.json');
 		
@@ -135,7 +136,7 @@ class Newsletter extends ElggObject {
 			$this->setRecipients($recipients);
 		}
 		
-		$fh = new ElggFile();
+		$fh = new \ElggFile();
 		$fh->owner_guid = $this->guid;
 		$fh->setFilename('recipients.json');
 		

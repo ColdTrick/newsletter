@@ -44,9 +44,6 @@ return array(
 	'newsletter:menu:steps:template' => "Template",
 	'newsletter:menu:steps:recipients' => "Empfänger",
 	'newsletter:menu:steps:schedule' => "Zeitplan",
-		
-	// long text menu
-	'newsletter:menu:longtext:embed_content' => "Inhalte einbinden",
 	
 	'newsletter:breadcrumb:site' => "Newsletter",
 	'newsletter:breadcrumb:log' => "Lieferprotokoll",

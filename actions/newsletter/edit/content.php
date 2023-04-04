@@ -10,22 +10,18 @@ if (empty($guid) || empty($content)) {
 }
 
 $entity = get_entity($guid);
-if (!$entity instanceof Newsletter || !$entity->canEdit()) {
+if (!$entity instanceof \Newsletter || !$entity->canEdit()) {
 	return elgg_error_response(elgg_echo('actionunauthorized'));
 }
 
-$forward_url = REFERER;
-if (empty($entity->content)) {
-	$forward_url = elgg_generate_entity_url($entity, 'edit', 'recipients');
-}
+$forward_url = $entity->content ? REFERRER : elgg_generate_entity_url($entity, 'edit', 'recipients');
 
 $entity->content = $content;
 
-if (get_input('icon_remove')) {
-	// remove existing icons
-	$entity->deleteIcon();
+if (get_input('header_remove')) {
+	$entity->deleteIcon('header');
 } else {
-	$entity->saveIconFromUploadedFile('icon');
+	$entity->saveIconFromUploadedFile('header', 'header');
 }
 
 elgg_clear_sticky_form('newsletter/edit/content');

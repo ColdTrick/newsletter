@@ -8,7 +8,7 @@
 use Elgg\Database\QueryBuilder;
 
 $entity = elgg_extract('entity', $vars);
-if (!$entity instanceof ElggUser) {
+if (!$entity instanceof \ElggUser) {
 	return;
 }
 
@@ -41,6 +41,7 @@ $group_count = $entity->getGroups($group_options);
 if (empty($group_count)) {
 	return;
 }
+
 unset($group_options['count']);
 
 $content = [];

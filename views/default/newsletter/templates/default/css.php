@@ -3,7 +3,7 @@
 body {
 	background: #f6f6f6;
 	color: #333333;
-	font: 80%/1.4 "Lucida Grande",Arial,Tahoma,Verdana,sans-serif;
+	font: 12px "Lucida Grande",Arial,Tahoma,Verdana,sans-serif;
 }
 
 a {
@@ -41,6 +41,14 @@ h3 {
 
 h4 {
 	font-size: 14px;
+}
+
+figure.table {
+	margin: 0;
+}
+
+figure.table img {
+	max-width: 100%;
 }
 
 #newsletter_online {

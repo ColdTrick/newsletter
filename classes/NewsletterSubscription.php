@@ -1,9 +1,6 @@
 <?php
 /**
  * Custom class for Newsletter Subscriptions
- *
- * @package Newsletter
- *
  */
 class NewsletterSubscription extends ElggObject {
 	const SUBSCRIPTION = 'subscribed';
@@ -12,11 +9,7 @@ class NewsletterSubscription extends ElggObject {
 	const SUBTYPE = 'newsletter_subscription';
 	
 	/**
-	 * Initializes attributes for this class
-	 *
-	 * @return void
-	 *
-	 * @see ElggObject::initializeAttributes()
+	 * {@inheritdoc}
 	 */
 	public function initializeAttributes() {
 		parent::initializeAttributes();
@@ -30,11 +23,7 @@ class NewsletterSubscription extends ElggObject {
 	}
 	
 	/**
-	 * Save the subscription to the database
-	 *
-	 * @return bool
-	 *
-	 * @see ElggObject::save()
+	 * {@inheritdoc}
 	 */
 	public function save(): bool {
 		// ignore access restrictions

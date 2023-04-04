@@ -2,16 +2,19 @@
 
 namespace ColdTrick\Newsletter;
 
+/**
+ * Access callbacks
+ */
 class Access {
 
 	/**
 	 * Remove some options from the write access array if it's a newsletter
 	 *
-	 * @param \Elgg\Hook $hook 'access:collections:write', 'all'
+	 * @param \Elgg\Event $event 'access:collections:write', 'all'
 	 *
 	 * @return array write access array
 	 */
-	public static function writeAccessCollections(\Elgg\Hook $hook) {
+	public static function writeAccessCollections(\Elgg\Event $event) {
 		
 		if (!elgg_is_logged_in() || !elgg_in_context('newsletter')) {
 			return;
@@ -27,7 +30,7 @@ class Access {
 			}
 		}
 		
-		$returnvalue = $hook->getValue();
+		$returnvalue = $event->getValue();
 		foreach ($returnvalue as $access_id => $label) {
 			if (!in_array($access_id, $allowed_keys)) {
 				unset($returnvalue[$access_id]);

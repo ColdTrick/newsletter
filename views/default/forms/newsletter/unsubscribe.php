@@ -9,7 +9,7 @@
  */
 
 $entity = elgg_extract('entity', $vars);
-if (!$entity instanceof ElggEntity) {
+if (!$entity instanceof \ElggEntity) {
 	return;
 }
 
@@ -18,6 +18,7 @@ echo elgg_view_field([
 	'name' => 'entity_guid',
 	'value' => $entity->guid,
 ]);
+
 echo elgg_view_field([
 	'#type' => 'hidden',
 	'name' => 'code',
@@ -35,6 +36,7 @@ if (is_numeric($recipient)) {
 	echo elgg_view('output/longtext', ['value' => elgg_echo('newsletter:unsubscribe:email:empty')]);
 	echo elgg_view('input/text', ['name' => 'recipient']) . '<br /><br />';
 }
+
 if (!empty($recipient)) {
 	echo elgg_view_field([
 		'#type' => 'hidden',

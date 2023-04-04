@@ -1,6 +1,9 @@
 <?php
 
 use Elgg\Router\Middleware\Gatekeeper;
+use Elgg\Router\Middleware\GroupPageOwnerGatekeeper;
+use Elgg\Router\Middleware\UserPageOwnerCanEditGatekeeper;
+use ColdTrick\Newsletter\Upgrades\MoveHeaderIcons;
 
 require_once(__DIR__ . '/lib/functions.php');
 
@@ -10,14 +13,6 @@ return [
 		'dependencies' => [
 			'ckeditor' => [],
 		],
-	],
-	'settings' => [
-		'allow_site' => 'yes',
-		'allow_groups' => 'no',
-		'custom_from' => 'no',
-		'include_existing_users' => 'yes',
-		'include_banned_users' => 0,
-		'allow_copy_template' => true,
 	],
 	'entities' => [
 		[
@@ -48,6 +43,17 @@ return [
 				'searchable' => false,
 			],
 		],
+	],
+	'settings' => [
+		'allow_site' => 'yes',
+		'allow_groups' => 'no',
+		'custom_from' => 'no',
+		'include_existing_users' => 'yes',
+		'include_banned_users' => 0,
+		'allow_copy_template' => true,
+	],
+	'upgrades' => [
+		MoveHeaderIcons::class,
 	],
 	'routes' => [
 		'add:object:newsletter' => [
@@ -130,6 +136,9 @@ return [
 		'collection:object:newsletter:group' => [
 			'path' => 'newsletter/group/{guid}/{filter?}',
 			'resource' => 'newsletter/group',
+			'middleware' => [
+				GroupPageOwnerGatekeeper::class,
+			],
 		],
 		'collection:object:newsletter:received' => [
 			'path' => 'newsletter/received/{username}',
@@ -146,7 +155,7 @@ return [
 			'path' => 'newsletter/subscriptions/{username}',
 			'resource' => 'newsletter/subscriptions',
 			'middleware' => [
-				Gatekeeper::class,
+				UserPageOwnerCanEditGatekeeper::class,
 			],
 		],
 		'default:object:newsletter:recipients' => [
@@ -170,7 +179,7 @@ return [
 			'resource' => 'newsletter/site',
 		],
 	],
-	'hooks' => [
+	'events' => [
 		'access:collections:write' => [
 			'all' => [
 				'ColdTrick\Newsletter\Access::writeAccessCollections' => ['priority' => 700], // needs to be after groups
@@ -186,9 +195,9 @@ return [
 				'ColdTrick\Newsletter\Cron::sendNewsletters' => [],
 			],
 		],
-		'entity:icon:sizes' => [
+		'entity:header:sizes' => [
 			'object' => [
-				'ColdTrick\Newsletter\Icons::extendIconSizes' => [],
+				'ColdTrick\Newsletter\Icons::extendHeaderSizes' => [],
 			],
 		],
 		'entity:url' => [
@@ -224,9 +233,6 @@ return [
 			'menu:filter:newsletter_steps' => [
 				'ColdTrick\Newsletter\Menus::newsletterSteps' => [],
 			],
-			'menu:longtext' => [
-				'ColdTrick\Newsletter\Menus::longtextRegister' => [],
-			],
 			'menu:owner_block' => [
 				'ColdTrick\Newsletter\Menus::ownerBlockRegister' => [],
 			],
@@ -257,14 +263,11 @@ return [
 		],
 		'view_vars' => [
 			'page/layouts/newsletter' => [
-				'ColdTrick\Newsletter\Plugins\DeveloperTools::preventLogOutput' =>[],
+				'ColdTrick\Newsletter\Plugins\DeveloperTools::preventLogOutput' => [],
 			],
 		],
 	],
 	'view_extensions' => [
-		'css/elgg' => [
-			'css/newsletter.css' => [],
-		],
 		'register/extend' => [
 			'newsletter/register' => [],
 		],

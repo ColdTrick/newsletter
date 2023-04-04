@@ -2,6 +2,7 @@
 
 $replacements = [
 	'{content}' => elgg_echo('newsletter:placeholders:content'),
+	'{header}' => elgg_echo('newsletter:placeholders:header'),
 	'{unsub}' => elgg_echo('newsletter:placeholders:unsub'),
 	'{unsublink}' => elgg_echo('newsletter:placeholders:unsublink'),
 	'{online}' => elgg_echo('newsletter:placeholders:online'),

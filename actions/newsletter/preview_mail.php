@@ -12,7 +12,7 @@ if (empty($guid) || empty($email)) {
 }
 
 $entity = get_entity($guid);
-if (!$entity instanceof Newsletter) {
+if (!$entity instanceof \Newsletter) {
 	return elgg_error_response(elgg_echo('error:missing_data'));
 }
 

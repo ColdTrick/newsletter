@@ -23,11 +23,11 @@ if ((elgg_get_plugin_setting('custom_from', 'newsletter') === 'yes') && !newslet
 
 if (!empty($guid)) {
 	$entity = get_entity($guid);
-	if (!$entity instanceof Newsletter || !$entity->canEdit()) {
+	if (!$entity instanceof \Newsletter || !$entity->canEdit()) {
 		return elgg_error_response(elgg_echo('actionunauthorized'));
 	}
 } else {
-	$entity = new Newsletter();
+	$entity = new \Newsletter();
 	$entity->owner_guid = $container_guid;
 	$entity->container_guid = $container_guid;
 	$entity->access_id = $access_id;
@@ -65,9 +65,6 @@ if (!$entity->save()) {
 
 elgg_clear_sticky_form('newsletter/edit');
 
-$forward_url = REFERRER;
-if ($new_entity) {
-	$forward_url = elgg_generate_entity_url($entity, 'edit', 'template');
-}
+$forward_url = $new_entity ? elgg_generate_entity_url($entity, 'edit', 'template') : REFERRER;
 
 return elgg_ok_response('', elgg_echo('newsletter:action:edit:success'), $forward_url);

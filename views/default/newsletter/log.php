@@ -39,6 +39,7 @@ if ($entity->status == 'sent') {
 } else {
 	$table_data .= elgg_echo('newsletter:status:' . $entity->status);
 }
+
 $table_data .= '</td>';
 $table_data .= '</tr>';
 
@@ -71,11 +72,12 @@ $emails_error_counter = 0;
 foreach ($recipients as $recipient) {
 	$type = elgg_extract('type', $recipient);
 	
-	if ($type == 'users') {
+	if ($type === 'users') {
 		$users_counter++;
 		if (($users_counter > 25) && empty($users_row_class)) {
 			$users_row_class = 'hidden';
 		}
+		
 		$skip_columns = ['type', 'timestamp'];
 		if (!elgg_is_admin_logged_in()) {
 			$skip_columns[] = 'email';
@@ -91,11 +93,13 @@ foreach ($recipients as $recipient) {
 				}
 				
 				$options = [];
-				if ($key == 'status') {
+				if ($key === 'status') {
 					$options['class'] = 'center';
 				}
+				
 				$users_header .= elgg_format_element('th', $options, elgg_echo("newsletter:log:users:header:{$key}"));
 			}
+			
 			$users_header = elgg_format_element('tr', [], $users_header);
 		}
 		
@@ -108,7 +112,10 @@ foreach ($recipients as $recipient) {
 			switch ($key) {
 				case 'guid':
 					$user = get_user($data);
-					$users_content_data .= elgg_format_element('td', [], $user->name);
+					$users_content_data .= elgg_format_element('td', [], $user ? (string) $user->name : $data);
+					if ($user instanceof \ElggUser) {
+						$user->invalidateCache();
+					}
 					break;
 				case 'status':
 					if ($data) {
@@ -123,12 +130,14 @@ foreach ($recipients as $recipient) {
 					break;
 			}
 		}
+		
 		$users_content .= elgg_format_element('tr', ['class' => $users_row_class], $users_content_data);
-	} elseif ($type == 'emails') {
+	} elseif ($type === 'emails') {
 		$emails_counter++;
 		if (($emails_counter > 25) && empty($emails_row_class)) {
 			$emails_row_class = 'hidden';
 		}
+		
 		$skip_columns = ['type', 'timestamp'];
 		
 		if (empty($emails_header)) {
@@ -141,12 +150,13 @@ foreach ($recipients as $recipient) {
 				}
 				
 				$options = [];
-				if ($key == 'status') {
+				if ($key === 'status') {
 					$options['class'] = 'center';
 				}
 				
 				$emails_header .= elgg_format_element('th', $options, elgg_echo("newsletter:log:email:header:{$key}"));
 			}
+			
 			$emails_header = elgg_format_element('tr', [], $emails_header);
 		}
 		
@@ -170,6 +180,7 @@ foreach ($recipients as $recipient) {
 					break;
 			}
 		}
+		
 		$emails_content .= elgg_format_element('tr', ['class' => $emails_row_class], $emails_content_data);
 	}
 }
@@ -183,16 +194,15 @@ if (!empty($users_content)) {
 	$users_content = elgg_format_element('table', [
 		'class' => 'elgg-table',
 		'id' => 'newsletter-log-users-table',
-	], $users_header . $users_content);
+	], elgg_format_element('thead', [], $users_header) . $users_content);
 	
 	if (!empty($users_row_class)) {
 		$more_link = elgg_view('output/url', [
 			'text' => elgg_echo('more'),
 			'href' => '#newsletter-log-users-table',
 			'onclick' => '$("#newsletter-log-users-table tr.hidden").show();$(this).parent().remove();',
-			'class' => 'float-alt',
 		]);
-		$users_content .= elgg_format_element('div', ['class' => 'mtm'], $more_link);
+		$users_content .= elgg_format_element('div', ['class' => 'mtm elgg-justify-right'], $more_link);
 	}
 } else {
 	$users_content = elgg_view('output/longtext', ['value' => elgg_echo('newsletter:log:users:no_recipients')]);
@@ -207,16 +217,15 @@ if (!empty($emails_content)) {
 	$emails_content = elgg_format_element('table', [
 		'class' => 'elgg-table',
 		'id' => 'newsletter-log-emails-table',
-	], $emails_header . $emails_content);
+	], elgg_format_element('thead', [], $emails_header) . $emails_content);
 	
 	if (!empty($emails_row_class)) {
 		$more_link = elgg_view('output/url', [
 			'text' => elgg_echo('more'),
 			'href' => '#newsletter-log-emails-table',
 			'onclick' => '$("#newsletter-log-emails-table tr.hidden").show();$(this).parent().remove();',
-			'class' => 'float-alt',
 		]);
-		$emails_content .= elgg_format_element('div', ['class' => 'mtm'], $more_link);
+		$emails_content .= elgg_format_element('div', ['class' => 'mtm elgg-justify-right'], $more_link);
 	}
 } else {
 	$emails_content = elgg_view('output/longtext', ['value' => elgg_echo('newsletter:log:emails:no_recipients')]);

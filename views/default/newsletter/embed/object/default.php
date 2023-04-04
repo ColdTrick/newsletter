@@ -12,21 +12,21 @@ $data = [
 	'data-url' => $entity->getURL(),
 ];
 
-// excerpt support
-$excerpt = $entity->excerpt;
-if (empty($excerpt)) {
-	$excerpt = elgg_get_excerpt($entity->description);
-}
+$excerpt = $entity->excerpt ?: elgg_get_excerpt((string) $entity->description);
+
 if (!empty($excerpt)) {
 	$data['data-excerpt'] = $excerpt;
 }
 
 // icon support
-$icon_size = elgg_extract('icon_size', $vars, 'medium');
+$icon_size = elgg_extract('icon_size', $vars, 'header');
+$icon_type = elgg_extract('icon_type', $vars, 'header');
 unset($vars['icon_size']);
-if ($entity->hasIcon($icon_size)) {
+unset($vars['icon_type']);
+if ($entity->hasIcon($icon_size, $icon_type)) {
 	$data['data-icon-url'] = $entity->getIconURL([
 		'size' => $icon_size,
+		'type' => $icon_type,
 		'use_cookie' => false,
 	]);
 }

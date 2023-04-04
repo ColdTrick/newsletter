@@ -1,0 +1,32 @@
+.elgg-form-newsletter-edit-template {
+	.elgg-input-radios {
+		> li:hover > label > a {
+			display: inline-block;
+		}
+	}
+	
+	.elgg-discover:hover {
+		.elgg-discoverable {
+			display: inline;
+		}
+	}
+}
+
+#newsletter-form-recipients {
+	.elgg-autocomplete-item-remove {
+		display: none;
+	}
+	
+	.elgg-item:hover {
+		.elgg-autocomplete-item-remove {
+			display: inline-block;
+			cursor: pointer;
+		}
+	}
+}
+
+.newsletter-placeholders li {
+	display: inline-block;
+	padding-right: 5px;
+	cursor: help;
+}

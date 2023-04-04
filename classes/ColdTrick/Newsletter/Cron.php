@@ -4,21 +4,24 @@ namespace ColdTrick\Newsletter;
 
 use Elgg\Values;
 
+/**
+ * Cron callbacks
+ */
 class Cron {
 
 	/**
-	 * The cron hook will take care of sending all the scheduled newsletters
+	 * The cron event will take care of sending all the scheduled newsletters
 	 *
-	 * @param \Elgg\Hook $hook 'cron', 'hourly'
+	 * @param \Elgg\Event $event 'cron', 'hourly'
 	 *
 	 * @return void
 	 */
-	public static function sendNewsletters(\Elgg\Hook $hook) {
+	public static function sendNewsletters(\Elgg\Event $event) {
 		
 		echo 'Starting newsletter processing' . PHP_EOL;
 		elgg_log('Starting newsletter processing', 'NOTICE');
 		
-		$cron_ts = $hook->getParam('time', time());
+		$cron_ts = $event->getParam('time', time());
 		
 		$ts = Values::normalizeTime($cron_ts);
 		

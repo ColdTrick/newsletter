@@ -1,0 +1,40 @@
+#newsletter-embed-list {
+	width: 700px;
+
+	> li {
+		padding: 5px;
+		border: 1px solid transparent;
+		cursor: pointer;
+		
+		white-space: nowrap;
+		overflow: hidden;
+		
+		.elgg-listing-summary-content {
+			color: $(text-color-soft);
+		}
+	}
+
+	li:hover {
+		border-color: $(border-color-mild);
+	}
+}
+
+#newsletter-embed-search {
+	.elgg-input-text {
+		width: 400px;
+		margin-right: 10px;
+	}
+	
+	.elgg-input-select {
+		max-width: 100px;
+	}
+}
+
+#newsletter-embed-format {
+	> .elgg-module-info {
+		> .elgg-body {
+			max-height: 400px;
+			overflow: auto;
+		}
+	}
+}

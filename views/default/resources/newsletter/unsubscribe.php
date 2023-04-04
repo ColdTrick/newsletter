@@ -14,13 +14,12 @@ $code = get_input('c');
 $user_guid = (int) get_input('u');
 $email = get_input('e');
 
-// check if we have correct input
 if (empty($guid)) {
 	throw new BadRequestException(elgg_echo('newsletter:unsubscribe:error:input'));
 }
 
 $entity = get_entity($guid);
-if (!$entity instanceof ElggSite && !$entity instanceof ElggGroup) {
+if (!$entity instanceof \ElggSite && !$entity instanceof \ElggGroup) {
 	throw new EntityNotFoundException();
 }
 
@@ -28,11 +27,12 @@ if (!empty($user_guid)) {
 	if (elgg_is_logged_in() && ($user_guid !== elgg_get_logged_in_user_guid())) {
 		// got the link from a forwarded email?
 		$forward_url = elgg_generate_url('collection:object:newsletter:site');
-		if ($entity instanceof ElggGroup) {
+		if ($entity instanceof \ElggGroup) {
 			$forward_url = elgg_generate_url('collection:object:newsletter:group', [
 				'guid' => $entity->guid,
 			]);
 		}
+		
 		$e = new ValidationException(elgg_echo('newsletter:unsubscribe:error:invalid_user'));
 		$e->setRedirectUrl($forward_url);
 		throw $e;
@@ -47,18 +47,14 @@ if (!empty($user_guid)) {
 if ($code && !newsletter_validate_unsubscribe_code($entity, $recipient, $code)) {
 	throw new ValidationException(elgg_echo('newsletter:unsubscribe:error:code'));
 }
-	
-// breadcrumb
-elgg_push_collection_breadcrumbs('object', Newsletter::SUBTYPE, $entity instanceof ElggGroup ? $entity : null);
 
-$form = elgg_view_form('newsletter/unsubscribe', [], [
-	'entity' => $entity,
-	'recipient' => $recipient,
-	'code' => $code,
-]);
+elgg_push_collection_breadcrumbs('object', \Newsletter::SUBTYPE, $entity instanceof \ElggGroup ? $entity : null);
 
-// draw page
 echo elgg_view_page(elgg_echo('newsletter:unsubscribe:title'), [
-	'content' => $form,
+	'content' => elgg_view_form('newsletter/unsubscribe', [], [
+		'entity' => $entity,
+		'recipient' => $recipient,
+		'code' => $code,
+	]),
 	'filter' => false,
 ]);

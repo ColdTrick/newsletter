@@ -11,14 +11,11 @@ if (empty($guid)) {
 }
 
 $entity = get_entity($guid);
-if (!$entity instanceof Newsletter || !$entity->canEdit()) {
+if (!$entity instanceof \Newsletter || !$entity->canEdit()) {
 	return elgg_error_response(elgg_echo('actionunauthorized'));
 }
 
-$forward_url = REFERER;
-if (empty($entity->template)) {
-	$forward_url = elgg_generate_entity_url($entity, 'edit', 'content');
-}
+$forward_url = empty($entity->template) ? elgg_generate_entity_url($entity, 'edit', 'content') : REFERRER;
 
 $entity->html = $html;
 $entity->css = $css;

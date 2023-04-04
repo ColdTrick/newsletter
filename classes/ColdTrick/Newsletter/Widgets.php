@@ -2,18 +2,21 @@
 
 namespace ColdTrick\Newsletter;
 
+/**
+ * Widgets callbacks
+ */
 class Widgets {
 
 	/**
 	 * Provide an URL for a widget title
 	 *
-	 * @param \Elgg\Hook $hook 'entity:url', 'object'
+	 * @param \Elgg\Event $event 'entity:url', 'object'
 	 *
 	 * @return string
 	 */
-	public static function widgetURL(\Elgg\Hook $hook) {
+	public static function widgetURL(\Elgg\Event $event) {
 		
-		$widget = $hook->getEntityParam();
+		$widget = $event->getEntityParam();
 		if (!$widget instanceof \ElggWidget) {
 			return;
 		}
@@ -22,7 +25,7 @@ class Widgets {
 			return;
 		}
 		
-		$return = $hook->getValue();
+		$return = $event->getValue();
 		if (!empty($return)) {
 			return;
 		}

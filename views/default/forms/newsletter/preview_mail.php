@@ -2,7 +2,7 @@
 
 $entity = elgg_extract('entity', $vars);
 $user = elgg_get_logged_in_user_entity();
-if (!$entity instanceof Newsletter || !$user instanceof ElggUser) {
+if (!$entity instanceof \Newsletter || !$user instanceof \ElggUser) {
 	return;
 }
 

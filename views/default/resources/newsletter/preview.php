@@ -4,20 +4,22 @@ use Elgg\Exceptions\Http\EntityPermissionsException;
 
 $guid = (int) get_input('guid');
 
-elgg_entity_gatekeeper($guid, 'object', Newsletter::SUBTYPE);
+elgg_entity_gatekeeper($guid, 'object', \Newsletter::SUBTYPE);
+
 /* @var $entity Newsletter */
 $entity = get_entity($guid);
-
 if (!$entity->canEdit()) {
 	throw new EntityPermissionsException();
 }
 
+elgg_require_css('resources/newsletter/preview');
+
 $container = $entity->getContainerEntity();
-if (!$container instanceof ElggGroup) {
+if (!$container instanceof \ElggGroup) {
 	$container = null;
 }
 
-elgg_push_collection_breadcrumbs('object', Newsletter::SUBTYPE, $container);
+elgg_push_collection_breadcrumbs('object', \Newsletter::SUBTYPE, $container);
 
 elgg_register_menu_item('title', [
 	'name' => 'preview_by_mail',
@@ -35,4 +37,6 @@ echo elgg_view_page(elgg_echo('preview'), [
 	'sidebar' => false,
 	'filter' => false,
 	'entity' => $entity,
+], 'default', [
+	'header_url' => false,
 ]);

@@ -2,27 +2,30 @@
 
 namespace ColdTrick\Newsletter;
 
+/**
+ * Permissions callbacks
+ */
 class Permissions {
 	
 	/**
 	 * Prevent newsletter from being created in the wrong container
 	 *
-	 * @param \Elgg\Hook $hook 'container_logic_check', 'object'
+	 * @param \Elgg\Event $event 'container_logic_check', 'object'
 	 *
 	 * @return void|bool
 	 */
-	public static function containerLogic(\Elgg\Hook $hook) {
+	public static function containerLogic(\Elgg\Event $event) {
 		
-		if ($hook->getParam('subtype') !== \Newsletter::SUBTYPE) {
+		if ($event->getParam('subtype') !== \Newsletter::SUBTYPE) {
 			return;
 		}
 		
-		$user = $hook->getUserParam();
+		$user = $event->getUserParam();
 		if (!$user instanceof \ElggUser) {
 			return false;
 		}
 		
-		$container = $hook->getParam('container');
+		$container = $event->getParam('container');
 		if ($container instanceof \ElggSite) {
 			if ($user->isAdmin() && elgg_get_plugin_setting('allow_site', 'newsletter') === 'yes') {
 				return true;

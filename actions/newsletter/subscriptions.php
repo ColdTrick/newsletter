@@ -37,7 +37,7 @@ foreach ($subscriptions as $guid => $value) {
 	// 0 => unsubscribe
 	$value = (bool) $value;
 	$entity = get_entity($guid);
-	if (!$entity instanceof ElggEntity) {
+	if (!$entity instanceof \ElggEntity) {
 		continue;
 	}
 	

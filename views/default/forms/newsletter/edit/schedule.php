@@ -44,7 +44,7 @@ echo elgg_view_field([
 
 echo elgg_view_field([
 	'#type' => 'checkbox',
-	'#label' => elgg_echo("newsletter:schedule:show_in_archive"),
+	'#label' => elgg_echo('newsletter:schedule:show_in_archive'),
 	'name' => 'show_in_archive',
 	'value' => 1,
 	'checked' => (bool) elgg_extract('show_in_archive', $vars),

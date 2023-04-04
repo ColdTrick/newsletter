@@ -11,7 +11,7 @@ if (is_numeric($template)) {
 	// probably a custom template, lets check
 	$template_entity = get_entity($template);
 	
-	if ($template_entity instanceof NewsletterTemplate) {
+	if ($template_entity instanceof \NewsletterTemplate) {
 		$content = $template_entity->html;
 	} else {
 		// something wrong, reset to default
@@ -34,12 +34,25 @@ if (!isset($content)) {
 
 $container_entity = $entity->getContainerEntity();
 $container_url = $container_entity->getURL();
-if ($container_entity instanceof ElggSite) {
+if ($container_entity instanceof \ElggSite) {
 	$container_url = $container_entity->url;
+}
+
+$header = '';
+if ($entity->hasIcon('newsletter', 'header')) {
+	$header = elgg_format_element('img', [
+		'src' => elgg_normalize_url($entity->getIconURL([
+			'type' => 'header',
+			'size' => 'newsletter',
+		])),
+		'style' => 'display:block;',
+		'width' => '100%',
+	]);
 }
 
 $replacements = [
 	'{content}' => $entity->content,
+	'{header}' => $header,
 	'{unsub}' => elgg_echo('newsletter:body:unsub'),
 	'{online}' => elgg_echo('newsletter:body:online'),
 	'{title}' => $entity->title,
@@ -72,7 +85,7 @@ if (PHP_SAPI !== 'cli') {
 }
 
 foreach ($replacements as $search => $replace) {
-	$content = str_ireplace($search, $replace, $content);
+	$content = str_ireplace($search, (string) $replace, $content);
 }
 
 echo $content;
