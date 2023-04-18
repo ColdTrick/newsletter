@@ -1,6 +1,6 @@
 <?php
 
-namespace ColdTrick\Newsletter;
+namespace ColdTrick\Newsletter\Plugins;
 
 use Elgg\Groups\Tool;
 
@@ -14,7 +14,7 @@ class Groups {
 	 *
 	 * @param \Elgg\Event $event 'tool_options', 'group'
 	 *
-	 * @return []
+	 * @return array
 	 */
 	public static function registerGroupNewsletterTool(\Elgg\Event $event) {
 		$plugin = elgg_get_plugin_from_id('newsletter');

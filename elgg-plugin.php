@@ -248,7 +248,7 @@ return [
 		],
 		'tool_options' => [
 			'group' => [
-				'\ColdTrick\Newsletter\Groups::registerGroupNewsletterTool' => [],
+				'\ColdTrick\Newsletter\Plugins\Groups::registerGroupNewsletterTool' => [],
 			],
 		],
 		'usersettings:save' => [
