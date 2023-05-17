@@ -1,10 +1,14 @@
 <?php
 /**
- * This file was created by Translation Editor v10.1.1
- * On 2022-08-18 12:51
+ * This file was created by Translation Editor v11.1
+ * On 2023-05-17 14:59
  */
 
 return array (
+  'newsletter:editor:button' => 'Voeg content toe aan je nieuwsbrief',
+  'newsletter:upgrade:2023040400:title' => 'Verplaats de nieuwsbrief iconen naar kopafbeeldingen',
+  'newsletter:upgrade:2023040400:description' => 'In Elgg 5 is er ondersteuning voor kopafbeeldingen. Deze migratie verplaatst de oude iconen naar de nieuwe locatie.',
+  'newsletter:placeholders:header' => 'De kopafbeelding zal worden vervangen met de kopafbeelding uit de inhoud stap',
   'groups:tool:newsletter:description' => 'Laat de groepseigenaren nieuwsbrieven versturen naar de groepsleden.',
   'input:container_guid:object:newsletter:info' => 'De nieuwsbrief zal worden geplaatst in %s',
   'newsletter:settings:include_banned_users' => 'Geblokkeerde gebruikers meenemen in het versturen van de nieuwsbrieven',
@@ -15,7 +19,6 @@ return array (
   'newsletter:csv_exporter:scheduled:readable' => 'Gepland aflever tijdstip (leesbaar)',
   'newsletter:csv_exporter:endtime' => 'Aflevering afgerond tijdstip',
   'newsletter:csv_exporter:endtime:readable' => 'Aflevering afgerond tijdstip (leesbaar)',
-  'newsletter:embed:subtype_filter:all' => 'Filter geëmbedde content',
   'newsletter:settings:embed' => 'Instellingen voor content embedding',
   'newsletter:settings:embed:description' => 'Hieronder is te configureren welke content types er kunnen worden geëmbed in een nieuwsbrief.',
   'newsletter:settings:allow_site' => 'Schakel site nieuwsbrieven in',
@@ -234,9 +237,6 @@ Om de nieuwsbrief te bekijken klik hier:
   'newsletter:embed:format:description:option:excerpt' => 'Klein stukje (met meer knop)',
   'newsletter:embed:format:description:option:no' => 'Geen tekst',
   'newsletter:embed:format:icon:title' => 'Toon afbeelding',
-  'newsletter:embed:format:icon:option:left' => 'Links uitgelijnd',
-  'newsletter:embed:format:icon:option:right' => 'Rechts uitgelijnd',
-  'newsletter:embed:format:icon:option:none' => 'Toon geen afbeelding',
   'newsletter:embed:format:add_to_newsletter' => 'Toevoegen aan de nieuwsbrief',
   'newsletter:embed:format:preview:title' => 'Voorbeeld',
   'newsletter:embed:read_more' => 'Lees meer',
