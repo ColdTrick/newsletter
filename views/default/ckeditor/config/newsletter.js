@@ -57,12 +57,10 @@ define(['jquery', 'elgg', 'elgg/hooks', 'elgg/i18n', 'elgg/lightbox', 'elgg/Ajax
 	}
 	
 	function embed(content) {
-		console.log(content);
 		var htmlDP = active_editor.data.processor;
 		var viewFragment = htmlDP.toView(content);
 		var modelFragment = active_editor.data.toModel(viewFragment);
-		console.log(viewFragment);
-		console.log(modelFragment);
+		
 		active_editor.model.insertContent(modelFragment);
 	
 		lightbox.close();
