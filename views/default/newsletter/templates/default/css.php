@@ -43,11 +43,11 @@ h4 {
 	font-size: 14px;
 }
 
-figure.table {
+figure {
 	margin: 0;
 }
 
-figure.table img {
+figure img {
 	max-width: 100%;
 }
 
