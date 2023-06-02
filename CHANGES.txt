@@ -1,6 +1,11 @@
 Version history
 ===============
 
+10.0 (2023-06-02):
+
+- changed: conflict with Elgg < 5.0
+- changed: updated for Elgg 5
+
 9.0.1 (2022-12-08):
 
 - fixed: show in archive now showing correct state when editing
