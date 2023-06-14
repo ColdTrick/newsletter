@@ -158,13 +158,6 @@ return [
 				UserPageOwnerCanEditGatekeeper::class,
 			],
 		],
-		'default:object:newsletter:recipients' => [
-			'path' => 'newsletter/recipients',
-			'resource' => 'newsletter/recipients',
-			'middleware' => [
-				Gatekeeper::class,
-			],
-		],
 		'default:object:newsletter:embed' => [
 			'path' => 'newsletter/embed/{guid}',
 			'resource' => 'newsletter/embed',
