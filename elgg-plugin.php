@@ -52,8 +52,26 @@ return [
 		'include_banned_users' => 0,
 		'allow_copy_template' => true,
 	],
-	'upgrades' => [
-		MoveHeaderIcons::class,
+	'actions' => [
+		'newsletter/edit' => [],
+		'newsletter/edit/schedule' => [],
+		'newsletter/edit/content' => [],
+		'newsletter/edit/template' => [],
+		'newsletter/edit/template_to_custom' => [],
+		'newsletter/edit/recipients' => [],
+		
+		'newsletter/subscribe' => [
+			'access' => 'public',
+		],
+		'newsletter/unsubscribe' => [
+			'access' => 'public',
+		],
+		'newsletter/subscriptions' => [],
+		'newsletter/duplicate' => [],
+		'newsletter/preview_mail' => [],
+		
+		'newsletter/template/edit' => [],
+		'newsletter/template/delete' => [],
 	],
 	'routes' => [
 		'add:object:newsletter' => [
@@ -239,6 +257,11 @@ return [
 				'ColdTrick\Newsletter\User::subscribeToSiteNewsletter' => [],
 			],
 		],
+		'seeds' => [
+			'database' => [
+				'ColdTrick\Newsletter\Seeder::register' => [],
+			],
+		],
 		'tool_options' => [
 			'group' => [
 				'\ColdTrick\Newsletter\Plugins\Groups::registerGroupNewsletterTool' => [],
@@ -260,6 +283,9 @@ return [
 			],
 		],
 	],
+	'upgrades' => [
+		MoveHeaderIcons::class,
+	],
 	'view_extensions' => [
 		'register/extend' => [
 			'newsletter/register' => [],
@@ -268,27 +294,6 @@ return [
 	'view_options' => [
 		'forms/newsletter/preview_mail' => ['ajax' => true],
 		'forms/newsletter/subscribe' => ['ajax' => true],
-	],
-	'actions' => [
-		'newsletter/edit' => [],
-		'newsletter/edit/schedule' => [],
-		'newsletter/edit/content' => [],
-		'newsletter/edit/template' => [],
-		'newsletter/edit/template_to_custom' => [],
-		'newsletter/edit/recipients' => [],
-		
-		'newsletter/subscribe' => [
-			'access' => 'public',
-		],
-		'newsletter/unsubscribe' => [
-			'access' => 'public',
-		],
-		'newsletter/subscriptions' => [],
-		'newsletter/duplicate' => [],
-		'newsletter/preview_mail' => [],
-		
-		'newsletter/template/edit' => [],
-		'newsletter/template/delete' => [],
 	],
 	'widgets' => [
 		'newsletter_subscribe' => [
