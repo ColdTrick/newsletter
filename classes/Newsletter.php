@@ -42,7 +42,7 @@ class Newsletter extends ElggObject {
 	 * @note Casting guid to int to prevent issues with non-saved (dummy) entities
 	 */
 	public function getURL(): string {
-		return elgg_generate_entity_url($this, 'view', null, [
+		return (string) elgg_generate_entity_url($this, 'view', null, [
 			'code' => newsletter_generate_commandline_secret((int) $this->guid),
 		]);
 	}
