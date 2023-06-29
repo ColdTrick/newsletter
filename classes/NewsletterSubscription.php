@@ -1,8 +1,12 @@
 <?php
+
 /**
  * Custom class for Newsletter Subscriptions
+ *
+ * @property string $title e-mail address of the non Elgg user
  */
-class NewsletterSubscription extends ElggObject {
+class NewsletterSubscription extends \ElggObject {
+	
 	const SUBSCRIPTION = 'subscribed';
 	const BLACKLIST = 'blacklisted';
 	const GENERAL_BLACKLIST = 'general_blacklisted';
@@ -11,7 +15,7 @@ class NewsletterSubscription extends ElggObject {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function initializeAttributes() {
+	protected function initializeAttributes() {
 		parent::initializeAttributes();
 		
 		$site = elgg_get_site_entity();
