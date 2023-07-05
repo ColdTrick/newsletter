@@ -2,8 +2,19 @@
 
 /**
  * Newsletter object class
+ *
+ * @property string $content             content of the newsletter
+ * @property string $css                 CSS code of the newsletter template (if not using a predefined template)
+ * @property string $from                custom sender e-mail address
+ * @property string $html                HTML code of the newsletter template (if not using a predefined template)
+ * @property int    $scheduled           timestamp when the newsletter is scheduled to be sent
+ * @property int    $show_in_archive     should the newsletter be added to the archive
+ * @property string $status              current status of the newsletter
+ * @property string $status_notification e-mail address to send status notification once sent
+ * @property string $subject             custom newsletter subject
+ * @property string $template            predefined newsletter template
  */
-class Newsletter extends ElggObject {
+class Newsletter extends \ElggObject {
 	
 	const SUBTYPE = 'newsletter';
 	const SEND_TO = 'send_to';
@@ -42,7 +53,7 @@ class Newsletter extends ElggObject {
 	 * @note Casting guid to int to prevent issues with non-saved (dummy) entities
 	 */
 	public function getURL(): string {
-		return elgg_generate_entity_url($this, 'view', null, [
+		return (string) elgg_generate_entity_url($this, 'view', null, [
 			'code' => newsletter_generate_commandline_secret((int) $this->guid),
 		]);
 	}
