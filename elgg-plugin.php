@@ -271,6 +271,9 @@ return [
 		'register/extend' => [
 			'newsletter/register' => [],
 		],
+		'newsletter/view/css' => [
+			'ckeditor/email_fix.css' => [],
+		],
 	],
 	'view_options' => [
 		'forms/newsletter/preview_mail' => ['ajax' => true],
