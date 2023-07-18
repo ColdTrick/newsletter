@@ -51,6 +51,10 @@ figure img {
 	max-width: 100%;
 }
 
+#newsletter_content img:not([width]) {
+	width: 100%;
+}
+
 #newsletter_online {
 	font-size: 11px;
 	color: #999999;
