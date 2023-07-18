@@ -51,7 +51,7 @@ if ($user instanceof \ElggUser) {
 // footer
 $footer = elgg_view_field([
 	'#type' => 'submit',
-	'value' => $submit_text,
+	'text' => $submit_text,
 	'class' => 'float-alt',
 ]);
 elgg_set_form_footer($footer);

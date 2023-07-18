@@ -128,7 +128,7 @@ echo elgg_view_field([
 // footer
 $save_as_options = [
 	'#type' => 'button',
-	'value' => elgg_echo('newsletter:edit:template:save_as'),
+	'text' => elgg_echo('newsletter:edit:template:save_as'),
 	'id' => 'newsletter-edit-template-save-as',
 	'class' => ['elgg-button-action'],
 ];
@@ -142,7 +142,7 @@ $footer = elgg_view_field([
 	'fields' => [
 		[
 			'#type' => 'submit',
-			'value' => elgg_echo('save'),
+			'text' => elgg_echo('save'),
 		],
 		$save_as_options,
 	],

@@ -67,6 +67,6 @@ echo elgg_view_field([
 // footer
 $footer = elgg_view_field([
 	'#type' => 'submit',
-	'value' => elgg_echo('newsletter:unsubscribe'),
+	'text' => elgg_echo('newsletter:unsubscribe'),
 ]);
 elgg_set_form_footer($footer);
