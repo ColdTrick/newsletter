@@ -45,8 +45,7 @@ if ($entity->hasIcon('newsletter', 'header')) {
 			'type' => 'header',
 			'size' => 'newsletter',
 		])),
-		'style' => 'display:block;',
-		'width' => '100%',
+		'style' => 'display: block; width: 100%;',
 	]);
 }
 
