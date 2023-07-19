@@ -134,16 +134,19 @@ class Menus {
 				'href' => elgg_generate_entity_url($entity, 'log'),
 			]);
 		}
-
-		$returnvalue[] = \ElggMenuItem::factory([
-			'name' => 'duplicate',
-			'icon' => 'copy',
-			'text' => elgg_echo('newsletter:menu:entity:duplicate'),
-			'href' => elgg_generate_action_url('newsletter/duplicate', [
-				'guid' => $entity->guid,
-			]),
-			'is_trusted' => true,
-		]);
+		
+		$container = $entity->getContainerEntity();
+		if ($container->canWriteToContainer(0, 'object', \Newsletter::SUBTYPE)) {
+			$returnvalue[] = \ElggMenuItem::factory([
+				'name' => 'duplicate',
+				'icon' => 'copy',
+				'text' => elgg_echo('newsletter:menu:entity:duplicate'),
+				'href' => elgg_generate_action_url('newsletter/duplicate', [
+					'guid' => $entity->guid,
+				]),
+				'is_trusted' => true,
+			]);
+		}
 	
 		return $returnvalue;
 	}
