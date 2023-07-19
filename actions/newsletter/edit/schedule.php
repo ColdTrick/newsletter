@@ -13,7 +13,7 @@ $hour = (int) get_input('hour');
 $status_notification = get_input('status_notification');
 $show_in_archive = (int) get_input('show_in_archive');
 
-$send = get_input('send'); // different submit button
+$send = (bool) get_input('send'); // different submit button
 
 if (empty($guid) || empty($date)) {
 	return elgg_error_response(elgg_echo('error:missing_data'));
@@ -49,7 +49,7 @@ if ($container instanceof \ElggGroup) {
 	]);
 }
 
-if (!empty($send)) {
+if ($send) {
 	// adjust scheduled time to current hour
 	$date = Values::normalizeTime(time());
 	$date->modify('-' . $date->format('s') . ' seconds');

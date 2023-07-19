@@ -55,11 +55,12 @@ echo elgg_view_field([
 $save_and_send_now_options = [
 	'#type' => 'submit',
 	'name' => 'send',
-	'value' => elgg_echo('newsletter:schedule:send'),
+	'value' => 1,
+	'text' => elgg_echo('newsletter:schedule:send'),
 ];
 $save_and_schedule_options = [
 	'#type' => 'submit',
-	'value' => elgg_echo('newsletter:schedule:save'),
+	'text' => elgg_echo('newsletter:schedule:save'),
 ];
 
 if (!$entity->getRecipients()) {
