@@ -1,6 +1,13 @@
 Version history
 ===============
 
+10.1.1 (2023-07-26):
+
+- fixed: buttons have a discernible text
+- fixed: image width percentage set using style
+- fixed: newsletter images are max width if not set
+- fixed: unable to duplicate newsletter depending on settings
+
 10.1 (2023-07-05):
 
 - added: newsletter database seeder
