@@ -17,10 +17,6 @@ class Cron {
 	 * @return void
 	 */
 	public static function sendNewsletters(\Elgg\Event $event) {
-		
-		echo 'Starting newsletter processing' . PHP_EOL;
-		elgg_log('Starting newsletter processing', 'NOTICE');
-		
 		$cron_ts = $event->getParam('time', time());
 		
 		$ts = Values::normalizeTime($cron_ts);
@@ -52,8 +48,5 @@ class Cron {
 				newsletter_start_commandline_sending($newsletter);
 			}
 		});
-		
-		echo 'Done with newsletter processing' . PHP_EOL;
-		elgg_log('Done with newsletter processing', 'NOTICE');
 	}
 }

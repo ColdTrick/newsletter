@@ -233,25 +233,26 @@ return [
 		],
 		'register' => [
 			'menu:entity' => [
-				'ColdTrick\Newsletter\Menus::entityRegister' => [],
+				'ColdTrick\Newsletter\Menus\Entity::registerNewsletter' => [],
 			],
 			'menu:filter:newsletter' => [
-				'ColdTrick\Newsletter\Menus::filterRegister' => [],
+				'ColdTrick\Newsletter\Menus\Filter::registerNewsletter' => [],
 			],
 			'menu:filter:newsletter/group' => [
-				'ColdTrick\Newsletter\Menus::filterRegister' => [],
+				'ColdTrick\Newsletter\Menus\Filter::registerNewsletter' => [],
 			],
 			'menu:filter:newsletter_steps' => [
-				'ColdTrick\Newsletter\Menus::newsletterSteps' => [],
+				'ColdTrick\Newsletter\Menus\Filter::registerNewsletterSteps' => [],
 			],
 			'menu:owner_block' => [
-				'ColdTrick\Newsletter\Menus::ownerBlockRegister' => [],
+				'ColdTrick\Newsletter\Menus\OwnerBlock::registerGroupItems' => [],
 			],
 			'menu:page' => [
-				'ColdTrick\Newsletter\Menus::pageRegister' => [],
+				'ColdTrick\Newsletter\Menus\Page::registerNewsletterSettings' => [],
+				'ColdTrick\Newsletter\Menus\Page::registerSubscriptions' => [],
 			],
 			'menu:site' => [
-				'ColdTrick\Newsletter\Menus::siteRegister' => [],
+				'ColdTrick\Newsletter\Menus\Site::register' => [],
 			],
 			'user' => [
 				'ColdTrick\Newsletter\User::subscribeToSiteNewsletter' => [],

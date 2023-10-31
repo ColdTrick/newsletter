@@ -15,7 +15,7 @@ class Icons {
 	 * @return array
 	 */
 	public static function extendHeaderSizes(\Elgg\Event $event) {
-		if ($event->getParam('entity_subtype') !== 'newsletter') {
+		if ($event->getParam('entity_subtype') !== \Newsletter::SUBTYPE) {
 			return;
 		}
 		

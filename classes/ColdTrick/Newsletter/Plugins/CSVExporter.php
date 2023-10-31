@@ -12,14 +12,13 @@ class CSVExporter {
 	 *
 	 * @param \Elgg\Event $event 'get_exportable_values', 'csv_exporter'
 	 *
-	 * @return array
+	 * @return null|array
 	 */
-	public static function exportableValues(\Elgg\Event $event) {
-		
+	public static function exportableValues(\Elgg\Event $event): ?array {
 		$type = $event->getParam('type');
 		$subtype = $event->getParam('subtype');
 		if ($type !== 'object' || $subtype !== \Newsletter::SUBTYPE) {
-			return;
+			return null;
 		}
 		
 		$fields = [
@@ -48,7 +47,6 @@ class CSVExporter {
 	 * @return void|mixed
 	 */
 	public static function exportValue(\Elgg\Event $event) {
-		
 		$entity = $event->getEntityParam();
 		if (!$entity instanceof \Newsletter) {
 			return;
@@ -58,13 +56,13 @@ class CSVExporter {
 		switch ($exportable_value) {
 			case 'newsletter_from':
 				return $entity->from;
-				break;
+				
 			case 'newsletter_status':
 				return elgg_echo("newsletter:status:{$entity->status}");
-				break;
+				
 			case 'newsletter_scheduled':
 				return $entity->scheduled;
-				break;
+				
 			case 'newsletter_scheduled_readable':
 				$scheduled = $entity->scheduled;
 				if (!empty($scheduled)) {

@@ -63,7 +63,7 @@ class User {
 			// user wants to receive newsletter
 			newsletter_subscribe_user($user, $site);
 		} else {
-			// user doesn't want to recieve newsletter
+			// user doesn't want to receive newsletter
 			newsletter_unsubscribe_user($user, $site);
 		}
 	}

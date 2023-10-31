@@ -232,7 +232,7 @@ function newsletter_process(int $entity_guid): void {
 				$unsubscribe_link = elgg_normalize_url($unsubscribe_link);
 				$message_html_content_user = str_ireplace(urlencode('{unsublink}'), $unsubscribe_link, $message_html_content);
 				
-				// replace the online link for logged out users to add an emailadres
+				// replace the online link for logged-out users to add an email-address
 				if ($type !== 'users') {
 					$online_link = $entity->getURL();
 					$new_online_link = elgg_http_add_url_query_elements($online_link, [
@@ -470,7 +470,7 @@ function newsletter_subscribe_user(\ElggUser $user, \ElggEntity $entity, bool $c
 	$subscription = newsletter_get_subscription($user->email);
 	
 	if (!empty($subscription)) {
-		$subscription->removeRelationship($entity, NewsletterSubscription::BLACKLIST);
+		$subscription->removeRelationship($entity->guid, NewsletterSubscription::BLACKLIST);
 	}
 	
 	return $result;
@@ -541,7 +541,7 @@ function newsletter_unsubscribe_user(\ElggUser $user, \ElggEntity $entity): bool
 	// remove subscription
 	$user->removeRelationship($entity->guid, NewsletterSubscription::SUBSCRIPTION);
 	
-	// check if on email subscriptionlist
+	// check if on email subscription list
 	$subscription = newsletter_get_subscription($user->email);
 	
 	if (!empty($subscription)) {
@@ -629,7 +629,7 @@ function newsletter_is_email_address($address): bool {
 }
 
 /**
- * Generate an URL so the recipient can directly unsubscribe from a newsletter
+ * Generate a URL so the recipient can directly unsubscribe from a newsletter
  *
  * @param ElggEntity $container Which newsletter container (ElggSite or ElggGroup)
  * @param string|int $recipient The user_guid or email address of the recipient
@@ -919,8 +919,8 @@ function newsletter_is_group_enabled(\ElggGroup $group = null): bool {
 /**
  * Sends the preview newsletter
  *
- * @param Newsletter $entity newsletter to be send
- * @param string     $email  emailaddress of the recipient
+ * @param Newsletter $entity newsletter to be sent
+ * @param string     $email  email-address of the recipient
  *
  * @return bool if sending is succes or not
  */
@@ -1191,9 +1191,9 @@ function newsletter_get_url_postfix(): array {
 }
 
 /**
- * Add the URL postfix to all url's in the newsletter content
+ * Add the URL postfix to all urls in the newsletter content
  *
- * @param string     $html_content the content of the newletter
+ * @param string     $html_content the content of the newsletter
  * @param Newsletter $newsletter   the source newsletter to use for some replacements in the postfix
  *
  * @return string
@@ -1257,7 +1257,7 @@ function newsletter_apply_url_postfix(string $html_content, \Newsletter $newslet
 }
 
 /**
- * Display conten in the correct layout for embedding in Newsletter
+ * Display content in the correct layout for embedding in Newsletter
  *
  * @param ElggEntity $entity the entity to embed
  * @param array      $vars   optional variables to pass to the embed view
@@ -1296,7 +1296,7 @@ function newsletter_view_embed_content(\ElggEntity $entity, array $vars = []) {
 function newsletter_validate_custom_from(string $from_email): bool {
 	
 	if (empty($from_email)) {
-		// empty is allowed, sending will fallback to container
+		// empty is allowed, sending will fall back to container
 		return true;
 	}
 	

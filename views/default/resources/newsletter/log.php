@@ -22,8 +22,7 @@ if ($container instanceof \ElggGroup) {
 	elgg_set_page_owner_guid($entity->container_guid);
 }
 
-elgg_push_collection_breadcrumbs('object', Newsletter::SUBTYPE, $container instanceof \ElggGroup ? $container : null);
-elgg_push_breadcrumb($entity->getDisplayName(), $entity->getURL());
+elgg_push_entity_breadcrumbs($entity);
 
 echo elgg_view_page(elgg_echo('newsletter:log:title', [$entity->getDisplayName()]), [
 	'content' => elgg_view('newsletter/log', [

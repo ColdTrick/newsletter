@@ -2,6 +2,7 @@
 
 namespace ColdTrick\Newsletter\Plugins;
 
+use Elgg\Collections\Collection;
 use Elgg\Groups\Tool;
 
 /**
@@ -14,12 +15,12 @@ class Groups {
 	 *
 	 * @param \Elgg\Event $event 'tool_options', 'group'
 	 *
-	 * @return array
+	 * @return null|Collection
 	 */
-	public static function registerGroupNewsletterTool(\Elgg\Event $event) {
+	public static function registerGroupNewsletterTool(\Elgg\Event $event): ?Collection {
 		$plugin = elgg_get_plugin_from_id('newsletter');
 		if ($plugin->getSetting('allow_groups') !== 'yes') {
-			return;
+			return null;
 		}
 		
 		$result = $event->getValue();
@@ -27,7 +28,7 @@ class Groups {
 		$result[] = new Tool('newsletter', [
 			'default_on' => true,
 		]);
-	
+		
 		return $result;
 	}
 }

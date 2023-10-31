@@ -8,9 +8,9 @@ define(['jquery', 'elgg', 'elgg/hooks', 'elgg/i18n', 'elgg/lightbox', 'elgg/Ajax
 			return false;
 		}
 		
-		$('#newsletter-embed-format-icon').parent().hide();
+		$('#newsletter-embed-format-icon').closest('.elgg-field').hide();
 		if (data.iconUrl) {
-			$('#newsletter-embed-format-icon').parent().show();
+			$('#newsletter-embed-format-icon').closest('.elgg-field').show();
 		}
 			
 		$('#newsletter-embed-search, #newsletter-embed-list, #newsletter-embed-pagination, #newsletter-embed-format').toggleClass('hidden');

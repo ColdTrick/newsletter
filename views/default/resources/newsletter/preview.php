@@ -19,7 +19,7 @@ if (!$container instanceof \ElggGroup) {
 	$container = null;
 }
 
-elgg_push_collection_breadcrumbs('object', \Newsletter::SUBTYPE, $container);
+elgg_push_entity_breadcrumbs($entity);
 
 elgg_register_menu_item('title', [
 	'name' => 'preview_by_mail',

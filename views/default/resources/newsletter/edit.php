@@ -8,7 +8,7 @@ use Elgg\Exceptions\Http\EntityPermissionsException;
 
 $guid = (int) elgg_extract('guid', $vars);
 
-elgg_entity_gatekeeper($guid, 'object', Newsletter::SUBTYPE);
+elgg_entity_gatekeeper($guid, 'object', \Newsletter::SUBTYPE);
 
 /* @var $entity Newsletter */
 $entity = get_entity($guid);
@@ -29,8 +29,7 @@ if (!$container instanceof \ElggGroup) {
 }
 
 // breadcrumb
-elgg_push_collection_breadcrumbs('object', Newsletter::SUBTYPE, $container);
-elgg_push_breadcrumb($entity->getDisplayName(), $entity->getURL());
+elgg_push_entity_breadcrumbs($entity);
 
 $form = new EditForm($entity);
 

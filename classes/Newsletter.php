@@ -23,8 +23,6 @@ class Newsletter extends \ElggObject {
 	 * Clones the newsletter
 	 *
 	 * @return void
-	 *
-	 * @see ElggEntity::__clone()
 	 */
 	public function __clone() {
 		parent::__clone();
