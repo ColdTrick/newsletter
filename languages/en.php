@@ -81,6 +81,7 @@ return array(
 	
 	// edit
 	'newsletter:edit:subject' => "Custom e-mail subject (optional)",
+	'newsletter:edit:subject:help' => "If you wish to have a different e-mail subject from the newsletter title you can configure it here.",
 	'newsletter:edit:from' => "Custom sending e-mail address (optional)",
 	'newsletter:edit:from:description' => "By default the newsletter will be sent from %s. You can enter a custom sender e-mail address here. You will receive non-delivery reports on this e-mail address.",
 	'newsletter:edit:description:description' => "This description is used in the listing of the newsletters and will by default not be part of the newsletter content.",

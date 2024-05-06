@@ -21,6 +21,7 @@ echo elgg_view_field([
 echo elgg_view_field([
 	'#type' => 'text',
 	'#label' => elgg_echo('newsletter:edit:subject'),
+	'#help' => elgg_echo('newsletter:edit:subject:help'),
 	'name' => 'subject',
 	'value' => elgg_extract('subject', $vars),
 ]);
