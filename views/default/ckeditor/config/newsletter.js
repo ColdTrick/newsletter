@@ -33,10 +33,10 @@ define(['jquery', 'elgg', 'elgg/hooks', 'elgg/i18n', 'elgg/lightbox', 'elgg/Ajax
 			content_description += data.description;
 		} else if (description_option === 'excerpt') {
 			content_description += data.excerpt;
-			content_description += "<p><a href='" + data.url + "'>" + i18n.echo('newsletter:embed:read_more') + " ></a></p>";
+			content_description += "<p><a class='newsletter-read-more' href='" + data.url + "'>" + i18n.echo('newsletter:embed:read_more') + " ></a></p>";
 		}
 		
-		content += "<table style='width: 100%'>";
+		content += "<table class='newsletter-item' style='width: 100%'>";
 		
 		if (data.iconUrl && icon_option) {
 			content += "<tr><td><img src='" + data.iconUrl + "' class='image_resized' style='width: 600px'/></td></tr>";
@@ -137,6 +137,16 @@ define(['jquery', 'elgg', 'elgg/hooks', 'elgg/i18n', 'elgg/lightbox', 'elgg/Ajax
 		}];
 		
 		result.toolbar.items.push('newsletter');
+		
+		// the following allows the custom styled elements
+		result.htmlSupport.allow.push({
+			name: 'table',
+			classes: ['newsletter-item']
+		});
+		result.htmlSupport.allow.push({
+			name: 'a',
+			classes: ['newsletter-read-more']
+		});
 		
 		return result;
 	});
