@@ -1,10 +1,11 @@
 <?php
 /**
- * This file was created by Translation Editor v11.1
- * On 2023-05-17 14:59
+ * This file was created by Translation Editor v13.1.1
+ * On 2024-05-06 15:33
  */
 
 return array (
+  'newsletter:edit:subject:help' => 'Indien je een ander onderwerp in de email wilt dan de titel van de nieuwsbrief kun je dat hier opgeven.',
   'newsletter:editor:button' => 'Voeg content toe aan je nieuwsbrief',
   'newsletter:upgrade:2023040400:title' => 'Verplaats de nieuwsbrief iconen naar kopafbeeldingen',
   'newsletter:upgrade:2023040400:description' => 'In Elgg 5 is er ondersteuning voor kopafbeeldingen. Deze migratie verplaatst de oude iconen naar de nieuwe locatie.',
