@@ -33,7 +33,7 @@ define(['jquery', 'elgg', 'elgg/hooks', 'elgg/i18n', 'elgg/lightbox', 'elgg/Ajax
 			content_description += data.description;
 		} else if (description_option === 'excerpt') {
 			content_description += data.excerpt;
-			content_description += "<p><a class='newsletter-read-more' href='" + data.url + "'>" + i18n.echo('newsletter:embed:read_more') + " ></a></p>";
+			content_description += "<p class='newsletter-read-more'><a href='" + data.url + "'>" + i18n.echo('newsletter:embed:read_more') + " ></a></p>";
 		}
 		
 		content += "<table class='newsletter-item' style='width: 100%'>";
@@ -144,7 +144,7 @@ define(['jquery', 'elgg', 'elgg/hooks', 'elgg/i18n', 'elgg/lightbox', 'elgg/Ajax
 			classes: ['newsletter-item']
 		});
 		result.htmlSupport.allow.push({
-			name: 'a',
+			name: 'p',
 			classes: ['newsletter-read-more']
 		});
 		
