@@ -1,5 +1,5 @@
 #newsletter-embed-list {
-	width: 700px;
+	max-width: 1000px;
 
 	> li {
 		padding: 5px;

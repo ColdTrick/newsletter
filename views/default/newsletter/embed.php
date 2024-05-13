@@ -70,6 +70,11 @@ $form_data = elgg_view_field([
 			'#type' => 'submit',
 			'text' => elgg_echo('search'),
 		],
+		[
+			'#type' => 'button',
+			'id' => 'newsletter-embed-add-blank',
+			'text' => elgg_echo('newsletter:embed:blank'),
+		],
 	],
 ]);
 

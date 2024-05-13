@@ -99,6 +99,25 @@ define(['jquery', 'elgg', 'elgg/hooks', 'elgg/i18n', 'elgg/lightbox', 'elgg/Ajax
 			}
 		});
 	});
+	
+	$(document).on('click', '#newsletter-embed-add-blank', function(event) {
+		event.preventDefault();
+		
+		var content = '';
+		
+		content += "<table class='newsletter-item' style='width: 100%'>";
+		content += "<tr><td>" + i18n.echo('newsletter:embed:blank:img') + "</td></tr>";
+		content += "<tr><td><h3>";
+		content += "<a href='#'>" + i18n.echo('newsletter:embed:blank:title') + "</a>";
+		content += "</h3></td></tr>";
+		content += "<tr><td>";
+		content += i18n.echo('newsletter:embed:blank:description');
+		content += "<p class='newsletter-read-more'><a href='#'>" + i18n.echo('newsletter:embed:read_more') + " ></a></p>";
+		content += "</td></tr>";
+		content += "</table>";
+		
+		embed(content);
+	});
 
 	$(document).on('change', '#newsletter-embed-format-description, #newsletter-embed-format-icon', function() {
 		embed_format_preview();

@@ -67,6 +67,10 @@ return array(
 	
 	// embed
 	'newsletter:embed:show_all' => "Show all content, not just group content",
+	'newsletter:embed:blank' => "Add empty item",
+	'newsletter:embed:blank:title' => "Item title",
+	'newsletter:embed:blank:description' => "Item description",
+	'newsletter:embed:blank:img' => "Add image here",
 	'newsletter:embed:format:description:title' => "Show description",
 	'newsletter:embed:format:description:option:full' => "Full",
 	'newsletter:embed:format:description:option:excerpt' => "Excerpt",
