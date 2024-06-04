@@ -16,7 +16,7 @@ class Cron {
 	 *
 	 * @return void
 	 */
-	public static function sendNewsletters(\Elgg\Event $event) {
+	public static function sendNewsletters(\Elgg\Event $event): void {
 		$cron_ts = $event->getParam('time', time());
 		
 		$ts = Values::normalizeTime($cron_ts);

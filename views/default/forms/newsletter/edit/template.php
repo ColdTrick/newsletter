@@ -1,11 +1,11 @@
 <?php
 
 $entity = elgg_extract('entity', $vars);
-if (!$entity instanceof Newsletter) {
+if (!$entity instanceof \Newsletter) {
 	return;
 }
 
-elgg_require_js('forms/newsletter/edit/template');
+elgg_import_esm('forms/newsletter/edit/template');
 
 echo elgg_view_field([
 	'#type' => 'hidden',
@@ -15,10 +15,6 @@ echo elgg_view_field([
 
 // get the available templates for this container
 $template_options = newsletter_get_available_templates($entity->container_guid, $entity);
-if (empty($template_options) || !is_array($template_options)) {
-	$template_options = [];
-}
-
 natcasesort($template_options);
 
 // select the correct template

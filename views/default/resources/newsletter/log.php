@@ -5,17 +5,11 @@
  * @uses get_input("guid") the GUID of the newsletter to view
  */
 
-use Elgg\Exceptions\Http\EntityPermissionsException;
-
 $guid = (int) get_input('guid');
+elgg_entity_gatekeeper($guid, 'object', \Newsletter::SUBTYPE, true);
 
-elgg_entity_gatekeeper($guid, 'object', Newsletter::SUBTYPE);
-
-/* @var $entity Newsletter */
+/* @var $entity \Newsletter */
 $entity = get_entity($guid);
-if (!$entity->canEdit()) {
-	throw new EntityPermissionsException();
-}
 
 $container = $entity->getContainerEntity();
 if ($container instanceof \ElggGroup) {

@@ -11,8 +11,6 @@
  * - uploading a CSV with email addresses
  */
 
-elgg_make_sticky_form('newsletter/edit/recipients');
-
 $guid = (int) get_input('guid');
 
 $user_guids = get_input('user_guids');
@@ -82,7 +80,5 @@ if (elgg_get_uploaded_file('csv')) {
 
 // save results
 $entity->setRecipients($tmp);
-
-elgg_clear_sticky_form('newsletter/edit/recipients');
 
 return elgg_ok_response('', elgg_echo('newsletter:action:recipients:success'), $forward_url);

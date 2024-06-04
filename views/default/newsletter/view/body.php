@@ -1,16 +1,14 @@
 <?php
 
 $entity = elgg_extract('entity', $vars);
-
-$template = $entity->template;
-if (empty($template)) {
-	$template = 'default';
+if (!$entity instanceof \Newsletter) {
+	return;
 }
 
+$template = $entity->template ?: 'default';
 if (is_numeric($template)) {
 	// probably a custom template, lets check
 	$template_entity = get_entity($template);
-	
 	if ($template_entity instanceof \NewsletterTemplate) {
 		$content = $template_entity->html;
 	} else {
@@ -20,7 +18,7 @@ if (is_numeric($template)) {
 }
 
 if (!isset($content)) {
-	if ($template == 'custom') {
+	if ($template === 'custom') {
 		$content = $entity->html;
 	} else {
 		if (!elgg_view_exists("newsletter/templates/{$template}/body")) {
@@ -58,10 +56,10 @@ $replacements = [
 	'{description}' => $entity->description,
 	'{subject}' => $entity->subject,
 	'{newsletter_url}' => elgg_normalize_url($entity->getURL()),
-	'{site_name}' => elgg_get_site_entity()->name,
+	'{site_name}' => elgg_get_site_entity()->getDisplayName(),
 	'{site_description}' => elgg_get_site_entity()->description,
 	'{site_url}' => elgg_get_site_url(),
-	'{container_name}' => $entity->getContainerEntity()->name,
+	'{container_name}' => $entity->getContainerEntity()?->getDisplayName(),
 	'{container_url}' => elgg_normalize_url($container_url),
 ];
 

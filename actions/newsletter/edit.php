@@ -1,7 +1,5 @@
 <?php
 
-elgg_make_sticky_form('newsletter/edit');
-
 $guid = (int) get_input('guid');
 $container_guid = (int) get_input('container_guid');
 $title = get_input('title');
@@ -62,8 +60,6 @@ $entity->tags = $tags;
 if (!$entity->save()) {
 	return elgg_error_response(elgg_echo('newsletter:action:edit:error:save'));
 }
-
-elgg_clear_sticky_form('newsletter/edit');
 
 $forward_url = $new_entity ? elgg_generate_entity_url($entity, 'edit', 'template') : REFERRER;
 

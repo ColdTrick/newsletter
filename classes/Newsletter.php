@@ -61,11 +61,11 @@ class Newsletter extends \ElggObject {
 	 *
 	 * @param array $logging data to be saved
 	 *
-	 * @return false|int
+	 * @return null|int
 	 */
-	public function saveLogging($logging) {
+	public function saveLogging(array $logging): ?int {
 		if (empty($logging)) {
-			return false;
+			return null;
 		}
 		
 		$fh = new \ElggFile();
@@ -73,7 +73,7 @@ class Newsletter extends \ElggObject {
 		$fh->setFilename('logging.json');
 		
 		$fh->open('write');
-		$result = $fh->write(json_encode($logging, JSON_PRETTY_PRINT));
+		$result = (int) $fh->write(json_encode($logging, JSON_PRETTY_PRINT));
 		$fh->close();
 		
 		return $result;
@@ -82,22 +82,20 @@ class Newsletter extends \ElggObject {
 	/**
 	 * Returns logging from a file
 	 *
-	 * @return false|string
+	 * @return null|array
 	 */
-	public function getLogging() {
-		
+	public function getLogging(): ?array {
 		$fh = new \ElggFile();
 		$fh->owner_guid = $this->guid;
 		$fh->setFilename('logging.json');
 		
 		if (!$fh->exists()) {
-			return false;
+			return null;
 		}
 		
 		$contents = $fh->grabFile();
-		
 		if (empty($contents)) {
-			return false;
+			return null;
 		}
 		
 		return json_decode($contents, true);
@@ -108,14 +106,9 @@ class Newsletter extends \ElggObject {
 	 *
 	 * @param array $recipients the recipients config
 	 *
-	 * @return false|int
+	 * @return int
 	 */
-	public function setRecipients($recipients) {
-		
-		if (!is_array($recipients)) {
-			return false;
-		}
-		
+	public function setRecipients(array $recipients): int {
 		// check for previous DB recipients
 		if ($this->recipients) {
 			unset($this->recipients);
@@ -126,7 +119,7 @@ class Newsletter extends \ElggObject {
 		$fh->setFilename('recipients.json');
 		
 		$fh->open('write');
-		$result = $fh->write(json_encode($recipients));
+		$result = (int) $fh->write(json_encode($recipients));
 		$fh->close();
 		
 		return $result;
@@ -135,10 +128,9 @@ class Newsletter extends \ElggObject {
 	/**
 	 * Get the recipients
 	 *
-	 * @return false|array
+	 * @return null|array
 	 */
-	public function getRecipients() {
-		
+	public function getRecipients(): ?array {
 		// check for previous DB recipients
 		if ($this->recipients) {
 			$recipients = json_decode($this->recipients, true);
@@ -150,7 +142,7 @@ class Newsletter extends \ElggObject {
 		$fh->setFilename('recipients.json');
 		
 		if (!$fh->exists()) {
-			return false;
+			return null;
 		}
 		
 		$raw = $fh->grabFile();

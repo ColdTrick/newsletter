@@ -15,7 +15,6 @@ class Permissions {
 	 * @return void|bool
 	 */
 	public static function containerLogic(\Elgg\Event $event) {
-		
 		if ($event->getParam('subtype') !== \Newsletter::SUBTYPE) {
 			return;
 		}

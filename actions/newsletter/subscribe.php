@@ -16,7 +16,6 @@ if (!$entity instanceof \ElggSite && !$entity instanceof \ElggGroup) {
 if (!empty($user_guid)) {
 	// check the user
 	$user = get_user($user_guid);
-	
 	if ($user instanceof \ElggUser && $user->canEdit()) {
 		// is the user subscribed
 		if (newsletter_check_user_subscription($user, $entity)) {

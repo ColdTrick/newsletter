@@ -1,15 +1,14 @@
 <?php
 
 $entity = elgg_extract('entity', $vars);
-$template = $entity->template;
-if (empty($template)) {
-	$template = 'default';
+if (!$entity instanceof \Newsletter) {
+	return;
 }
 
+$template = $entity->template ?: 'default';
 if (is_numeric($template)) {
 	// probably a custom template, lets check
 	$template_entity = get_entity($template);
-
 	if ($template_entity instanceof \NewsletterTemplate) {
 		$css = $template_entity->css;
 	} else {
@@ -19,7 +18,7 @@ if (is_numeric($template)) {
 }
 
 if (!isset($css)) {
-	if ($template == 'custom') {
+	if ($template === 'custom') {
 		$css = $entity->css;
 	} else {
 		if (!elgg_view_exists("newsletter/templates/{$template}/css")) {

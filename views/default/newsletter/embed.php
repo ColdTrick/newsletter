@@ -1,7 +1,10 @@
 <?php
 
-/* @var $newsletter Newsletter */
 $newsletter = elgg_extract('entity', $vars);
+if (!$newsletter instanceof \Newsletter) {
+	return;
+}
+
 $offset = (int) max(get_input('offset', 0), 0);
 $limit = 6;
 

@@ -24,14 +24,13 @@ class User {
 		}
 		
 		$subscription = newsletter_get_subscription($user->email);
-
 		if (!empty($subscription)) {
 			newsletter_convert_subscription_to_user_setting($subscription, $user);
 		}
 	}
 	
 	/**
-	 * An event fired during the registration proccess of the user
+	 * An event fired during the registration process of the user
 	 * Check if the user wants to receive site newsletters
 	 *
 	 * @param \Elgg\Event $event 'register', 'user'
@@ -39,7 +38,6 @@ class User {
 	 * @return void
 	 */
 	public static function subscribeToSiteNewsletter(\Elgg\Event $event) {
-	
 		$user = $event->getUserParam();
 		if (!$user instanceof \ElggUser) {
 			return;

@@ -13,7 +13,6 @@ $data = [
 ];
 
 $excerpt = $entity->excerpt ?: elgg_get_excerpt((string) $entity->description);
-
 if (!empty($excerpt)) {
 	$data['data-excerpt'] = $excerpt;
 }
@@ -41,5 +40,4 @@ $params = [
 	'content' => $excerpt,
 ];
 $params = $params + $vars;
-
 echo elgg_format_element('div', $data, elgg_view('object/elements/summary', $params));

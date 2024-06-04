@@ -26,6 +26,6 @@ echo elgg_view_field([
 	'#label' => elgg_echo('newsletter:unsubscribe:all', [$site->getDisplayName()]),
 	'name' => 'block_all',
 	'value' => 1,
-	'checked' => $entity->hasRelationship($site->guid, NewsletterSubscription::GENERAL_BLACKLIST),
+	'checked' => $entity->hasRelationship($site->guid, \NewsletterSubscription::GENERAL_BLACKLIST),
 	'switch' => true,
 ]);

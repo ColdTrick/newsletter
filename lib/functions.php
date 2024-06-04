@@ -3,6 +3,7 @@
  * This file contains all supportive functions for the Newsletter plugin
  */
 
+use Elgg\Database\RelationshipsTable;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Elgg\Email;
 use Elgg\Database\QueryBuilder;
@@ -17,7 +18,6 @@ use Elgg\Email\Address;
  * @return void
  */
 function newsletter_start_commandline_sending(\Newsletter $entity): void {
-	
 	// prepare commandline settings
 	$settings = [
 		'entity_guid' => $entity->guid,
@@ -58,11 +58,11 @@ function newsletter_start_commandline_sending(\Newsletter $entity): void {
  *
  * @param int $entity_guid guid of the newsletter
  *
- * @return boolean|string
+ * @return null|string
  */
-function newsletter_generate_commandline_secret(int $entity_guid) {
+function newsletter_generate_commandline_secret(int $entity_guid): ?string {
 	if ($entity_guid < 1) {
-		return false;
+		return null;
 	}
 	
 	$plugin = elgg_get_plugin_from_id('newsletter');
@@ -82,7 +82,7 @@ function newsletter_generate_commandline_secret(int $entity_guid) {
  * @param int    $entity_guid guid of the newsletter entity
  * @param string $secret      secret code to be validated
  *
- * @return boolean
+ * @return bool
  */
 function newsletter_validate_commandline_secret(int $entity_guid, string $secret): bool {
 	if ($entity_guid < 1 || empty($secret)) {
@@ -121,7 +121,6 @@ function newsletter_process(int $entity_guid): void {
 	set_time_limit(0);
 	
 	elgg_call(ELGG_IGNORE_ACCESS, function() use ($entity) {
-		
 		$logging = ['start_time' => time()];
 		
 		$site = elgg_get_site_entity();
@@ -298,11 +297,11 @@ function newsletter_process(int $entity_guid): void {
  *
  * @param string $recipient email address
  *
- * @return array Contains, or null on failure
- * 					- type : email
- * 					- label: used in the autocomplete dropdown
- * 					- html: used in the listing view
- * 					- value: email address
+ * @return null|array Contains, or null on failure
+ * 						- type : email
+ * 						- label: used in the autocomplete dropdown
+ * 						- html: used in the listing view
+ * 						- value: email address
  */
 function newsletter_format_email_recipient(string $recipient): ?array {
 	if (!newsletter_is_email_address($recipient)) {
@@ -339,8 +338,7 @@ function newsletter_format_email_recipient(string $recipient): ?array {
  *
  * @return false|int|array
  */
-function newsletter_get_subscribers(ElggEntity $container, bool $count = false) {
-	
+function newsletter_get_subscribers(\ElggEntity $container, bool $count = false): false|int|array {
 	if (!$container instanceof \ElggSite && !$container instanceof \ElggGroup) {
 		return false;
 	}
@@ -358,11 +356,11 @@ function newsletter_get_subscribers(ElggEntity $container, bool $count = false) 
 			'metadata_names' => ['email'],
 			'limit' => false,
 			'batch' => true,
-			'relationship' => NewsletterSubscription::SUBSCRIPTION,
+			'relationship' => \NewsletterSubscription::SUBSCRIPTION,
 			'relationship_guid' => $container->guid,
 			'inverse_relationship' => true,
 		]);
-		/* @var $user_email ElggMetadata */
+		/* @var $user_email \ElggMetadata */
 		foreach ($user_emails as $user_email) {
 			$result['users'][$user_email->entity_guid] = $user_email->value;
 		}
@@ -370,7 +368,7 @@ function newsletter_get_subscribers(ElggEntity $container, bool $count = false) 
 		// check the email subscriptions
 		$result['emails'] = elgg_get_entities([
 			'type' => 'object',
-			'subtype' => NewsletterSubscription::SUBTYPE,
+			'subtype' => \NewsletterSubscription::SUBTYPE,
 			'selects' => [
 				function (QueryBuilder $qb, $main_alias) {
 					$metadata = $qb->joinMetadataTable($main_alias, 'guid', 'title');
@@ -379,7 +377,7 @@ function newsletter_get_subscribers(ElggEntity $container, bool $count = false) 
 				},
 			],
 			'limit' => false,
-			'relationship' => NewsletterSubscription::SUBSCRIPTION,
+			'relationship' => \NewsletterSubscription::SUBSCRIPTION,
 			'relationship_guid' => $container->guid,
 			'inverse_relationship' => true,
 			'callback' => function($row) {
@@ -391,7 +389,7 @@ function newsletter_get_subscribers(ElggEntity $container, bool $count = false) 
 		$result = elgg_get_entities([
 			'type' => 'user',
 			'count' => true,
-			'relationship' => NewsletterSubscription::SUBSCRIPTION,
+			'relationship' => \NewsletterSubscription::SUBSCRIPTION,
 			'relationship_guid' => $container->guid,
 			'inverse_relationship' => true,
 		]);
@@ -399,9 +397,9 @@ function newsletter_get_subscribers(ElggEntity $container, bool $count = false) 
 		// check the email subscriptions
 		$result += elgg_get_entities([
 			'type' => 'object',
-			'subtype' => NewsletterSubscription::SUBTYPE,
+			'subtype' => \NewsletterSubscription::SUBTYPE,
 			'count' => true,
-			'relationship' => NewsletterSubscription::SUBSCRIPTION,
+			'relationship' => \NewsletterSubscription::SUBSCRIPTION,
 			'relationship_guid' => $container->guid,
 			'inverse_relationship' => true,
 		]);
@@ -413,13 +411,12 @@ function newsletter_get_subscribers(ElggEntity $container, bool $count = false) 
 /**
  * Check if a user is subscribed to a container entity
  *
- * @param ElggUser   $user   The user to check
- * @param ElggEntity $entity The container entity to check against
+ * @param \ElggUser   $user   The user to check
+ * @param \ElggEntity $entity The container entity to check against
  *
- * @return boolean True => the user has a subscription, false => no subscription or error
+ * @return bool
  */
 function newsletter_check_user_subscription(\ElggUser $user, \ElggEntity $entity): bool {
-	
 	if (!$entity instanceof \ElggSite && !$entity instanceof \ElggGroup) {
 		return false;
 	}
@@ -435,16 +432,15 @@ function newsletter_check_user_subscription(\ElggUser $user, \ElggEntity $entity
 }
 
 /**
- * Add a subscription for an user to a container
+ * Add a subscription for a user to a container
  *
- * @param ElggUser   $user                  The user to subscribe
- * @param ElggEntity $entity                The container entity to subscribe to
- * @param bool       $cleanup_general_block Remove the generic block all (default: true)
+ * @param \ElggUser   $user                  The user to subscribe
+ * @param \ElggEntity $entity                The container entity to subscribe to
+ * @param bool        $cleanup_general_block Remove the generic block all (default: true)
  *
- * @return boolean true on success else false
+ * @return bool
  */
 function newsletter_subscribe_user(\ElggUser $user, \ElggEntity $entity, bool $cleanup_general_block = true): bool {
-	
 	if (!$entity instanceof ElggSite && !$entity instanceof ElggGroup) {
 		return false;
 	}
@@ -479,18 +475,17 @@ function newsletter_subscribe_user(\ElggUser $user, \ElggEntity $entity, bool $c
 /**
  * Add a subscription for an email address to a container
  *
- * @param string     $email  The email address to add to the subscriptions
- * @param ElggEntity $entity The container entity to subscribe to
+ * @param string      $email  The email address to add to the subscriptions
+ * @param \ElggEntity $entity The container entity to subscribe to
  *
- * @return boolean true on success else false
+ * @return bool
  */
 function newsletter_subscribe_email(string $email, \ElggEntity $entity): bool {
-	
 	if (!newsletter_is_email_address($email)) {
 		return false;
 	}
 	
-	if (!$entity instanceof ElggSite && !$entity instanceof ElggGroup) {
+	if (!$entity instanceof \ElggSite && !$entity instanceof \ElggGroup) {
 		return false;
 	}
 	
@@ -504,7 +499,7 @@ function newsletter_subscribe_email(string $email, \ElggEntity $entity): bool {
 	$subscription = newsletter_get_subscription($email);
 	
 	if (empty($subscription)) {
-		$subscription = new NewsletterSubscription();
+		$subscription = new \NewsletterSubscription();
 		$subscription->title = $email;
 		
 		if (!$subscription->save()) {
@@ -513,13 +508,13 @@ function newsletter_subscribe_email(string $email, \ElggEntity $entity): bool {
 	}
 	
 	// subscribe
-	$result = (bool) $subscription->addRelationship($entity->guid, NewsletterSubscription::SUBSCRIPTION);
+	$result = (bool) $subscription->addRelationship($entity->guid, \NewsletterSubscription::SUBSCRIPTION);
 	
 	// remove blocklist relation
-	$subscription->removeRelationship($entity->guid, NewsletterSubscription::BLACKLIST);
+	$subscription->removeRelationship($entity->guid, \NewsletterSubscription::BLACKLIST);
 	
 	// remove general blocklist
-	$subscription->removeRelationship(elgg_get_site_entity()->guid, NewsletterSubscription::GENERAL_BLACKLIST);
+	$subscription->removeRelationship(elgg_get_site_entity()->guid, \NewsletterSubscription::GENERAL_BLACKLIST);
 	
 	return $result;
 }
@@ -527,31 +522,30 @@ function newsletter_subscribe_email(string $email, \ElggEntity $entity): bool {
 /**
  * Remove a subscription for an user to a container
  *
- * @param ElggUser   $user   The user to unsubscribe
- * @param ElggEntity $entity The container entity to unsubscribe from
+ * @param \ElggUser   $user   The user to unsubscribe
+ * @param \ElggEntity $entity The container entity to unsubscribe from
  *
- * @return boolean true on success else false
+ * @return bool
  */
 function newsletter_unsubscribe_user(\ElggUser $user, \ElggEntity $entity): bool {
-	
-	if (!$entity instanceof ElggSite && !$entity instanceof ElggGroup) {
+	if (!$entity instanceof \ElggSite && !$entity instanceof \ElggGroup) {
 		return false;
 	}
 	
 	// remove subscription
-	$user->removeRelationship($entity->guid, NewsletterSubscription::SUBSCRIPTION);
+	$user->removeRelationship($entity->guid, \NewsletterSubscription::SUBSCRIPTION);
 	
 	// check if on email subscription list
 	$subscription = newsletter_get_subscription($user->email);
 	
 	if (!empty($subscription)) {
-		$subscription->removeRelationship($entity->guid, NewsletterSubscription::SUBSCRIPTION);
+		$subscription->removeRelationship($entity->guid, \NewsletterSubscription::SUBSCRIPTION);
 	}
 	
 	// check if blocked
-	if (!$user->hasRelationship($entity->guid, NewsletterSubscription::BLACKLIST)) {
+	if (!$user->hasRelationship($entity->guid, \NewsletterSubscription::BLACKLIST)) {
 		// not yet, so add
-		return $user->addRelationship($entity->guid, NewsletterSubscription::BLACKLIST);
+		return $user->addRelationship($entity->guid, \NewsletterSubscription::BLACKLIST);
 	}
 	
 	return true;
@@ -560,13 +554,12 @@ function newsletter_unsubscribe_user(\ElggUser $user, \ElggEntity $entity): bool
 /**
  * Remove a subscription for an email address to a container
  *
- * @param string     $email  The email address to remove from the subscriptions
- * @param ElggEntity $entity The container entity to unsubscribe from
+ * @param string      $email  The email address to remove from the subscriptions
+ * @param \ElggEntity $entity The container entity to unsubscribe from
  *
- * @return boolean true on success else false
+ * @return bool
  */
 function newsletter_unsubscribe_email(string $email, \ElggEntity $entity): bool {
-	
 	if (!newsletter_is_email_address($email)) {
 		return false;
 	}
@@ -586,7 +579,7 @@ function newsletter_unsubscribe_email(string $email, \ElggEntity $entity): bool 
 	$subscription = newsletter_get_subscription($email);
 	
 	if (empty($subscription)) {
-		$subscription = new NewsletterSubscription();
+		$subscription = new \NewsletterSubscription();
 		$subscription->title = $email;
 		
 		if (!$subscription->save()) {
@@ -595,12 +588,12 @@ function newsletter_unsubscribe_email(string $email, \ElggEntity $entity): bool 
 	}
 	
 	// remove existing subscription (if any)
-	$subscription->removeRelationship($entity->guid, NewsletterSubscription::SUBSCRIPTION);
+	$subscription->removeRelationship($entity->guid, \NewsletterSubscription::SUBSCRIPTION);
 	
 	// check if blocked
-	if (!$subscription->hasRelationship($entity->guid, NewsletterSubscription::BLACKLIST)) {
+	if (!$subscription->hasRelationship($entity->guid, \NewsletterSubscription::BLACKLIST)) {
 		// not yet, so add
-		return $subscription->addRelationship($entity->guid, NewsletterSubscription::BLACKLIST);
+		return $subscription->addRelationship($entity->guid, \NewsletterSubscription::BLACKLIST);
 	}
 	
 	return true;
@@ -612,7 +605,7 @@ function newsletter_unsubscribe_email(string $email, \ElggEntity $entity): bool 
  *
  * @param string $address The email address to check
  *
- * @return bool true if email, false otherwise
+ * @return bool
  *
  * @see elgg_is_valid_email()
  * @see filter_var()
@@ -631,15 +624,14 @@ function newsletter_is_email_address($address): bool {
 /**
  * Generate a URL so the recipient can directly unsubscribe from a newsletter
  *
- * @param ElggEntity $container Which newsletter container (ElggSite or ElggGroup)
- * @param string|int $recipient The user_guid or email address of the recipient
+ * @param \ElggEntity $container Which newsletter container (ElggSite or ElggGroup)
+ * @param string|int  $recipient The user_guid or email address of the recipient
  *
- * @return bool|string The unsubscribe link or false on failure
+ * @return null|string
  */
-function newsletter_generate_unsubscribe_link(\ElggEntity $container, $recipient) {
-
+function newsletter_generate_unsubscribe_link(\ElggEntity $container, $recipient): ?string {
 	if (!$container instanceof \ElggSite && !$container instanceof \ElggGroup) {
-		return false;
+		return null;
 	}
 	
 	$params = [
@@ -666,26 +658,25 @@ function newsletter_generate_unsubscribe_link(\ElggEntity $container, $recipient
 }
 
 /**
- * Generate a unsubscribe code to be used in validation
+ * Generate an unsubscribe code to be used in validation
  *
- * @param ElggEntity $container Which newsletter container (ElggSite or ElggGroup)
- * @param string|int $recipient The user_guid or email address of the recipient
+ * @param \ElggEntity $container Which newsletter container (ElggSite or ElggGroup)
+ * @param string|int  $recipient The user_guid or email address of the recipient
  *
- * @return bool|string The unsubscribe code or false on failure
+ * @return null|string
  */
-function newsletter_generate_unsubscribe_code(\ElggEntity $container, $recipient) {
-	
+function newsletter_generate_unsubscribe_code(\ElggEntity $container, $recipient): ?string {
 	if (!$container instanceof \ElggSite && !$container instanceof \ElggGroup) {
-		return false;
+		return null;
 	}
 	
 	if (empty($recipient)) {
-		return false;
+		return null;
 	}
 	
 	// make sure we have a user_guid or email address
 	if (!is_numeric($recipient) && !newsletter_is_email_address($recipient)) {
-		return false;
+		return null;
 	}
 	
 	if (is_numeric($recipient)) {
@@ -704,14 +695,13 @@ function newsletter_generate_unsubscribe_code(\ElggEntity $container, $recipient
 /**
  * Validate a provided unsubscribe code
  *
- * @param ElggEntity $container Which newsletter container (ElggSite or ElggGroup)
- * @param string|int $recipient The user_guid or email address of the recipient
- * @param string     $code      The unsubscribe code the recipient provided
+ * @param \ElggEntity $container Which newsletter container (ElggSite or ElggGroup)
+ * @param string|int  $recipient The user_guid or email address of the recipient
+ * @param string      $code      The unsubscribe code the recipient provided
  *
- * @return bool	true is valid or false on failure
+ * @return bool
  */
 function newsletter_validate_unsubscribe_code(\ElggEntity $container, $recipient, string $code): bool {
-	
 	if (!$container instanceof \ElggSite && !$container instanceof \ElggGroup) {
 		return false;
 	}
@@ -737,7 +727,7 @@ function newsletter_validate_unsubscribe_code(\ElggEntity $container, $recipient
  *
  * @param string $email The email address to find the subscription for
  *
- * @return null|NewsletterSubscription The found subscription or false
+ * @return null|\NewsletterSubscription
  */
 function newsletter_get_subscription(string $email): ?\NewsletterSubscription {
 	if (!newsletter_is_email_address($email)) {
@@ -748,7 +738,7 @@ function newsletter_get_subscription(string $email): ?\NewsletterSubscription {
 	$entities = elgg_call(ELGG_IGNORE_ACCESS, function() use ($email) {
 		return elgg_get_entities([
 			'type' => 'object',
-			'subtype' => NewsletterSubscription::SUBTYPE,
+			'subtype' => \NewsletterSubscription::SUBTYPE,
 			'limit' => 1,
 			'metadata_name_value_pairs' => [
 				'name' => 'title',
@@ -761,24 +751,23 @@ function newsletter_get_subscription(string $email): ?\NewsletterSubscription {
 }
 
 /**
- * Block an user from all newsletters
+ * Block a user from all newsletters
  *
- * @param ElggUser $user The user to block
+ * @param \ElggUser $user The user to block
  *
- * @return boolean True on success, false on failure
+ * @return bool
  */
 function newsletter_unsubscribe_all_user(\ElggUser $user): bool {
-	
 	$site = elgg_get_site_entity();
 	
 	// remove site subscription
-	$user->removeRelationship($site->guid, NewsletterSubscription::SUBSCRIPTION);
+	$user->removeRelationship($site->guid, \NewsletterSubscription::SUBSCRIPTION);
 	
 	// remove all subscriptions
 	$entities = elgg_get_entities([
 		'type' => 'group',
 		'limit' => false,
-		'relationship' => NewsletterSubscription::SUBSCRIPTION,
+		'relationship' => \NewsletterSubscription::SUBSCRIPTION,
 		'relationship_guid' => $user->guid,
 		'callback' => function($row) {
 			return (int) $row->guid;
@@ -787,13 +776,13 @@ function newsletter_unsubscribe_all_user(\ElggUser $user): bool {
 	
 	if (!empty($entities)) {
 		foreach ($entities as $entity_guid) {
-			$user->removeRelationship($entity_guid, NewsletterSubscription::SUBSCRIPTION);
+			$user->removeRelationship($entity_guid, \NewsletterSubscription::SUBSCRIPTION);
 		}
 	}
 	
 	// add to general blacklist
-	if (!$user->hasRelationship($site->guid, NewsletterSubscription::GENERAL_BLACKLIST)) {
-		$result = $user->addRelationship($site->guid, NewsletterSubscription::GENERAL_BLACKLIST);
+	if (!$user->hasRelationship($site->guid, \NewsletterSubscription::GENERAL_BLACKLIST)) {
+		$result = $user->addRelationship($site->guid, \NewsletterSubscription::GENERAL_BLACKLIST);
 	} else {
 		$result = true;
 	}
@@ -813,7 +802,7 @@ function newsletter_unsubscribe_all_user(\ElggUser $user): bool {
  *
  * @param string $email The email address to block
  *
- * @return boolean True on success, false on failure
+ * @return bool
  */
 function newsletter_unsubscribe_all_email(string $email): bool {
 	if (!newsletter_is_email_address($email)) {
@@ -831,38 +820,37 @@ function newsletter_unsubscribe_all_email(string $email): bool {
 	}
 	
 	// remove all existing subscriptions
-	$subscription->removeAllRelationships(NewsletterSubscription::SUBSCRIPTION);
+	$subscription->removeAllRelationships(\NewsletterSubscription::SUBSCRIPTION);
 	
 	// add to general blacklist
 	$site = elgg_get_site_entity();
 	
-	if ($subscription->hasRelationship($site->guid, NewsletterSubscription::GENERAL_BLACKLIST)) {
+	if ($subscription->hasRelationship($site->guid, \NewsletterSubscription::GENERAL_BLACKLIST)) {
 		// already blocked
 		return true;
 	}
 	
-	return $subscription->addRelationship($site->guid, NewsletterSubscription::GENERAL_BLACKLIST);
+	return $subscription->addRelationship($site->guid, \NewsletterSubscription::GENERAL_BLACKLIST);
 }
 
 /**
  * Convert an email subscription on the newsletters to a user setting
  *
- * @param NewsletterSubscription $subscription The found email subscription
- * @param ElggUser               $user         The user to save the new settings to
+ * @param \NewsletterSubscription $subscription The found email subscription
+ * @param \ElggUser               $user         The user to save the new settings to
  *
- * @return bool	true on success or false on failure
+ * @return bool
  */
 function newsletter_convert_subscription_to_user_setting(\NewsletterSubscription $subscription, \ElggUser $user): bool {
-	
 	// check global block list
 	$site = elgg_get_site_entity();
-	if ($subscription->hasRelationship($site->guid, NewsletterSubscription::GENERAL_BLACKLIST)) {
+	if ($subscription->hasRelationship($site->guid, \NewsletterSubscription::GENERAL_BLACKLIST)) {
 		// copy the block all
-		$user->addRelationship($site->guid, NewsletterSubscription::GENERAL_BLACKLIST);
+		$user->addRelationship($site->guid, \NewsletterSubscription::GENERAL_BLACKLIST);
 	} else {
 		// check for subscriptions
 		$subscriptions = $subscription->getEntitiesFromRelationship([
-			'relationship' => NewsletterSubscription::SUBSCRIPTION,
+			'relationship' => \NewsletterSubscription::SUBSCRIPTION,
 			'limit' => false,
 			'batch' => true,
 		]);
@@ -873,7 +861,7 @@ function newsletter_convert_subscription_to_user_setting(\NewsletterSubscription
 			
 		// check for blocks
 		$blocked = $subscription->getEntitiesFromRelationship([
-			'relationship' => NewsletterSubscription::BLACKLIST,
+			'relationship' => \NewsletterSubscription::BLACKLIST,
 			'limit' => false,
 			'batch' => true,
 		]);
@@ -884,13 +872,13 @@ function newsletter_convert_subscription_to_user_setting(\NewsletterSubscription
 	}
 	
 	// remove email subscription
-	return (bool) $subscription->delete();
+	return $subscription->delete();
 }
 
 /**
  * Checks if group newsletter is allowed
  *
- * @param ElggGroup $group group entity
+ * @param null|\ElggGroup $group group entity
  *
  * @return bool
  */
@@ -919,13 +907,12 @@ function newsletter_is_group_enabled(\ElggGroup $group = null): bool {
 /**
  * Sends the preview newsletter
  *
- * @param Newsletter $entity newsletter to be sent
- * @param string     $email  email-address of the recipient
+ * @param \Newsletter $entity newsletter to be sent
+ * @param string      $email  email-address of the recipient
  *
- * @return bool if sending is succes or not
+ * @return bool
  */
 function newsletter_send_preview(\Newsletter $entity, string $email): bool {
-	
 	if (empty($email)) {
 		return false;
 	}
@@ -986,11 +973,11 @@ function newsletter_send_preview(\Newsletter $entity, string $email): bool {
  * Returns all the available templates, these include those provided by themes
  * and the saved templates
  *
- * Other plugins/themes can provide their own template if the create a view
+ * Other plugins/themes can provide their own template if they create a view
  * newsletter/templates/<some name>/{body|css}
  *
- * @param int         $container_guid The container of the current newsletter
- * @param \ElggEntity $entity         The current newsletter (optional) if editing
+ * @param int              $container_guid The container of the current newsletter
+ * @param null|\ElggEntity $entity         The current newsletter (optional) if editing
  *
  * @return array The available templates
  */
@@ -1004,7 +991,6 @@ function newsletter_get_available_templates(int $container_guid, \ElggEntity $en
 	foreach ($locations as $view) {
 		$matches = [];
 		$res = preg_match($pattern, $view, $matches);
-		
 		if (empty($res)) {
 			continue;
 		}
@@ -1024,7 +1010,7 @@ function newsletter_get_available_templates(int $container_guid, \ElggEntity $en
 	if (!empty($container_guid)) {
 		$templates = elgg_get_entities([
 			'type' => 'object',
-			'subtype' => NewsletterTemplate::SUBTYPE,
+			'subtype' => \NewsletterTemplate::SUBTYPE,
 			'container_guid' => $container_guid,
 			'limit' => false,
 		]);
@@ -1057,7 +1043,6 @@ function newsletter_get_available_templates(int $container_guid, \ElggEntity $en
  * @return array
  */
 function newsletter_process_csv_upload(array $recipients): array {
-	
 	// is a file uploaded
 	$csv = elgg_get_uploaded_file('csv');
 	if (!$csv instanceof UploadedFile) {
@@ -1201,10 +1186,6 @@ function newsletter_get_url_postfix(): array {
 function newsletter_apply_url_postfix(string $html_content, \Newsletter $newsletter): string {
 	static $pattern;
 	
-	if (!$newsletter instanceof \Newsletter) {
-		return $html_content;
-	}
-	
 	// get the postfix settings
 	$url_postfix_settings = newsletter_get_url_postfix();
 	if (empty($url_postfix_settings)) {
@@ -1262,10 +1243,9 @@ function newsletter_apply_url_postfix(string $html_content, \Newsletter $newslet
  * @param ElggEntity $entity the entity to embed
  * @param array      $vars   optional variables to pass to the embed view
  *
- * @return bool|string
+ * @return string
  */
-function newsletter_view_embed_content(\ElggEntity $entity, array $vars = []) {
-	
+function newsletter_view_embed_content(\ElggEntity $entity, array $vars = []): string {
 	$vars['entity'] = $entity;
 	
 	$type = $entity->getType();
@@ -1279,7 +1259,7 @@ function newsletter_view_embed_content(\ElggEntity $entity, array $vars = []) {
 		return elgg_view('newsletter/embed/default', $vars);
 	}
 	
-	return false;
+	return '';
 }
 
 /**
@@ -1294,7 +1274,6 @@ function newsletter_view_embed_content(\ElggEntity $entity, array $vars = []) {
  * @return bool
  */
 function newsletter_validate_custom_from(string $from_email): bool {
-	
 	if (empty($from_email)) {
 		// empty is allowed, sending will fall back to container
 		return true;
@@ -1330,12 +1309,11 @@ function newsletter_validate_custom_from(string $from_email): bool {
 /**
  * Register newsletter subscription items to the title menu
  *
- * @param ElggEntity $container_entity for which container entity to check subscriptions
+ * @param \ElggEntity $container_entity for which container entity to check subscriptions
  *
  * @return void
  */
 function newsletter_register_title_menu_items(\ElggEntity $container_entity): void {
-	
 	if (!$container_entity instanceof \ElggSite && !$container_entity instanceof \ElggGroup) {
 		return;
 	}
@@ -1402,7 +1380,7 @@ function newsletter_register_title_menu_items(\ElggEntity $container_entity): vo
 /**
  * Get all the relevant recipients of a given newsletter
  *
- * @param Newsletter $entity newsletter
+ * @param \Newsletter $entity newsletter
  *
  * @return array
  * @interal
@@ -1452,7 +1430,7 @@ function newsletter_get_filtered_recipients(\Newsletter $entity): array {
 			// yes, so exclude blocked
 			$basic_user_options['wheres'][] = function(QueryBuilder $qb, $main_alias) use ($site) {
 				// general blacklist
-				$blocked = $qb->subquery('entity_relationships');
+				$blocked = $qb->subquery(RelationshipsTable::TABLE_NAME);
 				$blocked->select('guid_one')
 						->where($qb->compare('relationship', '=', \NewsletterSubscription::GENERAL_BLACKLIST, ELGG_VALUE_STRING))
 						->andWhere($qb->compare('guid_two', '=', $site->guid, ELGG_VALUE_GUID));
@@ -1461,7 +1439,7 @@ function newsletter_get_filtered_recipients(\Newsletter $entity): array {
 			};
 			$basic_user_options['wheres'][] = function(QueryBuilder $qb, $main_alias) use ($container) {
 				// blacklist / unsubscribed
-				$blocked = $qb->subquery('entity_relationships');
+				$blocked = $qb->subquery(RelationshipsTable::TABLE_NAME);
 				$blocked->select('guid_one')
 						->where($qb->compare('relationship', '=', \NewsletterSubscription::BLACKLIST, ELGG_VALUE_STRING))
 						->andWhere($qb->compare('guid_two', '=', $container->guid, ELGG_VALUE_GUID));
@@ -1471,7 +1449,7 @@ function newsletter_get_filtered_recipients(\Newsletter $entity): array {
 		} else {
 			// no, so subscription is required
 			$basic_user_options['wheres'][] = function(QueryBuilder $qb, $main_alias) use ($container) {
-				$subbed = $qb->subquery('entity_relationships');
+				$subbed = $qb->subquery(RelationshipsTable::TABLE_NAME);
 				$subbed->select('guid_one')
 					   ->where($qb->compare('relationship', '=', \NewsletterSubscription::SUBSCRIPTION, ELGG_VALUE_STRING))
 					   ->andWhere($qb->compare('guid_two', '=', $container->guid, ELGG_VALUE_GUID));
@@ -1579,7 +1557,7 @@ function newsletter_get_filtered_recipients(\Newsletter $entity): array {
 						$wheres = [];
 						
 						// general blacklist
-						$general = $qb->subquery('entity_relationships');
+						$general = $qb->subquery(RelationshipsTable::TABLE_NAME);
 						$general->select('guid_one')
 								->where($qb->compare('relationship', '=', \NewsletterSubscription::GENERAL_BLACKLIST, ELGG_VALUE_STRING))
 								->andWhere($qb->compare('guid_two', '=', $site->guid, ELGG_VALUE_GUID));
@@ -1587,7 +1565,7 @@ function newsletter_get_filtered_recipients(\Newsletter $entity): array {
 						$wheres[] = $qb->compare("{$main_alias}.guid", 'in', $general->getSQL());
 						
 						// blacklist / unsubscribed
-						$blacklist = $qb->subquery('entity_relationships');
+						$blacklist = $qb->subquery(RelationshipsTable::TABLE_NAME);
 						$blacklist->select('guid_one')
 								  ->where($qb->compare('relationship', '=', \NewsletterSubscription::BLACKLIST, ELGG_VALUE_STRING))
 								  ->andWhere($qb->compare('guid_two', '=', $container->guid, ELGG_VALUE_GUID));
@@ -1644,7 +1622,7 @@ function newsletter_get_filtered_recipients(\Newsletter $entity): array {
 							$wheres = [];
 							
 							// general blacklist
-							$general = $qb->subquery('entity_relationships');
+							$general = $qb->subquery(RelationshipsTable::TABLE_NAME);
 							$general->select('guid_one')
 									->where($qb->compare('relationship', '=', \NewsletterSubscription::GENERAL_BLACKLIST, ELGG_VALUE_STRING))
 									->andWhere($qb->compare('guid_two', '=', $site->guid, ELGG_VALUE_GUID));
@@ -1652,7 +1630,7 @@ function newsletter_get_filtered_recipients(\Newsletter $entity): array {
 							$wheres[] = $qb->compare("{$main_alias}.guid", 'in', $general->getSQL());
 							
 							// blacklist / unsubscribed
-							$blacklist = $qb->subquery('entity_relationships');
+							$blacklist = $qb->subquery(RelationshipsTable::TABLE_NAME);
 							$blacklist->select('guid_one')
 									  ->where($qb->compare('relationship', '=', \NewsletterSubscription::BLACKLIST, ELGG_VALUE_STRING))
 									  ->andWhere($qb->compare('guid_two', '=', $container->guid, ELGG_VALUE_GUID));

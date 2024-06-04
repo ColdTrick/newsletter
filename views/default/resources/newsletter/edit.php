@@ -3,18 +3,11 @@
  * Edit an existing newsletter
  */
 
-use ColdTrick\Newsletter\EditForm;
-use Elgg\Exceptions\Http\EntityPermissionsException;
-
 $guid = (int) elgg_extract('guid', $vars);
+elgg_entity_gatekeeper($guid, 'object', \Newsletter::SUBTYPE, true);
 
-elgg_entity_gatekeeper($guid, 'object', \Newsletter::SUBTYPE);
-
-/* @var $entity Newsletter */
+/* @var $entity \Newsletter */
 $entity = get_entity($guid);
-if (!$entity->canEdit()) {
-	throw new EntityPermissionsException();
-}
 
 elgg_require_css('resources/newsletter/edit');
 
@@ -23,15 +16,13 @@ $subpage = elgg_extract('subpage', $vars, 'basic');
 // set page owner
 $container = $entity->getContainerEntity();
 if (!$container instanceof \ElggGroup) {
-	elgg_set_page_owner_guid(false);
+	elgg_set_page_owner_guid(0);
 	
 	$container = null;
 }
 
 // breadcrumb
 elgg_push_entity_breadcrumbs($entity);
-
-$form = new EditForm($entity);
 
 switch ($subpage) {
 	case 'template':
@@ -41,15 +32,20 @@ switch ($subpage) {
 		$form_vars = [
 			'id' => "newsletter-form-{$subpage}",
 			'prevent_double_submit' => false,
+			'sticky_enabled' => true,
 		];
 		
-		$content = elgg_view_form("newsletter/edit/{$subpage}", $form_vars, $form($subpage));
+		$content = elgg_view_form("newsletter/edit/{$subpage}", $form_vars, [
+			'entity' => $entity,
+		]);
 		break;
 	case 'basic':
 	default:
 		$subpage = 'basic';
 		
-		$content = elgg_view_form('newsletter/edit', [], $form($subpage));
+		$content = elgg_view_form('newsletter/edit', ['sticky_enabled' => true], [
+			'entity' => $entity,
+		]);
 		break;
 }
 

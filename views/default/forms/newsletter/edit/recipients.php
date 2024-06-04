@@ -1,18 +1,17 @@
 <?php
 
 $entity = elgg_extract('entity', $vars);
-if (!$entity instanceof Newsletter) {
+if (!$entity instanceof \Newsletter) {
 	return;
 }
+
+elgg_import_esm('forms/newsletter/edit/recipients');
 
 echo elgg_view_field([
 	'#type' => 'hidden',
 	'name' => 'guid',
 	'value' => $entity->guid,
 ]);
-
-$container = $entity->getContainerEntity();
-elgg_require_js('forms/newsletter/edit/recipients');
 
 echo elgg_view('output/longtext', [
 	'value' => elgg_echo('newsletter:recipients:description'),
@@ -26,6 +25,7 @@ echo elgg_view_field([
 ]);
 
 // add subscribers
+$container = $entity->getContainerEntity();
 $subscriber_count = newsletter_get_subscribers($container, true);
 echo elgg_view_field([
 	'#type' => 'checkbox',
@@ -93,7 +93,7 @@ if (!empty($user_guids)) {
 		],
 	]);
 	
-	/* @var $user ElggUser */
+	/* @var $user \ElggUser */
 	foreach ($users as $user) {
 		$class = '';
 		$counter++;
@@ -133,7 +133,7 @@ if (!empty($group_guids)) {
 		],
 	]);
 	
-	/* @var $group ElggGroup */
+	/* @var $group \ElggGroup */
 	foreach ($groups as $group) {
 		$class = '';
 		$counter++;

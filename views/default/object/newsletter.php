@@ -40,12 +40,10 @@ switch ($entity->status) {
 
 $params = [
 	'icon' => false,
-	'entity' => $entity,
 	'content' => $excerpt,
 	'byline' => false,
 	'time' => false,
 	'imprint' => $imprint,
 ];
-
 $params = $params + $vars;
 echo elgg_view('object/elements/summary', $params);

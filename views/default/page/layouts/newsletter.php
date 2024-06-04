@@ -9,7 +9,7 @@
 $webp_config = elgg_get_config('webp_enabled');
 elgg_set_config('webp_enabled', false);
 
-/* @var $entity Newsletter */
+/* @var $entity \Newsletter */
 $entity = elgg_extract('entity', $vars);
 
 $head = elgg_format_element('meta', [

@@ -12,11 +12,11 @@ class Icons {
 	 *
 	 * @param \Elgg\Event $event 'entity:header:sizes', 'object'
 	 *
-	 * @return array
+	 * @return null|array
 	 */
-	public static function extendHeaderSizes(\Elgg\Event $event) {
+	public static function extendHeaderSizes(\Elgg\Event $event): ?array {
 		if ($event->getParam('entity_subtype') !== \Newsletter::SUBTYPE) {
-			return;
+			return null;
 		}
 		
 		$returnvalue = $event->getValue();
@@ -28,7 +28,7 @@ class Icons {
 			'upscale' => true,
 			'crop' => true,
 		];
-	
+		
 		return $returnvalue;
 	}
 }

@@ -5,8 +5,6 @@
 
 use Elgg\Values;
 
-elgg_make_sticky_form('newsletter/edit/schedule');
-
 $guid = (int) get_input('guid');
 $date = (int) get_input('date');
 $hour = (int) get_input('hour');
@@ -38,8 +36,6 @@ if (!empty($status_notification)) {
 } else {
 	unset($entity->status_notification);
 }
-
-elgg_clear_sticky_form('newsletter/edit/schedule');
 
 $forward_url = elgg_generate_url('collection:object:newsletter:site');
 $container = $entity->getContainerEntity();

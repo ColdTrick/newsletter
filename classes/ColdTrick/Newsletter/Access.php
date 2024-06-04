@@ -12,12 +12,11 @@ class Access {
 	 *
 	 * @param \Elgg\Event $event 'access:collections:write', 'all'
 	 *
-	 * @return array write access array
+	 * @return null|array
 	 */
-	public static function writeAccessCollections(\Elgg\Event $event) {
-		
+	public static function writeAccessCollections(\Elgg\Event $event): ?array {
 		if (!elgg_is_logged_in() || !elgg_in_context('newsletter')) {
-			return;
+			return null;
 		}
 		
 		$allowed_keys = [ACCESS_LOGGED_IN, ACCESS_PUBLIC];

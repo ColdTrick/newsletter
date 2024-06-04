@@ -18,8 +18,7 @@ class Groups {
 	 * @return null|Collection
 	 */
 	public static function registerGroupNewsletterTool(\Elgg\Event $event): ?Collection {
-		$plugin = elgg_get_plugin_from_id('newsletter');
-		if ($plugin->getSetting('allow_groups') !== 'yes') {
+		if (elgg_get_plugin_setting('allow_groups', 'newsletter') !== 'yes') {
 			return null;
 		}
 		

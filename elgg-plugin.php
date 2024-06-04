@@ -1,9 +1,9 @@
 <?php
 
+use ColdTrick\Newsletter\Forms\PrepareNewsletterEdit;
 use Elgg\Router\Middleware\Gatekeeper;
 use Elgg\Router\Middleware\GroupPageOwnerGatekeeper;
 use Elgg\Router\Middleware\UserPageOwnerCanEditGatekeeper;
-use ColdTrick\Newsletter\Upgrades\MoveHeaderIcons;
 
 require_once(__DIR__ . '/lib/functions.php');
 
@@ -163,6 +163,7 @@ return [
 			'resource' => 'newsletter/received',
 			'middleware' => [
 				Gatekeeper::class,
+				UserPageOwnerCanEditGatekeeper::class,
 			],
 		],
 		'collection:object:newsletter:site' => [
@@ -219,6 +220,23 @@ return [
 		'export_value' => [
 			'csv_exporter' => [
 				'ColdTrick\Newsletter\Plugins\CSVExporter::exportValue' => [],
+			],
+		],
+		'form:prepare:fields' => [
+			'newsletter/edit' => [
+				PrepareNewsletterEdit::class => [],
+			],
+			'newsletter/edit/content' => [
+				PrepareNewsletterEdit::class => [],
+			],
+			'newsletter/edit/recipients' => [
+				PrepareNewsletterEdit::class => [],
+			],
+			'newsletter/edit/schedule' => [
+				PrepareNewsletterEdit::class => [],
+			],
+			'newsletter/edit/template' => [
+				PrepareNewsletterEdit::class => [],
 			],
 		],
 		'get_exportable_values' => [
@@ -283,9 +301,6 @@ return [
 				'ColdTrick\Newsletter\Plugins\DeveloperTools::preventLogOutput' => [],
 			],
 		],
-	],
-	'upgrades' => [
-		MoveHeaderIcons::class,
 	],
 	'view_extensions' => [
 		'register/extend' => [

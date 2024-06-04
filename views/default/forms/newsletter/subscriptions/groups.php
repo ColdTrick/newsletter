@@ -5,6 +5,7 @@
  * @uses $vars['entity'] the user to manage for
  */
 
+use Elgg\Database\MetadataTable;
 use Elgg\Database\QueryBuilder;
 
 $entity = elgg_extract('entity', $vars);
@@ -27,7 +28,7 @@ $group_options = [
 			$tool_value = $group_tool->isEnabledByDefault() ? 'no' : 'yes';
 			$tool_compare = $group_tool->isEnabledByDefault() ? 'not in' : 'in';
 			
-			$tool_disabled = $qb->subquery('metadata');
+			$tool_disabled = $qb->subquery(MetadataTable::TABLE_NAME);
 			$tool_disabled->select('entity_guid')
 				->where($qb->compare('name', '=', $group_tool->mapMetadataName(), ELGG_VALUE_STRING))
 				->andWhere($qb->compare('value', '=', $tool_value, ELGG_VALUE_STRING));
@@ -52,7 +53,7 @@ $content[] = elgg_view('output/longtext', [
 
 $my_groups = $entity->getGroups($group_options);
 
-/* @var $group ElggGroup */
+/* @var $group \ElggGroup */
 foreach ($my_groups as $group) {
 	$has_subscription = newsletter_check_user_subscription($entity, $group);
 	

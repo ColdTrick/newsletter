@@ -24,7 +24,7 @@ class Site {
 			'name' => 'newsletter',
 			'icon' => 'mail-bulk',
 			'text' => elgg_echo('newsletter:menu:site'),
-			'href' => elgg_generate_url('collection:object:newsletter:site'),
+			'href' => elgg_generate_url('default:object:newsletter'),
 		]);
 		
 		return $returnvalue;

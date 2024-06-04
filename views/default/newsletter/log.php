@@ -6,6 +6,9 @@
  */
 
 $entity = elgg_extract('entity', $vars);
+if (!$entity instanceof \Newsletter) {
+	return;
+}
 
 $log = $entity->getLogging();
 if (empty($log)) {
@@ -49,7 +52,6 @@ echo elgg_view_module('info', elgg_echo('newsletter:log:general:title'), $genera
 
 // recipient logging
 $recipients = elgg_extract('recipients', $log);
-
 if (empty($recipients)) {
 	echo elgg_view('output/longtext', ['value' => elgg_echo('newsletter:log:no_recipients')]);
 	return;

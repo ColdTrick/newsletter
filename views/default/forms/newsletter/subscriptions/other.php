@@ -6,6 +6,7 @@
  */
 
 use Elgg\Database\QueryBuilder;
+use Elgg\Database\RelationshipsTable;
 
 $entity = elgg_extract('entity', $vars);
 if (!$entity instanceof \ElggUser) {
@@ -14,7 +15,7 @@ if (!$entity instanceof \ElggUser) {
 
 $group_options = [
 	'type' => 'group',
-	'relationship' => NewsletterSubscription::SUBSCRIPTION,
+	'relationship' => \NewsletterSubscription::SUBSCRIPTION,
 	'relationship_guid' => $entity->guid,
 	'count' => true,
 	'limit' => false,
@@ -25,7 +26,7 @@ $group_options = [
 	],
 	'wheres' => [
 		function (QueryBuilder $qb, $main_alias) use ($entity) {
-			$my_groups = $qb->subquery('entity_relationships');
+			$my_groups = $qb->subquery(RelationshipsTable::TABLE_NAME);
 			$my_groups->select('guid_two')
 				->where($qb->compare('relationship', '=', 'member', ELGG_VALUE_STRING))
 				->andWhere($qb->compare('guid_one', '=', $entity->guid, ELGG_VALUE_GUID));

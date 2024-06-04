@@ -29,7 +29,7 @@ if (empty($query) || empty($guid)) {
 
 $entity = get_entity($guid);
 // do we have a newsletter
-if (!$entity instanceof Newsletter || !$entity->canEdit()) {
+if (!$entity instanceof \Newsletter || !$entity->canEdit()) {
 	echo $return();
 	return;
 }

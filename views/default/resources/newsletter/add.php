@@ -5,7 +5,6 @@
  * @uses elgg_get_page_owner_entity() the container in which to create the newsletter
  */
 
-use ColdTrick\Newsletter\EditForm;
 use Elgg\Exceptions\Http\BadRequestException;
 use Elgg\Exceptions\Http\EntityPermissionsException;
 
@@ -16,7 +15,7 @@ if ($container instanceof \ElggUser) {
 	// access to site newsletters is only for admins
 	if ($container->isAdmin()) {
 		$container = elgg_get_site_entity();
-		elgg_set_page_owner_guid(false);
+		elgg_set_page_owner_guid(0);
 	}
 }
 
@@ -31,9 +30,7 @@ if (!$container->canWriteToContainer(0, 'object', \Newsletter::SUBTYPE)) {
 // breadcrumb
 elgg_push_collection_breadcrumbs('object', \Newsletter::SUBTYPE, $container instanceof \ElggGroup ? $container : null);
 
-$form = new EditForm(null, $container->guid);
-
-$content = elgg_view_form('newsletter/edit', [], $form('basic'));
+$content = elgg_view_form('newsletter/edit', [], ['container_guid' => $container->guid]);
 
 // draw page
 echo elgg_view_page(elgg_echo('newsletter:add:title'), [

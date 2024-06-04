@@ -3,17 +3,8 @@
  * Shows all the newsletters the user received
  */
 
-use Elgg\Exceptions\Http\EntityNotFoundException;
-use Elgg\Exceptions\Http\EntityPermissionsException;
-
+/* @var $user \ElggUser */
 $user = elgg_get_page_owner_entity();
-if (!$user instanceof \ElggUser) {
-	throw new EntityNotFoundException();
-}
-
-if (!$user->canEdit()) {
-	throw new EntityPermissionsException();
-}
 
 elgg_push_collection_breadcrumbs('object', \Newsletter::SUBTYPE);
 

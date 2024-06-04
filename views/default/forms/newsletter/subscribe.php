@@ -22,7 +22,7 @@ $submit_text = elgg_echo('newsletter:subscribe');
 if ($user instanceof \ElggUser) {
 	// check if the user is subscribed to container
 	if (newsletter_check_user_subscription($user, $entity)) {
-		// already subscribed, so offer unsubscibe
+		// already subscribed, so offer unsubscribe
 		$submit_text = elgg_echo('newsletter:unsubscribe');
 		
 		echo elgg_format_element('div', [], elgg_echo('newsletter:subscribe:user:description:unsubscribe', [$entity->getDisplayName()]));
