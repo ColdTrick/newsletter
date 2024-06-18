@@ -53,15 +53,10 @@ return array(
 	
 	'newsletter:menu:preview_by_mail' => "Preview by mail",
 	
-	'newsletter:breadcrumb:site' => "Newsletters",
-	'newsletter:breadcrumb:log' => "Delivery log",
-	'newsletter:breadcrumb:received' => "Received",
-	
 	// pages
 	'newsletter:site:title' => "All site newsletters",
 	'newsletter:add:title' => "Create a newsletter",
 	'newsletter:edit:title' => "Edit newsletter: %s",
-	'newsletter:schedule:title' => "%s: Schedule",
 	'newsletter:received:title' => "%s's received newsletters",
 	'newsletter:received:title:mine' => "My received newsletters",
 	
@@ -137,21 +132,17 @@ return array(
 	'newsletter:schedule:time' => "Scheduled time",
 	'newsletter:schedule:status_notification' => "E-mail address for status notification",
 	'newsletter:schedule:status_notification:description' => "When the newsletter is sent, a notification will be send to this e-mail address.",
-	'newsletter:schedule:status_notification:me' => "Send me a status notification",
-	'newsletter:schedule:status_notification:toggle' => "or enter a custom e-mail address",
 	'newsletter:schedule:show_in_archive' => "Show the newsletter in the archive",
 	'newsletter:schedule:send' => "Save and send now",
 	'newsletter:schedule:save' => "Save and schedule",
 	'newsletter:schedule:no_recipients' => "You selected no recipients, are you sure you want to do this action?",
 
 	// recipients
-	'newsletter:recipients:title' => "Select recipients",
 	'newsletter:recipients:description' => "Below you can configure who you want to receive the newsletter.",
 	'newsletter:recipients:csv' => "Upload a CSV-file with recipient e-mail addresses",
 	'newsletter:recipients:csv:description' => "You can upload a CSV file that contains the e-mail addresses for recipients. The text delimiter for the file needs to be \" (double quote) and the column delimiter needs to be a ; (semicolon). The system will auto-detect the e-mail column by searching the first 2 rows.",
 	'newsletter:recipients:recipient' => "Search a recipient",
 	'newsletter:recipients:recipient:description' => "You can search on name, email and username. Please select one from the dropdown to add the recipient.",
-	'newsletter:recipients' => "Recipients",
 	'newsletter:recipients:subscribers' => "To all subscribers",
 	'newsletter:recipients:subscribers:help' => "All those subscribers who are not necessary members of your group but who have a subscription to the newsletter. If the number behind subscribers is a (0), then this newsletter has no subscribers.",
 	'newsletter:recipients:members' => "To all members",
@@ -313,9 +304,6 @@ To view the newsletter click here:
 	// subscriptions
 	'newsletter:action:subscriptions:error' => "An unknown error occured while saving your subscription settings, please try again",
 	'newsletter:action:subscriptions:success' => "Your subscription settings were saved",
-	
-	// send
-	'newsletter:action:send:success' => "The newsletter is being send",
 	
 	// duplicate
 	'newsletter:action:duplicate:error' => "An unknown error occured while duplicating the newsletter, please try again",
