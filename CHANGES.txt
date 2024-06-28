@@ -1,6 +1,10 @@
 Version history
 ===============
 
+12.0 (2024-06-28):
+
+- changed: updated for Elgg 6
+
 11.1 (2024-05-16):
 
 - added: button to add a blank embedded item to the content
