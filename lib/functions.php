@@ -3,11 +3,11 @@
  * This file contains all supportive functions for the Newsletter plugin
  */
 
-use Elgg\Database\RelationshipsTable;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Elgg\Email;
 use Elgg\Database\QueryBuilder;
+use Elgg\Database\RelationshipsTable;
+use Elgg\Email;
 use Elgg\Email\Address;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Start the commandline to send a newsletter
@@ -882,7 +882,7 @@ function newsletter_convert_subscription_to_user_setting(\NewsletterSubscription
  *
  * @return bool
  */
-function newsletter_is_group_enabled(\ElggGroup $group = null): bool {
+function newsletter_is_group_enabled(?\ElggGroup $group = null): bool {
 	static $plugin_setting;
 	
 	// make sure we only get the plugin setting once
@@ -981,7 +981,7 @@ function newsletter_send_preview(\Newsletter $entity, string $email): bool {
  *
  * @return array The available templates
  */
-function newsletter_get_available_templates(int $container_guid, \ElggEntity $entity = null): array {
+function newsletter_get_available_templates(int $container_guid, ?\ElggEntity $entity = null): array {
 	$result = [];
 	
 	// detect templates provided by themes/plugins
