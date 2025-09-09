@@ -154,6 +154,9 @@ return [
 		'collection:object:newsletter:group' => [
 			'path' => 'newsletter/group/{guid}/{filter?}',
 			'resource' => 'newsletter/group',
+			'required_plugins' => [
+				'groups',
+			],
 			'middleware' => [
 				GroupPageOwnerGatekeeper::class,
 			],
