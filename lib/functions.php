@@ -1061,7 +1061,7 @@ function newsletter_process_csv_upload(array $recipients): array {
 	for ($i = 0; $i < 2; $i++) {
 		$fh->seek($i);
 		
-		$row = $fh->fgetcsv(';', '\'');
+		$row = $fh->fgetcsv(';', '\'', '\\');
 		if (empty($row)) {
 			continue;
 		}
@@ -1088,7 +1088,7 @@ function newsletter_process_csv_upload(array $recipients): array {
 	$fh->rewind();
 	
 	while (!$fh->eof()) {
-		$row = $fh->fgetcsv(';');
+		$row = $fh->fgetcsv(';', '"', '\\');
 		
 		// get the email address
 		$email = elgg_extract($email_column, $row);
