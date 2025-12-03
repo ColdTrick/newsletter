@@ -1,10 +1,11 @@
 <?php
 /**
- * This file was created by Translation Editor v13.1.1
- * On 2024-05-06 15:33
+ * This file was created by Translation Editor v14.0.4
+ * On 2025-12-03 10:39
  */
 
 return array (
+  'list:object:newsletter:no_results' => 'Geen nieuwsbrieven gevonden',
   'newsletter:edit:subject:help' => 'Indien je een ander onderwerp in de email wilt dan de titel van de nieuwsbrief kun je dat hier opgeven.',
   'newsletter:editor:button' => 'Voeg content toe aan je nieuwsbrief',
   'newsletter:upgrade:2023040400:title' => 'Verplaats de nieuwsbrief iconen naar kopafbeeldingen',
@@ -225,9 +226,9 @@ Om de nieuwsbrief te bekijken klik hier:
   'newsletter:action:unsubscribe:success:entity' => 'Je bent uitgeschreven van de %s nieuwsbrief',
   'newsletter:embed:show_all' => 'Toon all content, niet alleen van de groep',
   'newsletter:embed:blank' => 'Blanco item toevoegen',
-  'newsletter:embed:blank:title' => "Item titel",
-  'newsletter:embed:blank:description' => "Item omschrijving",
-  'newsletter:embed:blank:img' => "Hier afbeelding invoegen",
+  'newsletter:embed:blank:title' => 'Item titel',
+  'newsletter:embed:blank:description' => 'Item omschrijving',
+  'newsletter:embed:blank:img' => 'Hier afbeelding invoegen',
   'newsletter:embed:format:description:title' => 'Toon tekst van de content',
   'newsletter:embed:format:description:option:full' => 'Volledig',
   'newsletter:embed:format:description:option:excerpt' => 'Klein stukje (met meer knop)',

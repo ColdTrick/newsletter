@@ -8,6 +8,7 @@ return array(
 	'input:container_guid:object:newsletter:info' => "The newsletter will be posted in %s",
 	
 	'collection:object:newsletter' => "Newsletters",
+	'list:object:newsletter:no_results' => "No newsletters found",
 	
 	'add:object:newsletter' => "New newsletter",
 	'newsletter:subscribe' => "Subscribe",
@@ -89,7 +90,7 @@ return array(
 	'newsletter:placeholders:info' => "You can use the following placeholders in your text. They will be replaced by system text or by information about the newsletter. If you hover over them, you will get some more details.",
 	'newsletter:placeholders:content' => "Content will be replaced by the content step of the newsletter (do not use on the content page)",
 	'newsletter:placeholders:header' => "Header will be replaced by the uploaded header image from the content step",
-	'newsletter:placeholders:unsub' => "Unsub will be replaced by a default unsubcribe text containing a unsubscribe link",
+	'newsletter:placeholders:unsub' => "Unsub will be replaced by a default unsubscribe text containing a unsubscribe link",
 	'newsletter:placeholders:unsublink' => "Unsublink will be replaced by a unsubscribe link",
 	'newsletter:placeholders:online' => "Online will be replaced by a default text on where to view the newsletter online",
 	'newsletter:placeholders:title' => "Title will be replaced by the title of the newsletter",
@@ -161,9 +162,9 @@ return array(
 	'newsletter:settings:allow_copy_template' => "Allow template copies",
 	'newsletter:settings:allow_copy_template:help' => "Allow users to copy existing templates to custom versions",
 	'newsletter:settings:include_banned_users' => "Include banned users in the newsletter sending",
-	'newsletter:settings:include_banned_users:help' => "When enabled banned users can also recieve newsletters",
+	'newsletter:settings:include_banned_users:help' => "When enabled banned users can also receive newsletters",
 	'newsletter:settings:custom_from' => "Allow newsletters to be send from a custom e-mail address",
-	'newsletter:settings:custom_from:description' => "When enabled users are allowed to enter a custom e-mail address which will be used to as the from adress of the newsleter. Please keep in mind that this could allow abuse and could make newsletter end up in the spam folders more often.",
+	'newsletter:settings:custom_from:description' => "When enabled users are allowed to enter a custom e-mail address which will be used to as the from address of the newsletter. Please keep in mind that this could allow abuse and could make newsletter end up in the spam folders more often.",
 	'newsletter:settings:custom_from:domains' => "Limit the custom e-mail addresses to the following domains",
 	'newsletter:settings:custom_from:domains:description' => "Enter a comma seperated list of domains to limit the custom e-mail addresses to. For example: example.com, this will allow user@example.com but not user@example2.com or user2@sub.example.com",
 	
@@ -195,7 +196,7 @@ return array(
 	'newsletter:unsubscribe:title' => "Unsubscribe from the newsletter",
 	'newsletter:unsubscribe:user' => "Hi %s,
 
-Check the two settings below and click unsubscribe in order to complete the proccess.",
+Check the two settings below and click unsubscribe in order to complete the process.",
 	'newsletter:unsubscribe:email' => "Your email address %s will be unsubscribed if you click the button below.",
 	'newsletter:unsubscribe:email:empty' => "Enter your email address and click the button below to unsubscribe.",
 	'newsletter:unsubscribe:entity' => "I no longer wish to receive the '%s' newsletter",
@@ -248,12 +249,12 @@ To view the newsletter click here:
 	'newsletter:log:general:title' => "General information",
 	'newsletter:log:general:scheduled' => "Scheduled time",
 	'newsletter:log:general:starttime' => "Actual starting time",
-	'newsletter:log:general:endtime' => "Proccessing finished",
+	'newsletter:log:general:endtime' => "Processing finished",
 	
 	'newsletter:log:no_contents' => "No log file could be found, are you sure this newsletter is already sent.",
 	'newsletter:log:no_recipients' => "There were no recipients for this newsletter",
-	'newsletter:log:emails:no_recipients' => "There were no individual e-mail addresses in the proccessing of the newsletter. If you had selected some e-mail addresses they could have unsubscribed from the newsletter.",
-	'newsletter:log:users:no_recipients' => "There were no registered users in the proccessing of the newsletter. If you had selected some users they could have unsubscribed from the newsletter.",
+	'newsletter:log:emails:no_recipients' => "There were no individual e-mail addresses in the processing of the newsletter. If you had selected some e-mail addresses they could have unsubscribed from the newsletter.",
+	'newsletter:log:users:no_recipients' => "There were no registered users in the processing of the newsletter. If you had selected some users they could have unsubscribed from the newsletter.",
 	
 	// group
 	'groups:tool:newsletter' => "Enable group newsletters",
@@ -270,14 +271,14 @@ To view the newsletter click here:
 	'newsletter:csv_exporter:status' => "Status",
 	'newsletter:csv_exporter:scheduled' => "Scheduled delivery time",
 	'newsletter:csv_exporter:scheduled:readable' => "Scheduled delivery time (readable)",
-	'newsletter:csv_exporter:endtime' => "Proccessing finished time",
-	'newsletter:csv_exporter:endtime:readable' => "Proccessing finished time (readable)",
+	'newsletter:csv_exporter:endtime' => "Processing finished time",
+	'newsletter:csv_exporter:endtime:readable' => "Processing finished time (readable)",
 	
 	// actions
 	// edit
 	'newsletter:action:edit:error:title' => "Please provide a title for the newsletter",
 	'newsletter:action:edit:error:from' => "The supplied e-mail address is not allowed to send newsletters",
-	'newsletter:action:edit:error:save' => "An unknown error occured while saving the newsletter, please try again",
+	'newsletter:action:edit:error:save' => "An unknown error occurred while saving the newsletter, please try again",
 	'newsletter:action:edit:success' => "The newsletter was saved",
 	
 	// schedule
@@ -296,34 +297,34 @@ To view the newsletter click here:
 	'newsletter:action:template_to_custom:success' => "Template copied to custom",
 	
 	// subscribe
-	'newsletter:action:subscribe:error:subscribe' => "An error occured while subscribing, please try again",
-	'newsletter:action:subscribe:error:unsubscribe' => "An error occured while unsubscribing, please try again",
+	'newsletter:action:subscribe:error:subscribe' => "An error occurred while subscribing, please try again",
+	'newsletter:action:subscribe:error:unsubscribe' => "An error occurred while unsubscribing, please try again",
 	'newsletter:action:subscribe:success' => "You've successfully subscribed to the newsletter",
 	'newsletter:action:subscribe:success:unsubscribe' => "You've successfully been unsubscribed from the newsletter",
 	
 	// subscriptions
-	'newsletter:action:subscriptions:error' => "An unknown error occured while saving your subscription settings, please try again",
+	'newsletter:action:subscriptions:error' => "An unknown error occurred while saving your subscription settings, please try again",
 	'newsletter:action:subscriptions:success' => "Your subscription settings were saved",
 	
 	// duplicate
-	'newsletter:action:duplicate:error' => "An unknown error occured while duplicating the newsletter, please try again",
+	'newsletter:action:duplicate:error' => "An unknown error occurred while duplicating the newsletter, please try again",
 	'newsletter:action:duplicate:success' => "The newsletter was duplicated",
 	
 	// template - edit
-	'newsletter:action:template:edit:error' => "An unknown error occured while saving the template",
+	'newsletter:action:template:edit:error' => "An unknown error occurred while saving the template",
 	'newsletter:action:template:edit:success' => "The template was saved",
 	
 	// template - delete
-	'newsletter:action:template:delete:error:delete' => "An unknown error occured while deleting the newsletter template, please try again",
+	'newsletter:action:template:delete:error:delete' => "An unknown error occurred while deleting the newsletter template, please try again",
 	'newsletter:action:template:delete:success' => "The newsletter template was deleted",
 	
 	// preview mail
 	'newsletter:action:preview_mail:success' => "Mail sent, check your inbox",
 	
 	// unsubscribe
-	'newsletter:action:unsubscribe:error:recipient' => "Invalild recipient to unsubscribe",
-	'newsletter:action:unsubscribe:error:all' => "An error occured while unsubscribing you from all newsletters, please try again",
-	'newsletter:action:unsubscribe:error:entity' => "An error occured while unsubscribing you from the %s newsletter, please try again",
+	'newsletter:action:unsubscribe:error:recipient' => "Invalid recipient to unsubscribe",
+	'newsletter:action:unsubscribe:error:all' => "An error occurred while unsubscribing you from all newsletters, please try again",
+	'newsletter:action:unsubscribe:error:entity' => "An error occurred while unsubscribing you from the %s newsletter, please try again",
 	'newsletter:action:unsubscribe:success:all' => "You've been unsubscribed from all newsletters",
 	'newsletter:action:unsubscribe:success:entity' => "You've been unsubscribed from the %s newsletter",
 	
