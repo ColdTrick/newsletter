@@ -3,8 +3,6 @@
  * View all the site newsletters
  */
 
-$filter = 'sent';
-
 elgg_push_collection_breadcrumbs('object', \Newsletter::SUBTYPE);
 
 $site = elgg_get_site_entity();
@@ -12,9 +10,10 @@ elgg_set_page_owner_guid($site->guid);
 
 newsletter_register_title_menu_items($site);
 
-if ($site->canWriteToContainer(0, 'object', \Newsletter::SUBTYPE)) {
-	elgg_register_title_button('add', 'object', \Newsletter::SUBTYPE);
-	
+elgg_register_title_button('add', 'object', \Newsletter::SUBTYPE);
+
+$filter = 'sent';
+if ($site->canEdit()) {
 	$filter = elgg_extract('filter', $vars, $filter, false);
 }
 

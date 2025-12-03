@@ -18,7 +18,7 @@ class Filter {
 	 */
 	public static function registerNewsletter(\Elgg\Event $event): ?MenuItems {
 		$page_owner = elgg_get_page_owner_entity();
-		if ($page_owner instanceof \ElggGroup && !$page_owner->canEdit()) {
+		if ($page_owner instanceof \ElggEntity && !$page_owner->canEdit()) {
 			return null;
 		}
 		
