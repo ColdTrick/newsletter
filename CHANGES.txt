@@ -1,6 +1,10 @@
 Version history
 ===============
 
+12.0.2 (2025-12-04):
+
+- fixed: select correct tab on site overview
+
 12.0.1 (2025-11-13):
 
 - fixed: PHP implicit null declaration
