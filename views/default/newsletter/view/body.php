@@ -48,7 +48,12 @@ if ($entity->hasIcon('newsletter', 'header')) {
 }
 
 $replacements = [
-	'{content}' => $entity->content,
+	'{content}' => elgg_view('output/longtext', [
+		'value' => $entity->content,
+		'autop' => false,
+		'sanitize' => false,
+		'oembed_thumbnail_only' => true,
+	]),
 	'{header}' => $header,
 	'{unsub}' => elgg_echo('newsletter:body:unsub'),
 	'{online}' => elgg_echo('newsletter:body:online'),
