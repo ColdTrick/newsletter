@@ -48,7 +48,14 @@ if ($code && !newsletter_validate_unsubscribe_code($entity, $recipient, $code)) 
 	throw new ValidationException(elgg_echo('newsletter:unsubscribe:error:code'));
 }
 
-elgg_push_collection_breadcrumbs('object', \Newsletter::SUBTYPE, $entity instanceof \ElggGroup ? $entity : null);
+$shell = 'default';
+if (!elgg_is_logged_in() && elgg_get_config('walled_garden')) {
+	$shell = 'walled_garden';
+}
+
+if ($shell === 'default') {
+	elgg_push_collection_breadcrumbs('object', \Newsletter::SUBTYPE, $entity instanceof \ElggGroup ? $entity : null);
+}
 
 echo elgg_view_page(elgg_echo('newsletter:unsubscribe:title'), [
 	'content' => elgg_view_form('newsletter/unsubscribe', [], [
@@ -57,4 +64,4 @@ echo elgg_view_page(elgg_echo('newsletter:unsubscribe:title'), [
 		'code' => $code,
 	]),
 	'filter' => false,
-]);
+], $shell);
