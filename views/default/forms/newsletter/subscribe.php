@@ -20,6 +20,12 @@ $user = elgg_get_logged_in_user_entity();
 $submit_text = elgg_echo('newsletter:subscribe');
 
 if ($user instanceof \ElggUser) {
+	echo elgg_view_field([
+		'#type' => 'hidden',
+		'name' => 'user_guid',
+		'value' => $user->guid,
+	]);
+	
 	// check if the user is subscribed to container
 	if (newsletter_check_user_subscription($user, $entity)) {
 		// already subscribed, so offer unsubscribe
@@ -29,13 +35,7 @@ if ($user instanceof \ElggUser) {
 	} else {
 		// not yet so subscribe
 		echo elgg_format_element('div', [], elgg_echo('newsletter:subscribe:user:description:subscribe', [$entity->getDisplayName()]));
-	}
-	
-	echo elgg_view_field([
-		'#type' => 'hidden',
-		'name' => 'user_guid',
-		'value' => $user->guid,
-	]);
+	}	
 } else {
 	// show email subscribe form
 	echo elgg_view_field([
@@ -50,8 +50,13 @@ if ($user instanceof \ElggUser) {
 
 // footer
 $footer = elgg_view_field([
-	'#type' => 'submit',
-	'text' => $submit_text,
-	'class' => 'float-alt',
+	'#type' => 'fieldset',
+	'justify' => 'right',
+	'fields' => [
+		[
+			'#type' => 'submit',
+			'text' => $submit_text,
+		],
+	],
 ]);
 elgg_set_form_footer($footer);
