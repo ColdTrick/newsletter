@@ -1,6 +1,12 @@
 Version history
 ===============
 
+12.1.1 (2026-03-24):
+
+- changed: unsubscribe page supports being drawn in a walledgarden shell
+- fixed: invalid inclusion of js module
+- fixed: using float in form footer button causes visual issues
+
 12.1 (2026-02-11):
 
 - changed: newsletter content is passed through output/longtext
