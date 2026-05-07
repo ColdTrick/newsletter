@@ -8,7 +8,7 @@
 $guid = (int) get_input('guid');
 elgg_entity_gatekeeper($guid, 'object', \Newsletter::SUBTYPE, true);
 
-/* @var $entity \Newsletter */
+/** @var \Newsletter $entity */
 $entity = get_entity($guid);
 
 $container = $entity->getContainerEntity();

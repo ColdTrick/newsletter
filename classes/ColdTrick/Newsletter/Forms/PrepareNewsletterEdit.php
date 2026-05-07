@@ -56,23 +56,31 @@ class PrepareNewsletterEdit {
 	 */
 	protected function prepareBasic(array $vars): array {
 		$defaults = [
-			'title' => '',
-			'description' => '',
-			'subject' => '',
-			'from' => '',
-			'access_id' => elgg_get_default_access(null, [
-				'entity_type' => 'object',
-				'entity_subtype' => \Newsletter::SUBTYPE,
-				'container_guid' => $this->container_guid,
-				'purpose' => 'read',
-			]),
-			'tags' => [],
 			'container_guid' => $this->container_guid,
 		];
 		
+		$fields = elgg()->fields->get('object', \Newsletter::SUBTYPE);
+		foreach ($fields as $field) {
+			$default_value = null;
+			$name = (string) elgg_extract('name', $field);
+			
+			if ($name === 'access_id') {
+				$default_value = elgg_get_default_access(null, [
+					'entity_type' => 'object',
+					'entity_subtype' => \Newsletter::SUBTYPE,
+					'container_guid' => $this->container_guid,
+					'purpose' => 'read',
+				]);
+			}
+			
+			$defaults[$name] = $default_value;
+		}
+		
 		if ($this->entity instanceof \Newsletter) {
 			foreach ($defaults as $name => $value) {
-				$defaults[$name] = $this->entity->$name;
+				if (isset($this->entity->{$name})) {
+					$defaults[$name] = $this->entity->{$name};
+				}
 			}
 		}
 		

@@ -3,12 +3,23 @@
 return array(
 	// general
 	'item:object:newsletter' => "Newsletter",
-	'item:object:newsletter_template' => "Newsletter template",
-	'item:object:newsletter_subscription' => "Newsletter subscription",
-	'input:container_guid:object:newsletter:info' => "The newsletter will be posted in %s",
-	
 	'collection:object:newsletter' => "Newsletters",
 	'list:object:newsletter:no_results' => "No newsletters found",
+	
+	'item:object:newsletter_template' => "Newsletter template",
+	'collection:object:newsletter_template' => "Newsletter templates",
+	'list:object:newsletter_template:no_results' => "No newsletter templates found",
+	
+	'item:object:newsletter_subscription' => "Newsletter subscription",
+	'collection:object:newsletter_subscription' => "Newsletter subscriptions",
+	'list:object:newsletter_subscription:no_results' => "No newsletter subscriptions found",
+	
+	'input:container_guid:object:newsletter:info' => "The newsletter will be posted in %s",
+	'entity:edit:object:newsletter:success' => "The newsletter was saved",
+	
+	'collection:object:newsletter:all' => "All site newsletters",
+	'collection:object:newsletter:group' => "Group newsletters",
+	'collection:object:newsletter:received' => "%s's received newsletters",
 	
 	'add:object:newsletter' => "New newsletter",
 	'newsletter:subscribe' => "Subscribe",
@@ -38,8 +49,6 @@ return array(
 	'newsletter:menu:entity:log' => "View log",
 	'newsletter:menu:entity:duplicate' => "Duplicate",
 	
-	'newsletter:menu:owner_block:group' => "Group newsletters",
-	
 	'newsletter:menu:filter:sent' => "Sent",
 	'newsletter:menu:filter:concept' => "Concept",
 	'newsletter:menu:filter:scheduled' => "Scheduled",
@@ -55,11 +64,8 @@ return array(
 	'newsletter:menu:preview_by_mail' => "Preview by mail",
 	
 	// pages
-	'newsletter:site:title' => "All site newsletters",
 	'newsletter:add:title' => "Create a newsletter",
 	'newsletter:edit:title' => "Edit newsletter: %s",
-	'newsletter:received:title' => "%s's received newsletters",
-	'newsletter:received:title:mine' => "My received newsletters",
 	
 	// embed
 	'newsletter:embed:show_all' => "Show all content, not just group content",
@@ -259,8 +265,6 @@ To view the newsletter click here:
 	// group
 	'groups:tool:newsletter' => "Enable group newsletters",
 	'groups:tool:newsletter:description' => "Allow group owners to send a newsletter to the group members.",
-	'newsletter:group:error:not_enabled' => "Newsletters aren't enabled for this group",
-	'newsletter:group:title' => "%s's newsletters",
 	
 	// widget
 	'widgets:newsletter_subscribe:name' => "Newsletter subscription",
@@ -276,10 +280,7 @@ To view the newsletter click here:
 	
 	// actions
 	// edit
-	'newsletter:action:edit:error:title' => "Please provide a title for the newsletter",
 	'newsletter:action:edit:error:from' => "The supplied e-mail address is not allowed to send newsletters",
-	'newsletter:action:edit:error:save' => "An unknown error occurred while saving the newsletter, please try again",
-	'newsletter:action:edit:success' => "The newsletter was saved",
 	
 	// schedule
 	'newsletter:action:schedule:success' => "Schedule saved",

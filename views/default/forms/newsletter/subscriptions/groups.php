@@ -53,7 +53,7 @@ $content[] = elgg_view('output/longtext', [
 
 $my_groups = $entity->getGroups($group_options);
 
-/* @var $group \ElggGroup */
+/** @var \ElggGroup $group */
 foreach ($my_groups as $group) {
 	$has_subscription = newsletter_check_user_subscription($entity, $group);
 	

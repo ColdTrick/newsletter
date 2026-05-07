@@ -16,8 +16,8 @@
  */
 class Newsletter extends \ElggObject {
 	
-	const SUBTYPE = 'newsletter';
-	const SEND_TO = 'send_to';
+	public const SUBTYPE = 'newsletter';
+	public const SEND_TO = 'send_to';
 	
 	/**
 	 * Clones the newsletter
@@ -54,6 +54,61 @@ class Newsletter extends \ElggObject {
 		return (string) elgg_generate_entity_url($this, 'view', null, [
 			'code' => newsletter_generate_commandline_secret((int) $this->guid),
 		]);
+	}
+	
+	/**
+	 * {@inheritdoc}
+	 */
+	public static function getDefaultFields(): array {
+		$result = parent::getDefaultFields();
+		
+		$result[] = [
+			'#type' => 'text',
+			'#label' => elgg_echo('title'),
+			'name' => 'title',
+			'required' => true,
+		];
+		
+		$result[] = [
+			'#type' => 'text',
+			'#label' => elgg_echo('newsletter:edit:subject'),
+			'#help' => elgg_echo('newsletter:edit:subject:help'),
+			'name' => 'subject',
+		];
+		
+		if (elgg_get_plugin_setting('custom_from', 'newsletter') === 'yes') {
+			$result[] = [
+				'#type' => 'email',
+				'#label' => elgg_echo('newsletter:edit:from'),
+				'#help' => elgg_echo('newsletter:edit:from:description', [
+					elgg_format_element('strong', [], elgg_get_site_entity()->getEmailAddress()),
+				]),
+				'name' => 'from',
+			];
+		}
+		
+		$result[] = [
+			'#type' => 'text',
+			'#label' => elgg_echo('description'),
+			'#help' => elgg_echo('newsletter:edit:description:description'),
+			'name' => 'description',
+		];
+		
+		$result[] = [
+			'#type' => 'tags',
+			'#label' => elgg_echo('tags'),
+			'name' => 'tags',
+		];
+		
+		$result[] = [
+			'#type' => 'access',
+			'#label' => elgg_echo('access'),
+			'name' => 'access_id',
+			'entity_type' => 'object',
+			'entity_subtype' => self::SUBTYPE,
+		];
+		
+		return $result;
 	}
 	
 	/**

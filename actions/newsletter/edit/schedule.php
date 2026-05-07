@@ -17,10 +17,8 @@ if (empty($guid) || empty($date)) {
 	return elgg_error_response(elgg_echo('error:missing_data'));
 }
 
-$entity = get_entity($guid);
-if (!$entity instanceof \Newsletter || !$entity->canEdit()) {
-	return elgg_error_response(elgg_echo('actionunauthorized'));
-}
+/** @var \Newsletter $entity */
+$entity = elgg_entity_gatekeeper($guid, 'object', \Newsletter::SUBTYPE, true);
 
 $date = Values::normalizeTime($date);
 $date->modify('midnight');

@@ -1,6 +1,6 @@
 <?php
 
-/* @var $page_owner \ElggUser */
+/** @var \ElggUser $page_owner */
 $page_owner = elgg_get_page_owner_entity();
 
 elgg_push_context('settings');

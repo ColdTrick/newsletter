@@ -8,7 +8,7 @@
  */
 class NewsletterTemplate extends \ElggObject {
 	
-	const SUBTYPE = 'newsletter_template';
+	public const SUBTYPE = 'newsletter_template';
 	
 	/**
 	 * {@inheritdoc}

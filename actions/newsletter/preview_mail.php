@@ -11,14 +11,8 @@ if (empty($guid) || empty($email)) {
 	return elgg_error_response(elgg_echo('error:missing_data'));
 }
 
-$entity = get_entity($guid);
-if (!$entity instanceof \Newsletter) {
-	return elgg_error_response(elgg_echo('error:missing_data'));
-}
-
-if (!$entity->canEdit()) {
-	return elgg_error_response(elgg_echo('actionunauthorized'));
-}
+/** @var \Newsletter $entity */
+$entity = elgg_entity_gatekeeper($guid, 'object', \Newsletter::SUBTYPE, true);
 
 newsletter_send_preview($entity, $email);
 

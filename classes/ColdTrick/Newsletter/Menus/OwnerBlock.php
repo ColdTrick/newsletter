@@ -26,11 +26,11 @@ class OwnerBlock {
 			return null;
 		}
 		
-		/* @var $returnvalue MenuItems */
+		/** @var MenuItems $returnvalue */
 		$returnvalue = $event->getValue();
 		$returnvalue[] = \ElggMenuItem::factory([
 			'name' => 'newsletter',
-			'text' => elgg_echo('newsletter:menu:owner_block:group'),
+			'text' => elgg_echo('collection:object:newsletter:group'),
 			'href' => elgg_generate_url('collection:object:newsletter:group', [
 				'guid' => $entity->guid,
 			]),

@@ -1,5 +1,7 @@
 <?php
 
+use ColdTrick\Newsletter\Controllers\EditAction;
+use ColdTrick\Newsletter\Controllers\ListNewsletters;
 use ColdTrick\Newsletter\Forms\PrepareNewsletterEdit;
 use Elgg\Router\Middleware\Gatekeeper;
 use Elgg\Router\Middleware\GroupPageOwnerGatekeeper;
@@ -20,7 +22,6 @@ return [
 			'subtype' => 'newsletter',
 			'class' => \Newsletter::class,
 			'capabilities' => [
-				'commentable' => false,
 				'searchable' => true,
 				'likable' => true,
 			],
@@ -29,19 +30,11 @@ return [
 			'type' => 'object',
 			'subtype' => 'newsletter_subscription',
 			'class' => \NewsletterSubscription::class,
-			'capabilities' => [
-				'commentable' => false,
-				'searchable' => false,
-			],
 		],
 		[
 			'type' => 'object',
 			'subtype' => 'newsletter_template',
 			'class' => \NewsletterTemplate::class,
-			'capabilities' => [
-				'commentable' => false,
-				'searchable' => false,
-			],
 		],
 	],
 	'settings' => [
@@ -53,7 +46,13 @@ return [
 		'allow_copy_template' => true,
 	],
 	'actions' => [
-		'newsletter/edit' => [],
+		'newsletter/edit' => [
+			'controller' => EditAction::class,
+			'options' => [
+				'entity_type' => 'object',
+				'entity_subtype' => 'newsletter',
+			],
+		],
 		'newsletter/edit/schedule' => [],
 		'newsletter/edit/content' => [],
 		'newsletter/edit/template' => [],
@@ -149,11 +148,14 @@ return [
 		],
 		'collection:object:newsletter:all' => [
 			'path' => 'newsletter/site',
-			'resource' => 'newsletter/site',
+			'controller' => ListNewsletters::class,
 		],
 		'collection:object:newsletter:group' => [
 			'path' => 'newsletter/group/{guid}/{filter?}',
-			'resource' => 'newsletter/group',
+			'controller' => ListNewsletters::class,
+			'options' => [
+				'group_tool' => 'newsletter',
+			],
 			'required_plugins' => [
 				'groups',
 			],
@@ -163,7 +165,7 @@ return [
 		],
 		'collection:object:newsletter:received' => [
 			'path' => 'newsletter/received/{username}',
-			'resource' => 'newsletter/received',
+			'controller' => ListNewsletters::class,
 			'middleware' => [
 				Gatekeeper::class,
 				UserPageOwnerCanEditGatekeeper::class,
@@ -171,7 +173,7 @@ return [
 		],
 		'collection:object:newsletter:site' => [
 			'path' => 'newsletter/site/{filter?}',
-			'resource' => 'newsletter/site',
+			'controller' => ListNewsletters::class,
 		],
 		'collection:object:newsletter:subscriptions' => [
 			'path' => 'newsletter/subscriptions/{username}',
@@ -191,7 +193,7 @@ return [
 		],
 		'default:object:newsletter' => [
 			'path' => 'newsletter',
-			'resource' => 'newsletter/site',
+			'controller' => ListNewsletters::class,
 		],
 	],
 	'events' => [
@@ -294,16 +296,6 @@ return [
 				'ColdTrick\Newsletter\User::convertEmailSubscriptionToUserSetting' => [],
 			],
 		],
-		'view' => [
-			'page/layouts/newsletter' => [
-				'ColdTrick\Newsletter\Plugins\DeveloperTools::reenableLogOutput' => [],
-			],
-		],
-		'view_vars' => [
-			'page/layouts/newsletter' => [
-				'ColdTrick\Newsletter\Plugins\DeveloperTools::preventLogOutput' => [],
-			],
-		],
 	],
 	'view_extensions' => [
 		'register/extend' => [
@@ -319,7 +311,7 @@ return [
 	],
 	'widgets' => [
 		'newsletter_subscribe' => [
-			'context' => ['index','groups'],
+			'context' => ['index', 'groups'],
 		],
 	],
 ];

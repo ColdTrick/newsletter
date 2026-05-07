@@ -7,10 +7,8 @@ if (empty($guid) || empty($template)) {
 	return elgg_error_response(elgg_echo('error:missing_data'));
 }
 
-$entity = get_entity($guid);
-if (!$entity instanceof \Newsletter || !$entity->canEdit()) {
-	return elgg_error_response(elgg_echo('actionunauthorized'));
-}
+/** @var \Newsletter $entity */
+$entity = elgg_entity_gatekeeper($guid, 'object', \Newsletter::SUBTYPE, true);
 
 $entity->template = 'custom';
 

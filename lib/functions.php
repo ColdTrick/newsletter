@@ -6,8 +6,8 @@
 use Elgg\Database\QueryBuilder;
 use Elgg\Database\RelationshipsTable;
 use Elgg\Email;
-use Elgg\Email\Address;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Mime\Address;
 
 /**
  * Start the commandline to send a newsletter
@@ -46,7 +46,7 @@ function newsletter_start_commandline_sending(\Newsletter $entity): void {
 	$query_string = http_build_query($settings, '', ' ');
 	
 	// start the correct commandline
-	if (PHP_OS === 'WINNT') {
+	if (PHP_OS_FAMILY === 'Windows') {
 		pclose(popen('start /B php ' . $ini_param . $script_location . ' ' . $query_string, 'r'));
 	} else {
 		exec('php ' . $ini_param . $script_location . ' ' . $query_string . ' > /dev/null &');
@@ -360,7 +360,7 @@ function newsletter_get_subscribers(\ElggEntity $container, bool $count = false)
 			'relationship_guid' => $container->guid,
 			'inverse_relationship' => true,
 		]);
-		/* @var $user_email \ElggMetadata */
+		/** @var \ElggMetadata $user_email */
 		foreach ($user_emails as $user_email) {
 			$result['users'][$user_email->entity_guid] = $user_email->value;
 		}
@@ -1341,6 +1341,7 @@ function newsletter_register_title_menu_items(\ElggEntity $container_entity): vo
 			],
 			'item_class' => $subscribed ? 'hidden' : null,
 			'data-toggle' => 'newsletter_unsubscribe',
+			'priority' => 550,
 		]);
 		elgg_register_menu_item('title', [
 			'name' => 'newsletter_unsubscribe',
@@ -1357,6 +1358,7 @@ function newsletter_register_title_menu_items(\ElggEntity $container_entity): vo
 			],
 			'item_class' => $subscribed ? null : 'hidden',
 			'data-toggle' => 'newsletter_subscribe',
+			'priority' => 551,
 		]);
 	} else {
 		// logged out user
@@ -1365,7 +1367,9 @@ function newsletter_register_title_menu_items(\ElggEntity $container_entity): vo
 			'icon' => 'envelope-open-text',
 			'text' => elgg_echo("newsletter:subscribe:{$container_entity->type}"),
 			'title' => elgg_echo('newsletter:subscribe:user:description:subscribe', [$container_entity->getDisplayName()]),
-			'href' => elgg_http_add_url_query_elements('ajax/form/newsletter/subscribe', [
+			'href' => elgg_generate_url('ajax', [
+				'type' => 'form',
+				'segments' => 'newsletter/subscribe',
 				'guid' => $container_entity->guid,
 			]),
 			'link_class' => [
@@ -1477,7 +1481,7 @@ function newsletter_get_filtered_recipients(\Newsletter $entity): array {
 			};
 			
 			$users = elgg_get_entities($options);
-			/* @var $row \stdClass */
+			/** @var \stdClass $row */
 			foreach ($users as $row) {
 				$filtered_recipients['users'][(int) $row->guid] = $row->email;
 			}
@@ -1496,7 +1500,7 @@ function newsletter_get_filtered_recipients(\Newsletter $entity): array {
 			$options['inverse_relationship'] = true;
 			
 			$users = elgg_get_entities($options);
-			/* @var $row \stdClass */
+			/** @var \stdClass $row */
 			foreach ($users as $row) {
 				$filtered_recipients['users'][(int) $row->guid] = $row->email;
 			}
@@ -1521,7 +1525,7 @@ function newsletter_get_filtered_recipients(\Newsletter $entity): array {
 			}
 			
 			$users = elgg_get_entities($options);
-			/* @var $row \stdClass */
+			/** @var \stdClass $row */
 			foreach ($users as $row) {
 				$filtered_recipients['users'][(int) $row->guid] = $row->email;
 			}
@@ -1589,7 +1593,7 @@ function newsletter_get_filtered_recipients(\Newsletter $entity): array {
 			$blocked_emails = [];
 			
 			$users = elgg_get_entities($options);
-			/* @var $row \stdClass */
+			/** @var \stdClass $row */
 			foreach ($users as $row) {
 				$blocked_emails[] = $row->email;
 			}
@@ -1646,7 +1650,7 @@ function newsletter_get_filtered_recipients(\Newsletter $entity): array {
 				$blocked_emails = [];
 				
 				$subscriptions = elgg_get_entities($options);
-				/* @var $row \stdClass */
+				/** @var \stdClass $row */
 				foreach ($subscriptions as $row) {
 					$blocked_emails[] = $row->email;
 				}

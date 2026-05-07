@@ -22,7 +22,7 @@ class Entity {
 			return null;
 		}
 		
-		/* @var $returnvalue MenuItems */
+		/** @var MenuItems $returnvalue */
 		$returnvalue = $event->getValue();
 		if ($entity->status === 'sent' || $entity->getLogging()) {
 			$returnvalue[] = \ElggMenuItem::factory([

@@ -6,7 +6,7 @@
 $guid = (int) elgg_extract('guid', $vars);
 elgg_entity_gatekeeper($guid, 'object', \Newsletter::SUBTYPE, true);
 
-/* @var $entity \Newsletter */
+/** @var \Newsletter $entity */
 $entity = get_entity($guid);
 
 elgg_require_css('resources/newsletter/edit');

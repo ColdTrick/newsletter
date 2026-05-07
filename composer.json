@@ -10,6 +10,6 @@
 		"issues": "https://github.com/ColdTrick/newsletter/issues"
 	},
 	"conflict": {
-		"elgg/elgg": "<6.0"
+		"elgg/elgg": "<7.0"
 	}
 }

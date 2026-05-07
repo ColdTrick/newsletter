@@ -7,10 +7,8 @@ if (empty($guid) || empty($content)) {
 	return elgg_error_response(elgg_echo('error:missing_data'));
 }
 
-$entity = get_entity($guid);
-if (!$entity instanceof \Newsletter || !$entity->canEdit()) {
-	return elgg_error_response(elgg_echo('actionunauthorized'));
-}
+/** @var \Newsletter $entity */
+$entity = elgg_entity_gatekeeper($guid, 'object', \Newsletter::SUBTYPE, true);
 
 $forward_url = $entity->content ? REFERRER : elgg_generate_entity_url($entity, 'edit', 'recipients');
 

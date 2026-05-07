@@ -35,7 +35,7 @@ class Filter {
 		
 		$current_filter = $event->getParam('filter_value', 'sent');
 		
-		/* @var $returnvalue MenuItems */
+		/** @var MenuItems $returnvalue */
 		$returnvalue = $event->getValue();
 		
 		$returnvalue[] = \ElggMenuItem::factory([
@@ -44,7 +44,7 @@ class Filter {
 			'href' => elgg_generate_url($route_name, $route_params + [
 				'filter' => 'concept',
 			]),
-			'selected' => ($current_filter == 'concept'),
+			'selected' => ($current_filter === 'concept'),
 		]);
 		
 		$returnvalue[] = \ElggMenuItem::factory([
@@ -53,7 +53,7 @@ class Filter {
 			'href' => elgg_generate_url($route_name, $route_params + [
 				'filter' => 'scheduled',
 			]),
-			'selected' => ($current_filter == 'scheduled'),
+			'selected' => ($current_filter === 'scheduled'),
 		]);
 		
 		$returnvalue[] = \ElggMenuItem::factory([
@@ -62,7 +62,7 @@ class Filter {
 			'href' => elgg_generate_url($route_name, $route_params + [
 				'filter' => 'sending',
 			]),
-			'selected' => ($current_filter == 'sending'),
+			'selected' => ($current_filter === 'sending'),
 		]);
 		
 		$returnvalue[] = \ElggMenuItem::factory([
@@ -71,7 +71,7 @@ class Filter {
 			'href' => elgg_generate_url($route_name, $route_params + [
 				'filter' => 'sent',
 			]),
-			'selected' => ($current_filter == 'sent'),
+			'selected' => ($current_filter === 'sent'),
 		]);
 		
 		return $returnvalue;
@@ -87,7 +87,7 @@ class Filter {
 	public static function registerNewsletterSteps(\Elgg\Event $event): MenuItems {
 		$entity = $event->getParam('filter_entity', $event->getEntityParam());
 		
-		/* @var $returnvalue MenuItems */
+		/** @var MenuItems $returnvalue */
 		$returnvalue = $event->getValue();
 		if ($entity instanceof \Newsletter) {
 			$current_step = $event->getParam('filter_value');

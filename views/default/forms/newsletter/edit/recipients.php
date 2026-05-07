@@ -93,7 +93,7 @@ if (!empty($user_guids)) {
 		],
 	]);
 	
-	/* @var $user \ElggUser */
+	/** @var \ElggUser $user */
 	foreach ($users as $user) {
 		$class = '';
 		$counter++;
@@ -133,7 +133,7 @@ if (!empty($group_guids)) {
 		],
 	]);
 	
-	/* @var $group \ElggGroup */
+	/** @var \ElggGroup $group */
 	foreach ($groups as $group) {
 		$class = '';
 		$counter++;

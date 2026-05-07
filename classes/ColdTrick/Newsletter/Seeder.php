@@ -65,7 +65,7 @@ class Seeder extends Seed {
 			}
 			
 			try {
-				/* @var $entity \Newsletter */
+				/** @var \Newsletter $entity */
 				$entity = $this->createObject([
 					'subtype' => \Newsletter::SUBTYPE,
 					'owner_guid' => $container->guid,
@@ -118,7 +118,7 @@ class Seeder extends Seed {
 	 * {@inheritdoc}
 	 */
 	public function unseed() {
-		/* @var $entities \ElggBatch */
+		/** @var \ElggBatch $entities */
 		$entities = elgg_get_entities([
 			'type' => 'object',
 			'subtype' => \Newsletter::SUBTYPE,
@@ -128,7 +128,7 @@ class Seeder extends Seed {
 			'batch_inc_offset' => false,
 		]);
 		
-		/* @var $entity \Newsletter */
+		/** @var \Newsletter $entity */
 		foreach ($entities as $entity) {
 			if ($entity->delete()) {
 				$this->log("Deleted newsletter {$entity->guid}");

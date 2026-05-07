@@ -8,9 +8,7 @@ if (elgg_get_plugin_setting('allow_site', 'newsletter') !== 'yes') {
 }
 
 echo elgg_view_field([
-	'#type' => 'checkbox',
+	'#type' => 'switch',
 	'#label' => elgg_echo('newsletter:registration'),
 	'name' => 'newsletter_subscription',
-	'value' => '1',
-	'switch' => true,
 ]);

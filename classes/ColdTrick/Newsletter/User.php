@@ -8,7 +8,7 @@ namespace ColdTrick\Newsletter;
 class User {
 
 	/**
-	 * Check if there is a email subscription for the user's email address
+	 * Check if there is an email subscription for the user's email address
 	 * If so, convert the settings to the user and remove the email subscription
 	 *
 	 * @param \Elgg\Event $event 'usersettings:save', 'user'

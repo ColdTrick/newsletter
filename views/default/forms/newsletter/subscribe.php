@@ -35,7 +35,7 @@ if ($user instanceof \ElggUser) {
 	} else {
 		// not yet so subscribe
 		echo elgg_format_element('div', [], elgg_echo('newsletter:subscribe:user:description:subscribe', [$entity->getDisplayName()]));
-	}	
+	}
 } else {
 	// show email subscribe form
 	echo elgg_view_field([

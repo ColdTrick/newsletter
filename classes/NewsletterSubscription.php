@@ -7,10 +7,10 @@
  */
 class NewsletterSubscription extends \ElggObject {
 	
-	const SUBSCRIPTION = 'subscribed';
-	const BLACKLIST = 'blacklisted';
-	const GENERAL_BLACKLIST = 'general_blacklisted';
-	const SUBTYPE = 'newsletter_subscription';
+	public const SUBSCRIPTION = 'subscribed';
+	public const BLACKLIST = 'blacklisted';
+	public const GENERAL_BLACKLIST = 'general_blacklisted';
+	public const SUBTYPE = 'newsletter_subscription';
 	
 	/**
 	 * {@inheritdoc}

@@ -10,12 +10,12 @@
 		overflow: hidden;
 		
 		.elgg-listing-summary-content {
-			color: $(text-color-soft);
+			color: var(--elgg-text-color-soft);
 		}
 	}
 
 	li:hover {
-		border-color: $(border-color-mild);
+		border-color: var(--elgg-border-color-mild);
 	}
 }
 

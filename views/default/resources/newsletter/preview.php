@@ -3,7 +3,7 @@
 $guid = (int) get_input('guid');
 elgg_entity_gatekeeper($guid, 'object', \Newsletter::SUBTYPE, true);
 
-/* @var $entity Newsletter */
+/** @var Newsletter $entity */
 $entity = get_entity($guid);
 
 elgg_require_css('resources/newsletter/preview');
@@ -19,7 +19,9 @@ elgg_register_menu_item('title', [
 	'name' => 'preview_by_mail',
 	'icon' => 'mail',
 	'text' => elgg_echo('newsletter:menu:preview_by_mail'),
-	'href' => elgg_http_add_url_query_elements('ajax/form/newsletter/preview_mail', [
+	'href' => elgg_generate_url('ajax', [
+		'type' => 'form',
+		'segments' => 'newsletter/preview_mail',
 		'guid' => $entity->guid,
 	]),
 	'class' => ['elgg-lightbox', 'elgg-button', 'elgg-button-action'],
