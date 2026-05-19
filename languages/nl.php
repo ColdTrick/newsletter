@@ -1,10 +1,14 @@
 <?php
 /**
  * This file was created by Translation Editor v14.0.4
- * On 2025-12-03 10:39
+ * On 2026-05-19 14:37
  */
 
 return array (
+  'collection:object:newsletter_template' => 'Nieuwsbrief template',
+  'list:object:newsletter_template:no_results' => 'Geen nieuwsbrief templates gevonden',
+  'collection:object:newsletter_subscription' => 'Nieuwsbrief abonnees',
+  'list:object:newsletter_subscription:no_results' => 'Geen nieuwsbrief abonnees gevonden',
   'list:object:newsletter:no_results' => 'Geen nieuwsbrieven gevonden',
   'newsletter:edit:subject:help' => 'Indien je een ander onderwerp in de email wilt dan de titel van de nieuwsbrief kun je dat hier opgeven.',
   'newsletter:editor:button' => 'Voeg content toe aan je nieuwsbrief',
