@@ -1,6 +1,10 @@
 Version history
 ===============
 
+13.0 (2026-05-29):
+
+- changed: updated for Elgg 7.0
+
 12.1.1 (2026-03-24):
 
 - changed: unsubscribe page supports being drawn in a walledgarden shell
