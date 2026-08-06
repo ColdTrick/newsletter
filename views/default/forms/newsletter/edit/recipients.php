@@ -1,5 +1,7 @@
 <?php
 
+use ColdTrick\Newsletter\Di\Recipients;
+
 $entity = elgg_extract('entity', $vars);
 if (!$entity instanceof \Newsletter) {
 	return;
@@ -26,7 +28,7 @@ echo elgg_view_field([
 
 // add subscribers
 $container = $entity->getContainerEntity();
-$subscriber_count = newsletter_get_subscribers($container, true);
+$subscriber_count = Recipients::instance()->getSubscribers($container, true);
 echo elgg_view_field([
 	'#type' => 'checkbox',
 	'#label' => elgg_echo('newsletter:recipients:subscribers') . elgg_format_element('span', ['class' => 'mls'], "({$subscriber_count})"),

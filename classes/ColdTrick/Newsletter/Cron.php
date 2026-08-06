@@ -2,6 +2,7 @@
 
 namespace ColdTrick\Newsletter;
 
+use Elgg\Logger\Cron as CronLogger;
 use Elgg\Values;
 
 /**
@@ -18,6 +19,8 @@ class Cron {
 	 */
 	public static function sendNewsletters(\Elgg\Event $event): void {
 		$cron_ts = $event->getParam('time', time());
+		/** @var CronLogger $logger */
+		$logger = $event->getParam('logger');
 		
 		$ts = Values::normalizeTime($cron_ts);
 		
@@ -32,7 +35,7 @@ class Cron {
 		$ts = Values::normalizeTime($ts->format('Y-m-d H:00:00 e'));
 		
 		// ignore access
-		elgg_call(ELGG_IGNORE_ACCESS, function() use ($ts) {
+		elgg_call(ELGG_IGNORE_ACCESS, function() use ($ts, $logger) {
 			$newsletters = elgg_get_entities([
 				'type' => 'object',
 				'subtype' => \Newsletter::SUBTYPE,
@@ -45,6 +48,7 @@ class Cron {
 			]);
 			
 			foreach ($newsletters as $newsletter) {
+				$logger->notice("Starting: {$newsletter->getDisplayName()} ({$newsletter->guid})");
 				newsletter_start_commandline_sending($newsletter);
 			}
 		});

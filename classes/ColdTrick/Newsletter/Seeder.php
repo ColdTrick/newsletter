@@ -2,6 +2,7 @@
 
 namespace ColdTrick\Newsletter;
 
+use ColdTrick\Newsletter\Di\Recipients;
 use Elgg\Database\Seeds\Seed;
 use Elgg\Exceptions\Seeding\MaxAttemptsException;
 use Elgg\Values;
@@ -313,7 +314,7 @@ class Seeder extends Seed {
 		$entity->status = 'sending';
 		$entity->start_time = $logging['start_time'];
 		
-		$filtered_recipients = newsletter_get_filtered_recipients($entity);
+		$filtered_recipients = Recipients::instance()->getFilteredRecipients($entity);
 		if (empty($filtered_recipients)) {
 			$entity->status = 'sent';
 			

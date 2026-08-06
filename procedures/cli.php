@@ -1,5 +1,7 @@
 <?php
 
+use ColdTrick\Newsletter\Di\Processor;
+
 if (PHP_SAPI !== 'cli') {
 	exit('This script can only be run from the commandline');
 }
@@ -59,4 +61,4 @@ if (!newsletter_validate_commandline_secret($entity_guid, $secret)) {
 }
 
 // send the newsletter
-newsletter_process($entity_guid);
+Processor::instance()->process($entity_guid);
