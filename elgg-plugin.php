@@ -3,6 +3,7 @@
 use ColdTrick\Newsletter\Controllers\EditAction;
 use ColdTrick\Newsletter\Controllers\ListNewsletters;
 use ColdTrick\Newsletter\Forms\PrepareNewsletterEdit;
+use ColdTrick\Newsletter\Upgrades\CorrectOwnerGUID;
 use Elgg\Router\Middleware\Gatekeeper;
 use Elgg\Router\Middleware\GroupPageOwnerGatekeeper;
 use Elgg\Router\Middleware\UserPageOwnerCanEditGatekeeper;
@@ -296,6 +297,9 @@ return [
 				'ColdTrick\Newsletter\User::convertEmailSubscriptionToUserSetting' => [],
 			],
 		],
+	],
+	'upgrades' => [
+		CorrectOwnerGUID::class,
 	],
 	'view_extensions' => [
 		'register/extend' => [

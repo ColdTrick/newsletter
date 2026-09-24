@@ -331,4 +331,8 @@ To view the newsletter click here:
 	
 	'newsletter:upgrade:2023040400:title' => "Move newsletter icons to header images",
 	'newsletter:upgrade:2023040400:description' => "In Elgg 5 there is built in header image support. This migration moves old icons uploaded with newsletters to this new location.",
+	
+	// upgrades
+	'newsletter:upgrade:2026092401:title' => "Correct newsletter owners",
+	'newsletter:upgrade:2026092401:description' => "Some newsletter have an incorrect owner, this needs to be fixed.",
 );

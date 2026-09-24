@@ -1,10 +1,12 @@
 <?php
 /**
- * This file was created by Translation Editor v14.0.4
- * On 2026-05-19 14:37
+ * This file was created by Translation Editor v14.0.6
+ * On 2026-09-24 09:57
  */
 
 return array (
+  'newsletter:upgrade:2026092401:title' => 'Corrigeer de eigenaar van de nieuwsbrieven',
+  'newsletter:upgrade:2026092401:description' => 'Sommige nieuwsbrieven hebben een verkeerde eigenaar, dit moet worden opgelost.',
   'collection:object:newsletter_template' => 'Nieuwsbrief template',
   'list:object:newsletter_template:no_results' => 'Geen nieuwsbrief templates gevonden',
   'collection:object:newsletter_subscription' => 'Nieuwsbrief abonnees',

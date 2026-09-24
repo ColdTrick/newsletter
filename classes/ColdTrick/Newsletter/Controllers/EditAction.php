@@ -29,6 +29,18 @@ class EditAction extends EntityEditAction {
 	/**
 	 * {@inheritdoc}
 	 */
+	protected function executeBefore(): void {
+		parent::executeBefore();
+		
+		if ($this->isNewEntity()) {
+			// set the correct owner for the newsletter
+			$this->entity->owner_guid = $this->entity->container_guid;
+		}
+	}
+	
+	/**
+	 * {@inheritdoc}
+	 */
 	protected function success(?string $forward_url = null): OkResponse {
 		if ($this->isNewEntity()) {
 			$forward_url = elgg_generate_entity_url($this->entity, 'edit', 'template');
