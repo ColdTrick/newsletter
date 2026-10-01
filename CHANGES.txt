@@ -1,6 +1,11 @@
 Version history
 ===============
 
+13.1 (2026-10-01):
+
+- changed: newsletter processing move to DI service
+- fixed: newsletters have an incorrect owner
+
 13.0 (2026-05-29):
 
 - changed: updated for Elgg 7.0
