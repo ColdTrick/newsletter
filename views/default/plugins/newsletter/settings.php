@@ -43,7 +43,7 @@ echo elgg_view_field([
 	'#label' => elgg_echo('newsletter:settings:allow_copy_template'),
 	'#help' => elgg_echo('newsletter:settings:allow_copy_template:help'),
 	'name' => 'params[allow_copy_template]',
-	'value' => (bool) $plugin->allow_copy_template,
+	'value' => $plugin->allow_copy_template,
 ]);
 
 echo elgg_view_field([
@@ -51,7 +51,7 @@ echo elgg_view_field([
 	'#label' => elgg_echo('newsletter:settings:include_banned_users'),
 	'#help' => elgg_echo('newsletter:settings:include_banned_users:help'),
 	'name' => 'params[include_banned_users]',
-	'value' => (bool) $plugin->include_banned_users,
+	'value' => $plugin->include_banned_users,
 ]);
 
 echo elgg_view_field([
@@ -93,11 +93,10 @@ $embed = elgg_view('output/longtext', [
 $subtypes = elgg_extract('object', elgg_entity_types_with_capability('searchable'), []);
 foreach ($subtypes as $subtype) {
 	$embed .= elgg_view_field([
-		'#type' => 'checkbox',
+		'#type' => 'switch',
 		'#label' => elgg_echo("item:object:{$subtype}"),
 		'name' => "params[embed_enable_object_{$subtype}]",
-		'checked' => (bool) $plugin->getSetting("embed_enable_object_{$subtype}", 1),
-		'switch' => true,
+		'value' => $plugin->getSetting("embed_enable_object_{$subtype}", 1),
 	]);
 }
 

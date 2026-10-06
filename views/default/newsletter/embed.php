@@ -83,13 +83,10 @@ $form_data = elgg_view_field([
 
 if ($container instanceof \ElggGroup) {
 	$form_data .= elgg_view_field([
-		'#type' => 'checkbox',
+		'#type' => 'switch',
 		'#label' => elgg_echo('newsletter:embed:show_all'),
 		'name' => 'show_all',
-		'value' => '1',
-		'checked' => $show_all,
-		'default' => false,
-		'switch' => true,
+		'value' => $show_all,
 	]);
 }
 

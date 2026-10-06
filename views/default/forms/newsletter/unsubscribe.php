@@ -57,11 +57,10 @@ echo elgg_view_field([
 
 // unsubscribe from all newsletters
 echo elgg_view_field([
-	'#type' => 'checkbox',
+	'#type' => 'switch',
 	'#label' => elgg_echo('newsletter:unsubscribe:all', [elgg_get_site_entity()->getDisplayName()]),
 	'name' => 'all',
-	'value' => 1,
-	'switch' => true,
+	'value' => true,
 ]);
 
 // footer

@@ -13,13 +13,11 @@ $format_description = elgg_view_field([
 ]);
 
 $format_icon = elgg_view_field([
-	'#type' => 'checkbox',
+	'#type' => 'switch',
 	'#label' => elgg_echo('newsletter:embed:format:icon:title'),
 	'name' => 'newsletter-embed-format-icon',
 	'id' => 'newsletter-embed-format-icon',
-	'value' => 1,
-	'checked' => true,
-	'switch' => true,
+	'value' => true,
 ]);
 
 $result = elgg_format_element('fieldset', [], $format_description . $format_icon);

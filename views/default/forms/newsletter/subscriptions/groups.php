@@ -58,12 +58,10 @@ foreach ($my_groups as $group) {
 	$has_subscription = newsletter_check_user_subscription($entity, $group);
 	
 	$content[] = elgg_view_field([
-		'#type' => 'checkbox',
+		'#type' => 'switch',
 		'#label' => $group->getDisplayName(),
 		'name' => "subscriptions[{$group->guid}]",
-		'value' => 1,
-		'checked' => $has_subscription,
-		'switch' => true,
+		'value' => $has_subscription,
 	]);
 }
 

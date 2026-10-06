@@ -30,13 +30,11 @@ echo elgg_view_field([
 $container = $entity->getContainerEntity();
 $subscriber_count = Recipients::instance()->getSubscribers($container, true);
 echo elgg_view_field([
-	'#type' => 'checkbox',
+	'#type' => 'switch',
 	'#label' => elgg_echo('newsletter:recipients:subscribers') . elgg_format_element('span', ['class' => 'mls'], "({$subscriber_count})"),
 	'#help' => elgg_echo('newsletter:recipients:subscribers:help'),
 	'name' => 'subscribers',
-	'value' => 1,
-	'checked' => !empty(elgg_extract('subscribers', $vars)),
-	'switch' => true,
+	'value' => !empty(elgg_extract('subscribers', $vars)),
 ]);
 
 // add members
@@ -57,13 +55,11 @@ if (!$container instanceof \ElggGroup) {
 }
 
 echo elgg_view_field([
-	'#type' => 'checkbox',
+	'#type' => 'switch',
 	'#label' => elgg_echo('newsletter:recipients:members') . elgg_format_element('span', ['class' => 'mls'], "({$member_count})"),
 	'#help' => elgg_echo('newsletter:recipients:members:help'),
 	'name' => 'members',
-	'value' => 1,
-	'checked' => !empty(elgg_extract('members', $vars)),
-	'switch' => true,
+	'value' => !empty(elgg_extract('members', $vars)),
 ]);
 
 // search for recipients
