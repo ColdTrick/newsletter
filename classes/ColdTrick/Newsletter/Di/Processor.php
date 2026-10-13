@@ -195,18 +195,17 @@ class Processor {
 			return false;
 		}
 		
-		$entity = elgg_call(ELGG_IGNORE_ACCESS, function() use ($guid) {
-			return get_entity($guid);
+		return elgg_call(ELGG_IGNORE_ACCESS, function() use ($guid) {
+			$entity = get_entity($guid);
+			if (!$entity instanceof \Newsletter) {
+				return false;
+			}
+			
+			$this->entity = $entity;
+			$this->container = $entity->getContainerEntity();
+			
+			return true;
 		});
-		
-		if (!$entity instanceof \Newsletter) {
-			return false;
-		}
-		
-		$this->entity = $entity;
-		$this->container = $entity->getContainerEntity();
-		
-		return true;
 	}
 	
 	/**
