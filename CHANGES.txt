@@ -1,6 +1,10 @@
 Version history
 ===============
 
+13.1.1 (2026-10-21):
+
+- fixed: unable to send group newsletters
+
 13.1 (2026-10-01):
 
 - changed: newsletter processing move to DI service
