@@ -17,21 +17,23 @@ class ListNewsletters extends GenericContentListing {
 		$filter = false;
 		$options['metadata_name_value_pairs'] = [];
 		
+		$container = $this->page_owner;
+		
 		switch ($page) {
 			case 'all':
 			case 'site':
-				$site = elgg_get_site_entity();
+				$container = elgg_get_site_entity();
 				$filter = 'sent';
-				if ($site->canEdit()) {
+				if ($container->canEdit()) {
 					$filter = $this->request->getParam('filter') ?: $filter;
 				}
 				
-				$options['container_guid'] = $site->guid;
+				$options['container_guid'] = $container->guid;
 				
 				break;
 			case 'group':
 				$filter = 'sent';
-				if ($this->page_owner->canEdit()) {
+				if ($container->canEdit()) {
 					$filter = $this->request->getParam('filter') ?: $filter;
 				}
 				break;
@@ -80,7 +82,7 @@ class ListNewsletters extends GenericContentListing {
 					'name' => 'status',
 					'value' => 'sent',
 				];
-				if (!elgg_is_admin_logged_in()) {
+				if (!$container->canEdit()) {
 					$options['metadata_name_value_pairs'][] = [
 						'name' => 'show_in_archive',
 						'value' => 1,
